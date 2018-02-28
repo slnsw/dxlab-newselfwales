@@ -12,6 +12,8 @@
   --colour-tertiary: yellow;
   --colour-highlight: red;
 
+  --colour-black: #111;
+
   /* Primary */
   --colour-primary-dark: color(var(--colour-primary) shade(10%));
   --colour-primary-darker: color(var(--colour-primary) shade(20%));

@@ -1,4 +1,5 @@
 @import 'normalize.css/normalize.css';
+@import './variables.css';
 
 /*
  * BASE STYLES
@@ -8,7 +9,9 @@ html {
   box-sizing: border-box;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
@@ -17,5 +20,6 @@ html {
 }
 
 body {
-  margin: 3em;
+  margin: 0;
+  background-color: var(--colour-black);
 }

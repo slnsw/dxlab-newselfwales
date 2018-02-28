@@ -1,14 +1,61 @@
+import { Component } from 'react';
+// import Masonry from 'react-masonry-component';
+import Packery from 'react-packery-component';
+
 import ExampleApp from '../components/examples/ExampleApp';
-import Header from '../components/Header';
+import images from '../lib/images.json';
+import selfiesRaw from '../lib/selfieSelected.json';
+import shuffle from '../lib/shuffle';
 
 import './index.css';
 
-export default (props) => (
-	<ExampleApp>
-		<Header pathname={props.url.pathname} />
+class Home extends Component {
+	render() {
+		const selfies = Object.keys(selfiesRaw).map((s) => {
+			return {
+				isSelfie: true,
+				url: selfiesRaw[s].filename,
+			};
+		});
 
-		<h1>
-			Next <span>Starter</span> Kit
-		</h1>
-	</ExampleApp>
-);
+		const allImages = shuffle(images.concat(selfies));
+
+		return (
+			<ExampleApp>
+				<div style={{ height: '900px', width: '20000px' }}>
+					<Packery
+						options={{
+							gutter: 10,
+							horizontalOrder: true,
+							fitWidth: true,
+							// stagger: 30,
+							// rowHeight: 60,
+							// isHorizontal: true,
+						}}
+					>
+						{allImages.slice(0, 500).map((image, i) => {
+							return (
+								<div className="image">
+									<img
+										src={`/static/${image.isSelfie ? 'selfies' : 'images'}/${
+											image.url
+										}`}
+										style={{
+											height: i % 7 === 1 ? '601px' : '300px',
+											// maxWidth: '300px',
+											marginBottom: '-4px',
+										}}
+										key={image.url}
+										alt="test"
+									/>
+								</div>
+							);
+						})}
+					</Packery>
+				</div>
+			</ExampleApp>
+		);
+	}
+}
+
+export default Home;
