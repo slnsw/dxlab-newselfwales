@@ -53,7 +53,7 @@ class Home extends Component {
 			<ExampleApp>
 				<ReactAutoScroll scrollTargetRef={this.refs.scroll} isEnabled speed={5}>
 					<div ref="scroll" style={{ overflow: 'scroll', width: '100%' }}>
-						<div style={{ height: '900px', width: '30000px' }}>
+						<div style={{ height: '1200px', width: '10000px' }}>
 							<Packery
 								options={{
 									gutter: 10,
@@ -72,7 +72,7 @@ class Home extends Component {
 													image.isSelfie ? 'selfies' : 'images'
 												}/${image.url}`}
 												style={{
-													height: i % 7 === 1 ? '601px' : '300px',
+													height: i % 7 === 1 ? '401px' : '200px',
 													// maxWidth: '300px',
 													marginBottom: '-4px',
 												}}

@@ -24,7 +24,7 @@ class Home extends Component {
 		this.allImages = shuffle(images.concat(selfies));
 
 		this.state = {
-			allImages: this.allImages.slice(0, 50),
+			allImages: this.allImages.slice(0, 200),
 		};
 	}
 
@@ -49,13 +49,14 @@ class Home extends Component {
 
 		return (
 			<ExampleApp>
-				<div style={{ height: '600px', width: '2000px' }}>
+				<div style={{ height: '2000px', width: '2000px' }}>
 					<Packery
 						// style={{ height: '500px' }}
 						options={{
 							gutter: 10,
 							horizontalOrder: true,
 							fitWidth: true,
+							transitionDuration: '1s',
 							// stagger: 30,
 							// rowHeight: 60,
 							// isHorizontal: true,
@@ -69,7 +70,7 @@ class Home extends Component {
 											image.url
 										}`}
 										style={{
-											height: i % 7 === 1 ? '300px' : '300px',
+											height: setSize(i),
 											// maxWidth: '300px',
 											marginBottom: '-4px',
 										}}
@@ -83,6 +84,16 @@ class Home extends Component {
 				</div>
 			</ExampleApp>
 		);
+	}
+}
+
+function setSize(i) {
+	if (i % 12 === 1) {
+		return '210px';
+	} else if (i % 30 === 2) {
+		return '610px';
+	} else {
+		return '100px';
 	}
 }
 
