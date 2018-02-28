@@ -1,6 +1,7 @@
 import { Component } from 'react';
 // import Masonry from 'react-masonry-component';
-import Packery from 'react-packery-component';
+// import Packery from 'react-packery-component';
+import Packery from '../components/Packery';
 
 import ExampleApp from '../components/examples/ExampleApp';
 import images from '../lib/images.json';
@@ -10,7 +11,9 @@ import shuffle from '../lib/shuffle';
 import './index.css';
 
 class Home extends Component {
-	render() {
+	constructor() {
+		super();
+
 		const selfies = Object.keys(selfiesRaw).map((s) => {
 			return {
 				isSelfie: true,
@@ -18,11 +21,35 @@ class Home extends Component {
 			};
 		});
 
-		const allImages = shuffle(images.concat(selfies));
+		this.allImages = shuffle(images.concat(selfies));
+
+		this.state = {
+			allImages: this.allImages.slice(0, 50),
+		};
+	}
+
+	componentDidMount() {
+		const timeout = setInterval(() => {
+			this.addNewImage();
+		}, 5000);
+	}
+
+	addNewImage = () => {
+		const randomNumber = Math.floor(Math.random() * this.allImages.length);
+
+		const randomImage = this.allImages[randomNumber];
+
+		this.setState({
+			allImages: [randomImage, ...this.state.allImages],
+		});
+	};
+
+	render() {
+		const { allImages } = this.state;
 
 		return (
 			<ExampleApp>
-				<div style={{ height: '600px', width: '20000px' }}>
+				<div style={{ height: '600px', width: '2000px' }}>
 					<Packery
 						// style={{ height: '500px' }}
 						options={{

@@ -1,6 +1,7 @@
 import { Component } from 'react';
 // import Masonry from 'react-masonry-component';
-import Packery from 'react-packery-component';
+import Packery from '../components/Packery';
+// import Packery from 'react-packery-component';
 
 import ExampleApp from '../components/examples/ExampleApp';
 import images from '../lib/images.json';
