@@ -29,13 +29,6 @@ class Home extends Component {
 		};
 	}
 
-	componentDidMount() {
-		// setInterval(() => {
-		// 	this.addNewImage();
-		// }, 10000);
-		// scroll(10000);
-	}
-
 	addNewImage = () => {
 		const randomNumber = Math.floor(Math.random() * this.allImages.length);
 
@@ -51,7 +44,7 @@ class Home extends Component {
 
 		return (
 			<ExampleApp>
-				<div>
+				<div style={{ width: '6000px' }}>
 					<Packery
 						// style={{ height: '500px' }}
 						options={{
@@ -64,8 +57,7 @@ class Home extends Component {
 							// isHorizontal: true,
 						}}
 						onLayoutComplete={(laidOutItems) => {
-							// console.log(laidOutItems);
-							scroll(laidOutItems);
+							scroll(laidOutItems, 'x');
 						}}
 					>
 						{allImages.slice(0, 500).map((image, i) => {
