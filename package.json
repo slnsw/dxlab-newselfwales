@@ -1,7 +1,7 @@
 {
-	"name": "next-starter-kit",
+	"name": "dxlab-selfie",
 	"author": "Kaho Cheung",
-	"version": "1.1.0",
+	"version": "0.0.1",
 	"scripts": {
 		"dev": "npm start",
 		"build": "next build",
@@ -11,14 +11,15 @@
 		"alias": "now alias next-starter-kit.now.sh -r rules.json",
 		"flow": "flow",
 		"test": "jest",
-		"test:lint": "eslint . --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --cache"
+		"test:lint":
+			"eslint . --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --cache"
 	},
 	"engines": {
 		"node": "~8.9.0"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/unkleho/next-starter-kit"
+		"url": "https://github.com/slnsw/dxlab-selfie"
 	},
 	"dependencies": {
 		"@zeit/next-css": "0.0.7",
@@ -63,7 +64,8 @@
 		"enzyme": "^3.3.0",
 		"eslint": "^4.17.0",
 		"eslint-config-airbnb-base": "^12.1.0",
-		"eslint-config-dxlab": "git+ssh://git@github.com/slnsw/eslint-config-dxlab.git#v0.0.8",
+		"eslint-config-dxlab":
+			"git+ssh://git@github.com/slnsw/eslint-config-dxlab.git#v0.0.8",
 		"eslint-config-prettier": "^2.9.0",
 		"eslint-config-react-app": "^2.1.0",
 		"eslint-loader": "^1.9.0",
