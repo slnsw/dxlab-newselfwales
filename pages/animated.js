@@ -32,7 +32,7 @@ class Home extends Component {
 	componentDidMount() {
 		setInterval(() => {
 			this.addNewImage();
-		}, 10000);
+		}, 8000);
 	}
 
 	addNewImage = () => {
