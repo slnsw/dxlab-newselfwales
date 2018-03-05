@@ -7,7 +7,7 @@ import ExampleApp from '../components/examples/ExampleApp';
 import images from '../lib/images.json';
 import selfiesRaw from '../lib/selfieSelected.json';
 import shuffle from '../lib/shuffle';
-// import scroll from '../lib/scroll';
+import scroll from '../lib/scroll';
 
 import './index.css';
 
@@ -25,14 +25,15 @@ class Home extends Component {
 		this.allImages = shuffle(images.concat(selfies));
 
 		this.state = {
-			allImages: this.allImages.slice(0, 100),
+			allImages: this.allImages.slice(0, 400),
 		};
 	}
 
 	componentDidMount() {
-		setInterval(() => {
-			this.addNewImage();
-		}, 10000);
+		// setInterval(() => {
+		// 	this.addNewImage();
+		// }, 10000);
+		// scroll(10000);
 	}
 
 	addNewImage = () => {
@@ -50,7 +51,7 @@ class Home extends Component {
 
 		return (
 			<ExampleApp>
-				<div style={{ height: '2000px', width: '2000px' }}>
+				<div>
 					<Packery
 						// style={{ height: '500px' }}
 						options={{
@@ -61,6 +62,10 @@ class Home extends Component {
 							// stagger: 30,
 							// rowHeight: 60,
 							// isHorizontal: true,
+						}}
+						onLayoutComplete={(laidOutItems) => {
+							// console.log(laidOutItems);
+							scroll(laidOutItems);
 						}}
 					>
 						{allImages.slice(0, 500).map((image, i) => {

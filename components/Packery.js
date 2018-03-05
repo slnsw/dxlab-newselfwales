@@ -55,6 +55,11 @@ PackeryComponent = createReactClass({
 			if (this.props.enableDragging) {
 				this.packery.getItemElements().forEach(this.makeDraggable);
 			}
+
+			if (typeof this.props.onLayoutComplete === 'function') {
+				this.packery.on('layoutComplete', this.props.onLayoutComplete);
+			}
+
 			this.domChildren = this.getNewDomChildren();
 		}
 	},
