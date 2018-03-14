@@ -11,8 +11,7 @@
 		"alias": "now alias next-starter-kit.now.sh -r rules.json",
 		"flow": "flow",
 		"test": "jest",
-		"test:lint":
-			"eslint . --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --cache"
+		"test:lint": "eslint . --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --cache"
 	},
 	"engines": {
 		"node": "~8.9.0"
@@ -52,9 +51,11 @@
 		"react-packery-component": "^1.0.2",
 		"react-redux": "^5.0.5",
 		"react-to-target-auto-scroll": "^1.0.4",
+		"react-webcam": "^0.2.0",
 		"redux": "^3.6.0",
 		"redux-devtools-extension": "^2.13.2",
-		"redux-thunk": "^2.2.0"
+		"redux-thunk": "^2.2.0",
+		"wpapi": "^1.1.2"
 	},
 	"license": "ISC",
 	"devDependencies": {
@@ -64,8 +65,7 @@
 		"enzyme": "^3.3.0",
 		"eslint": "^4.17.0",
 		"eslint-config-airbnb-base": "^12.1.0",
-		"eslint-config-dxlab":
-			"git+ssh://git@github.com/slnsw/eslint-config-dxlab.git#v0.0.8",
+		"eslint-config-dxlab": "git+ssh://git@github.com/slnsw/eslint-config-dxlab.git#v0.0.8",
 		"eslint-config-prettier": "^2.9.0",
 		"eslint-config-react-app": "^2.1.0",
 		"eslint-loader": "^1.9.0",
