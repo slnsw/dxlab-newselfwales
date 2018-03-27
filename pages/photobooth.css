@@ -102,3 +102,14 @@ ul li:first-child, ul li:last-child {
 	background: #080808;
 	color: #444;
 }
+.formErrors {
+	color: red;
+	font-size: 0.8em;
+}
+.formErrors.interests {
+	padding-left: 150px;
+	padding-top: 0.9em;
+}
+.formErrors.email {
+	padding-left: 1em;
+}

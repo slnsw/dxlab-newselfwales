@@ -7,7 +7,6 @@ import './photobooth.css';
 
 class Home extends Component {
 	componentDidMount() {
-		//		const WPAPI = require('wpapi');
 		const wp = new WPAPI({
 			endpoint: 'https://local.dxlab.sl.nsw.gov.au/selfie/wp-json',
 			username: 'upload',
@@ -15,11 +14,12 @@ class Home extends Component {
 		});
 
 		const camName = 'HD Pro Webcam C920';
-		const triggerLetter = 76;
+		const triggerLetter = 192; // backtick
 		const takeBut = document.getElementById('snap');
 		const retakeBut = document.getElementById('retake');
 		const useBut = document.getElementById('sendSelfie');
 		const submitBut = document.getElementById('submitBut');
+		const quitBut = document.getElementById('quitBut');
 		const stage1 = document.getElementById('stage1');
 		const stage2 = document.getElementById('stage2');
 		const stage3 = document.getElementById('stage3');
@@ -62,6 +62,7 @@ class Home extends Component {
 		}
 
 		function showThanks() {
+			// also need to clear form fields!
 			stage4.style.display = 'block';
 			stage3.style.display = 'none';
 			thanksInterval = setInterval(clearThanks, 1500);
@@ -73,6 +74,13 @@ class Home extends Component {
 			useBut.disabled = false;
 			retakeBut.disabled = false;
 			clearInterval(thanksInterval);
+		}
+
+		function quitFromForm() {
+			stage3.style.display = 'none';
+			stage1.style.display = 'block';
+			useBut.disabled = false;
+			retakeBut.disabled = false;
 		}
 
 		function goHome() {
@@ -137,17 +145,20 @@ class Home extends Component {
 		function uploadSelfie() {
 			//		useBut.disabled = true;
 			//		retakeBut.disabled = true;
+			const d = new Date();
+			const n = 'selfie' + d.getTime();
 			wp
 				.media()
-				.file(blob, 'selfie.png')
+				.file(blob, n+'.png')
 				.create({
-					title: 'test selfie',
-					alt_text: 'test selfie',
-					caption: 'test selfie',
-					description: 'test selfie',
+					title: n,
+					alt_text: n,
+					caption: n,
+					description: n,
 				})
 				.then(function(response) {
 					const newImageId = response.id; // will need to send this to the matching algorithm
+					console.log(newImageId);
 					showThanks();
 				});
 		}
@@ -158,6 +169,7 @@ class Home extends Component {
 		}
 
 		function checkKeyPressed(e) {
+			// console.log(e.keyCode);
 			if (e.keyCode === triggerLetter) {
 				takeSelfie();
 			}
@@ -175,38 +187,68 @@ class Home extends Component {
 			useBut.addEventListener('click', doPreview);
 			submitBut.addEventListener('click', uploadSelfie);
 			retakeBut.addEventListener('click', retakeSelfie);
+			quitBut.addEventListener('click', quitFromForm);
 		} else {
 			console.log("This browser doesn't support a camera");
 		}
 	}
 
-constructor(props) {
-    super(props);
-    this.state = {
-      interests: '',
-      email: '',
-      name: ''
-    };
+	constructor(props) {
+		super(props);
+		this.state = {
+			interests: '',
+			email: '',
+			name: '',
+			formErrors: {interests: '', email: ''},
+			interestsValid: false,
+			emailValid: true,
+			formValid: false
+		};
+		this.handleUserInput = this.handleUserInput.bind(this);
+	}
 
-    this.handleInputChange = this.handleInputChange.bind(this);
+	handleUserInput(e) {
+		const name = e.target.name;
+		const value = e.target.value;
+		this.setState({[name]: value}, 
+									() => { this.validateField(name, value) });
+	}
+
+validateField(fieldName, value) {
+  let fieldValidationErrors = this.state.formErrors;
+  let interestsValid = this.state.interestsValid;
+  let emailValid = this.state.emailValid;
+
+  switch(fieldName) {
+    case 'email':
+    	if (value.length > 0) {
+				emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+    	} else {
+    		// no email is a valid email
+    		emailValid = true;
+    	}
+      fieldValidationErrors.email = emailValid ? '' : 'Please enter a valid email.';
+      break;
+    case 'interests':
+    	let t = value.split(','); // separate interests by comma
+    	t = t.filter(entry => entry.trim() != ''); // rdon't count blank ones
+    	t = t.filter(entry => entry.trim().length >= 4); // make sure they aren't too short
+      interestsValid = t.length > 2; // and make sure we have at least 3
+      fieldValidationErrors.interests = interestsValid ? '': 'Could you enter a bit more info about your interests? Ideally 4 or 5, separated by commas.';
+      break;
+    default:
+      break;
   }
+	this.setState({
+		formErrors: fieldValidationErrors,
+		emailValid: emailValid,
+		interestsValid: interestsValid
+		}, this.validateForm);
+}
 
-  handleInputChange(event) {
-/*
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
-    handleChange(event) {
- */
-
-    this.setState({value: event.target.value});
-  }
+validateForm() {
+  this.setState({formValid: this.state.emailValid && this.state.interestsValid});
+}
 
 	render() {
 		return (
@@ -227,7 +269,7 @@ constructor(props) {
 					<canvas id="preview" width="300" height="300" />
 					<div id="formdeets" className="selfieForm">
 						<ul>
-						<li></li>
+							<li />
 							<li>
 								Please tell us a few things about yourself so we can match you
 								to a portrait from our collection.
@@ -239,9 +281,10 @@ constructor(props) {
 									name="interests"
 									id="interests"
 									value={this.state.interests}
-									placeholder="Up to 5, separated by commas"
-									onChange={this.handleInputChange}
+									placeholder="Enter around 4 or 5, separated by commas"
+									onChange={(event) => this.handleUserInput(event)}
 								/>
+								<div className='formErrors interests'>{this.state.formErrors.interests}</div>
 							</li>
 							<li>
 								And supply the follwoing if you would like us to email you the
@@ -255,7 +298,7 @@ constructor(props) {
 									id="name"
 									value={this.state.name}
 									placeholder="Selfie Fiend"
-									onChange={this.handleInputChange}
+									onChange={(event) => this.handleUserInput(event)}
 								/>
 							</li>
 							<li>
@@ -263,16 +306,18 @@ constructor(props) {
 									Your email:<br />
 								</label>
 								<input
-									type="text"
+									type="email"
 									name="email"
 									id="email"
 									value={this.state.email}
 									placeholder="fiend@selfie-land.com"
-									onChange={this.handleInputChange}
+									onChange={(event) => this.handleUserInput(event)}
 								/>
+								<span className='formErrors email'>{this.state.formErrors.email}</span>
 							</li>
 							<li>
-								<button id="submitBut">submit</button>
+								<button id="submitBut" disabled={!this.state.formValid}>submit</button>
+								<button id="quitBut">quit</button>
 							</li>
 						</ul>
 					</div>
