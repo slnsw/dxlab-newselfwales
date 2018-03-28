@@ -12,6 +12,10 @@ class Home extends Component {
 			username: 'upload',
 			password: 'djYU05v5gy0T',
 		});
+		wp.gallerySelfies = wp.registerRoute(
+			'wp/v2',
+			'/gallery-selfies/(?P<id>\\d+)',
+		);
 
 		const camName = 'HD Pro Webcam C920';
 		const triggerLetter = 192; // backtick
@@ -69,22 +73,28 @@ class Home extends Component {
 		}
 
 		function clearThanks() {
+			/*
 			stage4.style.display = 'none';
 			stage1.style.display = 'block';
 			useBut.disabled = false;
 			retakeBut.disabled = false;
+			*/
 			clearInterval(thanksInterval);
+			goHome();
 		}
 
 		function quitFromForm() {
+			/*
 			stage3.style.display = 'none';
 			stage1.style.display = 'block';
 			useBut.disabled = false;
 			retakeBut.disabled = false;
+			*/
+			goHome();
 		}
 
 		function goHome() {
-			window.location = './';
+			window.location = './photobooth2';
 		}
 
 		function gotDevices(deviceInfos) {
@@ -143,23 +153,49 @@ class Home extends Component {
 		}
 
 		function uploadSelfie() {
-			//		useBut.disabled = true;
-			//		retakeBut.disabled = true;
+			// make buttons look like something is happening
+			submitBut.disabled = true;
+			submitBut.innerHTML = 'working...';
+			quitBut.disabled = true;
+			quitBut.innerHTML = 'working...';
+
 			const d = new Date();
 			const n = 'selfie' + d.getTime();
+			// now create custom post type 'gallery selfie'
 			wp
-				.media()
-				.file(blob, n+'.png')
+				.gallerySelfies()
 				.create({
-					title: n,
-					alt_text: n,
-					caption: n,
-					description: n,
+					title: 'New post ' + n,
+					content: 'Content ' + n,
+					status: 'publish',
+					meta: {
+						email: 'some@email.com',
+						name: 'test-test_some name',
+					},
 				})
 				.then(function(response) {
-					const newImageId = response.id; // will need to send this to the matching algorithm
-					console.log(newImageId);
-					showThanks();
+					const newPost = response.id;
+					wp
+						.media()
+						.file(blob, n + '.png')
+						.create({
+							title: n,
+							alt_text: n,
+							caption: n,
+							description: n,
+						})
+						.then(function(response2) {
+							const newImageId = response2.id;
+							return wp
+								.gallerySelfies()
+								.id(newPost)
+								.update({
+									featured_media: newImageId,
+								});
+						})
+						.then(function(response) {
+							showThanks();
+						});
 				});
 		}
 
@@ -199,10 +235,10 @@ class Home extends Component {
 			interests: '',
 			email: '',
 			name: '',
-			formErrors: {interests: '', email: ''},
+			formErrors: { interests: '', email: '' },
 			interestsValid: false,
 			emailValid: true,
-			formValid: false
+			formValid: false,
 		};
 		this.handleUserInput = this.handleUserInput.bind(this);
 	}
@@ -210,45 +246,55 @@ class Home extends Component {
 	handleUserInput(e) {
 		const name = e.target.name;
 		const value = e.target.value;
-		this.setState({[name]: value}, 
-									() => { this.validateField(name, value) });
+		this.setState({ [name]: value }, () => {
+			this.validateField(name, value);
+		});
 	}
 
-validateField(fieldName, value) {
-  let fieldValidationErrors = this.state.formErrors;
-  let interestsValid = this.state.interestsValid;
-  let emailValid = this.state.emailValid;
+	validateField(fieldName, value) {
+		const fieldValidationErrors = this.state.formErrors;
+		let interestsValid = this.state.interestsValid;
+		let emailValid = this.state.emailValid;
 
-  switch(fieldName) {
-    case 'email':
-    	if (value.length > 0) {
-				emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-    	} else {
-    		// no email is a valid email
-    		emailValid = true;
-    	}
-      fieldValidationErrors.email = emailValid ? '' : 'Please enter a valid email.';
-      break;
-    case 'interests':
-    	let t = value.split(','); // separate interests by comma
-    	t = t.filter(entry => entry.trim() != ''); // rdon't count blank ones
-    	t = t.filter(entry => entry.trim().length >= 4); // make sure they aren't too short
-      interestsValid = t.length > 2; // and make sure we have at least 3
-      fieldValidationErrors.interests = interestsValid ? '': 'Could you enter a bit more info about your interests? Ideally 4 or 5, separated by commas.';
-      break;
-    default:
-      break;
-  }
-	this.setState({
-		formErrors: fieldValidationErrors,
-		emailValid: emailValid,
-		interestsValid: interestsValid
-		}, this.validateForm);
-}
+		switch (fieldName) {
+			case 'email':
+				if (value.length > 0) {
+					emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+				} else {
+					// no email is a valid email
+					emailValid = true;
+				}
+				fieldValidationErrors.email = emailValid
+					? ''
+					: 'Please enter a valid email.';
+				break;
+			case 'interests':
+				let t = value.split(','); // separate interests by comma
+				t = t.filter((entry) => entry.trim() !== ''); // rdon't count blank ones
+				t = t.filter((entry) => entry.trim().length >= 4); // make sure they aren't too short
+				interestsValid = t.length > 2; // and make sure we have at least 3
+				fieldValidationErrors.interests = interestsValid
+					? ''
+					: 'Could you enter a bit more info about your interests? Ideally 4 or 5, separated by commas.';
+				break;
+			default:
+				break;
+		}
+		this.setState(
+			{
+				formErrors: fieldValidationErrors,
+				emailValid: emailValid,
+				interestsValid: interestsValid,
+			},
+			this.validateForm,
+		);
+	}
 
-validateForm() {
-  this.setState({formValid: this.state.emailValid && this.state.interestsValid});
-}
+	validateForm() {
+		this.setState({
+			formValid: this.state.emailValid && this.state.interestsValid,
+		});
+	}
 
 	render() {
 		return (
@@ -284,7 +330,9 @@ validateForm() {
 									placeholder="Enter around 4 or 5, separated by commas"
 									onChange={(event) => this.handleUserInput(event)}
 								/>
-								<div className='formErrors interests'>{this.state.formErrors.interests}</div>
+								<div className="formErrors interests">
+									{this.state.formErrors.interests}
+								</div>
 							</li>
 							<li>
 								And supply the follwoing if you would like us to email you the
@@ -313,10 +361,14 @@ validateForm() {
 									placeholder="fiend@selfie-land.com"
 									onChange={(event) => this.handleUserInput(event)}
 								/>
-								<span className='formErrors email'>{this.state.formErrors.email}</span>
+								<span className="formErrors email">
+									{this.state.formErrors.email}
+								</span>
 							</li>
 							<li>
-								<button id="submitBut" disabled={!this.state.formValid}>submit</button>
+								<button id="submitBut" disabled={!this.state.formValid}>
+									submit
+								</button>
 								<button id="quitBut">quit</button>
 							</li>
 						</ul>
