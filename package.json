@@ -24,6 +24,7 @@
 		"@zeit/next-css": "0.0.7",
 		"apollo-client": "2.2.0",
 		"apollo-client-preset": "^1.0.4",
+		"create-react-ref": "^0.1.0",
 		"dotenv": "^4.0.0",
 		"draggabilly": "^2.1.1",
 		"express": "^4.15.4",

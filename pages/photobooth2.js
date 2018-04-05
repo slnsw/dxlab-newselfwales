@@ -1,102 +1,29 @@
 import { Component } from 'react';
 
-import WPAPI from 'wpapi';
 import ExampleApp from '../components/examples/ExampleApp';
+import wpUpload from '../lib/wpUpload';
+import webcam from '../lib/webcam';
 
 import './photobooth.css';
 
+const triggerLetter = 192; // backtick
+
 class Home extends Component {
 	componentDidMount() {
-		const wp = new WPAPI({
-			endpoint: 'https://local.dxlab.sl.nsw.gov.au/selfie/wp-json',
-			username: 'upload',
-			password: 'djYU05v5gy0T',
-		});
-		wp.gallerySelfies = wp.registerRoute(
-			'wp/v2',
-			'/gallery-selfies/(?P<id>\\d+)',
-		);
+		wpUpload.init();
 
 		const camName = 'HD Pro Webcam C920';
-		const triggerLetter = 192; // backtick
-		const takeBut = document.getElementById('snap');
-		const retakeBut = document.getElementById('retake');
-		const useBut = document.getElementById('sendSelfie');
-		const submitBut = document.getElementById('submitBut');
-		const quitBut = document.getElementById('quitBut');
-		const stage1 = document.getElementById('stage1');
-		const stage2 = document.getElementById('stage2');
-		const stage3 = document.getElementById('stage3');
-		const stage4 = document.getElementById('stage4');
-		let devId;
-		let blob;
-		let blink;
-		let thanksInterval;
-		const video = document.getElementById('video');
-		const canvas = document.getElementById('canvas');
-		const context = canvas.getContext('2d');
-		const previewCVS = document.getElementById('preview');
-		const previewCTX = previewCVS.getContext('2d');
-		let constraints = {};
+		
+//		let devId;
+//		let thanksInterval;
+	//	const video = document.getElementById('video');
+	//	let constraints = {};
 
-		function dataURItoBlob(dataURI) {
-			let byteString;
-			if (dataURI.split(',')[0].indexOf('base64') >= 0)
-				byteString = atob(dataURI.split(',')[1]);
-			else byteString = unescape(dataURI.split(',')[1]);
-			const mimeString = dataURI
-				.split(',')[0]
-				.split(':')[1]
-				.split(';')[0];
-			const ia = new Uint8Array(byteString.length);
-			for (let i = 0; i < byteString.length; i++) {
-				ia[i] = byteString.charCodeAt(i);
-			}
-			return new Blob([ia], { type: mimeString });
-		}
 
-		function blinkIt() {
-			document.body.style.background = '#e6007e';
-			blink = setInterval(blinkOff, 75);
-		}
 
-		function blinkOff() {
-			document.body.style.background = '#080808';
-			clearInterval(blink);
-		}
+webcam(this.refs.video, camName);
 
-		function showThanks() {
-			// also need to clear form fields!
-			stage4.style.display = 'block';
-			stage3.style.display = 'none';
-			thanksInterval = setInterval(clearThanks, 1500);
-		}
-
-		function clearThanks() {
-			/*
-			stage4.style.display = 'none';
-			stage1.style.display = 'block';
-			useBut.disabled = false;
-			retakeBut.disabled = false;
-			*/
-			clearInterval(thanksInterval);
-			goHome();
-		}
-
-		function quitFromForm() {
-			/*
-			stage3.style.display = 'none';
-			stage1.style.display = 'block';
-			useBut.disabled = false;
-			retakeBut.disabled = false;
-			*/
-			goHome();
-		}
-
-		function goHome() {
-			window.location = './photobooth2';
-		}
-
+/*
 		function gotDevices(deviceInfos) {
 			for (let i = 0; i !== deviceInfos.length; ++i) {
 				const deviceInfo = deviceInfos[i];
@@ -137,79 +64,11 @@ class Home extends Component {
 			console.error('Error: ', error);
 		}
 
-		function takeSelfie() {
-			blinkIt();
-			context.drawImage(video, 0, 0, 1080, 1080);
-			previewCTX.drawImage(video, 0, 0, 300, 300);
-			stage1.style.display = 'none';
-			stage2.style.display = 'block';
-			const dataURL = canvas.toDataURL('image/png');
-			blob = dataURItoBlob(dataURL);
-		}
 
-		function retakeSelfie() {
-			stage1.style.display = 'block';
-			stage2.style.display = 'none';
-		}
 
-		function uploadSelfie() {
-			// make buttons look like something is happening
-			submitBut.disabled = true;
-			submitBut.innerHTML = 'working...';
-			quitBut.disabled = true;
-			quitBut.innerHTML = 'working...';
 
-			const d = new Date();
-			const n = 'selfie' + d.getTime();
-			// now create custom post type 'gallery selfie'
-			wp
-				.gallerySelfies()
-				.create({
-					title: 'New post ' + n,
-					content: 'Content ' + n,
-					status: 'publish',
-					meta: {
-						email: 'some@email.com',
-						name: 'test-test_some name',
-					},
-				})
-				.then(function(response) {
-					const newPost = response.id;
-					wp
-						.media()
-						.file(blob, n + '.png')
-						.create({
-							title: n,
-							alt_text: n,
-							caption: n,
-							description: n,
-						})
-						.then(function(response2) {
-							const newImageId = response2.id;
-							return wp
-								.gallerySelfies()
-								.id(newPost)
-								.update({
-									featured_media: newImageId,
-								});
-						})
-						.then(function(response) {
-							showThanks();
-						});
-				});
-		}
 
-		function doPreview() {
-			stage3.style.display = 'block';
-			stage2.style.display = 'none';
-		}
 
-		function checkKeyPressed(e) {
-			// console.log(e.keyCode);
-			if (e.keyCode === triggerLetter) {
-				takeSelfie();
-			}
-		}
 
 		if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 			navigator.mediaDevices
@@ -218,15 +77,13 @@ class Home extends Component {
 				.then(getStream)
 				.catch(handleError);
 
-			window.addEventListener('keydown', checkKeyPressed, false);
-			takeBut.addEventListener('click', takeSelfie);
-			useBut.addEventListener('click', doPreview);
-			submitBut.addEventListener('click', uploadSelfie);
-			retakeBut.addEventListener('click', retakeSelfie);
-			quitBut.addEventListener('click', quitFromForm);
+			
+
 		} else {
 			console.log("This browser doesn't support a camera");
 		}
+*/
+		window.addEventListener('keydown', this.checkKeyPressed, false);
 	}
 
 	constructor(props) {
@@ -239,9 +96,115 @@ class Home extends Component {
 			interestsValid: false,
 			emailValid: true,
 			formValid: false,
+			blob: null,
+			stage: 'stage1',
 		};
+
 		this.handleUserInput = this.handleUserInput.bind(this);
 	}
+
+	uploadSelfie = () => {
+		// make buttons look like something is happening
+		submitBut.disabled = true;
+		submitBut.innerHTML = 'working...';
+		quitBut.disabled = true;
+		quitBut.innerHTML = 'working...';
+
+		wpUpload.upload({
+			blob: this.state.blob,
+			content: this.state.interests,
+			email: this.state.email,
+			name: this.state.name,
+		},
+		this.showThanks
+		);
+	};
+
+	dataURItoBlob = (dataURI) => {
+		let byteString;
+		if (dataURI.split(',')[0].indexOf('base64') >= 0)
+			byteString = atob(dataURI.split(',')[1]);
+		else byteString = unescape(dataURI.split(',')[1]);
+		const mimeString = dataURI
+			.split(',')[0]
+			.split(':')[1]
+			.split(';')[0];
+		const ia = new Uint8Array(byteString.length);
+		for (let i = 0; i < byteString.length; i++) {
+			ia[i] = byteString.charCodeAt(i);
+		}
+		return new Blob([ia], { type: mimeString });
+	};
+
+	takeSelfie = () => {
+		this.blinkIt();
+
+		const c = this.refs.canvas;
+		const context = c.getContext('2d');
+		context.drawImage(this.refs.video, 0, 0, 1080, 1080);
+		const p = this.refs.previewCVS;
+		const previewCTX = p.getContext('2d');
+		previewCTX.drawImage(this.refs.video, 0, 0, 300, 300);
+	//	stage1.style.display = 'none';
+	//	stage2.style.display = 'block';
+		this.setState({stage: 'stage2'});
+		const dataURL = c.toDataURL('image/png');
+		this.state.blob = this.dataURItoBlob(dataURL);
+	};
+
+	blinkIt = () => {
+		document.body.style.background = '#e6007e';
+		this.blink = setInterval(this.blinkOff, 75);
+	};
+
+	blinkOff = () => {
+		document.body.style.background = '#080808';
+		clearInterval(this.blink);
+	};
+
+	retakeSelfie = () => {
+		this.setState({stage: 'stage1'});
+	}
+
+	doPreview = () => {
+		this.setState({stage: 'stage3'});
+	}
+
+	quitFromForm = () => {
+
+		this.goHome();
+	}
+
+	goHome = () => {
+		window.location = './photobooth2';
+	}
+
+
+		showThanks = () => {
+			// also need to clear form fields!
+	//		stage4.style.display = 'block';
+	//		stage3.style.display = 'none';
+			this.setState({stage: 'stage4'});
+			this.thanksInterval = setInterval(this.clearThanks, 1500);
+		}
+
+		clearThanks = () => {
+			/*
+			stage4.style.display = 'none';
+			stage1.style.display = 'block';
+			useBut.disabled = false;
+			retakeBut.disabled = false;
+			*/
+			clearInterval(this.thanksInterval);
+			this.goHome();
+		}
+		
+		checkKeyPressed = (e) => {
+			// console.log(e.keyCode);
+			if (e.keyCode === triggerLetter) {
+						this.takeSelfie();
+			}
+		}
 
 	handleUserInput(e) {
 		const name = e.target.name;
@@ -300,19 +263,21 @@ class Home extends Component {
 		return (
 			<ExampleApp>
 				<h1 id="title">Take a selfie</h1>
-				<div id="stage1">
-					<video id="video" width="1080" height="1080" autoPlay />
+				<div id="stage1" style={{display:this.state.stage === 'stage1' ? 'block' : 'none'}}>
+					<video id="video" ref="video" width="1080" height="1080" autoPlay />
 					<br />
-					<button id="snap">take selfie</button>
+					<button id="takeBut" onClick={this.takeSelfie}>
+						take selfie
+					</button>
 				</div>
-				<div id="stage2">
-					<canvas id="canvas" width="1080" height="1080" />
+				<div id="stage2" style={{display:this.state.stage === 'stage2' ? 'block' : 'none'}}>
+					<canvas ref="canvas" id="canvas" width="1080" height="1080" />
 					<br />
-					<button id="retake">re-take</button>
-					<button id="sendSelfie">use this</button>
+					<button id="retake" onClick={this.retakeSelfie}>re-take</button>
+					<button id="sendSelfie" onClick={this.doPreview}>use this</button>
 				</div>
-				<div id="stage3">
-					<canvas id="preview" width="300" height="300" />
+				<div id="stage3" style={{display:this.state.stage === 'stage3' ? 'block' : 'none'}}>
+					<canvas ref="previewCVS" id="preview" width="300" height="300" />
 					<div id="formdeets" className="selfieForm">
 						<ul>
 							<li />
@@ -366,15 +331,19 @@ class Home extends Component {
 								</span>
 							</li>
 							<li>
-								<button id="submitBut" disabled={!this.state.formValid}>
+								<button
+									id="submitBut"
+									onClick={this.uploadSelfie}
+									disabled={!this.state.formValid}
+								>
 									submit
 								</button>
-								<button id="quitBut">quit</button>
+								<button id="quitBut" onClick={this.quitFromForm}>quit</button>
 							</li>
 						</ul>
 					</div>
 				</div>
-				<div id="stage4">
+				<div id="stage4" style={{display:this.state.stage === 'stage4' ? 'block' : 'none'}}>
 					<p>Thank you</p>
 				</div>
 			</ExampleApp>
