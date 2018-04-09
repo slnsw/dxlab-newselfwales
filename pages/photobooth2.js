@@ -6,83 +6,18 @@ import webcam from '../lib/webcam';
 
 import './photobooth.css';
 
+// this is the letter that will trigger the snapshot
 const triggerLetter = 192; // backtick
 
 class Home extends Component {
 	componentDidMount() {
+		// get WP API ready
 		wpUpload.init();
-
+		// this is the camera we want to use
 		const camName = 'HD Pro Webcam C920';
-		
-//		let devId;
-//		let thanksInterval;
-	//	const video = document.getElementById('video');
-	//	let constraints = {};
-
-
-
-webcam(this.refs.video, camName);
-
-/*
-		function gotDevices(deviceInfos) {
-			for (let i = 0; i !== deviceInfos.length; ++i) {
-				const deviceInfo = deviceInfos[i];
-				if (
-					deviceInfo.kind === 'videoinput' &&
-					deviceInfo.label.substring(0, 18) === camName
-				) {
-					devId = deviceInfo.deviceId;
-				}
-			}
-		}
-
-		function getStream() {
-			if (window.stream) {
-				window.stream.getTracks().forEach(function(track) {
-					track.stop();
-				});
-			}
-			constraints = {
-				video: {
-					deviceId: { exact: devId }, // videoSelect.value
-					width: 1080,
-					height: 1080,
-				},
-			};
-			navigator.mediaDevices
-				.getUserMedia(constraints)
-				.then(gotStream)
-				.catch(handleError);
-		}
-
-		function gotStream(stream) {
-			window.stream = stream; // make stream available to console
-			video.srcObject = stream;
-		}
-
-		function handleError(error) {
-			console.error('Error: ', error);
-		}
-
-
-
-
-
-
-
-		if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-			navigator.mediaDevices
-				.enumerateDevices()
-				.then(gotDevices)
-				.then(getStream)
-				.catch(handleError);
-
-			
-
-		} else {
-			console.log("This browser doesn't support a camera");
-		}
-*/
+		// display the stream from this cam in the video element
+		webcam(this.refs.video, camName);
+		// wait for keystrokes to take a selfie
 		window.addEventListener('keydown', this.checkKeyPressed, false);
 	}
 
@@ -109,14 +44,16 @@ webcam(this.refs.video, camName);
 		submitBut.innerHTML = 'working...';
 		quitBut.disabled = true;
 		quitBut.innerHTML = 'working...';
-
-		wpUpload.upload({
-			blob: this.state.blob,
-			content: this.state.interests,
-			email: this.state.email,
-			name: this.state.name,
-		},
-		this.showThanks
+		// now use WP API to upload selfie and data
+		wpUpload.upload(
+			{
+				type: 'gallery',
+				blob: this.state.blob,
+				content: this.state.interests,
+				email: this.state.email,
+				name: this.state.name,
+			},
+			this.showThanks,
 		);
 	};
 
@@ -138,18 +75,17 @@ webcam(this.refs.video, camName);
 
 	takeSelfie = () => {
 		this.blinkIt();
-
 		const c = this.refs.canvas;
 		const context = c.getContext('2d');
 		context.drawImage(this.refs.video, 0, 0, 1080, 1080);
 		const p = this.refs.previewCVS;
 		const previewCTX = p.getContext('2d');
 		previewCTX.drawImage(this.refs.video, 0, 0, 300, 300);
-	//	stage1.style.display = 'none';
-	//	stage2.style.display = 'block';
-		this.setState({stage: 'stage2'});
 		const dataURL = c.toDataURL('image/png');
-		this.state.blob = this.dataURItoBlob(dataURL);
+		this.setState({
+			stage: 'stage2',
+			blob: this.dataURItoBlob(dataURL),
+		});
 	};
 
 	blinkIt = () => {
@@ -163,48 +99,37 @@ webcam(this.refs.video, camName);
 	};
 
 	retakeSelfie = () => {
-		this.setState({stage: 'stage1'});
-	}
+		this.setState({ stage: 'stage1' });
+	};
 
 	doPreview = () => {
-		this.setState({stage: 'stage3'});
-	}
+		this.setState({ stage: 'stage3' });
+	};
 
 	quitFromForm = () => {
-
 		this.goHome();
-	}
+	};
 
 	goHome = () => {
 		window.location = './photobooth2';
-	}
+	};
 
+	showThanks = () => {
+		this.setState({ stage: 'stage4' });
+		this.thanksInterval = setInterval(this.clearThanks, 1800);
+	};
 
-		showThanks = () => {
-			// also need to clear form fields!
-	//		stage4.style.display = 'block';
-	//		stage3.style.display = 'none';
-			this.setState({stage: 'stage4'});
-			this.thanksInterval = setInterval(this.clearThanks, 1500);
-		}
+	clearThanks = () => {
+		clearInterval(this.thanksInterval);
+		this.goHome();
+	};
 
-		clearThanks = () => {
-			/*
-			stage4.style.display = 'none';
-			stage1.style.display = 'block';
-			useBut.disabled = false;
-			retakeBut.disabled = false;
-			*/
-			clearInterval(this.thanksInterval);
-			this.goHome();
+	checkKeyPressed = (e) => {
+		// console.log(e.keyCode);
+		if (e.keyCode === triggerLetter) {
+			this.takeSelfie();
 		}
-		
-		checkKeyPressed = (e) => {
-			// console.log(e.keyCode);
-			if (e.keyCode === triggerLetter) {
-						this.takeSelfie();
-			}
-		}
+	};
 
 	handleUserInput(e) {
 		const name = e.target.name;
@@ -220,28 +145,31 @@ webcam(this.refs.video, camName);
 		let emailValid = this.state.emailValid;
 
 		switch (fieldName) {
-			case 'email':
+			case 'email': {
 				if (value.length > 0) {
 					emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
 				} else {
-					// no email is a valid email
+					// no email is a valid email (the field is optional)
 					emailValid = true;
 				}
 				fieldValidationErrors.email = emailValid
 					? ''
 					: 'Please enter a valid email.';
 				break;
-			case 'interests':
+			}
+			case 'interests': {
 				let t = value.split(','); // separate interests by comma
-				t = t.filter((entry) => entry.trim() !== ''); // rdon't count blank ones
+				t = t.filter((entry) => entry.trim() !== ''); // don't count blank ones
 				t = t.filter((entry) => entry.trim().length >= 4); // make sure they aren't too short
 				interestsValid = t.length > 2; // and make sure we have at least 3
 				fieldValidationErrors.interests = interestsValid
 					? ''
 					: 'Could you enter a bit more info about your interests? Ideally 4 or 5, separated by commas.';
 				break;
-			default:
+			}
+			default: {
 				break;
+			}
 		}
 		this.setState(
 			{
@@ -263,20 +191,33 @@ webcam(this.refs.video, camName);
 		return (
 			<ExampleApp>
 				<h1 id="title">Take a selfie</h1>
-				<div id="stage1" style={{display:this.state.stage === 'stage1' ? 'block' : 'none'}}>
+				<div
+					id="stage1"
+					style={{ display: this.state.stage === 'stage1' ? 'block' : 'none' }}
+				>
 					<video id="video" ref="video" width="1080" height="1080" autoPlay />
 					<br />
 					<button id="takeBut" onClick={this.takeSelfie}>
 						take selfie
 					</button>
 				</div>
-				<div id="stage2" style={{display:this.state.stage === 'stage2' ? 'block' : 'none'}}>
+				<div
+					id="stage2"
+					style={{ display: this.state.stage === 'stage2' ? 'block' : 'none' }}
+				>
 					<canvas ref="canvas" id="canvas" width="1080" height="1080" />
 					<br />
-					<button id="retake" onClick={this.retakeSelfie}>re-take</button>
-					<button id="sendSelfie" onClick={this.doPreview}>use this</button>
+					<button id="retake" onClick={this.retakeSelfie}>
+						re-take
+					</button>
+					<button id="sendSelfie" onClick={this.doPreview}>
+						use this
+					</button>
 				</div>
-				<div id="stage3" style={{display:this.state.stage === 'stage3' ? 'block' : 'none'}}>
+				<div
+					id="stage3"
+					style={{ display: this.state.stage === 'stage3' ? 'block' : 'none' }}
+				>
 					<canvas ref="previewCVS" id="preview" width="300" height="300" />
 					<div id="formdeets" className="selfieForm">
 						<ul>
@@ -338,12 +279,17 @@ webcam(this.refs.video, camName);
 								>
 									submit
 								</button>
-								<button id="quitBut" onClick={this.quitFromForm}>quit</button>
+								<button id="quitBut" onClick={this.quitFromForm}>
+									quit
+								</button>
 							</li>
 						</ul>
 					</div>
 				</div>
-				<div id="stage4" style={{display:this.state.stage === 'stage4' ? 'block' : 'none'}}>
+				<div
+					id="stage4"
+					style={{ display: this.state.stage === 'stage4' ? 'block' : 'none' }}
+				>
 					<p>Thank you</p>
 				</div>
 			</ExampleApp>
