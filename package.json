@@ -21,6 +21,7 @@
 		"url": "https://github.com/slnsw/dxlab-selfie"
 	},
 	"dependencies": {
+		"@slnsw/eslint-config-dxlab": "0.0.9",
 		"@zeit/next-css": "0.0.7",
 		"apollo-client": "2.2.0",
 		"apollo-client-preset": "^1.0.4",
