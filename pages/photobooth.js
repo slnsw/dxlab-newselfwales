@@ -12,7 +12,12 @@ const triggerLetter = 192; // backtick
 class Home extends Component {
 	componentDidMount() {
 		// get WP API ready
-		wpUpload.init();
+		wpUpload.init({
+			endpoint: process.env.WP_API_ENDPOINT,
+			username: process.env.WP_USERNAME,
+			password: process.env.WP_PASSWORD,
+		});
+
 		// this is the camera we want to use
 		const camName = 'HD Pro Webcam C920';
 		// display the stream from this cam in the video element
