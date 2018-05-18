@@ -64,6 +64,7 @@ class Home extends Component {
 							// isHorizontal: true,
 						}}
 						onLayoutComplete={(laidOutItems) => {
+							console.log('onLayoutComplete');
 							scroll(laidOutItems, this.state.axis);
 						}}
 					>

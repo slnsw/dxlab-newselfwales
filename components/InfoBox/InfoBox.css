@@ -1,0 +1,52 @@
+@import '../../styles/variables.css';
+
+.info-box {
+  position: absolute;
+  left: var(--spacing-xs);
+  bottom: var(--spacing-xs);
+  right: var(--spacing-xs);
+  overflow: scroll;
+  background-color: rgba(10, 10, 10, 0.95);
+  padding: var(--spacing-md);
+
+  &.info-box--full {
+    top: var(--spacing-sm);
+  }
+
+  @media (--screen-sm) {
+    left: auto;
+
+    /* width: 100%; */
+    max-width: 40em;
+    padding: var(--spacing-sm) var(--spacing-lg);
+  }
+}
+
+.info-box__title {
+  margin-right: var(--spacing-lg);
+  color: var(--colour-black);
+  font-family: Barlow;
+  letter-spacing: 0.05em;
+  text-shadow: 0 -1px var(--colour-highlight), -1px 0 var(--colour-highlight),
+    1px 0 var(--colour-highlight), 0 1px var(--colour-highlight);
+
+  @media (--screen-sm) {
+    font-size: var(--font-size-xxxxlg);
+  }
+}
+
+.info-box__toggle-button {
+  position: absolute;
+  right: var(--spacing-xxxs);
+  font-size: var(--font-size-xlg);
+  color: var(--colour-highlight);
+
+  /* background-color: var(--colour-grey-darker); */
+
+  /* border-radius: 3em; */
+}
+
+.info-box__more-button {
+  font-size: var(--font-size-xs);
+  max-width: 14em;
+}
