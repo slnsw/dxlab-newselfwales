@@ -3,6 +3,7 @@ import Packery from '../components/Packery';
 
 import App from '../components/App';
 import InfoBox from '../components/InfoBox';
+import Modal from '../components/Modal';
 import images from '../lib/imagesNew.json';
 // import selfiesRaw from '../lib/selfieSelected.json';
 import shuffle from '../lib/shuffle';
@@ -27,6 +28,7 @@ class Home extends Component {
 			allImages: shuffle(images).slice(0, 100),
 			// allImages: this.allImages.slice(0, 400),
 			axis: 'x',
+			showModal: true,
 		};
 	}
 
@@ -38,8 +40,14 @@ class Home extends Component {
 		}
 	}
 
+	handleModalClose = () => {
+		this.setState({
+			showModal: false,
+		});
+	};
+
 	render() {
-		const { allImages } = this.state;
+		const { allImages, showModal } = this.state;
 
 		return (
 			<App>
@@ -48,8 +56,6 @@ class Home extends Component {
 						// width: this.state.axis === 'x' ? '1000px' : 'auto',
 						// height: '100vh',
 						overflow: 'hidden',
-						// transform: `translateX(${isLayoutComplete ? -1000 : 0}px)`,
-						// transition: 'all 4s',
 					}}
 				>
 					<Packery
@@ -97,9 +103,23 @@ class Home extends Component {
 							);
 						})}
 					</Packery>
-
 					<InfoBox />
 				</div>
+
+				{showModal && (
+					<Modal onClose={this.handleModalClose}>
+						<h1>SPECIAL CARE NOTICE</h1>
+
+						<p>
+							This website may contain images or documentation relating to
+							Aboriginal and Torres Strait Islander people who are deceased. The
+							State Library of NSW acknowledges that its historical collection
+							items can be offensive and confronting in today’s context. They
+							are published with respect to the descendants and communities of
+							the individuals they depict.
+						</p>
+					</Modal>
+				)}
 			</App>
 		);
 	}

@@ -10,7 +10,10 @@
   padding: var(--spacing-md);
 
   &.info-box--full {
-    top: var(--spacing-sm);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 
   @media (--screen-sm) {
@@ -40,13 +43,10 @@
   right: var(--spacing-xxxs);
   font-size: var(--font-size-xlg);
   color: var(--colour-highlight);
-
-  /* background-color: var(--colour-grey-darker); */
-
-  /* border-radius: 3em; */
 }
 
 .info-box__more-button {
   font-size: var(--font-size-xs);
   max-width: 14em;
+  margin-bottom: auto;
 }
