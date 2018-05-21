@@ -4,7 +4,8 @@ import ExampleApp from '../components/examples/ExampleApp';
 import wpUpload from '../lib/wpUpload';
 import webcam from '../lib/webcam';
 
-import './photobooth.css';
+// TODO: Re-enable after rescoping CSS
+// import './photobooth.css';
 
 // this is the letter that will trigger the snapshot
 const triggerLetter = 192; // backtick
