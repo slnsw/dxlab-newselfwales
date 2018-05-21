@@ -22,7 +22,7 @@
 	},
 	"dependencies": {
 		"@slnsw/eslint-config-dxlab": "0.0.9",
-		"@zeit/next-css": "0.0.7",
+		"@zeit/next-css": "^0.1.5",
 		"apollo-client": "2.2.0",
 		"apollo-client-preset": "^1.0.4",
 		"create-react-ref": "^0.1.0",

@@ -37,7 +37,7 @@ class Home extends Component {
 			url: 'silhouettes/39331-silhouette.png',
 		});
 
-		console.log(allImages);
+		// console.log(allImages);
 
 		this.state = {
 			allImages: allImages,
