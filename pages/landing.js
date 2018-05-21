@@ -23,10 +23,24 @@ class Home extends Component {
 		// });
 
 		// this.allImages = shuffle(images.concat(selfies));
+		let allImages = shuffle(images).concat(shuffle(images));
+		allImages.splice(1, 0, {
+			isPerson: true,
+			url: 'silhouettes/39331-silhouette.png',
+		});
+		allImages.splice(14, 0, {
+			isPerson: true,
+			url: 'silhouettes/39331-silhouette.png',
+		});
+		allImages.splice(25, 0, {
+			isPerson: true,
+			url: 'silhouettes/39331-silhouette.png',
+		});
+
+		console.log(allImages);
 
 		this.state = {
-			allImages: shuffle(images).slice(0, 100),
-			// allImages: this.allImages.slice(0, 400),
+			allImages: allImages,
 			axis: 'x',
 			showModal: true,
 		};
@@ -65,7 +79,7 @@ class Home extends Component {
 							// transition: 'all 4s',
 						}}
 						options={{
-							itemSelector: '.image',
+							itemSelector: '.image-holder',
 							gutter: 10,
 							horizontalOrder: true,
 							fitWidth: true,
@@ -79,27 +93,40 @@ class Home extends Component {
 							scroll(laidOutItems, this.state.axis);
 						}}
 					>
-						{allImages.slice(0, 50).map((image, i) => {
+						{allImages.map((image, i) => {
+							const imageSize = setSize(i);
+
 							return (
-								// <div
-								// 	className="image"
-								// 	key={`image-${i}`}
-								// 	// style={{ height: '100px' }}
-								// >
-								<img
-									className="image"
-									src={`/static/${image.isSelfie ? 'selfies' : 'images'}/${
-										image.url
-									}`}
-									style={{
-										height: setSize(i),
-										// maxWidth: '300px',
-										marginBottom: '-4px',
-									}}
-									key={image.url}
-									alt="test"
-								/>
-								// </div>
+								<div
+									className={`image-holder ${
+										image.isPerson ? 'image-holder--is-person' : ''
+									}
+                  ${imageSize === '250px' ? 'image-holder--medium' : ''}`}
+									key={`image-${i}`}
+								>
+									{image.isPerson && (
+										<div className="image-holder__content">
+											<span>?</span>
+											{imageSize === '250px' && <p>This could be you!</p>}
+										</div>
+									)}
+
+									<img
+										className={`image ${
+											image.isPerson ? 'image--is-person' : ''
+										}`}
+										src={`/static/${image.isSelfie ? 'selfies' : 'images'}/${
+											image.url
+										}`}
+										style={{
+											height: imageSize,
+											// maxWidth: '300px',
+											// marginBottom: '-4px',
+										}}
+										key={`${image.url}-${i}`}
+										alt="test"
+									/>
+								</div>
 							);
 						})}
 					</Packery>
@@ -126,14 +153,14 @@ class Home extends Component {
 }
 
 function setSize(i) {
-	if (i % 12 === 1) {
+	if (i % 6 === 1) {
 		return '250px';
-	} else if (i % 30 === 2) {
-		return '410px';
+	} else if (i % 10 === 1) {
+		return '380px';
 		// return '610px';
 	}
 
-	return '100px';
+	return '120px';
 }
 
 export default Home;

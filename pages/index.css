@@ -1,5 +1,31 @@
-h1 {
+@import '../styles/variables.css';
+
+.image--is-person {
+  background-color: var(--colour-grey-dark);
+}
+
+.image-holder {
+  position: relative;
+}
+
+.image-holder__content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   & span {
-    color: red;
+    flex: 1;
+    font-size: 70px;
+  }
+
+  @nest .image-holder--medium & {
+    & span {
+      font-size: 150px;
+    }
   }
 }

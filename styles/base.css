@@ -39,6 +39,17 @@ p {
   margin-top: 0;
 }
 
+a:link,
+a:visited {
+  text-decoration: none;
+  color: var(--colour-primary);
+  transition: 0.3s;
+
+  @nest h1 &, h2 & {
+    color: inherit;
+  }
+}
+
 button,
 input[type='submit'] {
   background: none;
@@ -56,12 +67,16 @@ input[type='submit'] {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--colour-white);
   width: 100%;
   height: 3em;
+  border-radius: 3em;
+  background-color: var(--colour-highlight);
+
+  /* border: 1px solid var(--colour-white); */
   padding-left: var(--spacing-md);
   padding-right: var(--spacing-xs);
   font-size: var(--font-size-sm);
+  font-weight: 700;
   @apply --font-uppercase;
   line-height: 1;
   letter-spacing: 0.4em;
@@ -73,11 +88,11 @@ input[type='submit'] {
     color: var(--colour-white);
   }
 
-  &:hover {
+  /* &:hover {
     text-decoration: none;
     color: var(--colour-highlight);
     border: 1px solid var(--colour-highlight);
-  }
+  } */
 }
 
 /* main {
