@@ -28,6 +28,10 @@ class Home extends Component {
 			isPerson: true,
 			url: 'silhouettes/39331-silhouette.png',
 		});
+		allImages.splice(34, 0, {
+			isPerson: true,
+			url: 'silhouettes/39331-silhouette.png',
+		});
 
 		// console.log(allImages);
 
@@ -41,8 +45,6 @@ class Home extends Component {
 	}
 
 	componentDidMount() {
-		// Set up scroller
-
 		if (window.location.search) {
 			this.setState({
 				axis: window.location.search.replace('?axis=', ''),
@@ -53,13 +55,16 @@ class Home extends Component {
 	componentDidUpdate(prevProps, prevState) {
 		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
 			// Init scroller
-			scroller.init(this.state.laidOutItems, 'x');
+			scroller.init(
+				this.imagesRef.refs.packeryContainer,
+				this.state.laidOutItems,
+				'x',
+			);
 		}
 
 		if (!prevState.enableAnimation && this.state.enableAnimation) {
 			// Start scroll
 			scroller.start();
-			// scroll(this.laidOutItems, this.state.axis);
 		} else if (prevState.enableAnimation && !this.state.enableAnimation) {
 			// Stop scroll
 			scroller.stop();
@@ -98,6 +103,9 @@ class Home extends Component {
 				>
 					<Packery
 						className="images"
+						ref={(element) => {
+							this.imagesRef = element;
+						}}
 						style={{
 							height: '120vh',
 						}}

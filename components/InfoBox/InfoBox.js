@@ -107,6 +107,23 @@ class InfoBox extends Component {
 							</a>{' '}
 							(in some jurisdictions, this age limit may be higher).
 						</p>
+
+						<div className="info-box__logo-holder">
+							<a href="https://dxlab.sl.nsw.gov.au">
+								<img
+									className="info-box__logo info-box__logo--dxlab"
+									src="/static/images/logos/logo-dxlab.png"
+									alt="DX Lab Home"
+								/>
+							</a>
+							<a href="http://sl.nsw.gov.au">
+								<img
+									className="info-box__logo info-box__logo--slnsw"
+									src="/static/images/logos/logo-slnsw-white.png"
+									alt="State Library of NSW Home"
+								/>
+							</a>
+						</div>
 					</Fragment>
 				)}
 

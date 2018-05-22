@@ -66,3 +66,17 @@
   max-width: 14em;
   margin-bottom: auto;
 }
+
+.info-box__logo-holder {
+  margin-top: var(--spacing-xxlg);
+  margin-bottom: var(--spacing-xxxlg);
+}
+
+.info-box__logo {
+  max-width: 8em;
+  margin-right: var(--spacing-xxlg);
+}
+
+.info-box__logo--dxlab {
+  max-width: 6em;
+}
