@@ -5,9 +5,8 @@ import App from '../components/App';
 import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
 import images from '../lib/imagesNew.json';
-// import selfiesRaw from '../lib/selfieSelected.json';
 import shuffle from '../lib/shuffle';
-import scroll from '../lib/scroll';
+import { scroller } from '../lib/scroll';
 
 import './index.css';
 
@@ -15,15 +14,8 @@ class Home extends Component {
 	constructor() {
 		super();
 
-		// const selfies = Object.keys(selfiesRaw).map((s) => {
-		// 	return {
-		// 		isSelfie: true,
-		// 		url: selfiesRaw[s].filename,
-		// 	};
-		// });
-
-		// this.allImages = shuffle(images.concat(selfies));
-		let allImages = shuffle(images).concat(shuffle(images));
+		// Build images for wall
+		const allImages = shuffle(images).concat(shuffle(images));
 		allImages.splice(1, 0, {
 			isPerson: true,
 			url: 'silhouettes/39331-silhouette.png',
@@ -36,13 +28,19 @@ class Home extends Component {
 			isPerson: true,
 			url: 'silhouettes/39331-silhouette.png',
 		});
+		allImages.splice(35, 0, {
+			isPerson: true,
+			url: 'silhouettes/39331-silhouette.png',
+		});
 
 		// console.log(allImages);
 
 		this.state = {
-			allImages: allImages,
+			allImages,
 			axis: 'x',
 			showModal: true,
+			enableAnimation: false,
+			laidOutItems: undefined,
 		};
 	}
 
@@ -54,43 +52,82 @@ class Home extends Component {
 		}
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
+			// Init scroller
+			scroller.init(
+				this.imagesRef.refs.packeryContainer,
+				this.state.laidOutItems,
+				'x',
+			);
+		}
+
+		if (!prevState.enableAnimation && this.state.enableAnimation) {
+			// Start scroll
+			scroller.start();
+		} else if (prevState.enableAnimation && !this.state.enableAnimation) {
+			// Stop scroll
+			scroller.stop();
+		}
+	}
+
 	handleModalClose = () => {
 		this.setState({
 			showModal: false,
+			enableAnimation: true,
+		});
+	};
+
+	handleToggleAnimationButton = () => {
+		this.setState({
+			enableAnimation: !this.state.enableAnimation,
 		});
 	};
 
 	render() {
-		const { allImages, showModal } = this.state;
+		const { allImages, showModal, enableAnimation } = this.state;
 
 		return (
 			<App>
+				<button
+					className="button landing__toggle-animation-button"
+					onClick={this.handleToggleAnimationButton}
+				>
+					{enableAnimation ? 'Pause' : 'Play'}
+				</button>
+
 				<div
 					style={{
-						// width: this.state.axis === 'x' ? '1000px' : 'auto',
-						// height: '100vh',
 						overflow: 'hidden',
 					}}
 				>
 					<Packery
 						className="images"
+						ref={(element) => {
+							this.imagesRef = element;
+						}}
 						style={{
-							height: '100vh',
-							// transition: 'all 4s',
+							marginTop: '5px',
+							height: 'calc(100vh - 10px)',
 						}}
 						options={{
 							itemSelector: '.image-holder',
-							gutter: 10,
+							gutter: 0,
 							horizontalOrder: true,
 							fitWidth: true,
 							transitionDuration: '1s',
-							// stagger: 30,
-							// rowHeight: 60,
+							stagger: 100,
 							isHorizontal: true,
 						}}
 						onLayoutComplete={(laidOutItems) => {
-							console.log('onLayoutComplete');
-							scroll(laidOutItems, this.state.axis);
+							if (!this.state.laidOutItems) {
+								this.setState({
+									laidOutItems,
+								});
+							}
+							// if (enableAnimation) {
+							// 	scroll(laidOutItems, this.state.axis);
+							// }
 						}}
 					>
 						{allImages.map((image, i) => {
@@ -101,13 +138,13 @@ class Home extends Component {
 									className={`image-holder ${
 										image.isPerson ? 'image-holder--is-person' : ''
 									}
-                  ${imageSize === '250px' ? 'image-holder--medium' : ''}`}
+									image-holder--${imageSize}`}
 									key={`image-${i}`}
 								>
 									{image.isPerson && (
 										<div className="image-holder__content">
 											<span>?</span>
-											{imageSize === '250px' && <p>This could be you!</p>}
+											<p>This could be you!</p>
 										</div>
 									)}
 
@@ -119,9 +156,8 @@ class Home extends Component {
 											image.url
 										}`}
 										style={{
-											height: imageSize,
-											// maxWidth: '300px',
-											// marginBottom: '-4px',
+											// height: imageSize,
+											marginBottom: '-4px',
 										}}
 										key={`${image.url}-${i}`}
 										alt="test"
@@ -154,13 +190,12 @@ class Home extends Component {
 
 function setSize(i) {
 	if (i % 6 === 1) {
-		return '250px';
+		return 'lg';
 	} else if (i % 10 === 1) {
-		return '380px';
-		// return '610px';
+		return 'xlg';
 	}
 
-	return '120px';
+	return 'md';
 }
 
 export default Home;
