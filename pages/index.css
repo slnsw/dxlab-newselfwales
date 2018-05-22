@@ -29,3 +29,21 @@
     }
   }
 }
+
+.landing__toggle-animation-button {
+  position: absolute;
+  top: var(--spacing-md);
+  left: var(--spacing-md);
+  z-index: 2;
+  max-width: 7em;
+  border-radius: 0;
+  padding-top: var(--spacing-xxxs);
+
+  /* border: 1px solid var(--colour-grey-lightest); */
+
+  color: var(--colour-highlight);
+  background-color: var(--colour-black);
+  font-size: var(--font-size-xxs);
+
+  /* font-family: 'Lekton', Helvetica, Arial; */
+}

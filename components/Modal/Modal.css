@@ -10,6 +10,7 @@
   max-width: 30em;
   background-color: var(--colour-black);
   padding: var(--spacing-md);
+  border: 1px solid var(--colour-white);
 
   & h1 {
     font-size: var(--font-size-xlg);

@@ -5,9 +5,8 @@ import App from '../components/App';
 import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
 import images from '../lib/imagesNew.json';
-// import selfiesRaw from '../lib/selfieSelected.json';
 import shuffle from '../lib/shuffle';
-import scroll from '../lib/scroll';
+import { scroller } from '../lib/scroll';
 
 import './index.css';
 
@@ -15,15 +14,8 @@ class Home extends Component {
 	constructor() {
 		super();
 
-		// const selfies = Object.keys(selfiesRaw).map((s) => {
-		// 	return {
-		// 		isSelfie: true,
-		// 		url: selfiesRaw[s].filename,
-		// 	};
-		// });
-
-		// this.allImages = shuffle(images.concat(selfies));
-		let allImages = shuffle(images).concat(shuffle(images));
+		// Build images for wall
+		const allImages = shuffle(images).concat(shuffle(images));
 		allImages.splice(1, 0, {
 			isPerson: true,
 			url: 'silhouettes/39331-silhouette.png',
@@ -37,16 +29,20 @@ class Home extends Component {
 			url: 'silhouettes/39331-silhouette.png',
 		});
 
-		console.log(allImages);
+		// console.log(allImages);
 
 		this.state = {
-			allImages: allImages,
+			allImages,
 			axis: 'x',
 			showModal: true,
+			enableAnimation: false,
+			laidOutItems: undefined,
 		};
 	}
 
 	componentDidMount() {
+		// Set up scroller
+
 		if (window.location.search) {
 			this.setState({
 				axis: window.location.search.replace('?axis=', ''),
@@ -54,29 +50,56 @@ class Home extends Component {
 		}
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
+			// Init scroller
+			scroller.init(this.state.laidOutItems, 'x');
+		}
+
+		if (!prevState.enableAnimation && this.state.enableAnimation) {
+			// Start scroll
+			scroller.start();
+			// scroll(this.laidOutItems, this.state.axis);
+		} else if (prevState.enableAnimation && !this.state.enableAnimation) {
+			// Stop scroll
+			scroller.stop();
+		}
+	}
+
 	handleModalClose = () => {
 		this.setState({
 			showModal: false,
+			enableAnimation: true,
+		});
+	};
+
+	handleToggleAnimationButton = () => {
+		this.setState({
+			enableAnimation: !this.state.enableAnimation,
 		});
 	};
 
 	render() {
-		const { allImages, showModal } = this.state;
+		const { allImages, showModal, enableAnimation } = this.state;
 
 		return (
 			<App>
+				<button
+					className="button landing__toggle-animation-button"
+					onClick={this.handleToggleAnimationButton}
+				>
+					{enableAnimation ? 'Pause' : 'Play'}
+				</button>
+
 				<div
 					style={{
-						// width: this.state.axis === 'x' ? '1000px' : 'auto',
-						// height: '100vh',
 						overflow: 'hidden',
 					}}
 				>
 					<Packery
 						className="images"
 						style={{
-							height: '100vh',
-							// transition: 'all 4s',
+							height: '120vh',
 						}}
 						options={{
 							itemSelector: '.image-holder',
@@ -89,8 +112,14 @@ class Home extends Component {
 							isHorizontal: true,
 						}}
 						onLayoutComplete={(laidOutItems) => {
-							console.log('onLayoutComplete');
-							scroll(laidOutItems, this.state.axis);
+							if (!this.state.laidOutItems) {
+								this.setState({
+									laidOutItems,
+								});
+							}
+							// if (enableAnimation) {
+							// 	scroll(laidOutItems, this.state.axis);
+							// }
 						}}
 					>
 						{allImages.map((image, i) => {
@@ -120,8 +149,7 @@ class Home extends Component {
 										}`}
 										style={{
 											height: imageSize,
-											// maxWidth: '300px',
-											// marginBottom: '-4px',
+											marginBottom: '-4px',
 										}}
 										key={`${image.url}-${i}`}
 										alt="test"
