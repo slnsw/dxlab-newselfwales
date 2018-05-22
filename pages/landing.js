@@ -1,16 +1,19 @@
 import { Component } from 'react';
-import Packery from '../components/Packery';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
+import Packery from '../components/Packery';
 import App from '../components/App';
 import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
+import withApollo from '../lib/withApollo';
 import images from '../lib/imagesNew.json';
 import shuffle from '../lib/shuffle';
 import { scroller } from '../lib/scroll';
 
 import './index.css';
 
-class Home extends Component {
+class LandingPage extends Component {
 	constructor() {
 		super();
 
@@ -18,19 +21,19 @@ class Home extends Component {
 		const allImages = shuffle(images).concat(shuffle(images));
 		allImages.splice(1, 0, {
 			isPerson: true,
-			url: 'silhouettes/39331-silhouette.png',
+			imageUrl: 'silhouettes/39331-silhouette.png',
 		});
 		allImages.splice(14, 0, {
 			isPerson: true,
-			url: 'silhouettes/39331-silhouette.png',
+			imageUrl: 'silhouettes/39331-silhouette.png',
 		});
 		allImages.splice(25, 0, {
 			isPerson: true,
-			url: 'silhouettes/39331-silhouette.png',
+			imageUrl: 'silhouettes/39331-silhouette.png',
 		});
 		allImages.splice(35, 0, {
 			isPerson: true,
-			url: 'silhouettes/39331-silhouette.png',
+			imageUrl: 'silhouettes/39331-silhouette.png',
 		});
 
 		// console.log(allImages);
@@ -86,6 +89,7 @@ class Home extends Component {
 
 	render() {
 		const { allImages, showModal, enableAnimation } = this.state;
+		const { page } = this.props;
 
 		return (
 			<App>
@@ -141,32 +145,39 @@ class Home extends Component {
 									image-holder--${imageSize}`}
 									key={`image-${i}`}
 								>
-									{image.isPerson && (
-										<div className="image-holder__content">
-											<span>?</span>
-											<p>This could be you!</p>
-										</div>
-									)}
+									<a href={image.url} target="_blank">
+										{image.isPerson && (
+											<div className="image-holder__content">
+												<span>?</span>
+												<p>This could be you!</p>
+											</div>
+										)}
 
-									<img
-										className={`image ${
-											image.isPerson ? 'image--is-person' : ''
-										}`}
-										src={`/static/${image.isSelfie ? 'selfies' : 'images'}/${
-											image.url
-										}`}
-										style={{
-											// height: imageSize,
-											marginBottom: '-4px',
-										}}
-										key={`${image.url}-${i}`}
-										alt="test"
-									/>
+										<img
+											className={`image ${
+												image.isPerson ? 'image--is-person' : ''
+											}`}
+											src={`/static/${image.isSelfie ? 'selfies' : 'images'}/${
+												image.imageUrl
+											}`}
+											style={{
+												// height: imageSize,
+												marginBottom: '-4px',
+											}}
+											key={`${image.imageUrl}-${i}`}
+											alt="test"
+										/>
+									</a>
 								</div>
 							);
 						})}
 					</Packery>
-					<InfoBox />
+
+					{page && (
+						<InfoBox title={page.title} excerpt={page.excerpt}>
+							{page.content}
+						</InfoBox>
+					)}
 				</div>
 
 				{showModal && (
@@ -198,4 +209,25 @@ function setSize(i) {
 	return 'md';
 }
 
-export default Home;
+const PAGE_QUERY = gql`
+	query {
+		pages(slug: "newselfwales") {
+			title
+			excerpt
+			content
+		}
+	}
+`;
+
+// The `graphql` wrapper executes a GraphQL query and makes the results
+// available on the `data` prop of the wrapped component (ExamplePage)
+export default withApollo(
+	graphql(PAGE_QUERY, {
+		props: ({ data }) => {
+			return {
+				...data,
+				page: data.pages && data.pages[0],
+			};
+		},
+	})(LandingPage),
+);

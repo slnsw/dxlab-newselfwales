@@ -3,7 +3,7 @@ module.exports = {
 	extends: [
 		'react-app',
 		// "airbnb-base", // TODO: Enable this laters
-		'dxlab',
+		'@slnsw/dxlab',
 		'prettier',
 	],
 	plugins: ['prettier'],
@@ -16,7 +16,7 @@ module.exports = {
 		'comma-dangle': ['warn', 'always-multiline'],
 		'react/react-in-jsx-scope': 0,
 		'react/jsx-max-props-per-line': [1, { maximum: 3 }],
-    'import/no-extraneous-dependencies': 0,
-    'prettier/prettier': 'error',
+		'import/no-extraneous-dependencies': 0,
+		'prettier/prettier': 'error',
 	},
 };

@@ -8,15 +8,7 @@
   z-index: 5;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-
-  /* background-color: rgba(10, 10, 10, 0.95); */
   background-color: var(--colour-black);
-
-  /* background: linear-gradient(
-    to bottom,
-    rgba(10, 10, 10, 0) 0,
-    rgba(10, 10, 10, 0.9) 25%
-  ); */
   padding: var(--spacing-md) var(--spacing-md) var(--spacing-md);
 
   @media (--screen-sm) {
@@ -25,13 +17,12 @@
     max-width: 40rem;
 
     /* background-color: rgba(10, 10, 10, 0.95); */
-    padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-xlg);
+    padding: var(--spacing-sm) var(--spacing-xlg) var(--spacing-xlg);
   }
 
   &.info-box--full {
     width: 100%;
     height: 100%;
-    background-color: rgba(10, 10, 10, 0.95);
     padding-top: var(--spacing-md);
 
     @media (--screen-sm) {
