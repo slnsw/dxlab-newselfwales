@@ -28,7 +28,7 @@ class Home extends Component {
 			isPerson: true,
 			url: 'silhouettes/39331-silhouette.png',
 		});
-		allImages.splice(34, 0, {
+		allImages.splice(35, 0, {
 			isPerson: true,
 			url: 'silhouettes/39331-silhouette.png',
 		});
@@ -107,16 +107,16 @@ class Home extends Component {
 							this.imagesRef = element;
 						}}
 						style={{
-							height: '120vh',
+							marginTop: '5px',
+							height: 'calc(100vh - 10px)',
 						}}
 						options={{
 							itemSelector: '.image-holder',
-							gutter: 10,
+							gutter: 0,
 							horizontalOrder: true,
 							fitWidth: true,
 							transitionDuration: '1s',
-							// stagger: 30,
-							// rowHeight: 60,
+							stagger: 100,
 							isHorizontal: true,
 						}}
 						onLayoutComplete={(laidOutItems) => {
@@ -138,13 +138,13 @@ class Home extends Component {
 									className={`image-holder ${
 										image.isPerson ? 'image-holder--is-person' : ''
 									}
-                  ${imageSize === '250px' ? 'image-holder--medium' : ''}`}
+									image-holder--${imageSize}`}
 									key={`image-${i}`}
 								>
 									{image.isPerson && (
 										<div className="image-holder__content">
 											<span>?</span>
-											{imageSize === '250px' && <p>This could be you!</p>}
+											<p>This could be you!</p>
 										</div>
 									)}
 
@@ -156,7 +156,7 @@ class Home extends Component {
 											image.url
 										}`}
 										style={{
-											height: imageSize,
+											// height: imageSize,
 											marginBottom: '-4px',
 										}}
 										key={`${image.url}-${i}`}
@@ -190,13 +190,12 @@ class Home extends Component {
 
 function setSize(i) {
 	if (i % 6 === 1) {
-		return '250px';
+		return 'lg';
 	} else if (i % 10 === 1) {
-		return '380px';
-		// return '610px';
+		return 'xlg';
 	}
 
-	return '120px';
+	return 'md';
 }
 
 export default Home;
