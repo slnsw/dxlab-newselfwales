@@ -9,6 +9,7 @@ export default class MyDocument extends Document {
 						rel="stylesheet"
 						href={`${process.env.BASE_URL}/_next/static/style.css`}
 					/>
+					<script src="https://cdn.polyfill.io/v2/polyfill.min.js" />
 				</Head>
 				<body>
 					<Main />
