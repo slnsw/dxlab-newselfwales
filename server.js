@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const next = require('next');
+const uaCompatible = require('ua-compatible');
+const helmet = require('helmet');
 
 const dev = process.env.NODE_ENV !== 'production' && !process.env.NOW;
 const app = next({ dev });
@@ -25,10 +27,11 @@ app
 	.then(() => {
 		const server = express();
 
-		server.get('/example-page/:id', (req, res) => {
-			const mergedQuery = Object.assign({}, req.query, req.params);
-			return app.render(req, res, '/example-page', mergedQuery);
-		});
+		// Add Security headers
+		server.use(helmet());
+
+		// Adds X-UA-Compatible: IE=edge, chrome=1 header for our IE friends.
+		server.use(uaCompatible);
 
 		server.all('*', (req, res) => handler(req, res));
 

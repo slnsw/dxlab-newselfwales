@@ -26,6 +26,7 @@
 		"draggabilly": "^2.1.1",
 		"express": "^4.15.4",
 		"graphql": "^0.12.3",
+		"helmet": "^3.12.1",
 		"isomorphic-fetch": "^2.2.1",
 		"isomorphic-unfetch": "^2.0.0",
 		"lodash.assign": "^4.2.0",
@@ -52,6 +53,7 @@
 		"redux": "^3.6.0",
 		"redux-devtools-extension": "^2.13.2",
 		"redux-thunk": "^2.2.0",
+		"ua-compatible": "0.0.0",
 		"wpapi": "^1.1.2"
 	},
 	"license": "ISC",
