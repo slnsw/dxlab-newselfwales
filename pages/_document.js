@@ -5,7 +5,10 @@ export default class MyDocument extends Document {
 		return (
 			<html>
 				<Head>
-					<link rel="stylesheet" href="/_next/static/style.css" />
+					<link
+						rel="stylesheet"
+						href={`${process.env.BASE_URL}/_next/static/style.css`}
+					/>
 				</Head>
 				<body>
 					<Main />

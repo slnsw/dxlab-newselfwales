@@ -55,14 +55,14 @@ class InfoBox extends Component {
 							<a href="https://dxlab.sl.nsw.gov.au">
 								<img
 									className="info-box__logo info-box__logo--dxlab"
-									src="/static/images/logos/logo-dxlab.png"
+									src="/static/newselfwales/images/logos/logo-dxlab.png"
 									alt="DX Lab Home"
 								/>
 							</a>
 							<a href="http://sl.nsw.gov.au">
 								<img
 									className="info-box__logo info-box__logo--slnsw"
-									src="/static/images/logos/logo-slnsw-white.png"
+									src="/static/newselfwales/images/logos/logo-slnsw-white.png"
 									alt="State Library of NSW Home"
 								/>
 							</a>

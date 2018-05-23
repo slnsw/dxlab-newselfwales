@@ -17,24 +17,17 @@ class LandingPage extends Component {
 	constructor() {
 		super();
 
+		const silhouette = {
+			isSilhouette: true,
+			imageUrl: 'silhouettes/silhouette.png',
+		};
+
 		// Build images for wall
 		const allImages = shuffle(images).concat(shuffle(images));
-		allImages.splice(1, 0, {
-			isPerson: true,
-			imageUrl: 'silhouettes/39331-silhouette.png',
-		});
-		allImages.splice(14, 0, {
-			isPerson: true,
-			imageUrl: 'silhouettes/39331-silhouette.png',
-		});
-		allImages.splice(25, 0, {
-			isPerson: true,
-			imageUrl: 'silhouettes/39331-silhouette.png',
-		});
-		allImages.splice(35, 0, {
-			isPerson: true,
-			imageUrl: 'silhouettes/39331-silhouette.png',
-		});
+		allImages.splice(1, 0, silhouette);
+		allImages.splice(14, 0, silhouette);
+		allImages.splice(25, 0, silhouette);
+		allImages.splice(35, 0, silhouette);
 
 		// console.log(allImages);
 
@@ -140,13 +133,13 @@ class LandingPage extends Component {
 							return (
 								<div
 									className={`image-holder ${
-										image.isPerson ? 'image-holder--is-person' : ''
+										image.isSilhouette ? 'image-holder--is-person' : ''
 									}
 									image-holder--${imageSize}`}
 									key={`image-${i}`}
 								>
 									<a href={image.url} target="_blank">
-										{image.isPerson && (
+										{image.isSilhouette && (
 											<div className="image-holder__content">
 												<span>?</span>
 												<p>This could be you!</p>
@@ -155,11 +148,11 @@ class LandingPage extends Component {
 
 										<img
 											className={`image ${
-												image.isPerson ? 'image--is-person' : ''
+												image.isSilhouette ? 'image--is-person' : ''
 											}`}
-											src={`/static/${image.isSelfie ? 'selfies' : 'images'}/${
-												image.imageUrl
-											}`}
+											src={`/static/newselfwales/${
+												image.isSelfie ? 'selfies' : 'images'
+											}/${image.imageUrl}`}
 											style={{
 												// height: imageSize,
 												marginBottom: '-4px',

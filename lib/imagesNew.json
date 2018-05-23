@@ -114,16 +114,58 @@
 		"url":
 			"http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?dps_pid=FL1299950&embedded=true&toolbar=false"
 	},
-	{ "imageUrl": "selfie1526436422291.jpg", "url": "" },
-	{ "imageUrl": "selfie1526382601101.jpg", "url": "" },
-	{ "imageUrl": "selfie1526367981205.jpg", "url": "" },
-	{ "imageUrl": "selfie1526365826334.jpg", "url": "" },
-	{ "imageUrl": "selfie1526365766015.jpg", "url": "" },
-	{ "imageUrl": "selfie1526350475804.jpg", "url": "" },
-	{ "imageUrl": "selfie1526350470191.jpg", "url": "" },
-	{ "imageUrl": "a2700002h.jpg", "url": "" },
-	{ "imageUrl": "a2392010h.jpg", "url": "" },
-	{ "imageUrl": "a774006r.jpg", "url": "" },
-	{ "imageUrl": "a1528179h.jpg", "url": "" },
-	{ "imageUrl": "BU1-Divinyls.jpg", "url": "" }
+	{
+		"imageUrl": "selfie1526436422291.jpg",
+		"url":
+			"http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?dps_pid=FL3284999&embedded=true&toolbar=false"
+	},
+	{
+		"imageUrl": "selfie1526382601101.jpg",
+		"url":
+			"http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?dps_pid=FL442415&embedded=true&toolbar=false"
+	},
+	{
+		"imageUrl": "selfie1526367981205.jpg",
+		"url":
+			"http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?dps_pid=FL1655740&embedded=true&toolbar=false"
+	},
+	{
+		"imageUrl": "selfie1526365826334.jpg",
+		"url":
+			"http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?dps_pid=FL3318491&embedded=true&toolbar=false"
+	},
+	{
+		"imageUrl": "selfie1526365766015.jpg",
+		"url":
+			"http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?dps_pid=FL562208&embedded=true&toolbar=false"
+	},
+	{
+		"imageUrl": "selfie1526350475804.jpg",
+		"url":
+			"http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?dps_pid=FL1004840&embedded=true&toolbar=false"
+	},
+	{
+		"imageUrl": "selfie1526350470191.jpg",
+		"url":
+			"http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?dps_pid=FL3197300&embedded=true&toolbar=false"
+	},
+	{
+		"imageUrl": "a2392010h.jpg",
+		"url":
+			"http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?dps_pid=FL1661267&embedded=true&toolbar=false"
+	},
+	{
+		"imageUrl": "a774006r.jpg",
+		"url":
+			"http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?dps_pid=FL4317371&embedded=true&toolbar=false"
+	},
+	{
+		"imageUrl": "a1528179h.jpg",
+		"url":
+			"http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?dps_pid=FL3280776&embedded=true&toolbar=false"
+	},
+	{
+		"imageUrl": "BU1-Divinyls.jpg",
+		"url": "http://archival.sl.nsw.gov.au/Details/archive/110598437"
+	}
 ]
