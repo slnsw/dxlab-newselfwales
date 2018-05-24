@@ -158,7 +158,7 @@ class LandingPage extends Component {
 												marginBottom: '-4px',
 											}}
 											key={`${image.imageUrl}-${i}`}
-											alt="test"
+											alt="Portrait from the State Library of NSW collection"
 										/>
 									</a>
 								</div>

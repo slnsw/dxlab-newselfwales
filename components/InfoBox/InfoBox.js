@@ -40,7 +40,12 @@ class InfoBox extends Component {
 					</button>
 				)}
 
-				<h1 className="info-box__title">#NewSelfWales</h1>
+				<img
+					alt="#NewSelfWales"
+					className="info-box__title-image"
+					src="/static/newselfwales/newselfwales-logo-01.gif"
+				/>
+				{/* <h1 className="info-box__title">#NewSelfWales</h1> */}
 
 				{this.props.excerpt && <p>{this.props.excerpt}</p>}
 

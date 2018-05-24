@@ -8,12 +8,15 @@
 
 @font-face {
   font-family: 'icomoon';
-  src: url('/static/newselfwales/fonts/icomoon.eot?azqktj');
-  src: url('/static/newselfwales/fonts/icomoon.eot?azqktj#iefix')
+  src: url('https://dxlab.sl.nsw.gov.au/static/newselfwales/fonts/icomoon.eot?azqktj');
+  src: url('https://dxlab.sl.nsw.gov.au/static/newselfwales/fonts/icomoon.eot?azqktj#iefix')
     format('embedded-opentype'),
-    url('/static/newselfwales/fonts/icomoon.ttf?azqktj') format('truetype'),
-    url('/static/newselfwales/fonts/icomoon.woff?azqktj') format('woff'),
-    url('/static/newselfwales/fonts/icomoon.svg?azqktj#icomoon') format('svg');
+    url('https://dxlab.sl.nsw.gov.au/static/newselfwales/fonts/icomoon.ttf?azqktj')
+    format('truetype'),
+    url('https://dxlab.sl.nsw.gov.au/static/newselfwales/fonts/icomoon.woff?azqktj')
+    format('woff'),
+    url('https://dxlab.sl.nsw.gov.au/static/newselfwales/fonts/icomoon.svg?azqktj#icomoon')
+    format('svg');
   font-weight: normal;
   font-style: normal;
 }

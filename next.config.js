@@ -7,6 +7,8 @@ const withCSS = require('@zeit/next-css');
 
 module.exports = withCSS({
 	assetPrefix: process.env.BASE_URL,
+	// 'newselfwales' folder is proxied by
+	// distDir: 'newselfwales/.next',
 	webpack: (config, { dev }) => {
 		const customConfig = {
 			...config,
