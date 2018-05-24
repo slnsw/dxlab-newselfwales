@@ -12,6 +12,8 @@ BASE_URL=http://localhost:5020
 WP_API_ENDPOINT=https://local.dxlab.sl.nsw.gov.au/selfie/wp-json
 WP_USERNAME=XXXXXXXXXX
 WP_PASSWORD=XXXXXXXXXX
+FB_APP_ID=XXXXXXXXXX
+GOOGLE_ANALYTICS_ID=XXXXXXXXXX
 ```
 
 Save a `.env.production` file for production deploys.

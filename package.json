@@ -46,6 +46,7 @@
 		"react": "^16.2.0",
 		"react-apollo": "^1.4.16",
 		"react-dom": "^16.2.0",
+		"react-ga": "^2.5.2",
 		"react-masonry-component": "^6.0.2",
 		"react-packery-component": "^1.0.2",
 		"react-redux": "^5.0.5",

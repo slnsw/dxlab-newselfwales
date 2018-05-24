@@ -84,8 +84,14 @@ class LandingPage extends Component {
 		const { allImages, showModal, enableAnimation } = this.state;
 		const { page } = this.props;
 
-		return (
-			<App>
+		return page ? (
+			<App
+				title="#NewSelfWales"
+				metaDescription={page.excerpt}
+				metaImageUrl="https://dxlab.sl.nsw.gov.au/static/newselfwales/social-image.jpg"
+				metaImageAlt="#NewSelfWales image feed of collection images"
+				pathname="/newselfwales"
+			>
 				<button
 					className="button landing__toggle-animation-button"
 					onClick={this.handleToggleAnimationButton}
@@ -122,9 +128,6 @@ class LandingPage extends Component {
 									laidOutItems,
 								});
 							}
-							// if (enableAnimation) {
-							// 	scroll(laidOutItems, this.state.axis);
-							// }
 						}}
 					>
 						{allImages.map((image, i) => {
@@ -166,11 +169,9 @@ class LandingPage extends Component {
 						})}
 					</Packery>
 
-					{page && (
-						<InfoBox title={page.title} excerpt={page.excerpt}>
-							{page.content}
-						</InfoBox>
-					)}
+					<InfoBox title={page.title} excerpt={page.excerpt}>
+						{page.content}
+					</InfoBox>
 				</div>
 
 				{showModal && (
@@ -188,7 +189,7 @@ class LandingPage extends Component {
 					</Modal>
 				)}
 			</App>
-		);
+		) : null;
 	}
 }
 

@@ -18,6 +18,8 @@ console.log(`PORT=${process.env.PORT}`);
 console.log(`GRAPHQL_URL=${process.env.GRAPHQL_URL}`);
 console.log(`TEST=${process.env.TEST}`);
 console.log(`BASE_URL=${process.env.BASE_URL}`);
+console.log(`FB_APP_ID=${process.env.FB_APP_ID}`);
+console.log(`GOOGLE_ANALYTICS_ID=${process.env.GOOGLE_ANALYTICS_ID}`);
 console.log('----------------------------------');
 
 const port = process.env.PORT || 3000;
