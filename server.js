@@ -35,6 +35,8 @@ app
 		// Adds X-UA-Compatible: IE=edge, chrome=1 header for our IE friends.
 		server.use(uaCompatible);
 
+		server.use('/newselfwales/assets', app.getRequestHandler());
+
 		server.all('*', (req, res) => handler(req, res));
 
 		server.listen(port, (err) => {

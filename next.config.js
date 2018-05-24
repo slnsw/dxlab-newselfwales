@@ -6,9 +6,7 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const withCSS = require('@zeit/next-css');
 
 module.exports = withCSS({
-	assetPrefix: process.env.BASE_URL,
-	// 'newselfwales' folder is proxied by
-	// distDir: 'newselfwales/.next',
+	assetPrefix: '/newselfwales/assets',
 	webpack: (config, { dev }) => {
 		const customConfig = {
 			...config,
