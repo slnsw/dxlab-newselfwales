@@ -84,10 +84,12 @@ class LandingPage extends Component {
 		const { allImages, showModal, enableAnimation } = this.state;
 		const { page } = this.props;
 
-		return page ? (
+		return (
 			<App
 				title="#NewSelfWales"
-				metaDescription={page.excerpt}
+				metaDescription={
+					'Share your portrait and become part of our opening exhibitions'
+				}
 				metaImageUrl="https://dxlab.sl.nsw.gov.au/static/newselfwales/social-image.jpg"
 				metaImageAlt="#NewSelfWales image feed of collection images"
 				pathname="/newselfwales"
@@ -169,9 +171,11 @@ class LandingPage extends Component {
 						})}
 					</Packery>
 
-					<InfoBox title={page.title} excerpt={page.excerpt}>
-						{page.content}
-					</InfoBox>
+					{page && (
+						<InfoBox title={page.title} excerpt={page.excerpt}>
+							{page.content}
+						</InfoBox>
+					)}
 				</div>
 
 				{showModal && (
@@ -189,7 +193,7 @@ class LandingPage extends Component {
 					</Modal>
 				)}
 			</App>
-		) : null;
+		);
 	}
 }
 

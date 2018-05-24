@@ -16,7 +16,7 @@ FB_APP_ID=XXXXXXXXXX
 GOOGLE_ANALYTICS_ID=XXXXXXXXXX
 ```
 
-Save a `.env.production` file for production deploys.
+Save a `.env.staging` and `.env.production` file for staging and production deploys respectively.
 
 # TODO
 
