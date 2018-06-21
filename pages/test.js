@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
 
-import { client } from '../lib/initApollo2';
+import { client } from '../lib/initApollo';
 import TestFeed from '../components/TestFeed';
 
 export default class Test extends Component {
