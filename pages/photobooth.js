@@ -5,7 +5,7 @@ import wpUpload from '../lib/wpUpload';
 import webcam from '../lib/webcam';
 
 // TODO: Re-enable after rescoping CSS
-// import './photobooth.css';
+import './photobooth.css';
 
 // this is the letter that will trigger the snapshot
 const triggerLetter = 192; // backtick
@@ -196,107 +196,123 @@ class Home extends Component {
 	render() {
 		return (
 			<ExampleApp>
-				<h1 id="title">Take a selfie</h1>
-				<div
-					id="stage1"
-					style={{ display: this.state.stage === 'stage1' ? 'block' : 'none' }}
-				>
-					<video id="video" ref="video" width="1080" height="1080" autoPlay />
-					<br />
-					<button id="takeBut" onClick={this.takeSelfie}>
-						take selfie
-					</button>
-				</div>
-				<div
-					id="stage2"
-					style={{ display: this.state.stage === 'stage2' ? 'block' : 'none' }}
-				>
-					<canvas ref="canvas" id="canvas" width="1080" height="1080" />
-					<br />
-					<button id="retake" onClick={this.retakeSelfie}>
-						re-take
-					</button>
-					<button id="sendSelfie" onClick={this.doPreview}>
-						use this
-					</button>
-				</div>
-				<div
-					id="stage3"
-					style={{ display: this.state.stage === 'stage3' ? 'block' : 'none' }}
-				>
-					<canvas ref="previewCVS" id="preview" width="300" height="300" />
-					<div id="formdeets" className="selfieForm">
-						<ul>
-							<li />
-							<li>
-								Please tell us a few things about yourself so we can match you
-								to a portrait from our collection.
-							</li>
-							<li>
-								<label>Your interests:</label>
-								<input
-									type="text"
-									name="interests"
-									id="interests"
-									value={this.state.interests}
-									placeholder="Enter around 4 or 5, separated by commas"
-									onChange={(event) => this.handleUserInput(event)}
-								/>
-								<div className="formErrors interests">
-									{this.state.formErrors.interests}
-								</div>
-							</li>
-							<li>
-								And supply the follwoing if you would like us to email you the
-								results of the match.
-							</li>
-							<li>
-								<label>Your name:</label>
-								<input
-									type="text"
-									name="name"
-									id="name"
-									value={this.state.name}
-									placeholder="Selfie Fiend"
-									onChange={(event) => this.handleUserInput(event)}
-								/>
-							</li>
-							<li>
-								<label>
-									Your email:<br />
-								</label>
-								<input
-									type="email"
-									name="email"
-									id="email"
-									value={this.state.email}
-									placeholder="fiend@selfie-land.com"
-									onChange={(event) => this.handleUserInput(event)}
-								/>
-								<span className="formErrors email">
-									{this.state.formErrors.email}
-								</span>
-							</li>
-							<li>
-								<button
-									id="submitBut"
-									onClick={this.uploadSelfie}
-									disabled={!this.state.formValid}
-								>
-									submit
-								</button>
-								<button id="quitBut" onClick={this.quitFromForm}>
-									quit
-								</button>
-							</li>
-						</ul>
+				<div className="photobooth">
+					<h1 id="title">Take a selfie</h1>
+					<div
+						id="stage1"
+						style={{
+							display: this.state.stage === 'stage1' ? 'block' : 'none',
+						}}
+					>
+						<video id="video" ref="video" width="1080" height="1080" autoPlay />
+						<br />
+						<button id="takeBut" onClick={this.takeSelfie}>
+							take selfie
+						</button>
 					</div>
-				</div>
-				<div
-					id="stage4"
-					style={{ display: this.state.stage === 'stage4' ? 'block' : 'none' }}
-				>
-					<p>Thank you</p>
+					<div
+						id="stage2"
+						style={{
+							display: this.state.stage === 'stage2' ? 'block' : 'none',
+						}}
+					>
+						<canvas
+							className="photobooth__canvas"
+							ref="canvas"
+							id="canvas"
+							width="1080"
+							height="1080"
+						/>
+						<br />
+						<button id="retake" onClick={this.retakeSelfie}>
+							re-take
+						</button>
+						<button id="sendSelfie" onClick={this.doPreview}>
+							use this
+						</button>
+					</div>
+					<div
+						id="stage3"
+						style={{
+							display: this.state.stage === 'stage3' ? 'block' : 'none',
+						}}
+					>
+						<canvas ref="previewCVS" id="preview" width="300" height="300" />
+						<div id="formdeets" className="selfieForm">
+							<ul>
+								<li />
+								<li>
+									Please tell us a few things about yourself so we can match you
+									to a portrait from our collection.
+								</li>
+								<li>
+									<label>Your interests:</label>
+									<input
+										type="text"
+										name="interests"
+										id="interests"
+										value={this.state.interests}
+										placeholder="Enter around 4 or 5, separated by commas"
+										onChange={(event) => this.handleUserInput(event)}
+									/>
+									<div className="formErrors interests">
+										{this.state.formErrors.interests}
+									</div>
+								</li>
+								<li>
+									And supply the follwoing if you would like us to email you the
+									results of the match.
+								</li>
+								<li>
+									<label>Your name:</label>
+									<input
+										type="text"
+										name="name"
+										id="name"
+										value={this.state.name}
+										placeholder="Selfie Fiend"
+										onChange={(event) => this.handleUserInput(event)}
+									/>
+								</li>
+								<li>
+									<label>
+										Your email:<br />
+									</label>
+									<input
+										type="email"
+										name="email"
+										id="email"
+										value={this.state.email}
+										placeholder="fiend@selfie-land.com"
+										onChange={(event) => this.handleUserInput(event)}
+									/>
+									<span className="formErrors email">
+										{this.state.formErrors.email}
+									</span>
+								</li>
+								<li>
+									<button
+										id="submitBut"
+										onClick={this.uploadSelfie}
+										disabled={!this.state.formValid}
+									>
+										submit
+									</button>
+									<button id="quitBut" onClick={this.quitFromForm}>
+										quit
+									</button>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div
+						id="stage4"
+						style={{
+							display: this.state.stage === 'stage4' ? 'block' : 'none',
+						}}
+					>
+						<p>Thank you</p>
+					</div>
 				</div>
 			</ExampleApp>
 		);
