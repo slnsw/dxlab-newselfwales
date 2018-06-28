@@ -46,10 +46,11 @@ class Home extends Component {
 
 	uploadSelfie = () => {
 		// make buttons look like something is happening
-		submitBut.disabled = true;
-		submitBut.innerHTML = 'working...';
-		quitBut.disabled = true;
-		quitBut.innerHTML = 'working...';
+		// submitBut.disabled = true;
+		// submitBut.innerHTML = 'working...';
+		// quitBut.disabled = true;
+		// quitBut.innerHTML = 'working...';
+
 		// now use WP API to upload selfie and data
 		wpUpload.upload(
 			{
@@ -138,8 +139,8 @@ class Home extends Component {
 	};
 
 	handleUserInput(e) {
-		const name = e.target.name;
-		const value = e.target.value;
+		const { name, value } = e.target;
+
 		this.setState({ [name]: value }, () => {
 			this.validateField(name, value);
 		});
@@ -147,8 +148,9 @@ class Home extends Component {
 
 	validateField(fieldName, value) {
 		const fieldValidationErrors = this.state.formErrors;
-		let interestsValid = this.state.interestsValid;
-		let emailValid = this.state.emailValid;
+		let interestsValid;
+		let emailValid;
+		// const { interestsValid, emailValid } = this.state;
 
 		switch (fieldName) {
 			case 'email': {
@@ -158,11 +160,13 @@ class Home extends Component {
 					// no email is a valid email (the field is optional)
 					emailValid = true;
 				}
+
 				fieldValidationErrors.email = emailValid
 					? ''
 					: 'Please enter a valid email.';
 				break;
 			}
+
 			case 'interests': {
 				let t = value.split(','); // separate interests by comma
 				t = t.filter((entry) => entry.trim() !== ''); // don't count blank ones
@@ -177,11 +181,12 @@ class Home extends Component {
 				break;
 			}
 		}
+
 		this.setState(
 			{
 				formErrors: fieldValidationErrors,
-				emailValid: emailValid,
-				interestsValid: interestsValid,
+				emailValid,
+				interestsValid,
 			},
 			this.validateForm,
 		);
