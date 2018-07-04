@@ -4,7 +4,8 @@ import chalkAnimation from 'chalk-animation';
 import fs from 'fs';
 import path from 'path';
 import WPAPI from 'wpapi';
-import wpUpload from '@slnsw/dxlab-selfie-uploader';
+// import wpUpload from '@slnsw/dxlab-selfie-uploader';
+import wpUpload from '../../uploader';
 
 import { parsePage, parseUser } from './utils/parse';
 
@@ -290,7 +291,7 @@ export default async (hashtag, limit) => {
                       const chk = await checkWP(completePost.shortcode, result.username);
                       console.log(chk);
                       logtxt += chk.logtxt;
-                      let skip = true; // chk.skip;
+                      let skip =  chk.skip;
 /*
                       let skip = false;
                       // check if this post has already been added (as either draft, approved or trash)
