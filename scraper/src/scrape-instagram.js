@@ -127,24 +127,37 @@ export const getPost = async (shortcode) => {
       post.entry_data.PostPage[0].graphql.shortcode_media.owner.full_name;
     const location = post.entry_data.PostPage[0].graphql.shortcode_media.location;
 
+    // some Instagram posts have multiple images - pull them all in
+    let mi = [];
+    let msc = [];
     const multi = post.entry_data.PostPage[0].graphql.shortcode_media.edge_sidecar_to_children;
+
     if (multi) {
+      console.log('MULTI!!!');
+      logtxt += 'MULTI!!!';
       const m = multi.edges;
+      let x = 0;
       for (var u of m) {
         console.log(u.node.display_url);
+        logtxt += u.node.display_url;
+        mi[x] = u.node.display_url; 
+        msc[x] = u.node.shortcode;
+        x += 1;
       }
+      console.log('end MULTI');
+      logtxt += 'end MULTI';
     }
-
     return {
       name: fullName,
       username,
       locationName: location && location.name,
       locationSlug: location && location.slug,
       locationId: location && location.id,
+      multi: mi,
+      msc: msc,
     };
   } catch (e) {
     console.log('getPost ' + shortcode + ' failed!');
-  //  console.log(e);
     console.log('================');
     logtxt += 'getPost ' + shortcode + ' failed!\n================\n';
     return false;
@@ -187,38 +200,40 @@ export const getImage = async (url) => {
 
 export const checkWP = async (shortcode, username) => {
 
-  let llogtxt = '';
-  let skip = false;
+  //let logtxt = '';
+  let skp = false;
   // check if this post has already been added (as either draft, approved or trash)
   // Have to specifically look in trash:
   const resput = await wp.instagramSelfies().auth().param( 'status', 'trash' ).param( 'meta_key', 'shortcode' ).param( 'meta_value', shortcode );
   if (resput && resput.length) {
     console.log('Instagram post ' + shortcode + ' already exists in trash, ' + resput.length + ' time(s)!');
-    llogtxt += 'Instagram post ' + shortcode + ' already exists in trash, ' + resput.length + ' time(s)!\n';
-    skip = true;
+    logtxt += 'Instagram post ' + shortcode + ' already exists in trash, ' + resput.length + ' time(s)!\n';
+    skp = true;
   } 
   // then everywhere else:
   const respu = await wp.instagramSelfies().auth().param( 'status', 'any' ).param( 'meta_key', 'shortcode' ).param( 'meta_value', shortcode );
-  if (!skip && respu && respu.length) {
+  if (!skp && respu && respu.length) {
     console.log('Instagram post ' + shortcode + ' already exists (as draft or approved), ' + respu.length + ' time(s)!');
-    llogtxt += 'Instagram post ' + shortcode + ' already exists (as draft or approved), ' + respu.length + ' time(s)!\n';
-    skip = true;
+    logtxt += 'Instagram post ' + shortcode + ' already exists (as draft or approved), ' + respu.length + ' time(s)!\n';
+    skp = true;
   }
   // now check if we already have a Gram from this user (draft or approved):
   const resp = await wp.instagramSelfies().auth().param( 'status', 'any' ).param( 'meta_key', 'username' ).param( 'meta_value', username );
-  if (!skip && resp && resp.length) {
+  if (!skp && resp && resp.length) {
     console.log(resp.length + ' grams already exist from user: ' + username);
-    llogtxt += resp.length + ' grams already exist from user: ' + username + '\n';
+    logtxt += resp.length + ' grams already exist from user: ' + username + '\n';
     for (const dt of resp) {
       console.log('Wordpress ID: ' + dt.id);
-      llogtxt += 'Wordpress ID: ' + dt.id + '\n';
+      logtxt += 'Wordpress ID: ' + dt.id + '\n';
     }
-    console.log('================');
-    llogtxt += '================\n';
-    skip = true;
+    skp = true;
   }
-  const o = {logtxt: llogtxt, skip: skip};
-  return o;
+  if (skp) {
+    console.log('================');
+    logtxt += '================\n';
+  }
+  // const o = {logtxt: llogtxt, skp: skp};
+  return skp;
 }
 
 export default async (hashtag, limit) => {
@@ -241,90 +256,50 @@ export default async (hashtag, limit) => {
             const result = await getPost(data.shortcode);
             if (result) { 
               // A post can contain multiple images!
-              // Might make getPost return list of images if so.
-              // Would have to loop through them all here, or somewhere...
-
-
+              // And getPost returns the list of images in .multi as an array - if 0 elements, not a multi.
+              // Also the corresponding sortcodes are returned in .msc
+              
+              // Get rest of stuff we need for adding 1 or more images from a post, first up:
 
               const biography = await getIgUser(result.username);
+
               if (biography) {
                 const completePost = {
                   ...data,
                   ...result,
                   ...biography,
                 };
-                const imgBuf = await getImage(data.url);
-                if (imgBuf) {
 
-                  console.log(completePost.shortcode);
-                  console.log(completePost.username);
-                  console.log(completePost.url);
-                  logtxt += completePost.shortcode + '\n';
-                  logtxt += completePost.username + '\n';
-                  logtxt += completePost.url + '\n';
-/*
-                  try {
-                    wpUpload.init({
-                      endpoint: process.env.WP_API_ENDPOINT,
-                      username: process.env.WP_USERNAME,
-                      password: process.env.WP_PASSWORD,
-                    });
+                if(completePost.multi.length==0){
+                  completePost.multi.push(data.url)
+                  completePost.msc.push(completePost.shortcode)
+                }
 
-                    const wp = new WPAPI({
-                      endpoint: process.env.WP_API_ENDPOINT,
-                      username: process.env.WP_USERNAME,
-                      password: process.env.WP_PASSWORD,
-                    });
+                let mc = 0;
+                let skiprest = false;
+                let skip = false;
+                for (var u of completePost.multi) {
 
-                    wp.instagramSelfies = wp.registerRoute(
-                      'wp/v2',
-                      '/instagram-selfies/(?P<id>\\d+)',
-                    );
-*/
-                    
-                    
+                  const imgBuf = await getImage(u);
+
+                  if (imgBuf) {
+
+                    console.log(completePost.msc[mc]);
+                    console.log(completePost.username);
+                    console.log(u);
+                    logtxt += completePost.msc[mc] + '\n';
+                    logtxt += completePost.username + '\n';
+                    logtxt += u + '\n';
 
                     try {
 
                       // probably only want ONE selfie per user, so check WP for other images from this user.
-                      
-                      const chk = await checkWP(completePost.shortcode, result.username);
-                      console.log(chk);
-                      logtxt += chk.logtxt;
-                      let skip =  chk.skip;
-/*
-                      let skip = false;
-                      // check if this post has already been added (as either draft, approved or trash)
-                      // Have to specifically look in trash:
-                      const resput = await wp.instagramSelfies().auth().param( 'status', 'trash' ).param( 'meta_key', 'shortcode' ).param( 'meta_value', completePost.shortcode );
-                      if (resput && resput.length) {
-                        console.log('Instagram post ' + completePost.shortcode + ' already exists in trash, ' + resput.length + ' time(s)!');
-                        logtxt += 'Instagram post ' + completePost.shortcode + ' already exists in trash, ' + resput.length + ' time(s)!\n';
-                        skip = true;
-                      } 
-                      // then everywhere else:
-                      const respu = await wp.instagramSelfies().auth().param( 'status', 'any' ).param( 'meta_key', 'shortcode' ).param( 'meta_value', completePost.shortcode );
-                      if (!skip && respu && respu.length) {
-                        console.log('Instagram post ' + completePost.shortcode + ' already exists (as draft or approved), ' + respu.length + ' time(s)!');
-                        logtxt += 'Instagram post ' + completePost.shortcode + ' already exists (as draft or approved), ' + respu.length + ' time(s)!\n';
-                        skip = true;
+                      skip = await checkWP(completePost.shortcode, result.username);
+                      if (mc>0) {
+                        skip = false; 
                       }
-                      // now check if we already have a Gram from this user (draft or approved):
-                      const resp = await wp.instagramSelfies().auth().param( 'status', 'any' ).param( 'meta_key', 'username' ).param( 'meta_value', result.username );
-                      if (!skip && resp && resp.length) {
-                        console.log(resp.length + ' grams already exist from user: ' + result.username);
-                        logtxt += resp.length + ' grams already exist from user: ' + result.username + '\n';
-                        for (const dt of resp) {
-                          console.log('Wordpress ID: ' + dt.id);
-                          logtxt += 'Wordpress ID: ' + dt.id + '\n';
-                        }
-                        console.log('================');
-                        logtxt += '================\n';
-                        skip = true;
-                      }
-*/
 
-                      if (!skip) {
+                      if (!skiprest && !skip) {
                         console.log('Upload to WP API');
                         logtxt += 'Upload to WP API\n';
                     //    console.log(completePost);
@@ -333,12 +308,12 @@ export default async (hashtag, limit) => {
                             type: 'instagram',
                             title: ( completePost.name ? completePost.name : 
                               (completePost.username ? completePost.username : 
-                              (completePost.shortcode ? completePost.shortcode : completePost.timestamp) ) ),
-                            slug: completePost.shortcode,
+                              (completePost.msc[mc] ? completePost.msc[mc] : completePost.timestamp) ) ),
+                            slug: completePost.msc[mc],
                             content: completePost.desc,
                             status: 'draft', // 'publish', // use draft maybe, until they are moderated???? XXX XXXX
                             meta: {
-                              shortcode: completePost.shortcode,
+                              shortcode: completePost.msc[mc],
                               username: completePost.username,
                               timestamp: completePost.timestamp,
                               location: ( completePost.location ? completePost.location : '' ),
@@ -360,13 +335,12 @@ export default async (hashtag, limit) => {
                     } catch (error) {
                       console.error(error);
                     }
- /*
-                  } catch (e) {
-                    console.log('WP API upload failed!');
-                    console.log(e);
-                    logtxt += 'WP API upload failed!\n' + e + '\n';
+
+                  } 
+                  if ((mc==0)&&(skip==true)) {
+                    skiprest = true;
                   }
-*/                  
+                  mc += 1;
                 }
               }
             }
