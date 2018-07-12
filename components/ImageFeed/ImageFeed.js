@@ -10,6 +10,7 @@ class ImageFeed extends Component {
 	static propTypes = {
 		images: PropTypes.array,
 		enableAnimation: PropTypes.bool,
+		onLoadMore: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -24,6 +25,12 @@ class ImageFeed extends Component {
 			// enableAnimation: false,
 			laidOutItems: undefined,
 		};
+	}
+
+	componentDidMount() {
+		this.timeout = setInterval(() => {
+			this.props.onLoadMore();
+		}, 5000);
 	}
 
 	componentDidUpdate(prevProps, prevState) {

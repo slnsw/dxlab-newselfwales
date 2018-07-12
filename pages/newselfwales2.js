@@ -75,20 +75,12 @@ class LandingPage extends Component {
 						}
 
 						const page = data.pages && data.pages[0];
-						// const images = data.newSelfWales.portraits.map((portrait) => {
-						// 	return {
-						// 		...portrait,
-						// 		imageUrl: portrait.featuredMedia.sourceUrl,
-						// 	};
-						// });
 						const images = data.posts.map((post) => {
 							return {
 								...post,
 								imageUrl: post.featuredMedia.sourceUrl,
 							};
 						});
-
-						console.log(data.posts.length);
 
 						return (
 							<App
@@ -110,24 +102,23 @@ class LandingPage extends Component {
 								<ImageFeed
 									images={images}
 									enableAnimation={enableAnimation}
-									onLoadMore={(offset) =>
+									onLoadMore={() =>
 										fetchMore({
 											variables: {
-												offset,
+												offset: images.length,
 												limit: 5,
 											},
 											updateQuery: (prev, { fetchMoreResult }) => {
 												if (!fetchMoreResult) return prev;
 
 												return Object.assign({}, prev, {
-													newSelfWales: {
-														portraits: [
-															// ...prev.newSelfWales.portraits,
-															// ...fetchMoreResult.newSelfWales.portraits,
-															...prev.posts,
-															...fetchMoreResult.posts,
-														],
-													},
+													posts: [...prev.posts, ...fetchMoreResult.posts],
+													// newSelfWales: {
+													// 	portraits: [
+													// ...prev.newSelfWales.portraits,
+													// ...fetchMoreResult.newSelfWales.portraits,
+													// ],
+													// },
 												});
 											},
 										})
