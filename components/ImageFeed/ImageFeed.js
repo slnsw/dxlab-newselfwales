@@ -104,9 +104,10 @@ class ImageFeed extends Component {
 										className={`image ${
 											image.isSilhouette ? 'image--is-person' : ''
 										}`}
-										src={`/static/newselfwales/${
-											image.isSelfie ? 'selfies' : 'images'
-										}/${image.imageUrl}`}
+										src={image.imageUrl}
+										// src={`/static/newselfwales/${
+										// 	image.isSelfie ? 'selfies' : 'images'
+										// }/${image.imageUrl}`}
 										style={{
 											// height: imageSize,
 											marginBottom: '-4px',

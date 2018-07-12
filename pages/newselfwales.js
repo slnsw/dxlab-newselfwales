@@ -57,13 +57,29 @@ class LandingPage extends Component {
 
 		return (
 			<ApolloProvider client={client}>
-				<Query query={PAGE_QUERY}>
+				<Query
+					query={PAGE_QUERY}
+					variables={{
+						offset: 200,
+						limit: 20,
+					}}
+				>
 					{({
-						// loading,
+						loading,
 						// error,
 						data,
+						// fetchMore
 					}) => {
+						if (loading) {
+							return <div />;
+						}
+
 						const page = data.pages && data.pages[0];
+						const images = data.newSelfWales.portraits.map((portrait) => {
+							return {
+								imageUrl: portrait.featuredMedia.sourceUrl,
+							};
+						});
 
 						return (
 							<App
@@ -82,10 +98,7 @@ class LandingPage extends Component {
 									{enableAnimation ? 'Pause' : 'Play'}
 								</button>
 
-								<ImageFeed
-									images={allImages}
-									enableAnimation={enableAnimation}
-								/>
+								<ImageFeed images={images} enableAnimation={enableAnimation} />
 
 								{page && (
 									<InfoBox title={page.title} excerpt={page.excerpt}>
@@ -118,11 +131,18 @@ class LandingPage extends Component {
 }
 
 const PAGE_QUERY = gql`
-	query {
+	query getFeed($offset: Int, $limit: Int) {
 		pages(slug: "newselfwales") {
 			title
 			excerpt
 			content
+		}
+		newSelfWales {
+			portraits(offset: $offset, limit: $limit) {
+				featuredMedia {
+					sourceUrl
+				}
+			}
 		}
 	}
 `;
