@@ -9,12 +9,16 @@ import './ImageFeed.css';
 class ImageFeed extends Component {
 	static propTypes = {
 		images: PropTypes.array,
+		maxImages: PropTypes.number,
 		enableAnimation: PropTypes.bool,
+		intervalTime: PropTypes.number,
 		onLoadMore: PropTypes.func,
 	};
 
 	static defaultProps = {
 		enableAnimation: false,
+		maxImages: 1000,
+		intervalTime: 5000,
 	};
 
 	constructor() {
@@ -22,15 +26,22 @@ class ImageFeed extends Component {
 
 		this.state = {
 			axis: 'x',
-			// enableAnimation: false,
 			laidOutItems: undefined,
 		};
 	}
 
 	componentDidMount() {
 		this.timeout = setInterval(() => {
-			this.props.onLoadMore();
-		}, 5000);
+			if (this.props.images.length > this.props.maxImages) {
+				clearTimeout(this.timeout);
+			} else {
+				this.props.onLoadMore();
+				if (typeof this.state.laidOutItems !== 'undefined') {
+					scroller.updateLaidOutItems(this.state.laidOutItems);
+				}
+				// console.log(this.state.laidOutItems);
+			}
+		}, this.props.intervalTime);
 	}
 
 	componentDidUpdate(prevProps, prevState) {

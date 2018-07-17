@@ -6,7 +6,7 @@ import App from '../components/App';
 import ImageFeed from '../components/ImageFeed';
 import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
-import images from '../lib/imagesNew.json';
+// import images from '../lib/imagesNew.json';
 import shuffle from '../lib/shuffle';
 import { client } from '../lib/initApollo';
 
@@ -22,16 +22,16 @@ class LandingPage extends Component {
 		};
 
 		// Build images for wall
-		const allImages = shuffle(images).concat(shuffle(images));
-		allImages.splice(1, 0, silhouette);
-		allImages.splice(14, 0, silhouette);
-		allImages.splice(25, 0, silhouette);
-		allImages.splice(35, 0, silhouette);
+		// const allImages = shuffle(images).concat(shuffle(images));
+		// allImages.splice(1, 0, silhouette);
+		// allImages.splice(14, 0, silhouette);
+		// allImages.splice(25, 0, silhouette);
+		// allImages.splice(35, 0, silhouette);
 
 		// console.log(allImages);
 
 		this.state = {
-			allImages,
+			// allImages,
 			axis: 'x',
 			// showModal: true,
 			enableAnimation: false,
@@ -53,7 +53,11 @@ class LandingPage extends Component {
 	};
 
 	render() {
-		const { allImages, showModal, enableAnimation } = this.state;
+		const {
+			// allImages,
+			showModal,
+			enableAnimation,
+		} = this.state;
 
 		return (
 			<ApolloProvider client={client}>
@@ -61,7 +65,7 @@ class LandingPage extends Component {
 					query={PAGE_QUERY}
 					variables={{
 						offset: 0,
-						limit: 5,
+						limit: 50,
 					}}
 				>
 					{({
@@ -75,20 +79,18 @@ class LandingPage extends Component {
 						}
 
 						const page = data.pages && data.pages[0];
-						// const images = data.newSelfWales.portraits.map((portrait) => {
-						// 	return {
-						// 		...portrait,
-						// 		imageUrl: portrait.featuredMedia.sourceUrl,
-						// 	};
-						// });
-						const images = data.posts.map((post) => {
+						const images = data.portraits.map((portrait) => {
 							return {
-								...post,
-								imageUrl: post.featuredMedia.sourceUrl,
+								...portrait,
+								imageUrl: portrait.featuredMedia.sourceUrl,
 							};
 						});
-
-						console.log(data.posts.length);
+						// const images = data.posts.map((post) => {
+						// 	return {
+						// 		...post,
+						// 		imageUrl: post.featuredMedia.sourceUrl,
+						// 	};
+						// });
 
 						return (
 							<App
@@ -110,24 +112,20 @@ class LandingPage extends Component {
 								<ImageFeed
 									images={images}
 									enableAnimation={enableAnimation}
-									onLoadMore={(offset) =>
+									onLoadMore={() =>
 										fetchMore({
 											variables: {
-												offset,
-												limit: 5,
+												offset: images.length,
+												limit: 2,
 											},
 											updateQuery: (prev, { fetchMoreResult }) => {
 												if (!fetchMoreResult) return prev;
 
 												return Object.assign({}, prev, {
-													newSelfWales: {
-														portraits: [
-															// ...prev.newSelfWales.portraits,
-															// ...fetchMoreResult.newSelfWales.portraits,
-															...prev.posts,
-															...fetchMoreResult.posts,
-														],
-													},
+													portraits: [
+														...prev.portraits,
+														...fetchMoreResult.portraits,
+													],
 												});
 											},
 										})
@@ -171,27 +169,14 @@ const PAGE_QUERY = gql`
 			title
 			excerpt
 			content
-			__typename
 		}
-		posts(offset: $offset, limit: $limit) {
+		portraits: newSelfWalesPortraits(offset: $offset, limit: $limit) {
 			id
 			title
 			featuredMedia {
 				sourceUrl
 			}
 		}
-		# newSelfWales {
-		# 	portraits(offset: $offset, limit: $limit) {
-		# 		id
-		# 		title
-		# 		featuredMedia {
-		# 			sourceUrl
-		# 			__typename
-		# 		}
-		# 		__typename
-		# 	}
-		# 	__typename
-		# }
 	}
 `;
 
