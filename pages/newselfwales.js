@@ -4,10 +4,10 @@ import gql from 'graphql-tag';
 
 import App from '../components/App';
 import ImageFeed from '../components/ImageFeed';
-import InfoBox from '../components/InfoBox';
+// import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
 // import images from '../lib/imagesNew.json';
-import shuffle from '../lib/shuffle';
+// import shuffle from '../lib/shuffle';
 import { client } from '../lib/initApollo';
 
 import './index.css';
@@ -16,10 +16,10 @@ class LandingPage extends Component {
 	constructor() {
 		super();
 
-		const silhouette = {
-			isSilhouette: true,
-			imageUrl: 'silhouettes/silhouette.png',
-		};
+		// const silhouette = {
+		// 	isSilhouette: true,
+		// 	imageUrl: 'silhouettes/silhouette.png',
+		// };
 
 		// Build images for wall
 		// const allImages = shuffle(images).concat(shuffle(images));
@@ -33,16 +33,20 @@ class LandingPage extends Component {
 		this.state = {
 			// allImages,
 			axis: 'x',
-			// showModal: true,
-			enableAnimation: false,
-			laidOutItems: undefined,
+			showModal: false,
+			enableAnimation: true,
+			increment: 0.5,
 		};
+	}
+
+	componentDidMount() {
+		window.addEventListener('keyup', this.handleKey, true);
 	}
 
 	handleModalClose = () => {
 		this.setState({
 			showModal: false,
-			// enableAnimation: true,
+			enableAnimation: true,
 		});
 	};
 
@@ -52,11 +56,34 @@ class LandingPage extends Component {
 		});
 	};
 
+	handleKey = (event) => {
+		if (event.code === 'ArrowUp') {
+			this.setState(
+				{
+					increment: this.state.increment + 0.5,
+				},
+				() => console.log('increment: ', this.state.increment),
+			);
+		} else if (event.code === 'ArrowDown') {
+			this.setState(
+				{
+					increment: this.state.increment - 0.5,
+				},
+				() => console.log('increment: ', this.state.increment),
+			);
+		} else if (event.code === 'Space') {
+			this.setState({
+				enableAnimation: !this.state.enableAnimation,
+			});
+		}
+	};
+
 	render() {
 		const {
 			// allImages,
 			showModal,
 			enableAnimation,
+			increment,
 		} = this.state;
 
 		return (
@@ -68,29 +95,23 @@ class LandingPage extends Component {
 						limit: 50,
 					}}
 				>
-					{({
-						loading,
-						// error,
-						data,
-						fetchMore,
-					}) => {
+					{({ loading, error, data, fetchMore }) => {
 						if (loading) {
 							return <div />;
 						}
 
-						const page = data.pages && data.pages[0];
+						if (error) {
+							console.log(error);
+							return null;
+						}
+
+						// const page = data.pages && data.pages[0];
 						const images = data.portraits.map((portrait) => {
 							return {
 								...portrait,
 								imageUrl: portrait.featuredMedia.sourceUrl,
 							};
 						});
-						// const images = data.posts.map((post) => {
-						// 	return {
-						// 		...post,
-						// 		imageUrl: post.featuredMedia.sourceUrl,
-						// 	};
-						// });
 
 						return (
 							<App
@@ -112,6 +133,7 @@ class LandingPage extends Component {
 								<ImageFeed
 									images={images}
 									enableAnimation={enableAnimation}
+									increment={increment}
 									onLoadMore={() =>
 										fetchMore({
 											variables: {

@@ -1,4 +1,77 @@
 @import '../../styles/variables.css';
 
-/* .image-feed {
-} */
+.image-feed__image--is-person {
+	background-color: var(--colour-grey-dark);
+}
+
+.image-feed__image-holder {
+	position: relative;
+	height: calc(20%);
+	padding: 5px;
+
+	@media (--screen-md) {
+		height: calc(20%);
+	}
+
+	& a {
+		display: block;
+		height: 100%;
+	}
+
+	& img {
+		height: 100%;
+		width: auto;
+	}
+}
+
+.image-feed__image-holder--lg {
+	height: calc(40%);
+
+	@media (--screen-md) {
+		height: calc(40%);
+	}
+}
+
+.image-feed__image-holder--xlg {
+	height: calc(60%);
+
+	@media (--screen-md) {
+		height: calc(60%);
+	}
+}
+
+.image-feed__image-holder__content {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	/* Question Mark */
+	& span {
+		flex: 1;
+		margin-top: 0.18em;
+		font-size: 10vh;
+
+		@nest .image-feed__image-holder--lg & {
+			font-size: 20vh;
+		}
+	}
+
+	/* 'This could be you!' */
+	& p {
+		align-items: flex-end;
+		justify-content: flex-end;
+		margin-bottom: var(--spacing-xs);
+		text-align: center;
+		font-size: 1.5vh;
+
+		@nest .image-feed__image-holder--lg & {
+			font-size: 3vh;
+		}
+	}
+}

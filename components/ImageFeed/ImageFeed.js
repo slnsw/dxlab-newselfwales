@@ -12,13 +12,15 @@ class ImageFeed extends Component {
 		maxImages: PropTypes.number,
 		enableAnimation: PropTypes.bool,
 		intervalTime: PropTypes.number,
+		increment: PropTypes.number,
 		onLoadMore: PropTypes.func,
 	};
 
 	static defaultProps = {
 		enableAnimation: false,
 		maxImages: 1000,
-		intervalTime: 5000,
+		increment: 0.4,
+		intervalTime: 10000,
 	};
 
 	constructor() {
@@ -31,50 +33,57 @@ class ImageFeed extends Component {
 	}
 
 	componentDidMount() {
-		this.timeout = setInterval(() => {
+		// Set up repeating interval to continuously load new images
+		this.interval = setInterval(() => {
 			if (this.props.images.length > this.props.maxImages) {
-				clearTimeout(this.timeout);
+				clearTimeout(this.interval);
 			} else {
 				this.props.onLoadMore();
+
 				if (typeof this.state.laidOutItems !== 'undefined') {
 					scroller.updateLaidOutItems(this.state.laidOutItems);
 				}
-				// console.log(this.state.laidOutItems);
 			}
 		}, this.props.intervalTime);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		// Init scroller
 		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
-			// Init scroller
 			scroller.init(
 				this.imagesRef.refs.packeryContainer,
 				this.state.laidOutItems,
-				'x',
+				{
+					axis: 'x',
+					increment: this.props.increment,
+				},
 			);
 		}
 
+		// Start or stop scroller
 		if (!prevProps.enableAnimation && this.props.enableAnimation) {
-			// Start scroll
 			scroller.start();
 		} else if (prevProps.enableAnimation && !this.props.enableAnimation) {
-			// Stop scroll
 			scroller.stop();
+		}
+
+		if (prevProps.increment !== this.props.increment) {
+			scroller.updateIncrement(this.props.increment);
 		}
 	}
 
 	render() {
-		const { images } = this.props;
+		const { images, enableAnimation } = this.props;
 
 		return (
 			<div
 				className="image-feed"
 				style={{
-					overflow: 'hidden',
+					overflow: 'auto',
 				}}
 			>
 				<Packery
-					className="images"
+					className="image-feed__images"
 					ref={(element) => {
 						this.imagesRef = element;
 					}}
@@ -83,7 +92,7 @@ class ImageFeed extends Component {
 						height: 'calc(100vh - 10px)',
 					}}
 					options={{
-						itemSelector: '.image-holder',
+						itemSelector: '.image-feed__image-holder',
 						gutter: 0,
 						horizontalOrder: true,
 						fitWidth: true,
@@ -96,6 +105,10 @@ class ImageFeed extends Component {
 							this.setState({
 								laidOutItems,
 							});
+
+							if (enableAnimation) {
+								scroller.start();
+							}
 						}
 					}}
 				>
@@ -104,23 +117,25 @@ class ImageFeed extends Component {
 
 						return (
 							<div
-								className={`image-holder ${
-									image.isSilhouette ? 'image-holder--is-person' : ''
+								className={`image-feed__image-holder ${
+									image.isSilhouette
+										? 'image-feed__image-holder--is-person'
+										: ''
 								}
-            image-holder--${imageSize}`}
+								image-feed__image-holder--${imageSize}`}
 								key={`image-${i}`}
 							>
 								<a href={image.url} target="_blank">
 									{image.isSilhouette && (
-										<div className="image-holder__content">
+										<div className="image-feed__image-holder__content">
 											<span>?</span>
 											<p>This could be you!</p>
 										</div>
 									)}
 
 									<img
-										className={`image ${
-											image.isSilhouette ? 'image--is-person' : ''
+										className={`image-feed__image ${
+											image.isSilhouette ? 'image-feed__image--is-person' : ''
 										}`}
 										src={image.imageUrl}
 										// src={`/static/newselfwales/${
