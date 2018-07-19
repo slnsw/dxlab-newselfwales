@@ -76,12 +76,7 @@ class ImageFeed extends Component {
 		const { images, enableAnimation } = this.props;
 
 		return (
-			<div
-				className="image-feed"
-				style={{
-					overflow: 'auto',
-				}}
-			>
+			<div className="image-feed">
 				<Packery
 					className="image-feed__images"
 					ref={(element) => {

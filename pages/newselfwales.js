@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 
 import App from '../components/App';
 import ImageFeed from '../components/ImageFeed';
+import ImageFeedContainer from '../components/ImageFeedContainer';
 // import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
 // import images from '../lib/imagesNew.json';
@@ -39,10 +40,6 @@ class LandingPage extends Component {
 		};
 	}
 
-	componentDidMount() {
-		window.addEventListener('keyup', this.handleKey, true);
-	}
-
 	handleModalClose = () => {
 		this.setState({
 			showModal: false,
@@ -54,28 +51,6 @@ class LandingPage extends Component {
 		this.setState({
 			enableAnimation: !this.state.enableAnimation,
 		});
-	};
-
-	handleKey = (event) => {
-		if (event.code === 'ArrowUp') {
-			this.setState(
-				{
-					increment: this.state.increment + 0.5,
-				},
-				() => console.log('increment: ', this.state.increment),
-			);
-		} else if (event.code === 'ArrowDown') {
-			this.setState(
-				{
-					increment: this.state.increment - 0.5,
-				},
-				() => console.log('increment: ', this.state.increment),
-			);
-		} else if (event.code === 'Space') {
-			this.setState({
-				enableAnimation: !this.state.enableAnimation,
-			});
-		}
 	};
 
 	render() {
@@ -130,28 +105,9 @@ class LandingPage extends Component {
 									{enableAnimation ? 'Pause' : 'Play'}
 								</button>
 
-								<ImageFeed
-									images={images}
+								<ImageFeedContainer
+									maxImages={100}
 									enableAnimation={enableAnimation}
-									increment={increment}
-									onLoadMore={() =>
-										fetchMore({
-											variables: {
-												offset: images.length,
-												limit: 2,
-											},
-											updateQuery: (prev, { fetchMoreResult }) => {
-												if (!fetchMoreResult) return prev;
-
-												return Object.assign({}, prev, {
-													portraits: [
-														...prev.portraits,
-														...fetchMoreResult.portraits,
-													],
-												});
-											},
-										})
-									}
 								/>
 
 								{/* {page && (

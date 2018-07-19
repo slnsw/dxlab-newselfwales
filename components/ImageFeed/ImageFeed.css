@@ -1,5 +1,9 @@
 @import '../../styles/variables.css';
 
+.image-feed {
+	overflow: 'auto';
+}
+
 .image-feed__image--is-person {
 	background-color: var(--colour-grey-dark);
 }
