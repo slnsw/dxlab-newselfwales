@@ -16,9 +16,11 @@ class GalleryPage extends Component {
 	}
 
 	render() {
+		const { enableAnimation } = this.state;
+
 		return (
 			<ApolloProvider client={client}>
-				<ImageFeedContainer />
+				<ImageFeedContainer enableAnimation={enableAnimation} />
 			</ApolloProvider>
 		);
 	}

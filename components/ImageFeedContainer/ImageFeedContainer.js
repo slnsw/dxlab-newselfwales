@@ -9,6 +9,18 @@ import ImageFeed from '../ImageFeed';
 class ImageFeedContainer extends Component {
 	static propTypes = {
 		enableAnimation: PropTypes.bool,
+		maxImages: PropTypes.number,
+		startImages: PropTypes.number,
+		fetchMoreImages: PropTypes.number,
+		onImagesUpdate: PropTypes.func,
+	};
+
+	static defaultProps = {
+		enableAnimation: undefined,
+		maxImages: 1000,
+		startImages: 50,
+		fetchMoreImages: 2,
+		intervalTime: 10000,
 	};
 
 	constructor() {
@@ -22,25 +34,32 @@ class ImageFeedContainer extends Component {
 
 	componentDidMount() {
 		window.addEventListener('keyup', this.handleKey, true);
+
+		if (this.props.enableAnimation !== this.state.enableAnimation) {
+			this.setState({
+				enableAnimation: this.props.enableAnimation,
+			});
+		}
 	}
 
-	// componentDidUpdate() {
-	// 	if (
-	// 		this.props.enableAnimation &&
-	// 		this.props.enableAnimation !== this.state.enableAnimation
-	// 	) {
-	// 		this.setState({
-	// 			enableAnimation: this.props.enableAnimation,
-	// 		});
-	// 	}
-	// }
+	componentDidUpdate(prevProps, prevState) {
+		// Handle controlled/uncontrolled props/state
+		if (
+			// Check props is defined
+			typeof this.props.enableAnimation !== 'undefined' &&
+			// Compare props and state
+			this.props.enableAnimation !== this.state.enableAnimation &&
+			// Ensure internal state can still be changed
+			prevState.enableAnimation === this.state.enableAnimation
+		) {
+			this.setState({
+				enableAnimation: this.props.enableAnimation,
+			});
+		}
 
-	static getDerivedStateFromProps(props, state) {
-		console.log(props, state);
-
-		return {
-			enableAnimation: true,
-		};
+		if (prevProps.images !== this.props.images) {
+			console.log('hi');
+		}
 	}
 
 	handleKey = (event) => {
@@ -66,17 +85,15 @@ class ImageFeedContainer extends Component {
 	};
 
 	render() {
+		const {
+			maxImages,
+			startImages,
+			fetchMoreImages,
+			intervalTime,
+			onImagesUpdate,
+		} = this.props;
+
 		const { enableAnimation, increment } = this.state;
-		// console.log(enableAnimation);
-
-		// let enableAnimation = enableAnimationState;
-
-		// if (
-		// 	this.props.enableAnimation &&
-		// 	this.props.enableAnimation !== this.state.enableAnimation
-		// ) {
-		// 	enableAnimation = this.props.enableAnimation;
-		// }
 
 		return (
 			<div className="image-feed-container">
@@ -84,7 +101,7 @@ class ImageFeedContainer extends Component {
 					query={PAGE_QUERY}
 					variables={{
 						offset: 0,
-						limit: 50,
+						limit: startImages,
 					}}
 				>
 					{({ loading, error, data, fetchMore }) => {
@@ -97,25 +114,29 @@ class ImageFeedContainer extends Component {
 							return null;
 						}
 
-						// const page = data.pages && data.pages[0];
-						const images = data.portraits.map((portrait) => {
+						let images = data.portraits.map((portrait) => {
 							return {
 								...portrait,
 								imageUrl: portrait.featuredMedia.sourceUrl,
 							};
 						});
 
+						if (typeof onImagesUpdate === 'function') {
+							images = onImagesUpdate(images);
+						}
+
 						return (
 							<ImageFeed
 								images={images}
-								maxImages={100}
+								maxImages={maxImages}
 								enableAnimation={enableAnimation}
 								increment={increment}
+								intervalTime={intervalTime}
 								onLoadMore={() =>
 									fetchMore({
 										variables: {
 											offset: images.length,
-											limit: 2,
+											limit: fetchMoreImages,
 										},
 										updateQuery: (prev, { fetchMoreResult }) => {
 											if (!fetchMoreResult) return prev;

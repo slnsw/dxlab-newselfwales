@@ -8,6 +8,7 @@ import './ImageFeed.css';
 
 class ImageFeed extends Component {
 	static propTypes = {
+		axis: PropTypes.string,
 		images: PropTypes.array,
 		maxImages: PropTypes.number,
 		enableAnimation: PropTypes.bool,
@@ -17,9 +18,10 @@ class ImageFeed extends Component {
 	};
 
 	static defaultProps = {
+		axis: 'x',
 		enableAnimation: false,
 		maxImages: 1000,
-		increment: 0.4,
+		increment: 0.5,
 		intervalTime: 10000,
 	};
 
@@ -27,7 +29,6 @@ class ImageFeed extends Component {
 		super();
 
 		this.state = {
-			axis: 'x',
 			laidOutItems: undefined,
 		};
 	}
@@ -54,7 +55,7 @@ class ImageFeed extends Component {
 				this.imagesRef.refs.packeryContainer,
 				this.state.laidOutItems,
 				{
-					axis: 'x',
+					axis: this.props.axis,
 					increment: this.props.increment,
 				},
 			);

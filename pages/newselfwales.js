@@ -3,9 +3,8 @@ import { ApolloProvider, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import App from '../components/App';
-import ImageFeed from '../components/ImageFeed';
 import ImageFeedContainer from '../components/ImageFeedContainer';
-// import InfoBox from '../components/InfoBox';
+import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
 // import images from '../lib/imagesNew.json';
 // import shuffle from '../lib/shuffle';
@@ -17,26 +16,10 @@ class LandingPage extends Component {
 	constructor() {
 		super();
 
-		// const silhouette = {
-		// 	isSilhouette: true,
-		// 	imageUrl: 'silhouettes/silhouette.png',
-		// };
-
-		// Build images for wall
-		// const allImages = shuffle(images).concat(shuffle(images));
-		// allImages.splice(1, 0, silhouette);
-		// allImages.splice(14, 0, silhouette);
-		// allImages.splice(25, 0, silhouette);
-		// allImages.splice(35, 0, silhouette);
-
-		// console.log(allImages);
-
 		this.state = {
-			// allImages,
 			axis: 'x',
 			showModal: false,
 			enableAnimation: true,
-			increment: 0.5,
 		};
 	}
 
@@ -53,24 +36,32 @@ class LandingPage extends Component {
 		});
 	};
 
+	// Intercept image feed and splice in silhouettes
+	handleImagesUpdate = (images) => {
+		const silhouetteInterval = 11;
+		const silhouette = {
+			isSilhouette: true,
+			imageUrl: '/static/newselfwales/images/silhouettes/silhouette.png',
+		};
+
+		// Build images for wall
+		const totalSilhouettes = Math.ceil(images.length / silhouetteInterval);
+
+		// Loop through and slice in silhoutte
+		[...Array(totalSilhouettes)].forEach((item, i) => {
+			images.splice(i * silhouetteInterval + 1, 0, silhouette);
+		});
+
+		return images;
+	};
+
 	render() {
-		const {
-			// allImages,
-			showModal,
-			enableAnimation,
-			increment,
-		} = this.state;
+		const { showModal, enableAnimation } = this.state;
 
 		return (
 			<ApolloProvider client={client}>
-				<Query
-					query={PAGE_QUERY}
-					variables={{
-						offset: 0,
-						limit: 50,
-					}}
-				>
-					{({ loading, error, data, fetchMore }) => {
+				<Query query={PAGE_QUERY}>
+					{({ loading, error, data }) => {
 						if (loading) {
 							return <div />;
 						}
@@ -80,13 +71,7 @@ class LandingPage extends Component {
 							return null;
 						}
 
-						// const page = data.pages && data.pages[0];
-						const images = data.portraits.map((portrait) => {
-							return {
-								...portrait,
-								imageUrl: portrait.featuredMedia.sourceUrl,
-							};
-						});
+						const page = data.pages && data.pages[0];
 
 						return (
 							<App
@@ -107,14 +92,16 @@ class LandingPage extends Component {
 
 								<ImageFeedContainer
 									maxImages={100}
+									intervalTime={5000}
 									enableAnimation={enableAnimation}
+									onImagesUpdate={this.handleImagesUpdate}
 								/>
 
-								{/* {page && (
+								{page && (
 									<InfoBox title={page.title} excerpt={page.excerpt}>
 										{page.content}
 									</InfoBox>
-								)} */}
+								)}
 
 								{showModal && (
 									<Modal onClose={this.handleModalClose}>
