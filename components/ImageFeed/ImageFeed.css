@@ -1,7 +1,8 @@
 @import '../../styles/variables.css';
 
 .image-feed {
-	overflow: 'auto';
+	overflow: auto;
+	width: 90%;
 }
 
 .image-feed__image--is-person {
