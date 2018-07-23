@@ -46,6 +46,17 @@ class ImageFeed extends Component {
 				}
 			}
 		}, this.props.intervalTime);
+
+		// TODO: Still not sure on this
+		// if (typeof window !== 'undefined') {
+		// 	const IScroll = require('iscroll');
+
+		// 	this.iscroll = new IScroll('.image-feed', {
+		// 		scrollX: true,
+		// 		scrollY: false,
+		// 		mouseWheel: true,
+		// 	});
+		// }
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -72,6 +83,12 @@ class ImageFeed extends Component {
 			scroller.updateIncrement(this.props.increment);
 		}
 	}
+
+	handleScroll = (e) => {
+		console.log('Handlescroll');
+
+		console.log(e.target.scrollLeft);
+	};
 
 	render() {
 		const { images, enableAnimation } = this.props;

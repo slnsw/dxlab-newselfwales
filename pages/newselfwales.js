@@ -19,7 +19,7 @@ class LandingPage extends Component {
 		this.state = {
 			axis: 'x',
 			showModal: false,
-			enableAnimation: true,
+			enableAnimation: false,
 		};
 	}
 
