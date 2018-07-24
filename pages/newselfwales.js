@@ -62,8 +62,8 @@ class LandingPage extends Component {
 	};
 
 	handleImageClick = (event, image) => {
-		console.log(event, image);
-		Router.pushRoute(`/newselfwales/portraits/${image.id}`);
+		// console.log(event, image);
+		Router.pushRoute(`/newselfwales/portrait/${image.id}`);
 	};
 
 	render() {

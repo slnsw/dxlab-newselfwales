@@ -1,4 +1,75 @@
 @import '../../styles/variables.css';
 
-/* .image-modal {
-} */
+.image-modal {
+	display: flex;
+	flex-direction: column;
+	height: calc(100% - 2em);
+	overflow: auto;
+	padding: var(--spacing-sm);
+
+	@media (--screen-sm) {
+		flex-direction: row;
+		width: 80%;
+		height: 50vh;
+		max-width: 60em;
+	}
+}
+
+.image-modal__image-holder {
+	height: 50%;
+	background-color: var(--colour-grey-darkest);
+	padding: var(--spacing-xs);
+	margin-bottom: 1em;
+
+	@media (--screen-sm) {
+		width: 50%;
+		height: 100%;
+		margin-right: var(--spacing-lg);
+	}
+}
+
+.image-modal__image {
+	height: 100%;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-bottom: 1em;
+}
+
+.image-modal__info {
+	margin-right: var(--spacing-xlg);
+
+	@media (--screen-sm) {
+		width: 50%;
+		padding-top: 3em;
+	}
+}
+
+.image-modal__primo-id {
+	margin-bottom: var(--spacing-xxxs);
+	@apply --font-uppercase;
+	font-size: var(--font-size-xs);
+	font-weight: 600;
+	color: var(--colour-grey-light);
+}
+
+h1.image-modal__title {
+	font-size: var(--font-size-lg);
+	font-family: var(--font-secondary);
+	letter-spacing: 0;
+	margin-right: 0;
+	margin-bottom: 1em;
+
+	@media (--screen-sm) {
+		font-size: var(--font-size-xlg);
+	}
+}
+
+.image-modal__content {
+	font-size: var(--font-size-sm);
+	color: var(--colour-grey-light);
+
+	@media (--screen-sm) {
+		font-size: var(--font-size-md);
+	}
+}

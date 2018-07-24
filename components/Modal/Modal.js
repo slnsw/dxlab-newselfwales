@@ -5,6 +5,7 @@ import './Modal.css';
 
 class Modal extends Component {
 	static propTypes = {
+		className: PropTypes.string,
 		onClose: PropTypes.func,
 	};
 
@@ -13,13 +14,13 @@ class Modal extends Component {
 	};
 
 	render() {
-		// const {} = this.props;
+		const { className = '' } = this.props;
 
 		return (
 			<Fragment>
-				<div className="modal">
+				<div className={`modal ${className}`}>
 					<button onClick={this.handleClose} className="modal__close-button">
-						<i className="slnsw-icon-modal-close" />
+						<i className="ion-md-close" />
 					</button>
 					{this.props.children}
 				</div>

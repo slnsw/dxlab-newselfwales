@@ -7,8 +7,11 @@ import Modal from '../Modal';
 class ImageModal extends Component {
 	static propTypes = {
 		title: PropTypes.string,
-		loading: PropTypes.bool,
+		primoId: PropTypes.string,
+		imageUrl: PropTypes.string,
+		content: PropTypes.string,
 		onClose: PropTypes.func,
+		loading: PropTypes.bool,
 	};
 
 	handleClose = () => {
@@ -16,16 +19,41 @@ class ImageModal extends Component {
 	};
 
 	render() {
-		const { title, loading } = this.props;
+		const { title, primoId, imageUrl, content, loading } = this.props;
 
 		if (loading) {
 			return null;
 		}
 
 		return (
-			<Modal onClose={this.handleClose}>
-				<div className="image-modal">
-					<h1>{title}</h1>
+			<Modal className="image-modal" onClose={this.handleClose}>
+				<div className="image-modal__image-holder">
+					<div
+						className="image-modal__image"
+						style={{
+							backgroundImage: `url(${imageUrl}`,
+						}}
+					>
+						{/* <img
+							className="image-modal__image"
+							src={imageUrl}
+							alt={title}
+							width="100%"
+							height="auto"
+						/> */}
+					</div>
+				</div>
+
+				<div className="image-modal__info">
+					{primoId && <div className="image-modal__primo-id">{primoId}</div>}
+					<h1
+						className="image-modal__title"
+						dangerouslySetInnerHTML={{ __html: title }}
+					/>
+					<div
+						className="image-modal__content"
+						dangerouslySetInnerHTML={{ __html: content }}
+					/>
 				</div>
 			</Modal>
 		);
