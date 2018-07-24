@@ -1,6 +1,6 @@
 import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { CSSTransition, Transition } from 'react-transition-group';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 import './Modal.css';
 
@@ -23,10 +23,23 @@ class Modal extends Component {
 		const { className = '', isActive } = this.props;
 
 		return (
-			<Transition in={isActive} timeout={300} unmountOnExit={true}>
+			<CSSTransition
+				in={isActive}
+				classNames="modal__overlay-"
+				timeout={300}
+				appear={true}
+				unmountOnExit={true}
+			>
 				{(state) => {
+					console.log(state);
+
 					return (
 						<Fragment>
+							<div
+								className={`modal__overlay modal__overlay--${state}`}
+								onClick={this.handleClose}
+							/>
+
 							<div className={`modal modal--${state} ${className}`}>
 								<button
 									onClick={this.handleClose}
@@ -36,15 +49,10 @@ class Modal extends Component {
 								</button>
 								{this.props.children}
 							</div>
-
-							<div
-								className={`modal__overlay modal__overlay--${state}`}
-								onClick={this.handleClose}
-							/>
 						</Fragment>
 					);
 				}}
-			</Transition>
+			</CSSTransition>
 		);
 	}
 }

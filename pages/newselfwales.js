@@ -105,7 +105,8 @@ class LandingPage extends Component {
 								</button>
 
 								<ImageFeedContainer
-									maxImages={100}
+									startImages={20}
+									maxImages={50}
 									intervalTime={5000}
 									enableAnimation={enableAnimation}
 									onImagesUpdate={this.handleImagesUpdate}

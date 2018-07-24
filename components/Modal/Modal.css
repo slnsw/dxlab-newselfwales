@@ -32,7 +32,8 @@
 	transition: 0.3s;
 }
 
-.modal__overlay--entered {
+.modal__overlay--appear-active,
+.modal__overlay--enter-done {
 	opacity: 0.8;
 }
 
