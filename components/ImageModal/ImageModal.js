@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { CSSTransition, Transition } from 'react-transition-group';
 
 import './ImageModal.css';
 import Modal from '../Modal';
@@ -11,6 +12,7 @@ class ImageModal extends Component {
 		imageUrl: PropTypes.string,
 		content: PropTypes.string,
 		onClose: PropTypes.func,
+		isActive: PropTypes.bool,
 		loading: PropTypes.bool,
 	};
 
@@ -19,43 +21,59 @@ class ImageModal extends Component {
 	};
 
 	render() {
-		const { title, primoId, imageUrl, content, loading } = this.props;
+		const { title, primoId, imageUrl, content, isActive, loading } = this.props;
 
 		if (loading) {
 			return null;
 		}
 
-		return (
-			<Modal className="image-modal" onClose={this.handleClose}>
-				<div className="image-modal__image-holder">
-					<div
-						className="image-modal__image"
-						style={{
-							backgroundImage: `url(${imageUrl}`,
-						}}
-					>
-						{/* <img
-							className="image-modal__image"
-							src={imageUrl}
-							alt={title}
-							width="100%"
-							height="auto"
-						/> */}
-					</div>
-				</div>
+		if (isActive !== true) {
+			return null;
+		}
 
-				<div className="image-modal__info">
-					{primoId && <div className="image-modal__primo-id">{primoId}</div>}
-					<h1
-						className="image-modal__title"
-						dangerouslySetInnerHTML={{ __html: title }}
-					/>
-					<div
-						className="image-modal__content"
-						dangerouslySetInnerHTML={{ __html: content }}
-					/>
-				</div>
-			</Modal>
+		return (
+			<Transition in={isActive} timeout={300} unmountOnExit={true}>
+				{(state) => {
+					return (
+						<Modal
+							className={`image-modal image-modal--${state}`}
+							isActive={isActive}
+							onClose={this.handleClose}
+						>
+							<div className="image-modal__image-holder">
+								<div
+									className="image-modal__image"
+									style={{
+										backgroundImage: `url(${imageUrl}`,
+									}}
+								>
+									{/* <img
+										className="image-modal__image"
+										src={imageUrl}
+										alt={title}
+										width="100%"
+										height="auto"
+									/> */}
+								</div>
+							</div>
+
+							<div className="image-modal__info">
+								{primoId && (
+									<div className="image-modal__primo-id">{primoId}</div>
+								)}
+								<h1
+									className="image-modal__title"
+									dangerouslySetInnerHTML={{ __html: title }}
+								/>
+								<div
+									className="image-modal__content"
+									dangerouslySetInnerHTML={{ __html: content }}
+								/>
+							</div>
+						</Modal>
+					);
+				}}
+			</Transition>
 		);
 	}
 }

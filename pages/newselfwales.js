@@ -20,7 +20,7 @@ class LandingPage extends Component {
 
 		this.state = {
 			axis: 'x',
-			showModal: false,
+			showModal: true,
 			enableAnimation: false,
 		};
 	}
@@ -70,7 +70,7 @@ class LandingPage extends Component {
 		const { url } = this.props;
 		const { showModal, enableAnimation } = this.state;
 
-		const showImageModal = url && url.query.imageType && url.query.id;
+		const showImageModal = url && url.query.imageType && url.query.id && true;
 
 		return (
 			<ApolloProvider client={client}>
@@ -120,31 +120,25 @@ class LandingPage extends Component {
 									</InfoBox>
 								)}
 
-								{showImageModal && (
-									<ImageModalContainer
-										imageType={url.query.imageType}
-										id={url.query.id}
-										onClose={this.handleImageModalClose}
-									>
-										Test
-									</ImageModalContainer>
-								)}
+								<ImageModalContainer
+									isActive={showImageModal}
+									imageType={url.query.imageType}
+									id={parseInt(url.query.id, 10)}
+									onClose={this.handleImageModalClose}
+								/>
 
-								{showModal && (
-									<Modal onClose={this.handleModalClose}>
-										<h1>SPECIAL CARE NOTICE</h1>
+								<Modal isActive={showModal} onClose={this.handleModalClose}>
+									<h1>SPECIAL CARE NOTICE</h1>
 
-										<p>
-											This website may contain images or documentation relating
-											to Aboriginal and Torres Strait Islander people who are
-											deceased. The State Library of NSW acknowledges that its
-											historical collection items can be offensive and
-											confronting in today’s context. They are published with
-											respect to the descendants and communities of the
-											individuals they depict.
-										</p>
-									</Modal>
-								)}
+									<p>
+										This website may contain images or documentation relating to
+										Aboriginal and Torres Strait Islander people who are
+										deceased. The State Library of NSW acknowledges that its
+										historical collection items can be offensive and confronting
+										in today’s context. They are published with respect to the
+										descendants and communities of the individuals they depict.
+									</p>
+								</Modal>
 							</App>
 						);
 					}}

@@ -10,11 +10,12 @@ class ImageModalContainer extends Component {
 	static propTypes = {
 		id: PropTypes.number.isRequired,
 		imageType: PropTypes.string.isRequired,
+		isActive: PropTypes.bool,
 		onClose: PropTypes.func,
 	};
 
 	render() {
-		const { id, imageType, onClose } = this.props;
+		const { id, imageType, onClose, isActive } = this.props;
 		let query;
 
 		if (imageType === 'portrait') {
@@ -56,6 +57,7 @@ class ImageModalContainer extends Component {
 							{...imageModalProps}
 							type={imageType}
 							onClose={onClose}
+							isActive={isActive}
 							loading={loading}
 							error={error}
 						/>
