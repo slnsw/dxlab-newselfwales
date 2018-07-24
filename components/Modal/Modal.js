@@ -24,7 +24,7 @@ class Modal extends Component {
 					{this.props.children}
 				</div>
 
-				<div className="modal__overlay" />
+				<div className="modal__overlay" onClick={this.handleClose} />
 			</Fragment>
 		);
 	}

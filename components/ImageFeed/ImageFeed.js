@@ -15,6 +15,7 @@ class ImageFeed extends Component {
 		intervalTime: PropTypes.number,
 		increment: PropTypes.number,
 		onLoadMore: PropTypes.func,
+		onImageClick: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -46,17 +47,6 @@ class ImageFeed extends Component {
 				}
 			}
 		}, this.props.intervalTime);
-
-		// TODO: Still not sure on this
-		// if (typeof window !== 'undefined') {
-		// 	const IScroll = require('iscroll');
-
-		// 	this.iscroll = new IScroll('.image-feed', {
-		// 		scrollX: true,
-		// 		scrollY: false,
-		// 		mouseWheel: true,
-		// 	});
-		// }
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -84,10 +74,16 @@ class ImageFeed extends Component {
 		}
 	}
 
-	handleScroll = (e) => {
-		console.log('Handlescroll');
+	// handleScroll = (e) => {
+	// 	console.log('Handlescroll');
 
-		console.log(e.target.scrollLeft);
+	// 	console.log(e.target.scrollLeft);
+	// };
+
+	handleImageClick = (event, image) => {
+		if (typeof this.props.onImageClick !== 'undefined') {
+			this.props.onImageClick(event, image);
+		}
 	};
 
 	render() {
@@ -136,32 +132,31 @@ class ImageFeed extends Component {
 										: ''
 								}
 								image-feed__image-holder--${imageSize}`}
+								onClick={(event) => this.handleImageClick(event, image)}
 								key={`image-${i}`}
 							>
-								<a href={image.url} target="_blank">
-									{image.isSilhouette && (
-										<div className="image-feed__image-holder__content">
-											<span>?</span>
-											<p>This could be you!</p>
-										</div>
-									)}
+								{image.isSilhouette && (
+									<div className="image-feed__image-holder__content">
+										<span>?</span>
+										<p>This could be you!</p>
+									</div>
+								)}
 
-									<img
-										className={`image-feed__image ${
-											image.isSilhouette ? 'image-feed__image--is-person' : ''
-										}`}
-										src={image.imageUrl}
-										// src={`/static/newselfwales/${
-										// 	image.isSelfie ? 'selfies' : 'images'
-										// }/${image.imageUrl}`}
-										style={{
-											// height: imageSize,
-											marginBottom: '-4px',
-										}}
-										key={`${image.imageUrl}-${i}`}
-										alt="Portrait from the State Library of NSW collection"
-									/>
-								</a>
+								<img
+									className={`image-feed__image ${
+										image.isSilhouette ? 'image-feed__image--is-person' : ''
+									}`}
+									src={image.imageUrl}
+									// src={`/static/newselfwales/${
+									// 	image.isSelfie ? 'selfies' : 'images'
+									// }/${image.imageUrl}`}
+									style={{
+										// height: imageSize,
+										marginBottom: '-4px',
+									}}
+									key={`${image.imageUrl}-${i}`}
+									alt="Portrait from the State Library of NSW collection"
+								/>
 							</div>
 						);
 					})}

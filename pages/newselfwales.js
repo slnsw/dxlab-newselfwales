@@ -6,9 +6,11 @@ import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
 import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
+import ImageModalContainer from '../components/ImageModalContainer';
 // import images from '../lib/imagesNew.json';
 // import shuffle from '../lib/shuffle';
 import { client } from '../lib/initApollo';
+import { Router } from '../routes';
 
 import './index.css';
 
@@ -28,6 +30,10 @@ class LandingPage extends Component {
 			showModal: false,
 			enableAnimation: true,
 		});
+	};
+
+	handleImageModalClose = () => {
+		Router.pushRoute('/newselfwales');
 	};
 
 	handleToggleAnimationButton = () => {
@@ -55,8 +61,16 @@ class LandingPage extends Component {
 		return images;
 	};
 
+	handleImageClick = (event, image) => {
+		console.log(event, image);
+		Router.pushRoute(`/newselfwales/portraits/${image.id}`);
+	};
+
 	render() {
+		const { url } = this.props;
 		const { showModal, enableAnimation } = this.state;
+
+		const showImageModal = url && url.query.imageType && url.query.id;
 
 		return (
 			<ApolloProvider client={client}>
@@ -95,12 +109,25 @@ class LandingPage extends Component {
 									intervalTime={5000}
 									enableAnimation={enableAnimation}
 									onImagesUpdate={this.handleImagesUpdate}
+									onImageClick={(event, image) =>
+										this.handleImageClick(event, image)
+									}
 								/>
 
 								{page && (
 									<InfoBox title={page.title} excerpt={page.excerpt}>
 										{page.content}
 									</InfoBox>
+								)}
+
+								{showImageModal && (
+									<ImageModalContainer
+										imageType={url.query.imageType}
+										id={url.query.id}
+										onClose={this.handleImageModalClose}
+									>
+										Test
+									</ImageModalContainer>
 								)}
 
 								{showModal && (

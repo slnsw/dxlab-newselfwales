@@ -13,6 +13,7 @@ class ImageFeedContainer extends Component {
 		startImages: PropTypes.number,
 		fetchMoreImages: PropTypes.number,
 		onImagesUpdate: PropTypes.func,
+		onImageClick: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -84,6 +85,12 @@ class ImageFeedContainer extends Component {
 		}
 	};
 
+	handleImageClick = (event, image) => {
+		if (typeof this.props.onImageClick !== 'undefined') {
+			this.props.onImageClick(event, image);
+		}
+	};
+
 	render() {
 		const {
 			maxImages,
@@ -149,6 +156,9 @@ class ImageFeedContainer extends Component {
 											});
 										},
 									})
+								}
+								onImageClick={(event, image) =>
+									this.handleImageClick(event, image)
 								}
 							/>
 						);
