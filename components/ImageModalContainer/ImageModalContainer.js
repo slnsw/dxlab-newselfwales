@@ -10,12 +10,19 @@ class ImageModalContainer extends Component {
 	static propTypes = {
 		id: PropTypes.number.isRequired,
 		imageType: PropTypes.string.isRequired,
+		sourceImageBoundingClientRect: PropTypes.object,
 		isActive: PropTypes.bool,
 		onClose: PropTypes.func,
 	};
 
 	render() {
-		const { id, imageType, onClose, isActive } = this.props;
+		const {
+			id,
+			imageType,
+			sourceImageBoundingClientRect,
+			onClose,
+			isActive,
+		} = this.props;
 		let query;
 
 		if (imageType === 'portrait') {
@@ -48,6 +55,7 @@ class ImageModalContainer extends Component {
 							primoId: image.primoId,
 							title: image.title,
 							content: image.content,
+							imageType,
 							imageUrl: image.featuredMedia && image.featuredMedia.sourceUrl,
 						};
 					}
@@ -55,6 +63,7 @@ class ImageModalContainer extends Component {
 					return (
 						<ImageModal
 							{...imageModalProps}
+							sourceImageBoundingClientRect={sourceImageBoundingClientRect}
 							type={imageType}
 							onClose={onClose}
 							isActive={isActive}

@@ -7,11 +7,14 @@ import './Modal.css';
 class Modal extends Component {
 	static propTypes = {
 		className: PropTypes.string,
+		style: PropTypes.object,
 		isActive: PropTypes.bool,
 		onClose: PropTypes.func,
 	};
 
 	static defaultProps = {
+		className: '',
+		style: null,
 		isActive: false,
 	};
 
@@ -20,7 +23,7 @@ class Modal extends Component {
 	};
 
 	render() {
-		const { className = '', isActive } = this.props;
+		const { className, style, isActive } = this.props;
 
 		return (
 			<CSSTransition
@@ -31,7 +34,7 @@ class Modal extends Component {
 				unmountOnExit={true}
 			>
 				{(state) => {
-					console.log(state);
+					// console.log(state);
 
 					return (
 						<Fragment>
@@ -40,7 +43,10 @@ class Modal extends Component {
 								onClick={this.handleClose}
 							/>
 
-							<div className={`modal modal--${state} ${className}`}>
+							<div
+								className={`modal modal--${state} ${className}`}
+								style={style}
+							>
 								<button
 									onClick={this.handleClose}
 									className="modal__close-button"

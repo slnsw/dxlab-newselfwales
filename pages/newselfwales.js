@@ -22,6 +22,7 @@ class LandingPage extends Component {
 			axis: 'x',
 			showModal: true,
 			enableAnimation: false,
+			sourceImageBoundingClientRect: null,
 		};
 	}
 
@@ -62,13 +63,23 @@ class LandingPage extends Component {
 	};
 
 	handleImageClick = (event, image) => {
-		// console.log(event, image);
+		// console.log(event.target.parentElement.getBoundingClientRect(), image);
+
 		Router.pushRoute(`/newselfwales/portrait/${image.id}`);
+
+		this.setState({
+			enableAnimation: false,
+			sourceImageBoundingClientRect: event.target.parentElement.getBoundingClientRect(),
+		});
 	};
 
 	render() {
 		const { url } = this.props;
-		const { showModal, enableAnimation } = this.state;
+		const {
+			showModal,
+			enableAnimation,
+			sourceImageBoundingClientRect,
+		} = this.state;
 
 		const showImageModal = url && url.query.imageType && url.query.id && true;
 
@@ -125,6 +136,7 @@ class LandingPage extends Component {
 									isActive={showImageModal}
 									imageType={url.query.imageType}
 									id={parseInt(url.query.id, 10)}
+									sourceImageBoundingClientRect={sourceImageBoundingClientRect}
 									onClose={this.handleImageModalClose}
 								/>
 
