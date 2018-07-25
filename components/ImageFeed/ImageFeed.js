@@ -16,6 +16,7 @@ class ImageFeed extends Component {
 		increment: PropTypes.number,
 		onLoadMore: PropTypes.func,
 		onImageClick: PropTypes.func,
+		onLayoutComplete: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -87,7 +88,7 @@ class ImageFeed extends Component {
 	};
 
 	render() {
-		const { images, enableAnimation } = this.props;
+		const { images, enableAnimation, onLayoutComplete } = this.props;
 
 		return (
 			<div className="image-feed">
@@ -118,6 +119,10 @@ class ImageFeed extends Component {
 							if (enableAnimation) {
 								scroller.start();
 							}
+
+							if (typeof onLayoutComplete !== 'undefined') {
+								onLayoutComplete();
+							}
 						}
 					}}
 				>
@@ -125,14 +130,16 @@ class ImageFeed extends Component {
 						const imageSize = setSize(i);
 
 						return (
-							<div
+							<button
 								className={`image-feed__image-holder ${
 									image.isSilhouette
 										? 'image-feed__image-holder--is-person'
 										: ''
 								}
 								image-feed__image-holder--${imageSize}`}
-								onClick={(event) => this.handleImageClick(event, image)}
+								onClick={(event) =>
+									!image.isSilhouette && this.handleImageClick(event, image)
+								}
 								key={`image-${i}`}
 							>
 								{image.isSilhouette && (
@@ -157,7 +164,7 @@ class ImageFeed extends Component {
 									key={`${image.imageUrl}-${i}`}
 									alt="Portrait from the State Library of NSW collection"
 								/>
-							</div>
+							</button>
 						);
 					})}
 				</Packery>

@@ -26,6 +26,10 @@ class LandingPage extends Component {
 		};
 	}
 
+	componentDidMount() {
+		window.addEventListener('keyup', this.handleKey, true);
+	}
+
 	handleModalClose = () => {
 		this.setState({
 			showModal: false,
@@ -71,6 +75,44 @@ class LandingPage extends Component {
 			enableAnimation: false,
 			sourceImageBoundingClientRect: event.target.parentElement.getBoundingClientRect(),
 		});
+	};
+
+	handleLayoutComplete = () => {
+		// LayoutComplete is triggered after Packery has laid out the images
+		// Sometimes, the user may close the modal box before layoutComplete
+		// We need to check if enableAnimation and do a fake toggle to get ImageFeed
+		// running again
+		if (this.state.enableAnimation) {
+			this.setState({
+				enableAnimation: false,
+			});
+
+			this.setState({
+				enableAnimation: true,
+			});
+		}
+	};
+
+	handleKey = (event) => {
+		// For accessibility and super-users
+		if (event.code === 'Escape') {
+			//  Effectively close ImageModal
+			if (
+				this.props.url.query &&
+				this.props.url.query.imageType &&
+				this.props.url.query.id
+			) {
+				Router.pushRoute(`/newselfwales`);
+			}
+
+			// Close modal and start animation
+			if (this.state.showModal) {
+				this.setState({
+					showModal: false,
+					enableAnimation: true,
+				});
+			}
+		}
 	};
 
 	render() {
@@ -124,6 +166,7 @@ class LandingPage extends Component {
 									onImageClick={(event, image) =>
 										this.handleImageClick(event, image)
 									}
+									onLayoutComplete={this.handleLayoutComplete}
 								/>
 
 								{page && (

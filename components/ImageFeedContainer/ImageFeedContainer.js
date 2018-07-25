@@ -14,6 +14,7 @@ class ImageFeedContainer extends Component {
 		fetchMoreImages: PropTypes.number,
 		onImagesUpdate: PropTypes.func,
 		onImageClick: PropTypes.func,
+		onLayoutComplete: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -98,6 +99,7 @@ class ImageFeedContainer extends Component {
 			fetchMoreImages,
 			intervalTime,
 			onImagesUpdate,
+			onLayoutComplete,
 		} = this.props;
 
 		const { enableAnimation, increment } = this.state;
@@ -160,6 +162,7 @@ class ImageFeedContainer extends Component {
 								onImageClick={(event, image) =>
 									this.handleImageClick(event, image)
 								}
+								onLayoutComplete={onLayoutComplete}
 							/>
 						);
 					}}

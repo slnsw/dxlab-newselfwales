@@ -4,6 +4,7 @@ import { Transition } from 'react-transition-group';
 
 import './ImageModal.css';
 import Modal from '../Modal';
+import { SCREEN_SM } from '../../styles/variables';
 
 class ImageModal extends Component {
 	static propTypes = {
@@ -24,9 +25,12 @@ class ImageModal extends Component {
 	};
 
 	componentDidMount() {
+		// TODO: Update on resize
 		this.setState({
-			screenWidth: window.innerWidth,
-			screenHeight: window.innerHeight,
+			// screenWidth: window.innerWidth,
+			// screenHeight: window.innerHeight,
+			screenWidth: document.documentElement.clientWidth,
+			screenHeight: document.documentElement.clientHeight,
 		});
 	}
 
@@ -43,7 +47,7 @@ class ImageModal extends Component {
 			imageType,
 			sourceImageBoundingClientRect,
 			isActive,
-			loading,
+			// loading,
 		} = this.props;
 
 		const { screenWidth, screenHeight } = this.state;
@@ -90,15 +94,8 @@ class ImageModal extends Component {
 							opacity: 1,
 							top: screenHeight / 2,
 							left: screenWidth / 2,
-							height: '50%',
-							width: '50%',
-						},
-						entered: {
-							opacity: 1,
-							top: screenHeight / 2,
-							left: screenWidth / 2,
-							height: '50%',
-							width: '50%',
+							height: screenWidth > SCREEN_SM ? '80%' : 'calc(100% - 2em)',
+							width: screenWidth > SCREEN_SM ? '80%' : '100%',
 						},
 					};
 
@@ -109,7 +106,9 @@ class ImageModal extends Component {
 							onClose={this.handleClose}
 							style={{
 								...defaultStyle,
-								...transitionStyles[state],
+								...(state === 'entering' || state === 'entered'
+									? transitionStyles.entering
+									: {}),
 							}}
 						>
 							<div className="image-modal__image-holder">
