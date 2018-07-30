@@ -8,9 +8,9 @@ import './photobooth.css';
 class Home extends Component {
 	componentDidMount() {
 		const wp = new WPAPI({
-			endpoint: 'https://local.dxlab.sl.nsw.gov.au/selfie/wp-json',
-			username: 'upload',
-			password: 'djYU05v5gy0T',
+			endpoint: process.env.WP_API_ENDPOINT,
+			username: process.env.WP_UPLOAD,
+			password: process.env.WP_PASSWORD,
 		});
 		wp.gallerySelfies = wp.registerRoute(
 			'wp/v2',
@@ -94,7 +94,7 @@ class Home extends Component {
 		}
 
 		function goHome() {
-			window.location = './photobooth2';
+			window.location = './photobooth';
 		}
 
 		function gotDevices(deviceInfos) {
@@ -111,7 +111,7 @@ class Home extends Component {
 
 		function getStream() {
 			if (window.stream) {
-				window.stream.getTracks().forEach(function(track) {
+				window.stream.getTracks().forEach((track) => {
 					track.stop();
 				});
 			}
@@ -160,31 +160,31 @@ class Home extends Component {
 			quitBut.innerHTML = 'working...';
 
 			const d = new Date();
-			const n = 'selfie' + d.getTime();
+			const n = `selfie ${d.getTime()}`;
 			// now create custom post type 'gallery selfie'
 			wp
 				.gallerySelfies()
 				.create({
-					title: 'New post ' + n,
-					content: 'Content ' + n,
+					title: `New post ${n}`,
+					content: `Content ${n}`,
 					status: 'publish',
 					meta: {
 						email: 'some@email.com',
 						name: 'test-test_some name',
 					},
 				})
-				.then(function(response) {
+				.then((response) => {
 					const newPost = response.id;
 					wp
 						.media()
-						.file(blob, n + '.png')
+						.file(blob, `${n}.png`)
 						.create({
 							title: n,
 							alt_text: n,
 							caption: n,
 							description: n,
 						})
-						.then(function(response2) {
+						.then((response2) => {
 							const newImageId = response2.id;
 							return wp
 								.gallerySelfies()
@@ -193,7 +193,7 @@ class Home extends Component {
 									featured_media: newImageId,
 								});
 						})
-						.then(function(response) {
+						.then(() => {
 							showThanks();
 						});
 				});
@@ -244,8 +244,8 @@ class Home extends Component {
 	}
 
 	handleUserInput(e) {
-		const name = e.target.name;
-		const value = e.target.value;
+		const { name, value } = e.target;
+
 		this.setState({ [name]: value }, () => {
 			this.validateField(name, value);
 		});
@@ -253,11 +253,10 @@ class Home extends Component {
 
 	validateField(fieldName, value) {
 		const fieldValidationErrors = this.state.formErrors;
-		let interestsValid = this.state.interestsValid;
-		let emailValid = this.state.emailValid;
+		let { interestsValid, emailValid } = this.state;
 
 		switch (fieldName) {
-			case 'email':
+			case 'email': {
 				if (value.length > 0) {
 					emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
 				} else {
@@ -268,23 +267,31 @@ class Home extends Component {
 					? ''
 					: 'Please enter a valid email.';
 				break;
-			case 'interests':
-				let t = value.split(','); // separate interests by comma
-				t = t.filter((entry) => entry.trim() !== ''); // rdon't count blank ones
-				t = t.filter((entry) => entry.trim().length >= 4); // make sure they aren't too short
+			}
+			case 'interests': {
+				const t = value
+					.split(',') // separate interests by comma
+					.filter((entry) => entry.trim() !== '')
+					.filter(
+						// rdon't count blank ones
+						(entry) => entry.trim().length >= 4,
+					); // make sure they aren't too short
+
 				interestsValid = t.length > 2; // and make sure we have at least 3
 				fieldValidationErrors.interests = interestsValid
 					? ''
 					: 'Could you enter a bit more info about your interests? Ideally 4 or 5, separated by commas.';
 				break;
+			}
 			default:
 				break;
 		}
+
 		this.setState(
 			{
 				formErrors: fieldValidationErrors,
-				emailValid: emailValid,
-				interestsValid: interestsValid,
+				emailValid,
+				interestsValid,
 			},
 			this.validateForm,
 		);
