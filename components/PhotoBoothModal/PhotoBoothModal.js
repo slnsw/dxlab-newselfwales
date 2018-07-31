@@ -3,7 +3,8 @@ import { Component } from 'react';
 import WPAPI from 'wpapi';
 
 import './PhotoBoothModal.css';
-import webcam from '../../lib/webcam';
+import { Router } from '../../routes';
+import webcam, { dataURItoBlob } from '../../lib/webcam';
 // import wpUpload from '../uploader';
 
 const TRIGGER_LETTER = 192; // backtick
@@ -21,9 +22,13 @@ class Home extends Component {
 			interestsValid: false,
 			emailValid: true,
 			formValid: false,
-			stage: 'START',
+			// stage: 'START',
 		};
 	}
+
+	static defaultProps = {
+		stage: 'start',
+	};
 
 	componentDidMount() {
 		// Set up Wordpress
@@ -58,29 +63,30 @@ class Home extends Component {
 		}
 	};
 
+	startSelfie = () => {
+		Router.pushRoute('/photo-booth?stage=take-selfie');
+	};
+
 	takeSelfie = () => {
 		this.blinkIt();
 		this.context = this.canvas.getContext('2d');
 		this.context.drawImage(this.videoFeed, 0, 0, 1080, 1080);
 		this.previewCTX.drawImage(this.videoFeed, 0, 0, 300, 300);
 		const dataURL = this.canvas.toDataURL('image/png');
-		this.blob = this.dataURItoBlob(dataURL);
+		this.blob = dataURItoBlob(dataURL);
 
-		this.setState({
-			stage: 2,
-		});
+		Router.pushRoute('/photo-booth?stage=confirm-selfie');
+		// this.setState({
+		// 	stage: 2,
+		// });
 	};
 
 	retakeSelfie = () => {
-		this.setState({
-			stage: 1,
-		});
+		Router.pushRoute('/photo-booth?stage=take-selfie');
 	};
 
 	sendSelfie = () => {
-		this.setState({
-			stage: 3,
-		});
+		Router.pushRoute('/photo-booth?stage=send-selfie');
 	};
 
 	handleSubmitForm = () => {
@@ -148,10 +154,7 @@ class Home extends Component {
 	};
 
 	goHome = () => {
-		// window.location = './photobooth';
-		this.setState({
-			stage: 'START',
-		});
+		Router.pushRoute('/photo-booth?stage=start');
 	};
 
 	blinkIt = () => {
@@ -164,22 +167,6 @@ class Home extends Component {
 		clearInterval(this.blink);
 	};
 
-	dataURItoBlob = (dataURI) => {
-		let byteString;
-		if (dataURI.split(',')[0].indexOf('base64') >= 0)
-			byteString = atob(dataURI.split(',')[1]);
-		else byteString = unescape(dataURI.split(',')[1]);
-		const mimeString = dataURI
-			.split(',')[0]
-			.split(':')[1]
-			.split(';')[0];
-		const ia = new Uint8Array(byteString.length);
-		for (let i = 0; i < byteString.length; i++) {
-			ia[i] = byteString.charCodeAt(i);
-		}
-		return new Blob([ia], { type: mimeString });
-	};
-
 	handleUserInput = (e) => {
 		const { name, value } = e.target;
 
@@ -189,9 +176,7 @@ class Home extends Component {
 	};
 
 	showThanks = () => {
-		this.setState({
-			stage: 4,
-		});
+		Router.pushRoute('/photo-booth?stage=show-thanks');
 
 		window.stream.getTracks().forEach((track) => {
 			track.stop();
@@ -259,19 +244,36 @@ class Home extends Component {
 	}
 
 	render() {
-		const { stage } = this.state;
+		const { stage } = this.props;
 
 		return (
 			<div
 				className={`photo-booth-modal ${
-					stage === 'TAKE_SELFIE' ? 'photo-booth-modal--full' : ''
+					stage !== 'start' ? 'photo-booth-modal--full' : ''
 				}`}
 			>
 				<div className="photo-booth-modal__photo-box">
-					<h1 className="photo-booth-modal__title">Take selfie</h1>
+					<h1 className="photo-booth-modal__title">Take a selfie</h1>
 					<div
 						style={{
-							display: stage === 'START' ? 'block' : 'none',
+							display: stage === 'start' ? 'block' : 'none',
+						}}
+					>
+						<img
+							src="../../static/newselfwales/images/silhouettes/silhouette.png"
+							alt="Silhouette of person"
+							className="photo-booth-modal__silhouette"
+						/>
+						<br />
+
+						<button className="button" onClick={this.startSelfie}>
+							Start
+						</button>
+					</div>
+
+					<div
+						style={{
+							display: stage === 'take-selfie' ? 'block' : 'none',
 						}}
 					>
 						<video
@@ -285,13 +287,13 @@ class Home extends Component {
 						/>
 						<br />
 						<button className="button" onClick={this.takeSelfie}>
-							Start
+							Take
 						</button>
 					</div>
 
 					<div
 						style={{
-							display: stage === 2 ? 'block' : 'none',
+							display: stage === 'confirm-selfie' ? 'block' : 'none',
 						}}
 					>
 						<canvas
@@ -315,7 +317,7 @@ class Home extends Component {
 
 				<div
 					style={{
-						display: stage === 3 ? 'block' : 'none',
+						display: stage === 'send-selfie' ? 'block' : 'none',
 					}}
 				>
 					<canvas
@@ -349,7 +351,7 @@ class Home extends Component {
 								</div>
 							</li>
 							<li>
-								And supply the follwoing if you would like us to email you the
+								And supply the following if you would like us to email you the
 								results of the match.
 							</li>
 							<li>
@@ -395,7 +397,7 @@ class Home extends Component {
 					</div>
 				</div>
 
-				{stage === 4 && (
+				{stage === 'show-thanks' && (
 					<div>
 						<p>Thank you</p>
 					</div>

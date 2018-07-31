@@ -11,6 +11,11 @@
 	min-width: 30em;
 	padding: 10vh 2em 2em 2em;
 	background-color: var(--colour-black);
+	transition: 0.3s;
+}
+
+.photo-booth-modal--full {
+	width: 100%;
 }
 
 .photo-booth-modal__photo-box {
@@ -21,12 +26,20 @@
 
 .photo-booth-modal__title {
 	@apply --font-uppercase;
+	font-size: var(--font-size-lg);
+}
+
+.photo-booth-modal__silhouette {
+	margin: 1em auto 1em;
+	max-height: 15em;
+	max-width: 15em;
+	background-color: var(--colour-grey-darker);
 }
 
 .photo-booth-modal__video {
 	margin: 1em auto 1em;
-	max-height: 15em;
-	max-width: 15em;
+	max-height: 25em;
+	max-width: 25em;
 	transform: scaleX(-1);
 }
 
