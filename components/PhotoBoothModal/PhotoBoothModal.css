@@ -1,17 +1,51 @@
-/* body {
-  font-family: Lekton, sans-serif;
-  background: #080808;
-  color: #e6007e;
-  text-align: center;
+@import '../../styles/variables.css';
+
+.photo-booth-modal {
+	display: flex;
+	position: absolute;
+	flex-direction: column;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 20%;
+	min-width: 30em;
+	padding: 10vh 2em 2em 2em;
+	background-color: var(--colour-black);
 }
 
-h1,
-h2,
-h3 {
-  margin: 0.5em auto 0;
-  font-size: 2em;
-  text-transform: uppercase;
-} */
+.photo-booth-modal__photo-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.photo-booth-modal__title {
+	@apply --font-uppercase;
+}
+
+.photo-booth-modal__video {
+	margin: 1em auto 1em;
+	max-height: 15em;
+	max-width: 15em;
+	transform: scaleX(-1);
+}
+
+.photo-booth-modal__video--feed {
+}
+
+.photo-booth-modal__video--preview {
+	border: 3px solid #e6007e;
+}
+
+.photo-booth-modal__footer {
+	margin-top: auto;
+	text-align: center;
+}
+
+.photo-booth-modal__nsw-logo {
+	width: 70%;
+	height: auto;
+}
 
 .photobooth {
 	& button {
@@ -58,21 +92,6 @@ h3 {
 		background: #080808;
 		color: #444;
 	}
-}
-
-.photobooth__video-feed {
-	margin: 1em auto 0;
-	max-height: 10em;
-	max-width: 10em;
-	transform: scaleX(-1);
-}
-
-.photobooth__canvas {
-	margin: 1em auto 0;
-	max-height: 10em;
-	max-width: 10em;
-	transform: scaleX(-1);
-	border: 3px solid #e6007e;
 }
 
 #preview {
