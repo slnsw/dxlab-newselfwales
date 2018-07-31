@@ -1,9 +1,10 @@
 import { Component } from 'react';
 
 import WPAPI from 'wpapi';
-import ExampleApp from '../components/examples/ExampleApp';
 
 import './photobooth.css';
+import webcam from '../lib/webcam';
+// import wpUpload from '../uploader';
 
 const TRIGGER_LETTER = 192; // backtick
 const CAM_NAME = 'HD Pro Webcam C920';
@@ -22,10 +23,10 @@ class Home extends Component {
 			formValid: false,
 			stage: 1,
 		};
-		this.handleUserInput = this.handleUserInput.bind(this);
 	}
 
 	componentDidMount() {
+		// Set up Wordpress
 		this.wp = new WPAPI({
 			endpoint: process.env.WP_API_ENDPOINT,
 			username: process.env.WP_USERNAME,
@@ -36,65 +37,22 @@ class Home extends Component {
 			'/gallery-selfies/(?P<id>\\d+)',
 		);
 
-		let devId;
-		const previewCVS = document.getElementById('preview');
-		this.previewCTX = previewCVS.getContext('2d');
-		let constraints = {};
+		// wpUpload.init({
+		// 	endpoint: process.env.WP_API_ENDPOINT,
+		// 	username: process.env.WP_USERNAME,
+		// 	password: process.env.WP_PASSWORD,
+		// });
 
-		function gotDevices(deviceInfos) {
-			for (let i = 0; i !== deviceInfos.length; ++i) {
-				const deviceInfo = deviceInfos[i];
-				if (
-					deviceInfo.kind === 'videoinput' &&
-					deviceInfo.label.substring(0, 18) === CAM_NAME
-				) {
-					devId = deviceInfo.deviceId;
-				}
-			}
-		}
+		this.previewCTX = this.selfiePreview.getContext('2d');
 
-		function getStream() {
-			if (window.stream) {
-				window.stream.getTracks().forEach((track) => {
-					track.stop();
-				});
-			}
-			constraints = {
-				video: {
-					deviceId: { exact: devId }, // videoSelect.value
-					width: 1080,
-					height: 1080,
-				},
-			};
-			navigator.mediaDevices
-				.getUserMedia(constraints)
-				.then(gotStream)
-				.catch(handleError);
-		}
+		// Set up webcam
+		webcam(this.videoFeed, CAM_NAME);
 
-		const gotStream = (stream) => {
-			window.stream = stream; // make stream available to console
-			this.video.srcObject = stream;
-		};
-
-		function handleError(error) {
-			console.error('Error: ', error);
-		}
-
-		if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-			navigator.mediaDevices
-				.enumerateDevices()
-				.then(gotDevices)
-				.then(getStream)
-				.catch(handleError);
-
-			window.addEventListener('keydown', this.checkKeyPressed, false);
-		} else {
-			console.log("This browser doesn't support a camera");
-		}
+		// Check keyboard
+		window.addEventListener('keyup', this.handleKeyUp);
 	}
 
-	checkKeyPressed = (e) => {
+	handleKeyUp = (e) => {
 		if (e.keyCode === TRIGGER_LETTER) {
 			this.takeSelfie();
 		}
@@ -103,8 +61,8 @@ class Home extends Component {
 	takeSelfie = () => {
 		this.blinkIt();
 		this.context = this.canvas.getContext('2d');
-		this.context.drawImage(this.video, 0, 0, 1080, 1080);
-		this.previewCTX.drawImage(this.video, 0, 0, 300, 300);
+		this.context.drawImage(this.videoFeed, 0, 0, 1080, 1080);
+		this.previewCTX.drawImage(this.videoFeed, 0, 0, 300, 300);
 		const dataURL = this.canvas.toDataURL('image/png');
 		this.blob = this.dataURItoBlob(dataURL);
 
@@ -132,8 +90,17 @@ class Home extends Component {
 		// quitBut.disabled = true;
 		// quitBut.innerHTML = 'working...';
 
-		const d = new Date();
-		const n = `selfie ${d.getTime()}`;
+		const date = new Date();
+		const n = `selfie ${date.getTime()}`;
+
+		// wpUpload.upload({
+		// 	title: `New post ${n}`,
+		// 	content: `Content ${n}`,
+		// 	status: 'draft',
+		// 	email: 'some@email.com',
+		// 	name: 'test-test_some name',
+		// 	blob: this.blob,
+		// });
 
 		// now create custom post type 'gallery selfie'
 		this.wp
@@ -170,6 +137,9 @@ class Home extends Component {
 					})
 					.then(() => {
 						this.showThanks();
+					})
+					.catch((error) => {
+						console.log(error);
 					});
 			})
 			.catch((error) => {
@@ -207,13 +177,13 @@ class Home extends Component {
 		return new Blob([ia], { type: mimeString });
 	};
 
-	handleUserInput(e) {
+	handleUserInput = (e) => {
 		const { name, value } = e.target;
 
 		this.setState({ [name]: value }, () => {
 			this.validateField(name, value);
 		});
-	}
+	};
 
 	showThanks = () => {
 		this.setState({
@@ -289,20 +259,18 @@ class Home extends Component {
 		const { stage } = this.state;
 
 		return (
-			<ExampleApp>
+			<div>
 				<h1 id="title">Take a selfie</h1>
 
 				<div
-					id="stage1"
 					style={{
 						display: stage === 1 ? 'block' : 'none',
 					}}
 				>
 					<video
-						className="photobooth__video"
-						id="video"
+						className="photobooth__video-feed"
 						ref={(element) => {
-							this.video = element;
+							this.videoFeed = element;
 						}}
 						width="1080"
 						height="1080"
@@ -313,7 +281,6 @@ class Home extends Component {
 				</div>
 
 				<div
-					id="stage2"
 					style={{
 						display: stage === 2 ? 'block' : 'none',
 					}}
@@ -337,12 +304,18 @@ class Home extends Component {
 				</div>
 
 				<div
-					id="stage3"
 					style={{
 						display: stage === 3 ? 'block' : 'none',
 					}}
 				>
-					<canvas id="preview" width="300" height="300" />
+					<canvas
+						id="preview"
+						ref={(element) => {
+							this.selfiePreview = element;
+						}}
+						width="300"
+						height="300"
+					/>
 					<div id="formdeets" className="selfieForm">
 						<ul>
 							<li />
@@ -412,11 +385,11 @@ class Home extends Component {
 				</div>
 
 				{stage === 4 && (
-					<div id="stage4">
+					<div>
 						<p>Thank you</p>
 					</div>
 				)}
-			</ExampleApp>
+			</div>
 		);
 	}
 }

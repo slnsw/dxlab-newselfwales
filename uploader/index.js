@@ -1,7 +1,7 @@
 const WPAPI = require('wpapi');
 
 const wpUpload = {
-	init: function({ endpoint, username, password }) {
+	init({ endpoint, username, password }) {
 		this.wp = new WPAPI({
 			endpoint,
 			username,
@@ -20,12 +20,12 @@ const wpUpload = {
 			'/portraits/(?P<id>\\d+)',
 		);
 	},
-	upload: async function(data, callback) {
+	async upload(data, callback) {
 		try {
 			let logtxt = '';
 			const nl = '\n';
 			const d = new Date();
-			const n = 'selfie' + d.getTime();
+			const n = `selfie ${d.getTime()}`;
 			let newPost = null;
 			let postType;
 			console.log(`Post type: ${data.type}`);
@@ -36,7 +36,7 @@ const wpUpload = {
 					postType = this.wp.gallerySelfies();
 					// create custom post type 'gallery selfie'
 					newPost = await this.wp.gallerySelfies().create({
-						title: 'New post ' + n,
+						title: `New post ${n}`,
 						content: data.content,
 						status: data.status,
 						meta: {
@@ -46,7 +46,7 @@ const wpUpload = {
 					});
 					break;
 				case 'instagram':
-				//	console.log(JSON.stringify(data));
+					//	console.log(JSON.stringify(data));
 					postType = this.wp.instagramSelfies();
 					// create custom post type 'instagram selfie'
 					newPost = await this.wp.instagramSelfies().create({
@@ -87,35 +87,31 @@ const wpUpload = {
 			}
 
 			if (newPost) {
-
 				// next upload the image
 				let newImage;
-				if (data.type == 'portrait') {
+				if (data.type === 'portrait') {
 					// console.log(data.blob);
 					newImage = await this.wp
 						.media()
-						.file(data.blob, n + '.png')
+						.file(data.blob, `${n} .png`)
 						.create({
 							title: n,
 							alt_text: n,
 							caption: n,
 							description: n,
-						});					
-
+						});
 				} else {
 					// console.log(data.blob);
 					newImage = await this.wp
 						.media()
-						.file(data.blob, n + '.jpg') // data.filename)
+						.file(data.blob, `${n} .jpg`) // data.filename)
 						.create({
 							title: n,
 							alt_text: n,
 							caption: n,
 							description: n,
-						});					
-
+						});
 				}
-
 
 				// now update the CPT to have the image as it's Featured Media
 				const updatePost = await postType.id(newPost.id).update({
@@ -129,15 +125,11 @@ const wpUpload = {
 
 				// log results
 				console.log(
-					'Upload complete, new ID: ' +
-						newPost.id +
-						' new ImageID: ' +
-						newImage.id,
+					`Upload complete, new ID: ${newPost.id} new ImageID: ${newImage.id}`,
 				);
-				logtxt += 'Upload complete, new ID: ' +
-						newPost.id +
-						' new ImageID: ' +
-						newImage.id +nl;
+				logtxt += `Upload complete, new ID: ${newPost.id} new ImageID: ${
+					newImage.id
+				} ${nl}`;
 			} else {
 				console.log('No custom post type!!');
 			}
