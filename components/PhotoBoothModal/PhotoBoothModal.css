@@ -11,11 +11,36 @@
 	min-width: 30em;
 	padding: 10vh 2em 2em 2em;
 	background-color: var(--colour-black);
+	/* background-color: rgba(0, 0, 0, 0.8); */
 	transition: 0.3s;
 }
 
 .photo-booth-modal--full {
 	width: 100%;
+}
+
+.photo-booth-modal--is-blink {
+	background-color: var(--colour-white);
+}
+
+.photo-booth-modal__buttons {
+	display: flex;
+
+	& .button {
+		margin: 0 1em;
+	}
+}
+
+.photo-booth-modal__camera-button {
+	margin: 15px;
+	background-color: var(--colour-primary);
+	width: 6em;
+	height: 6em;
+	border-radius: 3em;
+	@apply --font-uppercase;
+
+	box-shadow: 0 0 0 5px var(--colour-black),
+		0 0 0 15px var(--colour-primary-darkest);
 }
 
 .photo-booth-modal__photo-box {
@@ -50,119 +75,23 @@
 	border: 3px solid #e6007e;
 }
 
+.photo-booth-modal__send-selfie {
+	display: flex;
+}
+
+.photo-booth-modal__send-selfie__preview {
+	margin-right: 1em;
+}
+
 .photo-booth-modal__footer {
+	display: flex;
+	align-items: center;
 	margin-top: auto;
 	text-align: center;
 }
 
 .photo-booth-modal__nsw-logo {
-	width: 70%;
+	max-width: 20em;
+	margin-left: auto;
 	height: auto;
-}
-
-.photobooth {
-	& button {
-		font-family: Lekton, sans-serif;
-		font-size: 1em;
-		background-color: rgb(41, 41, 41);
-		border: 1px solid rgb(41, 41, 41);
-		color: white;
-		padding: 1em;
-		text-transform: uppercase;
-		margin-right: 1em;
-		margin-top: 1em;
-	}
-
-	& button:focus {
-		outline: none;
-	}
-
-	& button:hover {
-		background-color: #080808;
-		border: 1px solid #e6007e;
-		color: #e6007e;
-	}
-
-	& button:disabled {
-		background-color: #080808;
-		border: 1px solid #666666;
-		color: #666666;
-	}
-
-	& ul li:first-child,
-	& ul li:last-child {
-		border-bottom: 1px solid #e6007e;
-	}
-
-	& :-moz-placeholder {
-		font-family: Lekton, sans-serif;
-		background: #080808;
-		color: #444;
-	}
-
-	& ::-webkit-input-placeholder {
-		font-family: Lekton, sans-serif;
-		background: #080808;
-		color: #444;
-	}
-}
-
-#preview {
-	float: left;
-	margin-left: 50px;
-}
-
-#formdeets {
-	text-align: left;
-	float: left;
-	margin-left: 40px;
-}
-
-.selfieForm label {
-	width: 150px;
-	margin-top: 3px;
-	display: inline-block;
-	float: left;
-	padding: 3px;
-}
-
-.selfieForm ul {
-	width: 750px;
-	list-style-type: none;
-	list-style-position: outside;
-	margin: 0px;
-	padding: 0px;
-}
-
-.selfieForm li {
-	padding: 12px;
-	border-bottom: 0.5px solid #444;
-	position: relative;
-}
-
-.selfieForm input {
-	height: 30px;
-	width: 350px;
-	padding: 5px 8px;
-	border: 1px solid #e6007e;
-	background: #080808;
-	color: #ccc;
-}
-
-#interests {
-	width: 550px;
-}
-
-.formErrors {
-	color: red;
-	font-size: 0.8em;
-}
-
-.formErrors.interests {
-	padding-left: 150px;
-	padding-top: 0.9em;
-}
-
-.formErrors.email {
-	padding-left: 1em;
 }

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, Fragment } from 'react';
 
 import WPAPI from 'wpapi';
 
@@ -22,6 +22,7 @@ class Home extends Component {
 			interestsValid: false,
 			emailValid: true,
 			formValid: false,
+			isBlink: false,
 			// stage: 'START',
 		};
 	}
@@ -48,13 +49,27 @@ class Home extends Component {
 		// 	password: process.env.WP_PASSWORD,
 		// });
 
-		this.previewCTX = this.selfiePreview.getContext('2d');
-
-		// Set up webcam
-		webcam(this.videoFeed, CAM_NAME);
-
 		// Check keyboard
 		window.addEventListener('keyup', this.handleKeyUp);
+
+		// Set up webcam if stage is 'take-selfie'
+		if (this.props.stage === 'take-selfie') {
+			// Set up webcam
+			webcam(this.videoFeed, CAM_NAME);
+		}
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.stage !== this.props.stage) {
+			if (this.props.stage === 'take-selfie') {
+				// Set up webcam
+				webcam(this.videoFeed, CAM_NAME);
+			} else {
+				window.stream.getTracks().forEach((track) => {
+					track.stop();
+				});
+			}
+		}
 	}
 
 	handleKeyUp = (e) => {
@@ -71,14 +86,13 @@ class Home extends Component {
 		this.blinkIt();
 		this.context = this.canvas.getContext('2d');
 		this.context.drawImage(this.videoFeed, 0, 0, 1080, 1080);
+		this.previewCTX = this.selfiePreview.getContext('2d');
 		this.previewCTX.drawImage(this.videoFeed, 0, 0, 300, 300);
 		const dataURL = this.canvas.toDataURL('image/png');
 		this.blob = dataURItoBlob(dataURL);
 
-		Router.pushRoute('/photo-booth?stage=confirm-selfie');
-		// this.setState({
-		// 	stage: 2,
-		// });
+		// Router.pushRoute('/photo-booth?stage=confirm-selfie');
+		Router.pushRoute('/photo-booth?stage=send-selfie');
 	};
 
 	retakeSelfie = () => {
@@ -158,12 +172,16 @@ class Home extends Component {
 	};
 
 	blinkIt = () => {
-		document.body.style.background = '#e6007e';
+		this.setState({
+			isBlink: true,
+		});
 		this.blink = setInterval(this.blinkOff, 75);
 	};
 
 	blinkOff = () => {
-		document.body.style.background = '#080808';
+		this.setState({
+			isBlink: false,
+		});
 		clearInterval(this.blink);
 	};
 
@@ -177,10 +195,6 @@ class Home extends Component {
 
 	showThanks = () => {
 		Router.pushRoute('/photo-booth?stage=show-thanks');
-
-		window.stream.getTracks().forEach((track) => {
-			track.stop();
-		});
 
 		// also need to clear form fields!
 		this.thanksInterval = setInterval(this.clearThanks, 1500);
@@ -244,38 +258,29 @@ class Home extends Component {
 	}
 
 	render() {
+		const { isBlink } = this.state;
 		const { stage } = this.props;
 
 		return (
 			<div
 				className={`photo-booth-modal ${
 					stage !== 'start' ? 'photo-booth-modal--full' : ''
-				}`}
+				} ${isBlink ? 'photo-booth-modal--is-blink' : ''}`}
 			>
 				<div className="photo-booth-modal__photo-box">
 					<h1 className="photo-booth-modal__title">Take a selfie</h1>
-					<div
-						style={{
-							display: stage === 'start' ? 'block' : 'none',
-						}}
-					>
+
+					{stage === 'start' && (
 						<img
 							src="../../static/newselfwales/images/silhouettes/silhouette.png"
 							alt="Silhouette of person"
 							className="photo-booth-modal__silhouette"
 						/>
-						<br />
+					)}
 
-						<button className="button" onClick={this.startSelfie}>
-							Start
-						</button>
-					</div>
+					<br />
 
-					<div
-						style={{
-							display: stage === 'take-selfie' ? 'block' : 'none',
-						}}
-					>
+					{stage === 'take-selfie' && (
 						<video
 							className="photo-booth-modal__video photo-booth-modal__video--feed"
 							ref={(element) => {
@@ -285,11 +290,16 @@ class Home extends Component {
 							height="1080"
 							autoPlay
 						/>
-						<br />
-						<button className="button" onClick={this.takeSelfie}>
-							Take
+					)}
+
+					{(stage === 'start' || stage === 'take-selfie') && (
+						<button
+							className="photo-booth-modal__camera-button"
+							onClick={stage === 'start' ? this.startSelfie : this.takeSelfie}
+						>
+							{stage === 'start' ? 'Start' : 'Take'}
 						</button>
-					</div>
+					)}
 
 					<div
 						style={{
@@ -305,95 +315,105 @@ class Home extends Component {
 							width="1080"
 							height="1080"
 						/>
-						<br />
-						<button onClick={this.retakeSelfie} id="retake">
-							re-take
-						</button>
-						<button id="sendSelfie" onClick={this.sendSelfie}>
-							use this
-						</button>
+
+						<div className="photo-booth-modal__buttons">
+							<button
+								className="button"
+								onClick={this.retakeSelfie}
+								id="retake"
+							>
+								re-take
+							</button>
+							<button className="button" onClick={this.sendSelfie}>
+								use this
+							</button>
+						</div>
 					</div>
 				</div>
 
 				<div
+					className="photo-booth-modal__send-selfie"
 					style={{
-						display: stage === 'send-selfie' ? 'block' : 'none',
+						display: stage === 'send-selfie' ? 'flex' : 'none',
 					}}
 				>
-					<canvas
-						id="preview"
-						className="photo-booth-modal__video photo-booth-modal__video--preview"
-						ref={(element) => {
-							this.selfiePreview = element;
-						}}
-						width="300"
-						height="300"
-					/>
-					<div id="formdeets" className="selfieForm">
-						<ul>
-							<li />
-							<li>
-								Please tell us a few things about yourself so we can match you
-								to a portrait from our collection.
-							</li>
-							<li>
-								<label>Your interests:</label>
-								<input
-									type="text"
-									name="interests"
-									id="interests"
-									value={this.state.interests}
-									placeholder="Enter around 4 or 5, separated by commas"
-									onChange={(event) => this.handleUserInput(event)}
-								/>
-								<div className="formErrors interests">
-									{this.state.formErrors.interests}
-								</div>
-							</li>
-							<li>
-								And supply the following if you would like us to email you the
-								results of the match.
-							</li>
-							<li>
-								<label>Your name:</label>
-								<input
-									type="text"
-									name="name"
-									id="name"
-									value={this.state.name}
-									placeholder="Selfie Fiend"
-									onChange={(event) => this.handleUserInput(event)}
-								/>
-							</li>
-							<li>
-								<label>
-									Your email:<br />
-								</label>
-								<input
-									type="email"
-									name="email"
-									id="email"
-									value={this.state.email}
-									placeholder="fiend@selfie-land.com"
-									onChange={(event) => this.handleUserInput(event)}
-								/>
-								<span className="formErrors email">
-									{this.state.formErrors.email}
-								</span>
-							</li>
-							<li>
-								<button
-									onClick={this.handleSubmitForm}
-									id="submitBut"
-									disabled={!this.state.formValid}
-								>
-									submit
-								</button>
-								<button onClick={this.goHome} id="quitBut">
-									quit
-								</button>
-							</li>
-						</ul>
+					<div className="photo-booth-modal__send-selfie__preview">
+						<canvas
+							id="preview"
+							className="photo-booth-modal__video photo-booth-modal__video--preview"
+							ref={(element) => {
+								this.selfiePreview = element;
+							}}
+							width="300"
+							height="300"
+						/>
+						<button className="button" onClick={this.retakeSelfie} id="retake">
+							re-take
+						</button>
+					</div>
+
+					<div className="photo-booth-modal__form">
+						<p>
+							Please tell us a few things about yourself so we can match you to
+							a portrait from our collection.
+						</p>
+						<p>
+							<label>Your interests:</label>
+							<input
+								type="text"
+								name="interests"
+								id="interests"
+								value={this.state.interests}
+								placeholder="Enter around 4 or 5, separated by commas"
+								onChange={(event) => this.handleUserInput(event)}
+							/>
+							<div className="formErrors interests">
+								{this.state.formErrors.interests}
+							</div>
+						</p>
+						<p>
+							And supply the following if you would like us to email you the
+							results of the match.
+						</p>
+						<p>
+							<label>Your name:</label>
+							<input
+								type="text"
+								name="name"
+								id="name"
+								value={this.state.name}
+								placeholder="Selfie Fiend"
+								onChange={(event) => this.handleUserInput(event)}
+							/>
+						</p>
+						<p>
+							<label>
+								Your email:<br />
+							</label>
+							<input
+								type="email"
+								name="email"
+								id="email"
+								value={this.state.email}
+								placeholder="fiend@selfie-land.com"
+								onChange={(event) => this.handleUserInput(event)}
+							/>
+							<span className="formErrors email">
+								{this.state.formErrors.email}
+							</span>
+						</p>
+						<p>
+							<button
+								className="button"
+								onClick={this.handleSubmitForm}
+								disabled={!this.state.formValid}
+							>
+								submit
+							</button>
+							<button className="button" onClick={this.goHome}>
+								quit
+							</button>
+						</p>
 					</div>
 				</div>
 
