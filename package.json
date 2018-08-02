@@ -6,15 +6,12 @@
 		"dev": "npm start",
 		"build": "next build",
 		"start": "node server.js -p $PORT",
-		"deploy-production":
-			"now --dotenv=.env.production && now alias dxlab-selfie.now.sh",
-		"deploy-staging":
-			"now --dotenv=.env.staging && now alias dxlab-staging-selfie.now.sh",
+		"deploy-production": "now --dotenv=.env.production && now alias dxlab-selfie.now.sh",
+		"deploy-staging": "now --dotenv=.env.staging && now alias dxlab-staging-selfie.now.sh",
 		"alias-production": "now alias dxlab-selfie.now.sh",
 		"flow": "flow",
 		"test": "jest",
-		"test:lint":
-			"eslint . --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --cache"
+		"test:lint": "eslint . --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --cache"
 	},
 	"engines": {
 		"node": "~8.9.0"
@@ -59,6 +56,7 @@
 		"react-masonry-component": "^6.0.2",
 		"react-packery-component": "^1.0.2",
 		"react-redux": "^5.0.5",
+		"react-screen-keyboard": "^1.4.1",
 		"react-transition-group": "^2.3.1",
 		"react-webcam": "^0.2.0",
 		"redux": "^3.6.0",

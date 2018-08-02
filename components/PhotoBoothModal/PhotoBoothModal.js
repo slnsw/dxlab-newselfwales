@@ -1,11 +1,9 @@
 import { Component } from 'react';
 
-import WPAPI from 'wpapi';
-
 import './PhotoBoothModal.css';
+import PhotoBoothModalForm from '../PhotoBoothModalForm';
 import { Router } from '../../routes';
 import webcam, { dataURItoBlob } from '../../lib/webcam';
-// import wpUpload from '../uploader';
 
 const TRIGGER_LETTER = 192; // backtick
 const CAM_NAME = 'HD Pro Webcam C920';
@@ -23,7 +21,6 @@ class Home extends Component {
 			emailValid: true,
 			formValid: false,
 			isBlink: false,
-			// stage: 'START',
 		};
 	}
 
@@ -32,23 +29,6 @@ class Home extends Component {
 	};
 
 	componentDidMount() {
-		// Set up Wordpress
-		this.wp = new WPAPI({
-			endpoint: process.env.WP_API_ENDPOINT,
-			username: process.env.WP_USERNAME,
-			password: process.env.WP_PASSWORD,
-		});
-		this.wp.gallerySelfies = this.wp.registerRoute(
-			'wp/v2',
-			'/gallery-selfies/(?P<id>\\d+)',
-		);
-
-		// wpUpload.init({
-		// 	endpoint: process.env.WP_API_ENDPOINT,
-		// 	username: process.env.WP_USERNAME,
-		// 	password: process.env.WP_PASSWORD,
-		// });
-
 		// Check keyboard
 		window.addEventListener('keyup', this.handleKeyUp);
 
@@ -64,10 +44,13 @@ class Home extends Component {
 			if (this.props.stage === 'take-selfie') {
 				// Set up webcam
 				webcam(this.videoFeed, CAM_NAME);
-			} else if (window.stream) {
-				window.stream.getTracks().forEach((track) => {
-					track.stop();
-				});
+			} else {
+				/* eslint-disable no-lonely-if */
+				if (window.stream) {
+					window.stream.getTracks().forEach((track) => {
+						track.stop();
+					});
+				}
 			}
 		}
 	}
@@ -84,6 +67,7 @@ class Home extends Component {
 
 	takeSelfie = () => {
 		this.blinkIt();
+
 		this.context = this.canvas.getContext('2d');
 		this.context.drawImage(this.videoFeed, 0, 0, 1080, 1080);
 		this.previewCTX = this.selfiePreview.getContext('2d');
@@ -103,68 +87,8 @@ class Home extends Component {
 		Router.pushRoute('/photo-booth?stage=send-selfie');
 	};
 
-	handleSubmitForm = () => {
-		// make buttons look like something is happening
-		// submitBut.disabled = true;
-		// submitBut.innerHTML = 'working...';
-		// quitBut.disabled = true;
-		// quitBut.innerHTML = 'working...';
-
-		const date = new Date();
-		const n = `selfie ${date.getTime()}`;
-
-		// wpUpload.upload({
-		// 	title: `New post ${n}`,
-		// 	content: `Content ${n}`,
-		// 	status: 'draft',
-		// 	email: 'some@email.com',
-		// 	name: 'test-test_some name',
-		// 	blob: this.blob,
-		// });
-
-		// now create custom post type 'gallery selfie'
-		this.wp
-			.gallerySelfies()
-			.create({
-				title: `New post ${n}`,
-				content: `Content ${n}`,
-				status: 'draft',
-				meta: {
-					email: 'some@email.com',
-					name: 'test-test_some name',
-				},
-			})
-			.then((response) => {
-				const newPost = response.id;
-
-				this.wp
-					.media()
-					.file(this.blob, `${n}.png`)
-					.create({
-						title: n,
-						alt_text: n,
-						caption: n,
-						description: n,
-					})
-					.then((response2) => {
-						const newImageId = response2.id;
-						return this.wp
-							.gallerySelfies()
-							.id(newPost)
-							.update({
-								featured_media: newImageId,
-							});
-					})
-					.then(() => {
-						this.showThanks();
-					})
-					.catch((error) => {
-						console.log(error);
-					});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+	handleFormSubmitComplete = () => {
+		this.showThanks();
 	};
 
 	goHome = () => {
@@ -175,6 +99,7 @@ class Home extends Component {
 		this.setState({
 			isBlink: true,
 		});
+
 		this.blink = setInterval(this.blinkOff, 75);
 	};
 
@@ -182,15 +107,8 @@ class Home extends Component {
 		this.setState({
 			isBlink: false,
 		});
+
 		clearInterval(this.blink);
-	};
-
-	handleUserInput = (e) => {
-		const { name, value } = e.target;
-
-		this.setState({ [name]: value }, () => {
-			this.validateField(name, value);
-		});
 	};
 
 	showThanks = () => {
@@ -204,58 +122,6 @@ class Home extends Component {
 		clearInterval(this.thanksInterval);
 		this.goHome();
 	};
-
-	validateField(fieldName, value) {
-		const fieldValidationErrors = this.state.formErrors;
-		let { interestsValid, emailValid } = this.state;
-
-		switch (fieldName) {
-			case 'email': {
-				if (value.length > 0) {
-					emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-				} else {
-					// no email is a valid email
-					emailValid = true;
-				}
-				fieldValidationErrors.email = emailValid
-					? ''
-					: 'Please enter a valid email.';
-				break;
-			}
-			case 'interests': {
-				const t = value
-					.split(',') // separate interests by comma
-					.filter((entry) => entry.trim() !== '')
-					.filter(
-						// rdon't count blank ones
-						(entry) => entry.trim().length >= 4,
-					); // make sure they aren't too short
-
-				interestsValid = t.length > 2; // and make sure we have at least 3
-				fieldValidationErrors.interests = interestsValid
-					? ''
-					: 'Could you enter a bit more info about your interests? Ideally 4 or 5, separated by commas.';
-				break;
-			}
-			default:
-				break;
-		}
-
-		this.setState(
-			{
-				formErrors: fieldValidationErrors,
-				emailValid,
-				interestsValid,
-			},
-			this.validateForm,
-		);
-	}
-
-	validateForm() {
-		this.setState({
-			formValid: this.state.emailValid && this.state.interestsValid,
-		});
-	}
 
 	render() {
 		const { isBlink } = this.state;
@@ -361,71 +227,11 @@ class Home extends Component {
 						</button>
 					</div>
 
-					<div className="photo-booth-modal__form">
-						<p>
-							Supply the following if you would like us to email you the results
-							of the match.
-						</p>
-
-						<p>
-							<label>Name:</label>
-							<input
-								type="text"
-								name="name"
-								id="name"
-								value={this.state.name}
-								placeholder="Selfie Fiend"
-								onChange={(event) => this.handleUserInput(event)}
-							/>
-						</p>
-
-						<p>
-							<label>Email:</label>
-							<input
-								type="email"
-								name="email"
-								id="email"
-								value={this.state.email}
-								placeholder="fiend@selfie-land.com"
-								onChange={(event) => this.handleUserInput(event)}
-							/>
-							<span className="formErrors email">
-								{this.state.formErrors.email}
-							</span>
-						</p>
-
-						<p>
-							Please tell us a few things about yourself so we can match you to
-							a portrait from our collection.
-						</p>
-						<p>
-							<label>Your interests:</label>
-							<input
-								type="text"
-								name="interests"
-								id="interests"
-								value={this.state.interests}
-								placeholder="Enter around 4 or 5, separated by commas"
-								onChange={(event) => this.handleUserInput(event)}
-							/>
-							<div className="formErrors interests">
-								{this.state.formErrors.interests}
-							</div>
-						</p>
-
-						<p>
-							<button
-								className="button"
-								onClick={this.handleSubmitForm}
-								disabled={!this.state.formValid}
-							>
-								submit
-							</button>
-							<button className="button button--dark" onClick={this.goHome}>
-								quit
-							</button>
-						</p>
-					</div>
+					<PhotoBoothModalForm
+						blob={this.blob}
+						onFormSubmitComplete={this.handleFormSubmitComplete}
+						onQuitClick={this.goHome}
+					/>
 				</div>
 
 				{stage === 'show-thanks' && (

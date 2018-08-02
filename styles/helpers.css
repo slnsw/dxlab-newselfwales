@@ -38,6 +38,11 @@
 	background-color: var(--colour-primary);
 	@apply --font-uppercase;
 	line-height: 1;
+
+	&:disabled {
+		opacity: 0.3;
+		/* background-color: var(--colour-primary-darkest); */
+	}
 }
 
 .button--dark {
