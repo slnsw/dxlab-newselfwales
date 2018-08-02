@@ -9,8 +9,6 @@ import wpUpload from '../../uploader';
 
 import { parsePage, parseUser } from './utils/parse';
 
-
-
 // Change this to true if you want to save a new HTML file from Instagram
 const saveFile = false;
 
@@ -33,81 +31,65 @@ try {
     'wp/v2',
     '/instagram-selfies/(?P<id>\\d+)',
   );
+
+  wp.scraperLogs = wp.registerRoute(
+    'wp/v2',
+    '/scraper-logs/(?P<id>\\d+)',
+  );
 } catch (e) {
   console.log('WP API upload failed!');
   console.log(e);
   logtxt += 'WP API upload failed!\n' + e + '\n';
 }
 
-/*
-export const getCompletePostsByHashtag = async (hashtag, limit) => {
-  const posts = await getPostsByHashtag(hashtag, limit);
-
-  let completePosts = [];
-console.log(posts.length);
-  for (const i in posts) {
-    console.log(i);
-    const result = await getPost(posts[i].shortcode);
-    const biography = await getIgUser(result.username);
-
-    completePosts.push({
-      ...posts[i],
-      ...result,
-      ...biography,
-    });
-  }
-
-  return completePosts;
-};
-*/
 // Get list of Instagram selfies
 export const getPostsByHashtag = async (hashtag) => {
   try {
     const result = await axios.get(
-    `https://www.instagram.com/explore/tags/${hashtag}/`,
-    {
-      responseType: saveFile && 'stream',
-    },
-  );
-
-  if (saveFile) {
-    result.data.pipe(
-      fs.createWriteStream(
-        path.resolve(__dirname, '../data', 'instagram.html'),
-      ),
+      `https://www.instagram.com/explore/tags/${hashtag}/`,
+      {
+        responseType: saveFile && 'stream',
+      },
     );
-  }
 
-  const data = JSON.parse(parsePage(result.data));
-  const selfiesRaw =
-    data.entry_data.TagPage[0].graphql.hashtag.edge_hashtag_to_media.edges;
-
-  // Remap raw selfies into nice objects
-  const selfies = selfiesRaw.map(({ node }) => {
-    if (!node.is_video) {
-      const filename = node.display_url
-        .substring(node.display_url.lastIndexOf('/') + 1)
-        .split('?')[0];
-
-      return {
-        id: node.id,
-        url: node.display_url,
-        shortcode: node.shortcode,
-        width: node.dimensions.width,
-        height: node.dimensions.height,
-        desc:
-          node.edge_media_to_caption &&
-          node.edge_media_to_caption.edges.length > 0 &&
-          node.edge_media_to_caption.edges['0'].node.text,
-        timestamp: node.taken_at_timestamp,
-        likedByTotal: node.edge_liked_by.count,
-        filename: filename,
-        hashtag,
-      };
+    if (saveFile) {
+      result.data.pipe(
+        fs.createWriteStream(
+          path.resolve(__dirname, '../data', 'instagram.html'),
+        ),
+      );
     }
-  });
-  
-  return selfies;  
+
+    const data = JSON.parse(parsePage(result.data));
+    const selfiesRaw =
+      data.entry_data.TagPage[0].graphql.hashtag.edge_hashtag_to_media.edges;
+
+    // Remap raw selfies into nice objects
+    const selfies = selfiesRaw.map(({ node }) => {
+      if (!node.is_video) {
+        const filename = node.display_url
+          .substring(node.display_url.lastIndexOf('/') + 1)
+          .split('?')[0];
+
+        return {
+          id: node.id,
+          url: node.display_url,
+          shortcode: node.shortcode,
+          width: node.dimensions.width,
+          height: node.dimensions.height,
+          desc:
+            node.edge_media_to_caption &&
+            node.edge_media_to_caption.edges.length > 0 &&
+            node.edge_media_to_caption.edges['0'].node.text,
+          timestamp: node.taken_at_timestamp,
+          likedByTotal: node.edge_liked_by.count,
+          filename: filename,
+          hashtag,
+        };
+      }
+    });
+    
+    return selfies;
   } catch (e) {
     console.log('getPostsByHashtag ' + hashtag + ' failed!');
   //  console.log(e);
@@ -200,7 +182,6 @@ export const getImage = async (url) => {
 
 export const checkWP = async (shortcode, username) => {
 
-  //let logtxt = '';
   let skp = false;
   // check if this post has already been added (as either draft, approved or trash)
   // Have to specifically look in trash:
@@ -232,7 +213,6 @@ export const checkWP = async (shortcode, username) => {
     console.log('================');
     logtxt += '================\n';
   }
-  // const o = {logtxt: llogtxt, skp: skp};
   return skp;
 }
 
@@ -302,7 +282,7 @@ export default async (hashtag, limit) => {
                       if (!skiprest && !skip) {
                         console.log('Upload to WP API');
                         logtxt += 'Upload to WP API\n';
-                    //    console.log(completePost);
+                    
                         logtxt += await wpUpload.upload(
                           {
                             type: 'instagram',
@@ -366,8 +346,7 @@ export default async (hashtag, limit) => {
     } else {
       console.log('No data from instagram!');
       logtxt += 'No data from instagram!\n';
-      
-//      return { log: log, err: err };
+
     }
   } else {
     console.log('No hashtag provided or count less than zero.');
@@ -378,10 +357,21 @@ export default async (hashtag, limit) => {
   function twoDigit(n) { return (n < 10 ? '0' : '') + n; }
 
   const now = new Date();
-  const yyyymmdd = '' + now.getFullYear() + twoDigit(now.getMonth() + 1) + twoDigit(now.getDate());
+  let dateTimeStamp = '' + now.getFullYear() + '-' + twoDigit(now.getMonth() + 1) + '-' + twoDigit(now.getDate());
+  dateTimeStamp += 'T' + twoDigit(now.getHours()) + ':' + twoDigit(now.getMinutes()) + ':' + twoDigit(now.getSeconds());
+  
+  console.log('Attempting to send scraper logs to WP.');
+  try {
 
-  fs.appendFile('log/' + yyyymmdd + '.txt', logtxt, function (err) {
-    if (err) return console.log(err);
-  });
+    await wp.scraperLogs().auth().create({
+      title: dateTimeStamp,
+      content: logtxt,
+      status: 'draft',
+    });
+
+  } catch (e) {
+    console.log('Logging failed!');
+    console.log(e);
+  }
 
 };
