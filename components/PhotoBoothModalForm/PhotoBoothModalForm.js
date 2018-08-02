@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import WPAPI from 'wpapi';
+import Keyboard from 'react-screen-keyboard';
 
 import './PhotoBoothModalForm.css';
 
@@ -22,6 +23,7 @@ class PhotoBoothModalForm extends Component {
 			interestsValid: false,
 			emailValid: true,
 			formValid: false,
+			inputNode: null,
 		};
 	}
 
@@ -39,6 +41,10 @@ class PhotoBoothModalForm extends Component {
 
 	handleUserInput = (e) => {
 		const { name, value } = e.target;
+
+		// this.setState({
+		// 	inputNode: this.input,
+		// });
 
 		this.setState({ [name]: value }, () => {
 			this.validateField(name, value);
@@ -162,7 +168,18 @@ class PhotoBoothModalForm extends Component {
 		}
 	};
 
+	handleFocus = () => {
+		this.setState({ inputNode: this.input });
+	};
+
+	handleInput = (event) => {
+		this.setState({
+			name: event.target.value,
+		});
+	};
+
 	render() {
+		const { inputNode } = this.state;
 		// const {} = this.props;
 
 		return (
@@ -181,6 +198,11 @@ class PhotoBoothModalForm extends Component {
 						value={this.state.name}
 						placeholder="Selfie Fiend"
 						onChange={(event) => this.handleUserInput(event)}
+						onInput={this.handleInput}
+						onFocus={this.handleFocus}
+						ref={(input) => {
+							this.input = input;
+						}}
 					/>
 				</p>
 
@@ -198,6 +220,8 @@ class PhotoBoothModalForm extends Component {
 						{this.state.formErrors.email}
 					</span>
 				</p>
+
+				{process.browser && inputNode && <Keyboard inputNode={inputNode} />}
 
 				<p>
 					Please tell us a few things about yourself so we can match you to a

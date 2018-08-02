@@ -223,7 +223,7 @@ class Home extends Component {
 							height="300"
 						/>
 						<button className="button" onClick={this.retakeSelfie}>
-							{'<'} re-take
+							<i className="ion-md-arrow-back" /> re-take
 						</button>
 					</div>
 
