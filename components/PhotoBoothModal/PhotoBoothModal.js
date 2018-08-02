@@ -1,4 +1,4 @@
-import { Component, Fragment } from 'react';
+import { Component } from 'react';
 
 import WPAPI from 'wpapi';
 
@@ -64,7 +64,7 @@ class Home extends Component {
 			if (this.props.stage === 'take-selfie') {
 				// Set up webcam
 				webcam(this.videoFeed, CAM_NAME);
-			} else {
+			} else if (window.stream) {
 				window.stream.getTracks().forEach((track) => {
 					track.stop();
 				});
@@ -267,6 +267,15 @@ class Home extends Component {
 					stage !== 'start' ? 'photo-booth-modal--full' : ''
 				} ${isBlink ? 'photo-booth-modal--is-blink' : ''}`}
 			>
+				{stage !== 'start' && (
+					<button
+						className="photo-booth-modal__close-button"
+						onClick={this.goHome}
+					>
+						<i className="ion-md-close" />
+					</button>
+				)}
+
 				<div className="photo-booth-modal__photo-box">
 					<h1 className="photo-booth-modal__title">Take a selfie</h1>
 
@@ -347,12 +356,44 @@ class Home extends Component {
 							width="300"
 							height="300"
 						/>
-						<button className="button" onClick={this.retakeSelfie} id="retake">
-							re-take
+						<button className="button" onClick={this.retakeSelfie}>
+							{'<'} re-take
 						</button>
 					</div>
 
 					<div className="photo-booth-modal__form">
+						<p>
+							Supply the following if you would like us to email you the results
+							of the match.
+						</p>
+
+						<p>
+							<label>Name:</label>
+							<input
+								type="text"
+								name="name"
+								id="name"
+								value={this.state.name}
+								placeholder="Selfie Fiend"
+								onChange={(event) => this.handleUserInput(event)}
+							/>
+						</p>
+
+						<p>
+							<label>Email:</label>
+							<input
+								type="email"
+								name="email"
+								id="email"
+								value={this.state.email}
+								placeholder="fiend@selfie-land.com"
+								onChange={(event) => this.handleUserInput(event)}
+							/>
+							<span className="formErrors email">
+								{this.state.formErrors.email}
+							</span>
+						</p>
+
 						<p>
 							Please tell us a few things about yourself so we can match you to
 							a portrait from our collection.
@@ -371,37 +412,7 @@ class Home extends Component {
 								{this.state.formErrors.interests}
 							</div>
 						</p>
-						<p>
-							And supply the following if you would like us to email you the
-							results of the match.
-						</p>
-						<p>
-							<label>Your name:</label>
-							<input
-								type="text"
-								name="name"
-								id="name"
-								value={this.state.name}
-								placeholder="Selfie Fiend"
-								onChange={(event) => this.handleUserInput(event)}
-							/>
-						</p>
-						<p>
-							<label>
-								Your email:<br />
-							</label>
-							<input
-								type="email"
-								name="email"
-								id="email"
-								value={this.state.email}
-								placeholder="fiend@selfie-land.com"
-								onChange={(event) => this.handleUserInput(event)}
-							/>
-							<span className="formErrors email">
-								{this.state.formErrors.email}
-							</span>
-						</p>
+
 						<p>
 							<button
 								className="button"
@@ -410,7 +421,7 @@ class Home extends Component {
 							>
 								submit
 							</button>
-							<button className="button" onClick={this.goHome}>
+							<button className="button button--dark" onClick={this.goHome}>
 								quit
 							</button>
 						</p>
@@ -418,8 +429,11 @@ class Home extends Component {
 				</div>
 
 				{stage === 'show-thanks' && (
-					<div>
-						<p>Thank you</p>
+					<div className="photo-booth-modal__show-thanks">
+						<p>Thank you!</p>
+						<button className="button" onClick={this.goHome}>
+							Start again
+						</button>
 					</div>
 				)}
 

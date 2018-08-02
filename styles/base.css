@@ -19,7 +19,8 @@ html {
 }
 
 body {
-	margin: 0 1em 1em;
+	/* Different to dxlab-website */
+	margin: 0;
 	background-color: var(--colour-black);
 	color: var(--colour-white);
 	font-family: var(--font-primary);
@@ -30,7 +31,8 @@ body {
 	/*-webkit-font-smoothing: antialiased;*/
 
 	@media (--screen-sm) {
-		margin: 2em;
+		/* Different to dxlab-website */
+		margin: 0;
 		font-size: 16px;
 	}
 }
@@ -117,7 +119,8 @@ figure {
 }
 
 label {
-	display: block;
+	/* TODO: Change to this in dxlab-website */
+	/* display: block;  */
 	margin-bottom: var(--font-size-xs);
 	font-size: var(--font-size-sm);
 	@apply --font-uppercase;
@@ -126,7 +129,8 @@ label {
 input[type='text'],
 input[type='email'],
 textarea {
-	width: 100%;
+	/* TODO: Change to this in dxlab-website */
+	/* width: 100%; */
 	padding: var(--spacing-sm);
 	font-family: var(--font-primary);
 	color: var(--colour-white);
