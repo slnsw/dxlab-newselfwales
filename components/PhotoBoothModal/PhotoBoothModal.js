@@ -170,7 +170,11 @@ class Home extends Component {
 
 					{(stage === 'start' || stage === 'take-selfie') && (
 						<button
-							className="photo-booth-modal__camera-button"
+							className={
+								stage === 'take-selfie'
+									? 'photo-booth-modal__camera-button'
+									: 'button'
+							}
 							onClick={stage === 'start' ? this.startSelfie : this.takeSelfie}
 						>
 							{stage === 'start' ? 'Start' : 'Take'}
@@ -245,6 +249,11 @@ class Home extends Component {
 				)}
 
 				<footer className="photo-booth-modal__footer">
+					<ul className="photo-booth-modal__menu">
+						<li className="photo-booth-modal__menu-item">Search</li>
+						<li className="photo-booth-modal__menu-item">About</li>
+					</ul>
+
 					<img
 						className="photo-booth-modal__nsw-logo"
 						alt="NewSelfWales Logo"

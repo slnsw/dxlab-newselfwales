@@ -208,7 +208,7 @@ class PhotoBoothModalForm extends Component {
 						name="name"
 						id="name"
 						value={this.state.name}
-						placeholder="Selfie Fiend"
+						placeholder="Your name"
 						onFocus={() => this.handleInputFocus(this.nameInput)}
 						onChange={(event) => this.handleUserInput(event)}
 						onInput={this.handleNameInput}
@@ -226,7 +226,7 @@ class PhotoBoothModalForm extends Component {
 						name="email"
 						id="email"
 						value={this.state.email}
-						placeholder="fiend@selfie-land.com"
+						placeholder="Your email address"
 						onFocus={() => this.handleInputFocus(this.emailInput)}
 						onChange={(event) => this.handleUserInput(event)}
 						onInput={this.handleEmailInput}

@@ -117,10 +117,24 @@
 
 .photo-booth-modal__footer {
 	display: flex;
-	align-items: center;
+	flex-direction: column;
+	align-items: flex-end;
 	align-self: flex-end;
 	margin-top: auto;
-	text-align: center;
+	text-align: right;
+}
+
+.photo-booth-modal__menu {
+	display: block;
+	margin-bottom: 3em;
+}
+
+.photo-booth-modal__menu-item {
+	/* @apply --font-uppercase; */
+	list-style: none;
+	font-size: var(--font-size-xxlg);
+	font-family: var(--font-secondary);
+	font-weight: 500;
 }
 
 .photo-booth-modal__nsw-logo {
