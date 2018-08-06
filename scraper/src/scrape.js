@@ -14,6 +14,7 @@ const source = process.argv[2];
 const id = process.argv[3];
 
 export const scrape = (source, id) => {
+  console.log(source);
   // Switch between different sources here
   if (source === 'record') {
     scrapeRecord(id);
@@ -67,8 +68,8 @@ export const scrape = (source, id) => {
     const hashtag = 'newselfwales'; // 'selfie';
     const count = 10;
     
-    console.log('Scraping instagram for #' + hashtag);
-    console.log('Asking for ' + count);
+    console.log(`Scraping instagram for #${hashtag}`);
+    console.log(`Asking for ${count}`);
     scrapeInstagram(hashtag, count);
     
 
@@ -78,5 +79,9 @@ export const scrape = (source, id) => {
 
   return null;
 };
+if (source) {
+  scrape(source, id);
+} else {
+//  scrape(source, id);
+}
 
-scrape(source, id);
