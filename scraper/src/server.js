@@ -14,4 +14,8 @@ cron.schedule('*/8 * * * *', () => {
 const { createServer } = require('http');
 const server = createServer(() => {});
 
+<<<<<<< HEAD
 server.listen(3000);
+=======
+cron.schedule('*/10 * * * *', function() { scrape('instagram',1); } ); // scrape('instagram',1)
+>>>>>>> develop
