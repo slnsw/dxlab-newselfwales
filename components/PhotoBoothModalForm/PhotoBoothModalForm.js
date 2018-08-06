@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import WPAPI from 'wpapi';
-import Keyboard from 'react-screen-keyboard';
+import Keyboard, { LatinLayout } from 'react-screen-keyboard';
 
 import './PhotoBoothModalForm.css';
 
@@ -43,7 +43,7 @@ class PhotoBoothModalForm extends Component {
 		const { name, value } = e.target;
 
 		// this.setState({
-		// 	inputNode: this.input,
+		// 	inputNode: this.nameInput,
 		// });
 
 		this.setState({ [name]: value }, () => {
@@ -168,13 +168,25 @@ class PhotoBoothModalForm extends Component {
 		}
 	};
 
-	handleFocus = () => {
-		this.setState({ inputNode: this.input });
+	handleInputFocus = (input) => {
+		this.setState({ inputNode: input });
 	};
 
-	handleInput = (event) => {
+	handleNameInput = (event) => {
 		this.setState({
 			name: event.target.value,
+		});
+	};
+
+	handleEmailInput = (event) => {
+		this.setState({
+			email: event.target.value,
+		});
+	};
+
+	handleInterestsInput = (event) => {
+		this.setState({
+			interests: event.target.value,
 		});
 	};
 
@@ -197,11 +209,11 @@ class PhotoBoothModalForm extends Component {
 						id="name"
 						value={this.state.name}
 						placeholder="Selfie Fiend"
+						onFocus={() => this.handleInputFocus(this.nameInput)}
 						onChange={(event) => this.handleUserInput(event)}
-						onInput={this.handleInput}
-						onFocus={this.handleFocus}
+						onInput={this.handleNameInput}
 						ref={(input) => {
-							this.input = input;
+							this.nameInput = input;
 						}}
 					/>
 				</p>
@@ -209,19 +221,23 @@ class PhotoBoothModalForm extends Component {
 				<p>
 					<label>Email:</label>
 					<input
-						type="email"
+						// NOTE: Would prefer 'email', but react-screen-keyboard doesn't work
+						type="text"
 						name="email"
 						id="email"
 						value={this.state.email}
 						placeholder="fiend@selfie-land.com"
+						onFocus={() => this.handleInputFocus(this.emailInput)}
 						onChange={(event) => this.handleUserInput(event)}
+						onInput={this.handleEmailInput}
+						ref={(input) => {
+							this.emailInput = input;
+						}}
 					/>
 					<span className="formErrors email">
 						{this.state.formErrors.email}
 					</span>
 				</p>
-
-				{process.browser && inputNode && <Keyboard inputNode={inputNode} />}
 
 				<p>
 					Please tell us a few things about yourself so we can match you to a
@@ -235,7 +251,12 @@ class PhotoBoothModalForm extends Component {
 						id="interests"
 						value={this.state.interests}
 						placeholder="Enter around 4 or 5, separated by commas"
+						onFocus={() => this.handleInputFocus(this.interestsInput)}
 						onChange={(event) => this.handleUserInput(event)}
+						onInput={this.handleInterestsInput}
+						ref={(input) => {
+							this.interestsInput = input;
+						}}
 					/>
 					<span className="formErrors interests">
 						{this.state.formErrors.interests}
@@ -257,9 +278,23 @@ class PhotoBoothModalForm extends Component {
 						Quit
 					</button>
 				</p>
+
+				{process.browser &&
+					inputNode && (
+						<Keyboard inputNode={inputNode} layouts={[LatinLayoutCustom]} />
+					)}
 			</div>
 		);
 	}
 }
 
 export default PhotoBoothModalForm;
+
+const LatinLayoutCustom = {
+	symbolsKeyValue: 'Abc',
+	layout: [
+		['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+		['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '@'],
+		['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.'],
+	],
+};

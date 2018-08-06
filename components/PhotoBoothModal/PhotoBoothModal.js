@@ -1,6 +1,7 @@
 import { Component } from 'react';
 
 import './PhotoBoothModal.css';
+import './Keyboard.css';
 import PhotoBoothModalForm from '../PhotoBoothModalForm';
 import { Router } from '../../routes';
 import webcam, { dataURItoBlob } from '../../lib/webcam';
