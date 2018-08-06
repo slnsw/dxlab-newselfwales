@@ -9,24 +9,42 @@
  * -------------------------------------------------------------------------- */
 
 .container {
-  lost-utility: clearfix;
+	lost-utility: clearfix;
 
-  width: 100%;
-  margin: 0 auto;
+	width: 100%;
+	margin: 0 auto;
 }
 
 .container--sm {
-  max-width: $container-width-sm;
+	max-width: $container-width-sm;
 }
 
 .container--md {
-  max-width: $container-width-md;
+	max-width: $container-width-md;
 }
 
 .container--lg {
-  max-width: $container-width-lg;
+	max-width: $container-width-lg;
 }
 
 .container--xlg {
-  max-width: $container-width-xlg;
+	max-width: $container-width-xlg;
+}
+
+.button {
+	padding: var(--spacing-sm) var(--spacing-xxlg);
+	border-radius: 2em;
+	background-color: var(--colour-primary);
+	@apply --font-uppercase;
+	line-height: 1;
+
+	&:disabled {
+		opacity: 0.3;
+		/* background-color: var(--colour-primary-darkest); */
+	}
+}
+
+.button--dark {
+	background-color: var(--colour-black);
+	border: 1px solid var(--colour-primary);
 }

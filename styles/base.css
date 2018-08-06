@@ -1,100 +1,186 @@
 @import 'normalize.css/normalize.css';
-@import './variables.css';
+@import './variables';
 @import './fonts';
+
+/*@import 'corporate-icon-library/icomoon/style.css';*/
 
 /*
  * BASE STYLES
  * ========================================================================== */
 
 html {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
-}
-
-* {
-  font-family: Barlow, Helvetica, Arial, sans-serif;
+	box-sizing: inherit;
 }
 
 body {
-  margin: 0;
-  color: var(--colour-white);
-  background-color: var(--colour-black);
-  line-height: 1.4;
+	/* Different to dxlab-website */
+	margin: 0;
+	background-color: var(--colour-black);
+	color: var(--colour-white);
+	font-family: var(--font-primary);
+	font-weight: 400;
+	line-height: 1.5;
+	font-size: 17px;
+
+	/*-webkit-font-smoothing: antialiased;*/
+
+	@media (--screen-sm) {
+		/* Different to dxlab-website */
+		margin: 0;
+		font-size: 16px;
+	}
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: var(--font-primary);
+	@apply --font-uppercase;
+	font-weight: 700;
 }
 
 h1 {
-  margin-top: 0;
-  margin-bottom: var(--spacing-xxxs);
-  font-family: Lekton, Helvetica, Arial, sans-serif;
-  letter-spacing: 0.05em;
-  line-height: var(--line-height-xs);
+	font-size: var(--font-size-xxlg);
 }
 
-p {
-  margin-top: 0;
+h2 {
+	font-size: var(--font-size-lg);
+	margin-top: var(--spacing-xxlg);
+	line-height: 1.2;
+}
+
+h3 {
+	font-size: var(--font-size-md);
+}
+
+h2:first-child {
+	margin-top: 0;
 }
 
 a:link,
 a:visited {
-  text-decoration: none;
-  color: var(--colour-primary);
-  transition: 0.3s;
+	text-decoration: none;
+	color: var(--colour-primary);
+	transition: 0.3s;
 
-  @nest h1 &, h2 & {
-    color: inherit;
-  }
+	@nest h1 &, h2 & {
+		color: inherit;
+	}
+}
+
+a:hover,
+a:active {
+	text-decoration: underline;
+
+	@nest h1 &, h2 & {
+		text-decoration: none;
+		color: var(--colour-highlight);
+	}
+}
+
+p {
+	margin-top: 0;
+	margin-bottom: var(--font-size-xxlg);
+}
+
+strong,
+b {
+	font-weight: 700;
+}
+
+blockquote {
+	width: calc(100% + 1rem);
+	font-style: italic;
+	border-left: 2px dashed var(--colour-white);
+	margin-left: -1rem;
+	padding-left: calc(1rem - 2px);
+
+	@media (--screen-sm) {
+		border-width: 1px;
+		padding-left: calc(1rem - 1px);
+	}
+}
+
+figcaption {
+	font-size: var(--font-size-sm);
+	opacity: 0.6;
+}
+
+figure {
+	margin: 0 0 var(--spacing-xlg) 0;
+	max-width: 100%;
+}
+
+label {
+	/* TODO: Change to this in dxlab-website */
+	/* display: block;  */
+	margin-bottom: var(--font-size-xs);
+	font-size: var(--font-size-sm);
+	@apply --font-uppercase;
+}
+
+input[type='text'],
+input[type='email'],
+textarea {
+	/* TODO: Change to this in dxlab-website */
+	/* width: 100%; */
+	padding: var(--spacing-sm);
+	font-family: var(--font-primary);
+	color: var(--colour-white);
+	background-color: var(--colour-grey-darker);
+	border-bottom: 4px solid var(--colour-grey-darkest);
+	border-right: 2px solid rgba(45, 45, 45);
+	border-left: none;
+	border-top: none;
+	border-radius: 0;
+}
+
+textarea {
+	line-height: 1.4;
 }
 
 button,
 input[type='submit'] {
-  background: none;
-  border: none;
-  color: var(--colour-white);
-  font-family: var(--font-primary);
-  text-transform: uppercase;
-  border-radius: 0;
-  cursor: pointer;
+	background: none;
+	border: none;
+	color: var(--colour-white);
+	font-family: var(--font-primary);
+	text-transform: uppercase;
+	border-radius: 0;
+	cursor: pointer;
 }
 
-.button {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 3em;
-  border-radius: 3em;
-  background-color: var(--colour-highlight);
+button[type='submit'],
+input[type='submit'] {
+	padding: var(--spacing-md);
+	font-size: var(--font-size-sm);
+	@apply --font-uppercase;
+	border: 1px solid var(--colour-white);
+	transition: 0.3s;
 
-  /* border: 1px solid var(--colour-white); */
-  padding-left: var(--spacing-md);
-  padding-right: var(--spacing-xs);
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  @apply --font-uppercase;
-  line-height: 1;
-  letter-spacing: 0.4em;
-  text-align: center;
-  transition: 0.3s;
-
-  &:link,
-  &:visited {
-    color: var(--colour-white);
-  }
-
-  /* &:hover {
-    text-decoration: none;
-    color: var(--colour-highlight);
-    border: 1px solid var(--colour-highlight);
-  } */
+	&:hover {
+		color: var(--colour-highlight);
+		border-color: var(--colour-highlight);
+	}
 }
 
-/* main {
-  overflow-y: hidden;
-} */
+button,
+textarea,
+input[type='text'],
+input[type='button'],
+input[type='submit'] {
+	-webkit-appearance: none;
+	border-radius: 0;
+
+	&:focus {
+		outline: 1;
+		outline-color: var(--colour-highlight);
+	}
+}

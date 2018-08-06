@@ -1,5 +1,5 @@
 const routes = require('next-routes')();
 
-routes.add('example-page', '/example-page/:id');
+routes.add('newselfwales', '/newselfwales/:imageType/:id');
 
 module.exports = routes;

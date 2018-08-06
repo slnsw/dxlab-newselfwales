@@ -1,22 +1,26 @@
 {
-  "name": "data-selfie-scraper",
+  "name": "data-newselfwales-scraper",
   "version": "0.0.1",
-  "description": "Instagram and SLNSW scraper.",
+  "description": "Instagram and SLNSW Collection scraper.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/slnsw/data-selfie-scraper.git"
+    "url": "git+https://github.com/slnsw/dxlab-newselfwales.git"
   },
-  "main": "build/app.js",
+  "main": "build/server.js",
   "scripts": {
-    "start": "node build/app.js",
-    "dev": "webpack --watch & node-dev --no-notify --no-deps -r dotenv/config build/app.js",
+    "start": "node build/server.js",
+    "dev":
+      "webpack --watch & node-dev --no-notify --no-deps -r dotenv/config build/app.js",
     "scrape-record": "npx babel-node ./src/scrape.js record",
     "scrape-records": "npx babel-node ./src/scrape.js records",
     "scrape-instagram": "npx babel-node ./src/scrape.js instagram",
     "server": "babel-node ./src/server.js",
     "deploy": "serverless --stage staging deploy",
+    "deploy-staging": "now --dotenv=.env.staging",
+    "deploy-production": "now --dotenv=.env.production",
     "build": "webpack --progress",
-    "test": "node -r dotenv/config ./node_modules/.bin/jest --forceExit --runInBand",
+    "test":
+      "node -r dotenv/config ./node_modules/.bin/jest --forceExit --runInBand",
     "test:watch": "node -r dotenv/config ./node_modules/.bin/jest --watch",
     "invoke": "sls invoke local -f graphql --stage staging"
   },
@@ -77,9 +81,6 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "./build"
-    ]
+    "testPathIgnorePatterns": ["/node_modules/", "./build"]
   }
 }

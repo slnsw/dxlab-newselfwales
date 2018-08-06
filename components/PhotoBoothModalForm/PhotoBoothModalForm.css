@@ -1,0 +1,20 @@
+@import '../../styles/variables.css';
+
+.photo-booth-modal-form {
+	& p {
+		font-size: var(--font-size-lg);
+		font-family: var(--font-secondary);
+	}
+
+	& label {
+		display: inline-block;
+		width: 25%;
+		font-size: var(--font-size-xs);
+	}
+
+	& input[type='text'],
+	& input[type='email'] {
+		width: 75%;
+		font-size: var(--font-size-sm);
+	}
+}

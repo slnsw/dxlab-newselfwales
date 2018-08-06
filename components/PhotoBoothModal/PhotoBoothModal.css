@@ -1,0 +1,144 @@
+@import '../../styles/variables.css';
+
+.photo-booth-modal {
+	display: flex;
+	position: absolute;
+	flex-direction: column;
+	align-items: center;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 20%;
+	min-width: 30em;
+	padding: 10vh 2em 2em 2em;
+	background-color: var(--colour-black);
+	/* background-color: rgba(0, 0, 0, 0.8); */
+	transition: 0.3s;
+}
+
+.photo-booth-modal--full {
+	width: 100%;
+}
+
+.photo-booth-modal--is-blink {
+	background-color: var(--colour-white);
+}
+
+.photo-booth-modal__close-button {
+	position: absolute;
+	top: 1em;
+	right: 1em;
+	font-size: var(--font-size-lg);
+}
+
+.photo-booth-modal__buttons {
+	display: flex;
+
+	& .button {
+		margin: 0 1em;
+	}
+}
+
+.photo-booth-modal__camera-button {
+	margin: 15px;
+	background-color: var(--colour-primary);
+	width: 6em;
+	height: 6em;
+	border-radius: 3em;
+	@apply --font-uppercase;
+
+	box-shadow: 0 0 0 5px var(--colour-black),
+		0 0 0 15px var(--colour-primary-darkest);
+}
+
+.photo-booth-modal__photo-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.photo-booth-modal__title {
+	@apply --font-uppercase;
+	font-size: var(--font-size-lg);
+}
+
+.photo-booth-modal__silhouette {
+	margin: 1em auto 1em;
+	max-height: 15em;
+	max-width: 15em;
+	background-color: var(--colour-grey-darker);
+}
+
+.photo-booth-modal__video {
+	margin: 0 auto 1em;
+	max-height: 25em;
+	max-width: 25em;
+	transform: scaleX(-1);
+}
+
+.photo-booth-modal__video--feed {
+}
+
+.photo-booth-modal__video--preview {
+	border: 3px solid #e6007e;
+}
+
+.photo-booth-modal__send-selfie {
+	display: flex;
+	margin: 0 auto;
+	width: 80%;
+}
+
+.photo-booth-modal__send-selfie__preview {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-right: var(--spacing-xxlg);
+}
+
+.photo-booth-modal__form {
+	& p {
+		font-size: var(--font-size-lg);
+		font-family: var(--font-secondary);
+	}
+
+	& label {
+		display: inline-block;
+		width: 25%;
+		font-size: var(--font-size-xs);
+	}
+
+	& input[type='text'],
+	& input[type='email'] {
+		width: 75%;
+		font-size: var(--font-size-sm);
+	}
+}
+
+.photo-booth-modal__footer {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	align-self: flex-end;
+	margin-top: auto;
+	text-align: right;
+}
+
+.photo-booth-modal__menu {
+	display: block;
+	margin-bottom: 3em;
+}
+
+.photo-booth-modal__menu-item {
+	/* @apply --font-uppercase; */
+	list-style: none;
+	font-size: var(--font-size-xxlg);
+	font-family: var(--font-secondary);
+	font-weight: 500;
+}
+
+.photo-booth-modal__nsw-logo {
+	max-width: 20em;
+	margin-left: auto;
+	height: auto;
+}

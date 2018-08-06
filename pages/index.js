@@ -5,7 +5,7 @@ import ExampleApp from '../components/examples/ExampleApp';
 import images from '../lib/images.json';
 import selfiesRaw from '../lib/selfieSelected.json';
 import shuffle from '../lib/shuffle';
-import scroll from '../lib/scroll';
+import { scroller } from '../lib/scroll';
 
 import './index.css';
 
@@ -65,7 +65,7 @@ class Home extends Component {
 						}}
 						onLayoutComplete={(laidOutItems) => {
 							console.log('onLayoutComplete');
-							scroll(laidOutItems, this.state.axis);
+							scroller(laidOutItems, this.state.axis);
 						}}
 					>
 						{allImages.slice(0, 500).map((image, i) => {
