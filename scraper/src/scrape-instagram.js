@@ -39,7 +39,7 @@ try {
 } catch (e) {
   console.log('WP API upload failed!');
   console.log(e);
-  logtxt += 'WP API upload failed!\n' + e + '\n';
+  logtxt += `WP API upload failed!\n${e}\n`;
 }
 
 // Get list of Instagram selfies
@@ -91,10 +91,10 @@ export const getPostsByHashtag = async (hashtag) => {
     
     return selfies;
   } catch (e) {
-    console.log('getPostsByHashtag ' + hashtag + ' failed!');
+    console.log(`getPostsByHashtag ${hashtag} failed!`);
   //  console.log(e);
     console.log('================');
-    logtxt += 'getPostsByHashtag ' + hashtag + ' failed!\n================\n';
+    logtxt += `getPostsByHashtag ${hashtag} failed!\n================\n`;
     return false;
   }
 };
@@ -139,9 +139,9 @@ export const getPost = async (shortcode) => {
       msc: msc,
     };
   } catch (e) {
-    console.log('getPost ' + shortcode + ' failed!');
+    console.log(`getPost ${shortcode} failed!`);
     console.log('================');
-    logtxt += 'getPost ' + shortcode + ' failed!\n================\n';
+    logtxt += `getPost ${shortcode} failed!\n================\n`;
     return false;
   }
 };
@@ -156,10 +156,10 @@ export const getIgUser = async (username) => {
       biography: biography,
     };    
   } catch(e) {
-    console.log('getIgUser ' + username + ' failed!');
+    console.log(`getIgUser ${username} failed!`);
   //  console.log(e);
     console.log('================');
-    logtxt += 'getIgUser ' + username + ' failed!\n================\n';
+    logtxt += `getIgUser ${username} failed!\n================\n`;
     return false;
   }
 };
@@ -172,10 +172,10 @@ export const getImage = async (url) => {
     const imgBuf = new Buffer(image.data, 'binary');
     return imgBuf;
   } catch(e) {
-    console.log('getImage ' + url + ' failed!');
+    console.log(`getImage ${url} failed!`);
   //  console.log(e);
     console.log('================');
-    logtxt += 'getImage ' + url + ' failed!\n================\n';
+    logtxt += `getImage ${url} failed!\n================\n`;
     return false;
   }
 };
@@ -187,25 +187,25 @@ export const checkWP = async (shortcode, username) => {
   // Have to specifically look in trash:
   const resput = await wp.instagramSelfies().auth().param( 'status', 'trash' ).param( 'meta_key', 'shortcode' ).param( 'meta_value', shortcode );
   if (resput && resput.length) {
-    console.log('Instagram post ' + shortcode + ' already exists in trash, ' + resput.length + ' time(s)!');
-    logtxt += 'Instagram post ' + shortcode + ' already exists in trash, ' + resput.length + ' time(s)!\n';
+    console.log(`Instagram post ${shortcode} already exists in trash, ${resput.length} time(s)!`);
+    logtxt += `Instagram post ${shortcode} already exists in trash, ${resput.length} time(s)!\n`;
     skp = true;
   } 
   // then everywhere else:
   const respu = await wp.instagramSelfies().auth().param( 'status', 'any' ).param( 'meta_key', 'shortcode' ).param( 'meta_value', shortcode );
   if (!skp && respu && respu.length) {
-    console.log('Instagram post ' + shortcode + ' already exists (as draft or approved), ' + respu.length + ' time(s)!');
-    logtxt += 'Instagram post ' + shortcode + ' already exists (as draft or approved), ' + respu.length + ' time(s)!\n';
+    console.log(`Instagram post ${shortcode} already exists (as draft or approved), ${respu.length} time(s)!`);
+    logtxt += `Instagram post ${shortcode} already exists (as draft or approved), ${respu.length} time(s)!\n`;
     skp = true;
   }
   // now check if we already have a Gram from this user (draft or approved):
   const resp = await wp.instagramSelfies().auth().param( 'status', 'any' ).param( 'meta_key', 'username' ).param( 'meta_value', username );
   if (!skp && resp && resp.length) {
-    console.log(resp.length + ' grams already exist from user: ' + username);
-    logtxt += resp.length + ' grams already exist from user: ' + username + '\n';
+    console.log(`${resp.length} grams already exist from user: ${username}`);
+    logtxt += `${resp.length} grams already exist from user: ${username}\n`;
     for (const dt of resp) {
-      console.log('Wordpress ID: ' + dt.id);
-      logtxt += 'Wordpress ID: ' + dt.id + '\n';
+      console.log(`Wordpress ID: ${dt.id}`);
+      logtxt += `Wordpress ID: ${dt.id}\n`;
     }
     skp = true;
   }
@@ -219,17 +219,17 @@ export const checkWP = async (shortcode, username) => {
 export default async (hashtag, limit) => {
   
   let dt = new Date().toLocaleString("en-AU", {timeZone: "Australia/Sydney"});
-  console.log("\n================\nStarting at " + dt);
-  logtxt += "\n================\nStarting at " + dt + '\n';
-  
+  console.log(`\n================\nStarting at ${dt}`);
+  logtxt += `\n================\nStarting at ${dt}\n`;
+  let count = 0;
   if (hashtag && (limit > 0)) {
-    let count = 0;
-    chalkAnimation.rainbow('Accessing Instagram for ' + limit + ' grams ' + ' with #' + hashtag);
+    
+    chalkAnimation.rainbow(`Accessing Instagram for ${limit} grams with #${hashtag}`);
       
     const d = await getPostsByHashtag(hashtag);
     if (d) {
-      console.log(d.length + ' found');
-      logtxt += d.length + ' found\n================\n';
+      console.log(`${d.length} found`);
+      logtxt += `${d.length} found\n================\n`;
       for (var data of d) {
         if (count < limit) {
           if (data && data.shortcode) {
@@ -267,9 +267,9 @@ export default async (hashtag, limit) => {
                     console.log(completePost.msc[mc]);
                     console.log(completePost.username);
                     console.log(u);
-                    logtxt += completePost.msc[mc] + '\n';
-                    logtxt += completePost.username + '\n';
-                    logtxt += u + '\n';
+                    logtxt += `${completePost.msc[mc]}\n`;
+                    logtxt += `${completePost.username}\n`;
+                    logtxt += `${u}\n`;
 
                     try {
 
@@ -305,9 +305,9 @@ export default async (hashtag, limit) => {
                           },
                           () => {
                             count += 1;
-                            console.log(count + ' done.');
+                            console.log(`${count} done.`);
                             console.log('---------------');
-                            logtxt += count + ' done.\n---------------\n';
+                            logtxt += `${count} done.\n---------------\n`;
                           },
                         );
 
@@ -331,17 +331,17 @@ export default async (hashtag, limit) => {
       console.log('');
       console.log('-=-=-=-=-=-=-=-=-=-=-=-=-');
       console.log('COMPLETE!!');
-      console.log(limit + ' requested');
-      console.log(d.length + ' found');
-      console.log(count + ' uploaded');
+      console.log(`${limit} requested`);
+      console.log(`${d.length} found`);
+      console.log(`${count} uploaded`);
       let dte = new Date().toLocaleString("en-AU", {timeZone: "Australia/Sydney"});
-      console.log("Started at " + dt);
-      console.log("Completed at " + dte);
+      console.log(`Started at ${dt}`);
+      console.log(`Completed at ${dte}`);
       console.log('-=-=-=-=-=-=-=-=-=-=-=-=-');
       console.log('');
-      logtxt += '\n-=-=-=-=-=-=-=-=-=-=-=-=-\nCOMPLETE!!\n' + limit + ' requested\n';
-      logtxt += d.length + ' found\n' + count + ' uploaded\nStarted at ' + dt;
-      logtxt += '\nCompleted at ' + dte + '\n-=-=-=-=-=-=-=-=-=-=-=-=-\n';
+      logtxt += `\n-=-=-=-=-=-=-=-=-=-=-=-=-\nCOMPLETE!!\n${limit} requested\n`;
+      logtxt += `${d.length} found\n${count} uploaded\nStarted at ${dt}`;
+      logtxt += `\nCompleted at ${dte}\n-=-=-=-=-=-=-=-=-=-=-=-=-\n`;
 
     } else {
       console.log('No data from instagram!');
@@ -357,14 +357,14 @@ export default async (hashtag, limit) => {
   function twoDigit(n) { return (n < 10 ? '0' : '') + n; }
 
   const now = new Date();
-  let dateTimeStamp = '' + now.getFullYear() + '-' + twoDigit(now.getMonth() + 1) + '-' + twoDigit(now.getDate());
-  dateTimeStamp += 'T' + twoDigit(now.getHours()) + ':' + twoDigit(now.getMinutes()) + ':' + twoDigit(now.getSeconds());
+  let dateTimeStamp = `${now.getFullYear()}-${twoDigit(now.getMonth() + 1)}-${twoDigit(now.getDate())}`;
+  dateTimeStamp += `T${twoDigit(now.getHours())}:${twoDigit(now.getMinutes())}:${twoDigit(now.getSeconds())}`;
   
   console.log('Attempting to send scraper logs to WP.');
   try {
 
     await wp.scraperLogs().auth().create({
-      title: dateTimeStamp,
+      title: `${dateTimeStamp} - ${count} uploaded`, // dateTimeStamp + ' - ' + count + ' uploaded',
       content: logtxt,
       status: 'draft',
     });
