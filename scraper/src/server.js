@@ -7,4 +7,4 @@ import cron from 'node-cron';
 
 // scrape('instagram',1);
 
-cron.schedule('*/8 * * * *', function() { scrape('instagram',1); } ); // scrape('instagram',1)
+cron.schedule('*/10 * * * *', function() { scrape('instagram',1); } ); // scrape('instagram',1)

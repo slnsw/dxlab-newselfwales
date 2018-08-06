@@ -66,7 +66,7 @@ export const scrape = (source, id) => {
   } else if (source === 'instagram') {
 
     const hashtag = 'newselfwales'; // 'selfie';
-    const count = 10;
+    const count = 100;
     
     console.log(`Scraping instagram for #${hashtag}`);
     console.log(`Asking for ${count}`);
