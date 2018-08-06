@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import WPAPI from 'wpapi';
-import Keyboard, { LatinLayout } from 'react-screen-keyboard';
+import Keyboard from 'react-screen-keyboard';
 
 import './PhotoBoothModalForm.css';
 
@@ -271,6 +271,7 @@ class PhotoBoothModalForm extends Component {
 					>
 						Submit
 					</button>
+					&nbsp;&nbsp;&nbsp;
 					<button
 						className="button button--dark"
 						onClick={this.handleQuitButton}
