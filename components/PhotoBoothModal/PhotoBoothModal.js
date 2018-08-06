@@ -130,9 +130,11 @@ class Home extends Component {
 
 		return (
 			<div
-				className={`photo-booth-modal ${
-					stage !== 'start' ? 'photo-booth-modal--full' : ''
-				} ${isBlink ? 'photo-booth-modal--is-blink' : ''}`}
+				className="photo-booth-modal"
+				ref={(element) => this.photoBoothModal}
+				// className={`photo-booth-modal ${
+				// 	stage !== 'start' ? 'photo-booth-modal--full' : ''
+				// } ${isBlink ? 'photo-booth-modal--is-blink' : ''}`}
 			>
 				{stage !== 'start' && (
 					<button
@@ -249,10 +251,12 @@ class Home extends Component {
 				)}
 
 				<footer className="photo-booth-modal__footer">
-					<ul className="photo-booth-modal__menu">
-						<li className="photo-booth-modal__menu-item">Search</li>
-						<li className="photo-booth-modal__menu-item">About</li>
-					</ul>
+					{stage === 'start' && (
+						<ul className="photo-booth-modal__menu">
+							<li className="photo-booth-modal__menu-item">Search</li>
+							<li className="photo-booth-modal__menu-item">About</li>
+						</ul>
+					)}
 
 					<img
 						className="photo-booth-modal__nsw-logo"

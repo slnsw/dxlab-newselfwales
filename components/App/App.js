@@ -88,6 +88,7 @@ class App extends Component {
 						href="https://unpkg.com/ionicons@4.2.5/dist/css/ionicons.min.css"
 						rel="stylesheet"
 					/>
+					{/* <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js" /> */}
 				</Head>
 				{children}
 			</main>

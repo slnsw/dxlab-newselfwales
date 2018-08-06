@@ -118,14 +118,16 @@
 .photo-booth-modal__footer {
 	display: flex;
 	flex-direction: column;
-	align-items: flex-end;
+	align-items: center;
 	align-self: flex-end;
+	width: 100%;
 	margin-top: auto;
-	text-align: right;
+	text-align: center;
 }
 
 .photo-booth-modal__menu {
 	display: block;
+	padding-left: 0;
 	margin-bottom: 3em;
 }
 
@@ -139,6 +141,6 @@
 
 .photo-booth-modal__nsw-logo {
 	max-width: 20em;
-	margin-left: auto;
+	/* margin-left: auto; */
 	height: auto;
 }
