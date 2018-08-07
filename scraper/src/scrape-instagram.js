@@ -116,7 +116,7 @@ export const getPost = async (shortcode) => {
 
     if (multi) {
       console.log('MULTI!!!');
-      logtxt += 'MULTI!!!';
+      logtxt += 'MULTI!!!\n';
       const m = multi.edges;
       let x = 0;
       for (var u of m) {
