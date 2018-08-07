@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, Fragment } from 'react';
 
 import './PhotoBoothModal.css';
 import './Keyboard.css';
@@ -130,12 +130,19 @@ class Home extends Component {
 
 		return (
 			<div
-				className="photo-booth-modal"
-				ref={(element) => this.photoBoothModal}
-				// className={`photo-booth-modal ${
-				// 	stage !== 'start' ? 'photo-booth-modal--full' : ''
-				// } ${isBlink ? 'photo-booth-modal--is-blink' : ''}`}
+				className={`photo-booth-modal ${
+					stage !== 'start' ? 'photo-booth-modal--full' : ''
+				} ${isBlink ? 'photo-booth-modal--is-blink' : ''}`}
 			>
+				{stage === 'start' && (
+					<button
+						className="photo-booth-modal__hide-button"
+						// onClick={this.goHome}
+					>
+						<i className="ion-md-arrow-dropright" />
+					</button>
+				)}
+
 				{stage !== 'start' && (
 					<button
 						className="photo-booth-modal__close-button"
@@ -146,17 +153,19 @@ class Home extends Component {
 				)}
 
 				<div className="photo-booth-modal__photo-box">
-					<h1 className="photo-booth-modal__title">Take a selfie</h1>
+					<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
 
 					{stage === 'start' && (
-						<img
-							src="../../static/newselfwales/images/silhouettes/silhouette.png"
-							alt="Silhouette of person"
-							className="photo-booth-modal__silhouette"
-						/>
-					)}
+						<Fragment>
+							<img
+								src="../../static/newselfwales/images/silhouettes/silhouette.png"
+								alt="Silhouette of person"
+								className="photo-booth-modal__silhouette"
+							/>
 
-					<br />
+							<br />
+						</Fragment>
+					)}
 
 					{stage === 'take-selfie' && (
 						<video
@@ -253,8 +262,12 @@ class Home extends Component {
 				<footer className="photo-booth-modal__footer">
 					{stage === 'start' && (
 						<ul className="photo-booth-modal__menu">
-							<li className="photo-booth-modal__menu-item">Search</li>
-							<li className="photo-booth-modal__menu-item">About</li>
+							<li className="photo-booth-modal__menu-item">
+								<i className="ion-md-search" /> Search
+							</li>
+							<li className="photo-booth-modal__menu-item">
+								<i className="ion-md-information-circle-outline" /> About
+							</li>
 						</ul>
 					)}
 

@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 
 import './ImageFeedContainer.css';
 import ImageFeed from '../ImageFeed';
+import shuffle from '../../lib/shuffle';
 
 class ImageFeedContainer extends Component {
 	static propTypes = {
@@ -123,12 +124,14 @@ class ImageFeedContainer extends Component {
 							return null;
 						}
 
-						let images = data.portraits.map((portrait) => {
-							return {
-								...portrait,
-								imageUrl: portrait.featuredMedia.sourceUrl,
-							};
-						});
+						let images = data.newSelfWales.portraits
+							.concat(data.newSelfWales.selfies)
+							.map((portrait) => {
+								return {
+									...portrait,
+									imageUrl: portrait.featuredMedia.sourceUrl,
+								};
+							});
 
 						if (typeof onImagesUpdate === 'function') {
 							images = onImagesUpdate(images);
@@ -136,7 +139,7 @@ class ImageFeedContainer extends Component {
 
 						return (
 							<ImageFeed
-								images={images}
+								images={shuffle(images)}
 								maxImages={maxImages}
 								enableAnimation={enableAnimation}
 								increment={increment}
@@ -180,11 +183,27 @@ const PAGE_QUERY = gql`
 			excerpt
 			content
 		}
-		portraits: newSelfWalesPortraits(offset: $offset, limit: $limit) {
-			id
-			title
-			featuredMedia {
-				sourceUrl
+		# portraits: newSelfWalesPortraits(offset: $offset, limit: $limit) {
+		# 	id
+		# 	title
+		# 	featuredMedia {
+		# 		sourceUrl
+		# 	}
+		# }
+		newSelfWales {
+			selfies: instagramSelfies(isRandom: true) {
+				id
+				title
+				featuredMedia {
+					sourceUrl
+				}
+			}
+			portraits(limit: $limit, offset: $offset, isRandom: true) {
+				id
+				title
+				featuredMedia {
+					sourceUrl
+				}
 			}
 		}
 	}
