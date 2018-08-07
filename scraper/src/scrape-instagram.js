@@ -121,7 +121,7 @@ export const getPost = async (shortcode) => {
       let x = 0;
       for (var u of m) {
         console.log(u.node.display_url);
-        logtxt += u.node.display_url;
+        logtxt += `${u.node.display_url}\n`;
         mi[x] = u.node.display_url;
         msc[x] = u.node.shortcode;
         x += 1;
