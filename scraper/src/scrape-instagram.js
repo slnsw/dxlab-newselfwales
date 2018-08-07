@@ -242,6 +242,7 @@ export const checkWP = async (shortcode, username) => {
 };
 
 export default async (hashtag, limit) => {
+  logtxt = '';
   let dt = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' });
   console.log(`\n================\nStarting at ${dt}`);
   logtxt += `\n================\nStarting at ${dt}\n`;
