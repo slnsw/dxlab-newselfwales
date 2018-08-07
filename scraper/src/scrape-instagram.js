@@ -127,7 +127,7 @@ export const getPost = async (shortcode) => {
         x += 1;
       }
       console.log('end MULTI');
-      logtxt += 'end MULTI';
+      logtxt += 'end MULTI\n';
     }
     return {
       name: fullName,
