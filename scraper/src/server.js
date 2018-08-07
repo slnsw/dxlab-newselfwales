@@ -5,7 +5,7 @@ import cron from 'node-cron';
 
 console.log('Start cron job');
 
-cron.schedule('*/8 * * * *', () => {
+cron.schedule('*/10 * * * *', () => {
   scrape('instagram', 1);
 });
 
