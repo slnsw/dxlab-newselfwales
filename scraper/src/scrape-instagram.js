@@ -389,13 +389,7 @@ export default async (hashtag, limit) => {
     logtxt += 'No hashtag provided or count less than zero.\n';
   }
 
-  function twoDigit(n) {
-    return (n < 10 ? '0' : '') + n;
-  }
-
-  const now = new Date().toLocaleString("en-AU", {timeZone: "Australia/Sydney"});
-  let dateTimeStamp = `${now.getFullYear()}-${twoDigit(now.getMonth() + 1)}-${twoDigit(now.getDate())}`;
-  dateTimeStamp += `T${twoDigit(now.getHours())}:${twoDigit(now.getMinutes())}:${twoDigit(now.getSeconds())}`;
+  const dateTimeStamp = new Date().toLocaleString("en-AU", {timeZone: "Australia/Sydney"});
   
   console.log('Attempting to send scraper logs to WP.');
   try {
