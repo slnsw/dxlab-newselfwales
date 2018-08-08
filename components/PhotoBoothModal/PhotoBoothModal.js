@@ -153,7 +153,9 @@ class Home extends Component {
 				)}
 
 				<div className="photo-booth-modal__photo-box">
-					<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
+					{(stage === 'start' || stage === 'take-selfie') && (
+						<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
+					)}
 
 					{stage === 'start' && (
 						<Fragment>
@@ -164,32 +166,32 @@ class Home extends Component {
 							/>
 
 							<br />
+
+							<button className="button" onClick={this.startSelfie}>
+								Start
+							</button>
 						</Fragment>
 					)}
 
 					{stage === 'take-selfie' && (
-						<video
-							className="photo-booth-modal__video photo-booth-modal__video--feed"
-							ref={(element) => {
-								this.videoFeed = element;
-							}}
-							width="1080"
-							height="1080"
-							autoPlay
-						/>
-					)}
+						<Fragment>
+							<video
+								className="photo-booth-modal__video photo-booth-modal__video--feed"
+								ref={(element) => {
+									this.videoFeed = element;
+								}}
+								width="1080"
+								height="1080"
+								autoPlay
+							/>
 
-					{(stage === 'start' || stage === 'take-selfie') && (
-						<button
-							className={
-								stage === 'take-selfie'
-									? 'photo-booth-modal__camera-button'
-									: 'button'
-							}
-							onClick={stage === 'start' ? this.startSelfie : this.takeSelfie}
-						>
-							{stage === 'start' ? 'Start' : 'Take'}
-						</button>
+							<button
+								className="photo-booth-modal__camera-button"
+								onClick={this.takeSelfie}
+							>
+								Take
+							</button>
+						</Fragment>
 					)}
 
 					<div
@@ -252,7 +254,9 @@ class Home extends Component {
 
 				{stage === 'show-thanks' && (
 					<div className="photo-booth-modal__show-thanks">
-						<p>Thank you!</p>
+						<h1>Thank you!</h1>
+						<p>Your selfie has been added</p>
+
 						<button className="button" onClick={this.goHome}>
 							Start again
 						</button>

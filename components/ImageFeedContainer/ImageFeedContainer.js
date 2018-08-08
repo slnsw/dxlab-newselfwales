@@ -139,7 +139,7 @@ class ImageFeedContainer extends Component {
 
 						return (
 							<ImageFeed
-								images={shuffle(images)}
+								images={images}
 								maxImages={maxImages}
 								enableAnimation={enableAnimation}
 								increment={increment}

@@ -196,13 +196,16 @@ class PhotoBoothModalForm extends Component {
 
 		return (
 			<div className="photo-booth-modal-form">
+				<h1>Your Details</h1>
 				<p>
 					Supply the following if you would like us to email you the results of
 					the match.
 				</p>
 
 				<p>
-					<label>Name:</label>
+					<label className="photo-booth-modal-form__label" for="name">
+						Name:
+					</label>
 					<input
 						type="text"
 						name="name"
@@ -219,7 +222,9 @@ class PhotoBoothModalForm extends Component {
 				</p>
 
 				<p>
-					<label>Email:</label>
+					<label className="photo-booth-modal-form__label" for="email">
+						Email:
+					</label>
 					<input
 						// NOTE: Would prefer 'email', but react-screen-keyboard doesn't work
 						type="text"
@@ -244,7 +249,9 @@ class PhotoBoothModalForm extends Component {
 					portrait from our collection.
 				</p>
 				<p>
-					<label>Your interests:</label>
+					<label className="photo-booth-modal-form__label" for="interests">
+						Your interests:
+					</label>
 					<input
 						type="text"
 						name="interests"
@@ -262,6 +269,31 @@ class PhotoBoothModalForm extends Component {
 						{this.state.formErrors.interests}
 					</span>
 				</p>
+
+				<div className="photo-booth-modal-form__terms-conditions">
+					<div className="photo-booth-modal-form__terms-conditions__input">
+						<label className="checkbox photo-booth-modal-form__checkbox">
+							<input
+								type="checkbox"
+								name="terms-conditions"
+								id="terms-conditions"
+							/>{' '}
+							<span class="checkbox__checkmark" />
+						</label>
+						<label for="terms-conditions">
+							I agree to the following terms and conditions:
+						</label>
+					</div>
+
+					<p>
+						Collection development added value index bibliography documentation
+						strategy acid migration classification overdue outdated web
+						exhibitions ephemeral value open stacks finding aids no you cannot
+						eat in the reading room access point conservation laboratory
+						clamshell case donor relations call number acid free file folders
+						Library of Congress Subject Headings
+					</p>
+				</div>
 
 				<p>
 					<button

@@ -50,7 +50,7 @@
 }
 
 .photo-booth-modal__camera-button {
-	margin: 15px;
+	margin: 15px auto;
 	background-color: var(--colour-primary);
 	width: 6em;
 	height: 6em;
@@ -65,13 +65,15 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+	max-width: 25em;
 
 	@nest .photo-booth-modal--full & {
-		align-items: center;
+		/* align-items: center; */
 	}
 }
 
 .photo-booth-modal__title {
+	margin-top: 0;
 	margin-bottom: var(--spacing-xxxs);
 	text-transform: none;
 	letter-spacing: 0;
@@ -113,23 +115,12 @@
 	margin-right: var(--spacing-xxlg);
 }
 
-.photo-booth-modal__form {
-	& p {
-		font-size: var(--font-size-lg);
-		font-family: var(--font-secondary);
-	}
-
-	& label {
-		display: inline-block;
-		width: 25%;
-		font-size: var(--font-size-xs);
-	}
-
-	& input[type='text'],
-	& input[type='email'] {
-		width: 75%;
-		font-size: var(--font-size-sm);
-	}
+.photo-booth-modal__show-thanks {
+	position: relative;
+	text-align: center;
+	margin-top: -2em;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .photo-booth-modal__footer {
