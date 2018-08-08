@@ -245,11 +245,13 @@ class Home extends Component {
 						</button>
 					</div>
 
-					<PhotoBoothModalForm
-						blob={this.blob}
-						onFormSubmitComplete={this.handleFormSubmitComplete}
-						onQuitClick={this.goHome}
-					/>
+					{stage === 'send-selfie' && (
+						<PhotoBoothModalForm
+							blob={this.blob}
+							onFormSubmitComplete={this.handleFormSubmitComplete}
+							onQuitClick={this.goHome}
+						/>
+					)}
 				</div>
 
 				{stage === 'show-thanks' && (

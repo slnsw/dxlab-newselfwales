@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 
 import './ImageFeedContainer.css';
 import ImageFeed from '../ImageFeed';
-import shuffle from '../../lib/shuffle';
+// import shuffle from '../../lib/shuffle';
 
 class ImageFeedContainer extends Component {
 	static propTypes = {
