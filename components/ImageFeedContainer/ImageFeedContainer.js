@@ -21,7 +21,7 @@ class ImageFeedContainer extends Component {
 	static defaultProps = {
 		enableAnimation: undefined,
 		maxImages: 1000,
-		startImages: 50,
+		startImages: 30,
 		fetchMoreImages: 2,
 		intervalTime: 10000,
 	};
@@ -124,14 +124,24 @@ class ImageFeedContainer extends Component {
 							return null;
 						}
 
-						let images = data.newSelfWales.portraits
-							.concat(data.newSelfWales.selfies)
-							.map((portrait) => {
-								return {
-									...portrait,
-									imageUrl: portrait.featuredMedia.sourceUrl,
-								};
-							});
+						console.log('Query');
+						console.log(data);
+
+						let images = data.feed.map((image) => {
+							return {
+								...image,
+								imageUrl: image.featuredMedia.sourceUrl,
+							};
+						});
+
+						// let images = data.newSelfWales.portraits
+						// 	.concat(data.newSelfWales.selfies)
+						// 	.map((portrait) => {
+						// 		return {
+						// 			...portrait,
+						// 			imageUrl: portrait.featuredMedia.sourceUrl,
+						// 		};
+						// 	});
 
 						if (typeof onImagesUpdate === 'function') {
 							images = onImagesUpdate(images);
@@ -153,11 +163,11 @@ class ImageFeedContainer extends Component {
 										updateQuery: (prev, { fetchMoreResult }) => {
 											if (!fetchMoreResult) return prev;
 
+											console.log('updateQuery');
+											console.log(fetchMoreResult);
+
 											return Object.assign({}, prev, {
-												portraits: [
-													...prev.portraits,
-													...fetchMoreResult.portraits,
-												],
+												feed: [...prev.feed, ...fetchMoreResult.feed],
 											});
 										},
 									})
@@ -176,36 +186,53 @@ class ImageFeedContainer extends Component {
 }
 
 const PAGE_QUERY = gql`
-	query getFeed($offset: Int, $limit: Int) {
-		pages(slug: "newselfwales") {
+	query getFeed($limit: Int, $offset: Int) {
+		feed: newSelfWalesPortraits(limit: $limit, offset: $offset) {
 			id
 			title
-			excerpt
-			content
+			date
+			featuredMedia {
+				sourceUrl
+			}
 		}
-		# portraits: newSelfWalesPortraits(offset: $offset, limit: $limit) {
+		# newSelfWales {
 		# 	id
-		# 	title
-		# 	featuredMedia {
-		# 		sourceUrl
+		# 	feed(
+		# 		dateStart: "2018-05-17T00:00:00"
+		# 		limit: $limit
+		# 		offset: $offset
+		# 		order: ASC
+		# 		orderBy: DATE
+		# 	) {
+		# 		... on NewSelfWalesPortrait {
+		# 			id
+		# 			title
+		# 			date
+		# 			featuredMedia {
+		# 				sourceUrl
+		# 			}
+		# 			__typename
+		# 		}
+		# 		... on NewSelfWalesInstagramSelfie {
+		# 			id
+		# 			title
+		# 			date
+		# 			featuredMedia {
+		# 				sourceUrl
+		# 			}
+		# 			__typename
+		# 		}
+		# 		... on NewSelfWalesGallerySelfie {
+		# 			id
+		# 			title
+		# 			date
+		# 			featuredMedia {
+		# 				sourceUrl
+		# 			}
+		# 			__typename
+		# 		}
 		# 	}
 		# }
-		newSelfWales {
-			selfies: instagramSelfies(isRandom: true) {
-				id
-				title
-				featuredMedia {
-					sourceUrl
-				}
-			}
-			portraits(limit: $limit, offset: $offset, isRandom: true) {
-				id
-				title
-				featuredMedia {
-					sourceUrl
-				}
-			}
-		}
 	}
 `;
 
