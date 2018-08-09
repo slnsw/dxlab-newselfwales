@@ -21,9 +21,9 @@ class ImageFeedContainer extends Component {
 	static defaultProps = {
 		enableAnimation: undefined,
 		maxImages: 1000,
-		startImages: 40,
-		fetchMoreImages: 5,
-		intervalTime: 10000,
+		startImages: 100,
+		fetchMoreImages: 10,
+		intervalTime: 20000,
 	};
 
 	constructor() {
@@ -150,7 +150,9 @@ class ImageFeedContainer extends Component {
 										variables: {
 											offset: images.length,
 											limit: fetchMoreImages,
-											dateStart: new Date().toISOString(),
+											dateStart: '2018-05-17T00:00:00',
+
+											// dateStart: new Date().toISOString(),
 										},
 										updateQuery: (prev, { fetchMoreResult }) => {
 											if (!fetchMoreResult) return prev;
@@ -158,7 +160,7 @@ class ImageFeedContainer extends Component {
 											console.log(fetchMoreResult);
 
 											return Object.assign({}, prev, {
-												feed: [...prev.feed, ...fetchMoreResult.feed],
+												feed: [...prev.feed, ...fetchMoreResult.feed.slice(1)],
 											});
 										},
 									})
