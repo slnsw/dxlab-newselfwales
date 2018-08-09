@@ -112,6 +112,7 @@ class ImageFeedContainer extends Component {
 					variables={{
 						offset: 0,
 						limit: startImages,
+						dateStart: '2018-05-17T00:00:00',
 					}}
 				>
 					{({ loading, error, data, fetchMore }) => {
@@ -124,24 +125,14 @@ class ImageFeedContainer extends Component {
 							return null;
 						}
 
-						console.log('Query');
-						console.log(data);
+						const { feed } = data;
 
-						let images = data.feed.map((image) => {
+						let images = feed.map((image) => {
 							return {
 								...image,
 								imageUrl: image.featuredMedia.sourceUrl,
 							};
 						});
-
-						// let images = data.newSelfWales.portraits
-						// 	.concat(data.newSelfWales.selfies)
-						// 	.map((portrait) => {
-						// 		return {
-						// 			...portrait,
-						// 			imageUrl: portrait.featuredMedia.sourceUrl,
-						// 		};
-						// 	});
 
 						if (typeof onImagesUpdate === 'function') {
 							images = onImagesUpdate(images);
@@ -159,11 +150,11 @@ class ImageFeedContainer extends Component {
 										variables: {
 											offset: images.length,
 											limit: fetchMoreImages,
+											dateStart: new Date().toISOString(),
 										},
 										updateQuery: (prev, { fetchMoreResult }) => {
 											if (!fetchMoreResult) return prev;
 
-											console.log('updateQuery');
 											console.log(fetchMoreResult);
 
 											return Object.assign({}, prev, {
@@ -186,53 +177,42 @@ class ImageFeedContainer extends Component {
 }
 
 const PAGE_QUERY = gql`
-	query getFeed($limit: Int, $offset: Int) {
-		feed: newSelfWalesPortraits(limit: $limit, offset: $offset) {
-			id
-			title
-			date
-			featuredMedia {
-				sourceUrl
+	query getFeed($limit: Int, $offset: Int, $dateStart: String) {
+		feed: newSelfWalesFeed(
+			dateStart: $dateStart
+			limit: $limit
+			offset: $offset
+			order: ASC
+			orderBy: DATE
+		) {
+			... on NewSelfWalesPortrait {
+				id
+				title
+				date
+				featuredMedia {
+					sourceUrl
+				}
+				__typename
+			}
+			... on NewSelfWalesInstagramSelfie {
+				id
+				title
+				date
+				featuredMedia {
+					sourceUrl
+				}
+				__typename
+			}
+			... on NewSelfWalesGallerySelfie {
+				id
+				title
+				date
+				featuredMedia {
+					sourceUrl
+				}
+				__typename
 			}
 		}
-		# newSelfWales {
-		# 	id
-		# 	feed(
-		# 		dateStart: "2018-05-17T00:00:00"
-		# 		limit: $limit
-		# 		offset: $offset
-		# 		order: ASC
-		# 		orderBy: DATE
-		# 	) {
-		# 		... on NewSelfWalesPortrait {
-		# 			id
-		# 			title
-		# 			date
-		# 			featuredMedia {
-		# 				sourceUrl
-		# 			}
-		# 			__typename
-		# 		}
-		# 		... on NewSelfWalesInstagramSelfie {
-		# 			id
-		# 			title
-		# 			date
-		# 			featuredMedia {
-		# 				sourceUrl
-		# 			}
-		# 			__typename
-		# 		}
-		# 		... on NewSelfWalesGallerySelfie {
-		# 			id
-		# 			title
-		# 			date
-		# 			featuredMedia {
-		# 				sourceUrl
-		# 			}
-		# 			__typename
-		# 		}
-		# 	}
-		# }
 	}
 `;
 

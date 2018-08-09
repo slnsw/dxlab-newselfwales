@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
 
+import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
 import { client } from '../lib/initApollo';
 
@@ -20,7 +21,9 @@ class GalleryPage extends Component {
 
 		return (
 			<ApolloProvider client={client}>
-				<ImageFeedContainer enableAnimation={enableAnimation} />
+				<App>
+					<ImageFeedContainer enableAnimation={enableAnimation} />
+				</App>
 			</ApolloProvider>
 		);
 	}
