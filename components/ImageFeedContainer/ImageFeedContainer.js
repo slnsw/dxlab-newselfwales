@@ -21,8 +21,8 @@ class ImageFeedContainer extends Component {
 	static defaultProps = {
 		enableAnimation: undefined,
 		maxImages: 1000,
-		startImages: 30,
-		fetchMoreImages: 2,
+		startImages: 40,
+		fetchMoreImages: 5,
 		intervalTime: 10000,
 	};
 
@@ -130,7 +130,7 @@ class ImageFeedContainer extends Component {
 						let images = feed.map((image) => {
 							return {
 								...image,
-								imageUrl: image.featuredMedia.sourceUrl,
+								imageUrl: image.featuredMedia && image.featuredMedia.sourceUrl,
 							};
 						});
 
