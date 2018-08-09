@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 
 import './ImageFeedContainer.css';
 import ImageFeed from '../ImageFeed';
+// import shuffle from '../../lib/shuffle';
 
 class ImageFeedContainer extends Component {
 	static propTypes = {
@@ -20,9 +21,9 @@ class ImageFeedContainer extends Component {
 	static defaultProps = {
 		enableAnimation: undefined,
 		maxImages: 1000,
-		startImages: 50,
-		fetchMoreImages: 2,
-		intervalTime: 10000,
+		startImages: 100,
+		fetchMoreImages: 10,
+		intervalTime: 20000,
 	};
 
 	constructor() {
@@ -111,6 +112,7 @@ class ImageFeedContainer extends Component {
 					variables={{
 						offset: 0,
 						limit: startImages,
+						dateStart: '2018-05-17T00:00:00',
 					}}
 				>
 					{({ loading, error, data, fetchMore }) => {
@@ -123,10 +125,12 @@ class ImageFeedContainer extends Component {
 							return null;
 						}
 
-						let images = data.portraits.map((portrait) => {
+						const { feed } = data;
+
+						let images = feed.map((image) => {
 							return {
-								...portrait,
-								imageUrl: portrait.featuredMedia.sourceUrl,
+								...image,
+								imageUrl: image.featuredMedia && image.featuredMedia.sourceUrl,
 							};
 						});
 
@@ -146,15 +150,17 @@ class ImageFeedContainer extends Component {
 										variables: {
 											offset: images.length,
 											limit: fetchMoreImages,
+											dateStart: '2018-05-17T00:00:00',
+
+											// dateStart: new Date().toISOString(),
 										},
 										updateQuery: (prev, { fetchMoreResult }) => {
 											if (!fetchMoreResult) return prev;
 
+											console.log(fetchMoreResult);
+
 											return Object.assign({}, prev, {
-												portraits: [
-													...prev.portraits,
-													...fetchMoreResult.portraits,
-												],
+												feed: [...prev.feed, ...fetchMoreResult.feed.slice(1)],
 											});
 										},
 									})
@@ -173,18 +179,40 @@ class ImageFeedContainer extends Component {
 }
 
 const PAGE_QUERY = gql`
-	query getFeed($offset: Int, $limit: Int) {
-		pages(slug: "newselfwales") {
-			id
-			title
-			excerpt
-			content
-		}
-		portraits: newSelfWalesPortraits(offset: $offset, limit: $limit) {
-			id
-			title
-			featuredMedia {
-				sourceUrl
+	query getFeed($limit: Int, $offset: Int, $dateStart: String) {
+		feed: newSelfWalesFeed(
+			dateStart: $dateStart
+			limit: $limit
+			offset: $offset
+			order: ASC
+			orderBy: DATE
+		) {
+			... on NewSelfWalesPortrait {
+				id
+				title
+				date
+				featuredMedia {
+					sourceUrl
+				}
+				__typename
+			}
+			... on NewSelfWalesInstagramSelfie {
+				id
+				title
+				date
+				featuredMedia {
+					sourceUrl
+				}
+				__typename
+			}
+			... on NewSelfWalesGallerySelfie {
+				id
+				title
+				date
+				featuredMedia {
+					sourceUrl
+				}
+				__typename
 			}
 		}
 	}

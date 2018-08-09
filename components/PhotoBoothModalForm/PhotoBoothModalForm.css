@@ -4,12 +4,7 @@
 	& p {
 		font-size: var(--font-size-lg);
 		font-family: var(--font-secondary);
-	}
-
-	& label {
-		display: inline-block;
-		width: 25%;
-		font-size: var(--font-size-xs);
+		margin-bottom: var(--spacing-lg);
 	}
 
 	& input[type='text'],
@@ -17,4 +12,34 @@
 		width: 75%;
 		font-size: var(--font-size-sm);
 	}
+}
+
+.photo-booth-modal-form__label {
+	display: inline-block;
+	width: 25%;
+	font-size: var(--font-size-xs);
+	color: var(--colour-grey-lighter);
+}
+
+.photo-booth-modal-form__checkbox {
+	font-size: var(--font-size-md);
+	margin-right: var(--font-size-sm);
+}
+
+.photo-booth-modal-form__terms-conditions {
+	margin-left: 25%;
+	margin-bottom: 2em;
+
+	/* & label {
+		width: inherit;
+	} */
+
+	& p {
+		font-size: var(--font-size-md);
+	}
+}
+
+.photo-booth-modal-form__terms-conditions__input {
+	display: flex;
+	color: var(--colour-grey-lighter);
 }

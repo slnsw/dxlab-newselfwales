@@ -18,16 +18,19 @@ class PhotoBoothModalForm extends Component {
 			interests: 'food, candy, money, books, glue',
 			email: 'test@test.com',
 			name: 'Selfie Test',
+			'terms-conditions': false,
 			isFormSending: false,
 			formErrors: { interests: '', email: '' },
 			interestsValid: false,
-			emailValid: true,
+			emailValid: false,
+			termsConditionsValid: false,
 			formValid: false,
-			inputNode: null,
+			inputNode: null, // Used for Keyboard
 		};
 	}
 
 	componentDidMount() {
+		// Set up Wordpress API
 		this.wp = new WPAPI({
 			endpoint: process.env.WP_API_ENDPOINT,
 			username: process.env.WP_USERNAME,
@@ -40,11 +43,9 @@ class PhotoBoothModalForm extends Component {
 	}
 
 	handleUserInput = (e) => {
-		const { name, value } = e.target;
-
-		// this.setState({
-		// 	inputNode: this.nameInput,
-		// });
+		const { target } = e;
+		const { name } = target;
+		const value = target.type === 'checkbox' ? target.checked : target.value;
 
 		this.setState({ [name]: value }, () => {
 			this.validateField(name, value);
@@ -53,7 +54,7 @@ class PhotoBoothModalForm extends Component {
 
 	validateField(fieldName, value) {
 		const fieldValidationErrors = this.state.formErrors;
-		let { interestsValid, emailValid } = this.state;
+		let { interestsValid, emailValid, termsConditionsValid } = this.state;
 
 		switch (fieldName) {
 			case 'email': {
@@ -83,6 +84,10 @@ class PhotoBoothModalForm extends Component {
 					: 'Could you enter a bit more info about your interests? Ideally 4 or 5, separated by commas.';
 				break;
 			}
+			case 'terms-conditions': {
+				termsConditionsValid = value;
+				break;
+			}
 			default:
 				break;
 		}
@@ -92,6 +97,7 @@ class PhotoBoothModalForm extends Component {
 				formErrors: fieldValidationErrors,
 				emailValid,
 				interestsValid,
+				termsConditionsValid,
 			},
 			this.validateForm,
 		);
@@ -99,7 +105,10 @@ class PhotoBoothModalForm extends Component {
 
 	validateForm() {
 		this.setState({
-			formValid: this.state.emailValid && this.state.interestsValid,
+			formValid:
+				this.state.emailValid &&
+				this.state.interestsValid &&
+				this.state.termsConditionsValid,
 		});
 	}
 
@@ -109,18 +118,18 @@ class PhotoBoothModalForm extends Component {
 		});
 
 		const date = new Date();
-		const n = `selfie ${date.getTime()}`;
+		const selfieTitle = `selfie ${date.getTime()}`;
 
 		// now create custom post type 'gallery selfie'
 		this.wp
 			.gallerySelfies()
 			.create({
-				title: `New post ${n}`,
-				content: `Content ${n}`,
+				title: `New post ${selfieTitle}`,
+				content: this.state.interests,
 				status: 'draft',
 				meta: {
-					email: 'some@email.com',
-					name: 'test-test_some name',
+					email: this.state.email, // TODO: Hide email in API?
+					name: this.state.name,
 				},
 			})
 			.then((response) => {
@@ -128,12 +137,12 @@ class PhotoBoothModalForm extends Component {
 
 				this.wp
 					.media()
-					.file(this.props.blob, `${n}.png`)
+					.file(this.props.blob, `${selfieTitle}.png`)
 					.create({
-						title: n,
-						alt_text: n,
-						caption: n,
-						description: n,
+						title: selfieTitle,
+						alt_text: selfieTitle,
+						caption: selfieTitle,
+						description: selfieTitle,
 					})
 					.then((mediaResponse) => {
 						const newImageId = mediaResponse.id;
@@ -154,10 +163,18 @@ class PhotoBoothModalForm extends Component {
 						}
 					})
 					.catch((error) => {
+						this.setState({
+							isFormSending: false,
+						});
+
 						console.log(error);
 					});
 			})
 			.catch((error) => {
+				this.setState({
+					isFormSending: false,
+				});
+
 				console.log(error);
 			});
 	};
@@ -190,19 +207,28 @@ class PhotoBoothModalForm extends Component {
 		});
 	};
 
+	handleTermsConditionsClick = (event) => {
+		this.setState({
+			termsConditionsValid: event.target.checked,
+		});
+	};
+
 	render() {
 		const { inputNode } = this.state;
 		// const {} = this.props;
 
 		return (
 			<div className="photo-booth-modal-form">
+				<h1>Your Details</h1>
 				<p>
 					Supply the following if you would like us to email you the results of
 					the match.
 				</p>
 
 				<p>
-					<label>Name:</label>
+					<label className="photo-booth-modal-form__label" htmlFor="name">
+						Name:
+					</label>
 					<input
 						type="text"
 						name="name"
@@ -219,7 +245,9 @@ class PhotoBoothModalForm extends Component {
 				</p>
 
 				<p>
-					<label>Email:</label>
+					<label className="photo-booth-modal-form__label" htmlFor="email">
+						Email:
+					</label>
 					<input
 						// NOTE: Would prefer 'email', but react-screen-keyboard doesn't work
 						type="text"
@@ -244,7 +272,9 @@ class PhotoBoothModalForm extends Component {
 					portrait from our collection.
 				</p>
 				<p>
-					<label>Your interests:</label>
+					<label className="photo-booth-modal-form__label" htmlFor="interests">
+						Your interests:
+					</label>
 					<input
 						type="text"
 						name="interests"
@@ -262,6 +292,34 @@ class PhotoBoothModalForm extends Component {
 						{this.state.formErrors.interests}
 					</span>
 				</p>
+
+				<div className="photo-booth-modal-form__terms-conditions">
+					<div className="photo-booth-modal-form__terms-conditions__input">
+						<label className="checkbox photo-booth-modal-form__checkbox">
+							<input
+								type="checkbox"
+								name="terms-conditions"
+								id="terms-conditions"
+								checked={this.state['terms-conditions']}
+								// onClick={this.handleTermsConditionsClick}
+								onChange={(event) => this.handleUserInput(event)}
+							/>{' '}
+							<span className="checkbox__checkmark" />
+						</label>
+						<label htmlFor="terms-conditions">
+							I agree to the following terms and conditions:
+						</label>
+					</div>
+
+					<p>
+						Collection development added value index bibliography documentation
+						strategy acid migration classification overdue outdated web
+						exhibitions ephemeral value open stacks finding aids no you cannot
+						eat in the reading room access point conservation laboratory
+						clamshell case donor relations call number acid free file folders
+						Library of Congress Subject Headings
+					</p>
+				</div>
 
 				<p>
 					<button

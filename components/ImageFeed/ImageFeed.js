@@ -44,7 +44,7 @@ class ImageFeed extends Component {
 				this.props.onLoadMore();
 
 				if (typeof this.state.laidOutItems !== 'undefined') {
-					scroller.updateLaidOutItems(this.state.laidOutItems);
+					// scroller.updateLaidOutItems(this.state.laidOutItems);
 				}
 			}
 		}, this.props.intervalTime);
