@@ -66,6 +66,7 @@ class ImageFeedContainer extends Component {
 	}
 
 	handleKey = (event) => {
+		// TODO: Disable this when photobooth form is running
 		if (event.code === 'ArrowUp') {
 			this.setState(
 				{
@@ -81,9 +82,9 @@ class ImageFeedContainer extends Component {
 				() => console.log('increment: ', this.state.increment),
 			);
 		} else if (event.code === 'Space') {
-			this.setState({
-				enableAnimation: !this.state.enableAnimation,
-			});
+			// this.setState({
+			// 	enableAnimation: !this.state.enableAnimation,
+			// });
 		}
 	};
 

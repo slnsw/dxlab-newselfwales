@@ -43,3 +43,14 @@
 	display: flex;
 	color: var(--colour-grey-lighter);
 }
+
+.photo-booth-modal-form__footer {
+	display: flex;
+	align-items: center;
+	font-size: var(--font-size-lg);
+}
+
+.photo-booth-modal-form__form-error-message {
+	color: var(--colour-primary);
+	margin-left: 1em;
+}

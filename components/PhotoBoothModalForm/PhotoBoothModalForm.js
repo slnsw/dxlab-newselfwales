@@ -15,12 +15,12 @@ class PhotoBoothModalForm extends Component {
 		super(props);
 
 		this.state = {
-			interests: 'food, candy, money, books, glue',
-			email: 'test@test.com',
-			name: 'Selfie Test',
+			interests: '',
+			email: '',
+			name: '',
 			'terms-conditions': false,
 			isFormSending: false,
-			formErrors: { interests: '', email: '' },
+			formErrors: { interests: '', email: '', 'terms-conditions': '' },
 			interestsValid: false,
 			emailValid: false,
 			termsConditionsValid: false,
@@ -53,7 +53,10 @@ class PhotoBoothModalForm extends Component {
 	};
 
 	validateField(fieldName, value) {
-		const fieldValidationErrors = this.state.formErrors;
+		const formErrors = {
+			...this.state.formErrors,
+		};
+
 		let { interestsValid, emailValid, termsConditionsValid } = this.state;
 
 		switch (fieldName) {
@@ -64,9 +67,7 @@ class PhotoBoothModalForm extends Component {
 					// no email is a valid email
 					emailValid = true;
 				}
-				fieldValidationErrors.email = emailValid
-					? ''
-					: 'Please enter a valid email.';
+				formErrors.email = emailValid ? '' : 'Please enter a valid email.';
 				break;
 			}
 			case 'interests': {
@@ -75,17 +76,20 @@ class PhotoBoothModalForm extends Component {
 					.filter((entry) => entry.trim() !== '')
 					.filter(
 						// rdon't count blank ones
-						(entry) => entry.trim().length >= 4,
+						(entry) => entry.trim().length >= 3,
 					); // make sure they aren't too short
 
 				interestsValid = t.length > 2; // and make sure we have at least 3
-				fieldValidationErrors.interests = interestsValid
+				formErrors.interests = interestsValid
 					? ''
 					: 'Could you enter a bit more info about your interests? Ideally 4 or 5, separated by commas.';
 				break;
 			}
 			case 'terms-conditions': {
 				termsConditionsValid = value;
+				formErrors['terms-conditions'] = termsConditionsValid
+					? ''
+					: 'Please agree to the terms and conditions to continue.';
 				break;
 			}
 			default:
@@ -94,7 +98,7 @@ class PhotoBoothModalForm extends Component {
 
 		this.setState(
 			{
-				formErrors: fieldValidationErrors,
+				formErrors,
 				emailValid,
 				interestsValid,
 				termsConditionsValid,
@@ -214,8 +218,7 @@ class PhotoBoothModalForm extends Component {
 	};
 
 	render() {
-		const { inputNode } = this.state;
-		// const {} = this.props;
+		const { inputNode, formErrors } = this.state;
 
 		return (
 			<div className="photo-booth-modal-form">
@@ -256,15 +259,15 @@ class PhotoBoothModalForm extends Component {
 						value={this.state.email}
 						placeholder="Your email address"
 						onFocus={() => this.handleInputFocus(this.emailInput)}
-						onChange={(event) => this.handleUserInput(event)}
+						onBlur={(event) => this.handleUserInput(event)}
 						onInput={this.handleEmailInput}
 						ref={(input) => {
 							this.emailInput = input;
 						}}
 					/>
-					<span className="formErrors email">
+					{/* <span className="formErrors email">
 						{this.state.formErrors.email}
-					</span>
+					</span> */}
 				</p>
 
 				<p>
@@ -282,15 +285,15 @@ class PhotoBoothModalForm extends Component {
 						value={this.state.interests}
 						placeholder="Enter around 4 or 5, separated by commas"
 						onFocus={() => this.handleInputFocus(this.interestsInput)}
-						onChange={(event) => this.handleUserInput(event)}
+						onBlur={(event) => this.handleUserInput(event)}
 						onInput={this.handleInterestsInput}
 						ref={(input) => {
 							this.interestsInput = input;
 						}}
 					/>
-					<span className="formErrors interests">
+					{/* <span className="formErrors interests">
 						{this.state.formErrors.interests}
-					</span>
+					</span> */}
 				</p>
 
 				<div className="photo-booth-modal-form__terms-conditions">
@@ -321,10 +324,11 @@ class PhotoBoothModalForm extends Component {
 					</p>
 				</div>
 
-				<p>
+				<div className="photo-booth-modal-form__footer">
 					<button
 						className="button"
 						onClick={this.handleSubmitForm}
+						onChange={(event) => this.handleUserInput(event)}
 						disabled={this.state.formValid !== true || this.state.isFormSending}
 					>
 						Submit
@@ -336,7 +340,18 @@ class PhotoBoothModalForm extends Component {
 					>
 						Quit
 					</button>
-				</p>
+					{(formErrors.name ||
+						formErrors.email ||
+						formErrors.interests ||
+						formErrors['terms-conditions']) && (
+						<span className="photo-booth-modal-form__form-error-message">
+							{formErrors.name ||
+								formErrors.email ||
+								formErrors.interests ||
+								formErrors['terms-conditions']}
+						</span>
+					)}
+				</div>
 
 				{process.browser &&
 					inputNode && (
