@@ -82,6 +82,7 @@ class ImageFeedContainer extends Component {
 				() => console.log('increment: ', this.state.increment),
 			);
 		} else if (event.code === 'Space') {
+			// Disabled for now
 			// this.setState({
 			// 	enableAnimation: !this.state.enableAnimation,
 			// });
@@ -129,8 +130,21 @@ class ImageFeedContainer extends Component {
 						const { feed } = data;
 
 						let images = feed.map((image) => {
+							// Set image type
+							let type;
+
+							const { __typename } = image;
+							if (__typename === 'NewSelfWalesPortrait') {
+								type = 'portrait';
+							} else if (__typename === 'NewSelfWalesInstagramSelfie') {
+								type = 'instagram-selfie';
+							} else if (__typename === 'NewSelfWalesGallerySelfie') {
+								type = 'gallery-selfie';
+							}
+
 							return {
 								...image,
+								type,
 								imageUrl: image.featuredMedia && image.featuredMedia.sourceUrl,
 							};
 						});

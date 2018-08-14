@@ -97,6 +97,10 @@ const INSTAGRAM_SELFIE_QUERY = gql`
 		newSelfWales {
 			image: instagramSelfie(id: $id) {
 				title
+				content
+				featuredMedia {
+					sourceUrl
+				}
 			}
 		}
 	}
@@ -107,6 +111,10 @@ const GALLERY_SELFIE_QUERY = gql`
 		newSelfWales {
 			image: portrait(id: $id) {
 				title
+				content
+				featuredMedia {
+					sourceUrl
+				}
 			}
 		}
 	}

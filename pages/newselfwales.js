@@ -69,7 +69,7 @@ class LandingPage extends Component {
 	handleImageClick = (event, image) => {
 		// console.log(event.target.parentElement.getBoundingClientRect(), image);
 
-		Router.pushRoute(`/newselfwales/portrait/${image.id}`);
+		Router.pushRoute(`/newselfwales/${image.type}/${image.id}`);
 
 		this.setState({
 			enableAnimation: false,
