@@ -43,3 +43,20 @@ GRAPHQL_URL=https://dxlab-staging-graphql-proxy.now.sh/graphql
 When running `npm run dev`, `npm run test` or `npm run test:watch`, `.env` file is loaded as part of command using `-r dotenv/config`.
 
 Staging/production environment variables are located in `serverless.env.yml`.
+
+## Deploying
+
+```
+npm run deploy-staging
+```
+or
+```
+npm run deploy-production
+```
+
+Probably worth running `now ls` to see what is already running.
+
+*IMPORTANT:* Once deployed run these scaling commands - otherwise it runs twice and could fuxk our sh!t up.
+
+`now scale [now.sh URL] bru 0 0` to turn the Brussells insance off, and:
+`now scale [now.sh URL] sfo 1 1` to turn the San Fran one on always.
