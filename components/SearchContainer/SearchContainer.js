@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -9,6 +9,7 @@ import './SearchContainer.css';
 
 class SearchContainer extends Component {
 	// static propTypes = {};
+
 	state = { inputTextValue: '' };
 
 	componentDidMount() {
@@ -16,10 +17,9 @@ class SearchContainer extends Component {
 	}
 
 	handleFormSubmit = (event, value) => {
-		console.log(event, value);
-
 		Router.pushRoute(`/search?q=${value}`);
 		this.setState({ inputTextValue: value });
+
 		event.preventDefault();
 	};
 
@@ -35,9 +35,10 @@ class SearchContainer extends Component {
 					}}
 				>
 					{({ loading, error, data }) => {
-						if (loading) {
-							return <div />;
-						}
+						// if (loading) {
+						// 	return <div />;
+						// }
+
 						if (error) {
 							console.log(error);
 							return null;
@@ -48,9 +49,14 @@ class SearchContainer extends Component {
 						return (
 							<Search
 								inputTextValue={this.state.inputTextValue}
-								portraits={data.newSelfWales.portraits}
-								instagramSelfies={data.newSelfWales.instagramSelfies}
-								gallerySelfies={data.newSelfWales.gallerySelfies}
+								portraits={data.newSelfWales && data.newSelfWales.portraits}
+								instagramSelfies={
+									data.newSelfWales && data.newSelfWales.instagramSelfies
+								}
+								gallerySelfies={
+									data.newSelfWales && data.newSelfWales.gallerySelfies
+								}
+								loading={loading}
 								onSubmit={this.handleFormSubmit}
 							/>
 						);
