@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import Search from '../Search';
+import { Router } from '../../routes';
 import './SearchContainer.css';
 
 class SearchContainer extends Component {
@@ -14,38 +15,46 @@ class SearchContainer extends Component {
 		this.setState({ inputTextValue: window.location.search.substring(3) });
 	}
 
-	handleFormSubmit = ( event ) => { this.setState({ inputTextValue: event.target.value }); }
+	handleFormSubmit = (event, value) => {
+		console.log(event, value);
+
+		Router.pushRoute(`/search?q=${value}`);
+		this.setState({ inputTextValue: value });
+		event.preventDefault();
+	};
 
 	render() {
-		// const {} = this.props;
+		const { inputTextValue } = this.state;
 
 		return (
 			<div className="search-container">
 				<Query
 					query={SEARCH_QUERY}
 					variables={{
-						search: "Residence", // (this.state.inputTextValue ? this.state.inputTextValue : ''),
+						search: inputTextValue, // (this.state.inputTextValue ? this.state.inputTextValue : ''),
 					}}
 				>
 					{({ loading, error, data }) => {
 						if (loading) {
-							return <div />
+							return <div />;
 						}
 						if (error) {
 							console.log(error);
 							return null;
 						}
-						return <Search 
-							inputTextValue={ this.state.inputTextValue }
-							onSubmit={ this.handleFormSubmit }
-							item=
-										/>
 
+						console.log(data);
 
+						return (
+							<Search
+								inputTextValue={this.state.inputTextValue}
+								onSubmit={this.handleFormSubmit}
+							/>
+						);
 					}}
 				</Query>
 			</div>
-		)
+		);
 	}
 }
 
@@ -53,30 +62,29 @@ const SEARCH_QUERY = gql`
 	query search($search: String) {
 		newSelfWales {
 			instagramSelfies(search: $search) {
-			id
-			title
+				id
+				title
 
-			content
-			shortcode
-			instagramUsername
-			timestamp
-			location
-			
-			locationSlug
-			userDescription
+				content
+				shortcode
+				instagramUsername
+				timestamp
+				location
+
+				locationSlug
+				userDescription
 				featuredMedia {
 					sourceUrl
 				}
-
 			}
 			__typename
 			portraits(search: $search) {
-			id
-			title
-			content
-			portraitName
-			archiveNotes
-			primoId
+				id
+				title
+				content
+				portraitName
+				archiveNotes
+				primoId
 				featuredMedia {
 					sourceUrl
 				}
@@ -90,12 +98,10 @@ const SEARCH_QUERY = gql`
 				featuredMedia {
 					sourceUrl
 				}
-
 			}
 			__typename
 		}
 	}
 `;
 
-export default SearchContainer
-
+export default SearchContainer;
