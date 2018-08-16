@@ -1,4 +1,16 @@
 @import '../../styles/variables.css';
 
-/* .search {
-} */
+.search {
+	padding: 4em 2em 2em 2em;
+	background-color: var(--colour-black);
+} 
+
+.search__results__item {
+	width: 10em;
+	float:left;
+	padding:0.5em;
+}
+
+.search__results__item img {
+	width: 10em;
+}

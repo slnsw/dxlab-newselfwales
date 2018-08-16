@@ -48,6 +48,9 @@ class SearchContainer extends Component {
 						return (
 							<Search
 								inputTextValue={this.state.inputTextValue}
+								portraits={data.newSelfWales.portraits}
+								instagramSelfies={data.newSelfWales.instagramSelfies}
+								gallerySelfies={data.newSelfWales.gallerySelfies}
 								onSubmit={this.handleFormSubmit}
 							/>
 						);
