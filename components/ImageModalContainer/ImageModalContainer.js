@@ -11,8 +11,8 @@ class ImageModalContainer extends Component {
 		id: PropTypes.number.isRequired,
 		imageType: PropTypes.string.isRequired,
 		sourceImageBoundingClientRect: PropTypes.object,
-		isActive: PropTypes.bool,
-		onClose: PropTypes.func,
+		isActive: PropTypes.bool.isRequired,
+		onClose: PropTypes.func.isRequired,
 	};
 
 	render() {

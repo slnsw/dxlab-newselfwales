@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import ImageModalContainer from '../ImageModalContainer';
 import './Search.css';
 
 class Search extends Component {
@@ -54,6 +55,14 @@ class Search extends Component {
 		event.preventDefault();
 	};
 
+	handleImageClick = (event, image) => {
+		this.setState({ imageId: image.id, imageType: image.type });
+	};
+
+	handleImageModalClose = () => {
+		this.setState({ imageId: null });
+	};
+
 	render() {
 		const { portraits, instagramSelfies, gallerySelfies } = this.props;
 
@@ -61,6 +70,12 @@ class Search extends Component {
 
 		return (
 			<div className="search">
+				<ImageModalContainer
+					id={this.state.imageId}
+					imageType={this.state.imageType}
+					isActive={this.state.imageId ? true : false}
+					onClose={this.handleImageModalClose}
+				/>
 				<form onSubmit={this.handleFormSubmit}>
 					<input
 						type="text"
@@ -74,57 +89,95 @@ class Search extends Component {
 					<input type="submit" className="button" />
 				</form>
 				<div className="search__results">
-					<div className="search__results__row">
+					<section>
 						<h2>
 							Gallery Selfies<span> ({gallerySelfies.length})</span>
 						</h2>
-						{gallerySelfies.map((gallerySelfie) => {
-							return (
-								<div className="search__results__item">
-									<p>{gallerySelfie.title}</p>
-									<img
-										src={gallerySelfie.featuredMedia.sourceUrl}
-										alt=""
-										className=""
-									/>
-								</div>
-							);
-						})}
-					</div>
-					<div className="search__results__row">
+						<div className="search__results__row">
+							{gallerySelfies.map((gallerySelfie) => {
+								return (
+									<article
+										className="search__results__item"
+										onClick={(event) =>
+											this.handleImageClick(event, {
+												...gallerySelfie,
+												type: 'gallery-selfie',
+											})
+										}
+									>
+										<img
+											src={gallerySelfie.featuredMedia.sourceUrl}
+											alt=""
+											className=""
+										/>
+										<h1
+											dangerouslySetInnerHTML={{
+												__html: gallerySelfie.galleryName,
+											}}
+										/>
+									</article>
+								);
+							})}
+						</div>
+					</section>
+					<section>
 						<h2>
 							portraits<span> ({portraits.length})</span>
 						</h2>
-						{portraits.map((portrait) => {
-							return (
-								<div className="search__results__item">
-									<p>{portrait.title}</p>
-									<img
-										src={portrait.featuredMedia.sourceUrl}
-										alt=""
-										className=""
-									/>
-								</div>
-							);
-						})}
-					</div>
-					<div className="search__results__row">
+						<div className="search__results__row">
+							{portraits.map((portrait) => {
+								return (
+									<article
+										className="search__results__item"
+										onClick={(event) =>
+											this.handleImageClick(event, {
+												...portrait,
+												type: 'portrait',
+											})
+										}
+									>
+										<img
+											src={portrait.featuredMedia.sourceUrl}
+											alt=""
+											className=""
+										/>
+										<h1 dangerouslySetInnerHTML={{ __html: portrait.title }} />
+									</article>
+								);
+							})}
+						</div>
+					</section>
+					<section>
 						<h2>
 							Instagram Selfies<span> ({instagramSelfies.length})</span>
 						</h2>
-						{instagramSelfies.map((instagramSelfie) => {
-							return (
-								<div className="search__results__item">
-									<p>{instagramSelfie.title}</p>
-									<img
-										src={instagramSelfie.featuredMedia.sourceUrl}
-										alt=""
-										className=""
-									/>
-								</div>
-							);
-						})}
-					</div>
+						<div className="search__results__row">
+							{instagramSelfies.map((instagramSelfie) => {
+								return (
+									<article
+										className="search__results__item"
+										onClick={(event) =>
+											this.handleImageClick(event, {
+												...instagramSelfie,
+												type: 'instagram-selfie',
+											})
+										}
+									>
+										<img
+											src={instagramSelfie.featuredMedia.sourceUrl}
+											alt=""
+											className=""
+										/>
+										<h1
+											dangerouslySetInnerHTML={{
+												__html: instagramSelfie.title,
+											}}
+										/>
+									</article>
+								);
+							})}
+						</div>
+					</section>
 				</div>
 			</div>
 		);
