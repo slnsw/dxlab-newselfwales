@@ -48,7 +48,7 @@ class SearchContainer extends Component {
 
 						return (
 							<Search
-								inputTextValue={this.state.inputTextValue}
+								inputTextValue={inputTextValue}
 								portraits={data.newSelfWales && data.newSelfWales.portraits}
 								instagramSelfies={
 									data.newSelfWales && data.newSelfWales.instagramSelfies

@@ -21,12 +21,25 @@ class Search extends Component {
 
 	state = {
 		inputTextValue: '',
+		hasInitialValue: false,
 	};
 
 	componentDidMount() {
-		this.setState({
-			inputTextValue: this.props.inputTextValue,
-		});
+		// this.setState({
+		// 	inputTextValue: this.props.inputTextValue,
+		// });
+	}
+
+	componentDidUpdate(prevProps) {
+		if (
+			prevProps.inputTextValue !== this.props.inputTextValue &&
+			!this.state.hasInitialValue
+		) {
+			this.setState({
+				inputTextValue: this.props.inputTextValue,
+				hasInitialValue: true,
+			});
+		}
 	}
 
 	handleInputTextChange = (event) => {
