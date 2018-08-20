@@ -219,21 +219,21 @@ export const checkWP = async (shortcode, username) => {
     skp = true;
   }
   // now check if we already have a Gram from this user (draft or approved):
-  const resp = await wp
-    .instagramSelfies()
-    .auth()
-    .param('status', 'any')
-    .param('meta_key', 'username')
-    .param('meta_value', username);
-  if (!skp && resp && resp.length) {
-    console.log(`${resp.length} grams already exist from user: ${username}`);
-    logtxt += `${resp.length} grams already exist from user: ${username}\n`;
-    for (const dt of resp) {
-      console.log(`Wordpress ID: ${dt.id}`);
-      logtxt += `Wordpress ID: ${dt.id}\n`;
-    }
-    skp = true;
-  }
+//  const resp = await wp
+//    .instagramSelfies()
+//    .auth()
+//    .param('status', 'any')
+//    .param('meta_key', 'username')
+//    .param('meta_value', username);
+//  if (!skp && resp && resp.length) {
+//    console.log(`${resp.length} grams already exist from user: ${username}`);
+//    logtxt += `${resp.length} grams already exist from user: ${username}\n`;
+//    for (const dt of resp) {
+//      console.log(`Wordpress ID: ${dt.id}`);
+//      logtxt += `Wordpress ID: ${dt.id}\n`;
+//    }
+//    skp = true;
+//  }
   if (skp) {
     console.log('================');
     logtxt += '================\n';
