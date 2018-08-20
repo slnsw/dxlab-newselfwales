@@ -60,3 +60,15 @@ Probably worth running `now ls` to see what is already running.
 
 `now scale [now.sh URL] bru 0 0` to turn the Brussells insance off, and:
 `now scale [now.sh URL] sfo 1 1` to turn the San Fran one on always.
+
+## Re-Deploying
+
+First run `now ls` to find the URL of the scraper. Next scale it to zero, keeping in mind we are only running it in ONE location:
+
+`now scale [now.sh URL] sfo 0 0 ` (although I suspect `now scale [now.sh URL] 0` would work here...?)
+
+And remove the instance:
+
+`now rm [now.sh URL]`
+
+before re-deploying and scaling as above.
