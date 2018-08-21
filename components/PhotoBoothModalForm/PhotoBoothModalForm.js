@@ -223,10 +223,7 @@ class PhotoBoothModalForm extends Component {
 		return (
 			<div className="photo-booth-modal-form">
 				<h1>Your Details</h1>
-				<p>
-					Supply the following if you would like us to email you the results of
-					the match.
-				</p>
+				<p>Fill in the form if you would like us to email you your selfie.</p>
 
 				<p>
 					<label className="photo-booth-modal-form__label" htmlFor="name">
@@ -265,12 +262,9 @@ class PhotoBoothModalForm extends Component {
 							this.emailInput = input;
 						}}
 					/>
-					{/* <span className="formErrors email">
-						{this.state.formErrors.email}
-					</span> */}
 				</p>
 
-				<p>
+				{/* <p>
 					Please tell us a few things about yourself so we can match you to a
 					portrait from our collection.
 				</p>
@@ -291,10 +285,7 @@ class PhotoBoothModalForm extends Component {
 							this.interestsInput = input;
 						}}
 					/>
-					{/* <span className="formErrors interests">
-						{this.state.formErrors.interests}
-					</span> */}
-				</p>
+				</p> */}
 
 				<div className="photo-booth-modal-form__terms-conditions">
 					<div className="photo-booth-modal-form__terms-conditions__input">

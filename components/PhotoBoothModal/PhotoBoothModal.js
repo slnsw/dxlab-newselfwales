@@ -124,6 +124,16 @@ class Home extends Component {
 		this.goHome();
 	};
 
+	handleHideButtonClick = () => {
+		console.log(this.state.stage);
+
+		if (this.props.stage === 'start') {
+			Router.pushRoute('/photo-booth?stage=hidden');
+		} else if (this.props.stage === 'hidden') {
+			Router.pushRoute('/photo-booth?stage=start');
+		}
+	};
+
 	render() {
 		const { isBlink } = this.state;
 		const { stage } = this.props;
@@ -131,26 +141,34 @@ class Home extends Component {
 		return (
 			<div
 				className={`photo-booth-modal ${
-					stage !== 'start' ? 'photo-booth-modal--full' : ''
-				} ${isBlink ? 'photo-booth-modal--is-blink' : ''}`}
+					stage !== 'start' && stage !== 'hidden'
+						? 'photo-booth-modal--full'
+						: ''
+				} ${stage == 'hidden' ? 'photo-booth-modal--hidden' : ''}
+				${isBlink ? 'photo-booth-modal--is-blink' : ''}`}
 			>
-				{stage === 'start' && (
+				{(stage === 'start' || stage === 'hidden') && (
 					<button
 						className="photo-booth-modal__hide-button"
-						// onClick={this.goHome}
+						onClick={this.handleHideButtonClick}
 					>
-						<i className="ion-md-arrow-dropright" />
+						<i
+							className={`ion-ios-arrow-${
+								stage === 'hidden' ? 'back' : 'forward'
+							}`}
+						/>
 					</button>
 				)}
 
-				{stage !== 'start' && (
-					<button
-						className="photo-booth-modal__close-button"
-						onClick={this.goHome}
-					>
-						<i className="ion-md-close" />
-					</button>
-				)}
+				{stage !== 'start' &&
+					stage !== 'hidden' && (
+						<button
+							className="photo-booth-modal__close-button"
+							onClick={this.goHome}
+						>
+							<i className="ion-md-close" />
+						</button>
+					)}
 
 				<div className="photo-booth-modal__photo-box">
 					{(stage === 'start' || stage === 'take-selfie') && (
