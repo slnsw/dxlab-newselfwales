@@ -298,7 +298,7 @@ export default async (hashtag, limit) => {
                     try {
                       // probably only want ONE selfie per user, so check WP for other images from this user.
                       skip = await checkWP(
-                        completePost.shortcode,
+                        completePost.msc[mc], // completePost.shortcode,
                         result.username,
                       );
                       if (mc > 0) {
