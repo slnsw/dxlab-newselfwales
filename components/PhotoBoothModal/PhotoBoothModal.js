@@ -140,16 +140,22 @@ class Home extends Component {
 
 		return (
 			<div
+				// className={[
+				// 	'photo-booth-modal',
+				// 	...(stage !== 'start' && stage !== 'hidden'
+				// 		? 'photo-booth-modal--full'
+				// 		: ''),
+				// ]}
 				className={`photo-booth-modal ${
 					stage !== 'start' && stage !== 'hidden'
 						? 'photo-booth-modal--full'
 						: ''
-				} ${stage == 'hidden' ? 'photo-booth-modal--hidden' : ''}
+				} ${stage === 'hidden' ? 'photo-booth-modal--hidden' : ''}
 				${isBlink ? 'photo-booth-modal--is-blink' : ''}`}
 			>
 				{(stage === 'start' || stage === 'hidden') && (
 					<button
-						className="photo-booth-modal__hide-button"
+						className={['photo-booth-modal__hide-button']}
 						onClick={this.handleHideButtonClick}
 					>
 						<i

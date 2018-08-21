@@ -1,5 +1,5 @@
 import { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -8,12 +8,14 @@ import { Router } from '../../routes';
 import './SearchContainer.css';
 
 class SearchContainer extends Component {
-	// static propTypes = {};
+	static propTypes = {
+		q: PropTypes.string,
+	};
 
 	state = { inputTextValue: '' };
 
 	componentDidMount() {
-		this.setState({ inputTextValue: window.location.search.substring(3) });
+		this.setState({ inputTextValue: this.props.q });
 	}
 
 	handleFormSubmit = (event, value) => {
