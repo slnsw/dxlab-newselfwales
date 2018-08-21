@@ -73,7 +73,7 @@ class Search extends Component {
 				<ImageModalContainer
 					id={this.state.imageId}
 					imageType={this.state.imageType}
-					isActive={this.state.imageId ? true : false}
+					isActive={this.state.imageId === null}
 					onClose={this.handleImageModalClose}
 				/>
 				<form onSubmit={this.handleFormSubmit}>

@@ -140,18 +140,14 @@ class Home extends Component {
 
 		return (
 			<div
-				// className={[
-				// 	'photo-booth-modal',
-				// 	...(stage !== 'start' && stage !== 'hidden'
-				// 		? 'photo-booth-modal--full'
-				// 		: ''),
-				// ]}
-				className={`photo-booth-modal ${
+				className={[
+					'photo-booth-modal',
 					stage !== 'start' && stage !== 'hidden'
 						? 'photo-booth-modal--full'
-						: ''
-				} ${stage === 'hidden' ? 'photo-booth-modal--hidden' : ''}
-				${isBlink ? 'photo-booth-modal--is-blink' : ''}`}
+						: '',
+					stage === 'hidden' ? 'photo-booth-modal--hidden' : '',
+					isBlink ? 'photo-booth-modal--is-blink' : '',
+				].join(' ')}
 			>
 				{(stage === 'start' || stage === 'hidden') && (
 					<button

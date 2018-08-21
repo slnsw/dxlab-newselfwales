@@ -41,7 +41,7 @@ class PhotoBoothPage extends Component {
 			<ApolloProvider client={client}>
 				<App title="Photo Booth">
 					<div className="photo-booth-page">
-						<SearchContainer q={url.query.q} />
+						{/* <SearchContainer q={url.query.q} /> */}
 
 						<ImageFeedContainer
 							startImages={20}
