@@ -1,10 +1,8 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import WPAPI from 'wpapi';
-// import Keyboard from 'react-screen-keyboard';
 
 import './PhotoBoothModalForm.css';
-// import { LatinLayoutCustom } from '../../lib';
 
 class PhotoBoothModalForm extends Component {
 	static propTypes = {
@@ -27,7 +25,6 @@ class PhotoBoothModalForm extends Component {
 			emailValid: false,
 			termsConditionsValid: false,
 			formValid: false,
-			inputNode: null, // Used for Keyboard
 		};
 	}
 
@@ -59,7 +56,11 @@ class PhotoBoothModalForm extends Component {
 			...this.state.formErrors,
 		};
 
-		let { interestsValid, emailValid, termsConditionsValid } = this.state;
+		let {
+			// interestsValid,
+			emailValid,
+			termsConditionsValid,
+		} = this.state;
 
 		switch (fieldName) {
 			case 'email': {
@@ -72,21 +73,21 @@ class PhotoBoothModalForm extends Component {
 				formErrors.email = emailValid ? '' : 'Please enter a valid email.';
 				break;
 			}
-			case 'interests': {
-				const t = value
-					.split(',') // separate interests by comma
-					.filter((entry) => entry.trim() !== '')
-					.filter(
-						// rdon't count blank ones
-						(entry) => entry.trim().length >= 3,
-					); // make sure they aren't too short
+			// case 'interests': {
+			// 	const t = value
+			// 		.split(',') // separate interests by comma
+			// 		.filter((entry) => entry.trim() !== '')
+			// 		.filter(
+			// 			// rdon't count blank ones
+			// 			(entry) => entry.trim().length >= 3,
+			// 		); // make sure they aren't too short
 
-				interestsValid = t.length > 2; // and make sure we have at least 3
-				formErrors.interests = interestsValid
-					? ''
-					: 'Could you enter a bit more info about your interests? Ideally 4 or 5, separated by commas.';
-				break;
-			}
+			// 	interestsValid = t.length > 2; // and make sure we have at least 3
+			// 	formErrors.interests = interestsValid
+			// 		? ''
+			// 		: 'Could you enter a bit more info about your interests? Ideally 4 or 5, separated by commas.';
+			// 	break;
+			// }
 			case 'terms-conditions': {
 				termsConditionsValid = value;
 				formErrors['terms-conditions'] = termsConditionsValid
@@ -102,7 +103,7 @@ class PhotoBoothModalForm extends Component {
 			{
 				formErrors,
 				emailValid,
-				interestsValid,
+				// interestsValid,
 				termsConditionsValid,
 			},
 			this.validateForm,
@@ -113,7 +114,7 @@ class PhotoBoothModalForm extends Component {
 		this.setState({
 			formValid:
 				this.state.emailValid &&
-				this.state.interestsValid &&
+				// this.state.interestsValid &&
 				this.state.termsConditionsValid,
 		});
 	}
@@ -223,7 +224,9 @@ class PhotoBoothModalForm extends Component {
 	};
 
 	render() {
-		const { formErrors } = this.state;
+		const { formErrors, formValid } = this.state;
+
+		console.log(formValid);
 
 		return (
 			<div className="photo-booth-modal-form">
@@ -325,7 +328,7 @@ class PhotoBoothModalForm extends Component {
 						className="button"
 						onClick={this.handleSubmitForm}
 						onChange={(event) => this.handleUserInput(event)}
-						disabled={this.state.formValid !== true || this.state.isFormSending}
+						disabled={formValid !== true || this.state.isFormSending}
 					>
 						Submit
 					</button>
@@ -348,11 +351,6 @@ class PhotoBoothModalForm extends Component {
 						</span>
 					)}
 				</div>
-
-				{/* {process.browser &&
-					inputNode && (
-						<Keyboard inputNode={inputNode} layouts={[LatinLayoutCustom]} />
-					)} */}
 			</div>
 		);
 	}

@@ -73,6 +73,10 @@ class Home extends Component {
 
 	startSelfie = () => {
 		Router.pushRoute('/photo-booth?stage=take-selfie');
+
+		this.setState({
+			inputNode: null,
+		});
 	};
 
 	takeSelfie = () => {
@@ -91,6 +95,10 @@ class Home extends Component {
 
 	retakeSelfie = () => {
 		Router.pushRoute('/photo-booth?stage=take-selfie');
+
+		this.setState({
+			inputNode: null,
+		});
 	};
 
 	sendSelfie = () => {
