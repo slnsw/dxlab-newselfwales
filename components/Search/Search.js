@@ -1,17 +1,20 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { CSSTransition } from 'react-transition-group';
 
 import ImageModalContainer from '../ImageModalContainer';
 import './Search.css';
 
 class Search extends Component {
 	static propTypes = {
+		className: PropTypes.string,
 		url: PropTypes.object,
 		portraits: PropTypes.array,
 		instagramSelfies: PropTypes.array,
 		gallerySelfies: PropTypes.array,
 		inputTextValue: PropTypes.string,
 		loading: PropTypes.bool,
+		isActive: PropTypes.bool,
 		onSubmit: PropTypes.func,
 	};
 
@@ -59,128 +62,144 @@ class Search extends Component {
 	};
 
 	render() {
-		const { portraits, instagramSelfies, gallerySelfies } = this.props;
+		const {
+			portraits,
+			instagramSelfies,
+			gallerySelfies,
+			className,
+			isActive,
+		} = this.props;
 		const { inputTextValue } = this.state;
 
 		return (
-			<div className="search">
-				<ImageModalContainer
-					id={this.state.imageId}
-					imageType={this.state.imageType}
-					isActive={this.state.imageId === null}
-					onClose={this.handleImageModalClose}
-				/>
+			<CSSTransition
+				in={isActive}
+				appear
+				timeout={300}
+				classNames="search-"
+				// unmountOnExit
+			>
+				<div className={['search', className].join(' ')}>
+					<h1>Search</h1>
 
-				<h1>Search</h1>
+					<form onSubmit={this.handleFormSubmit} className="search__form">
+						<input
+							type="text"
+							name="q"
+							placeholder="Start searching"
+							value={inputTextValue || ''}
+							id="search-field"
+							className="search__form__input-text"
+							onChange={this.handleInputTextChange}
+						/>
+						<input type="submit" className="button" />
+					</form>
 
-				<form onSubmit={this.handleFormSubmit} className="search__form">
-					<input
-						type="text"
-						name="q"
-						placeholder="Start searching"
-						value={inputTextValue || ''}
-						id="search-field"
-						className="search__form__input-text"
-						onChange={this.handleInputTextChange}
+					<div className="search__results">
+						<section>
+							<h2>
+								Gallery Selfies<span> ({gallerySelfies.length})</span>
+							</h2>
+							<div className="search__results__row">
+								{gallerySelfies.map((gallerySelfie) => {
+									return (
+										<article
+											className="search__results__item"
+											onClick={(event) =>
+												this.handleImageClick(event, {
+													...gallerySelfie,
+													type: 'gallery-selfie',
+												})
+											}
+											key={gallerySelfie.id}
+										>
+											<img
+												src={gallerySelfie.featuredMedia.sourceUrl}
+												alt=""
+												className=""
+											/>
+											<h1
+												dangerouslySetInnerHTML={{
+													__html: gallerySelfie.galleryName,
+												}}
+											/>
+										</article>
+									);
+								})}
+							</div>
+						</section>
+						<section>
+							<h2>
+								portraits<span> ({portraits.length})</span>
+							</h2>
+							<div className="search__results__row">
+								{portraits.map((portrait) => {
+									return (
+										<article
+											className="search__results__item"
+											onClick={(event) =>
+												this.handleImageClick(event, {
+													...portrait,
+													type: 'portrait',
+												})
+											}
+											key={portrait.id}
+										>
+											<img
+												src={portrait.featuredMedia.sourceUrl}
+												alt=""
+												className=""
+											/>
+											<h1
+												dangerouslySetInnerHTML={{ __html: portrait.title }}
+											/>
+										</article>
+									);
+								})}
+							</div>
+						</section>
+						<section>
+							<h2>
+								Instagram Selfies<span> ({instagramSelfies.length})</span>
+							</h2>
+							<div className="search__results__row">
+								{instagramSelfies.map((instagramSelfie) => {
+									return (
+										<article
+											className="search__results__item"
+											onClick={(event) =>
+												this.handleImageClick(event, {
+													...instagramSelfie,
+													type: 'instagram-selfie',
+												})
+											}
+											key={instagramSelfie.id}
+										>
+											<img
+												src={instagramSelfie.featuredMedia.sourceUrl}
+												alt=""
+												className=""
+											/>
+											<h1
+												dangerouslySetInnerHTML={{
+													__html: instagramSelfie.title,
+												}}
+											/>
+										</article>
+									);
+								})}
+							</div>
+						</section>
+					</div>
+
+					<ImageModalContainer
+						id={this.state.imageId}
+						imageType={this.state.imageType}
+						isActive={this.state.imageId === null}
+						onClose={this.handleImageModalClose}
 					/>
-					<input type="submit" className="button" />
-				</form>
-
-				<div className="search__results">
-					<section>
-						<h2>
-							Gallery Selfies<span> ({gallerySelfies.length})</span>
-						</h2>
-						<div className="search__results__row">
-							{gallerySelfies.map((gallerySelfie) => {
-								return (
-									<article
-										className="search__results__item"
-										onClick={(event) =>
-											this.handleImageClick(event, {
-												...gallerySelfie,
-												type: 'gallery-selfie',
-											})
-										}
-										key={gallerySelfie.id}
-									>
-										<img
-											src={gallerySelfie.featuredMedia.sourceUrl}
-											alt=""
-											className=""
-										/>
-										<h1
-											dangerouslySetInnerHTML={{
-												__html: gallerySelfie.galleryName,
-											}}
-										/>
-									</article>
-								);
-							})}
-						</div>
-					</section>
-					<section>
-						<h2>
-							portraits<span> ({portraits.length})</span>
-						</h2>
-						<div className="search__results__row">
-							{portraits.map((portrait) => {
-								return (
-									<article
-										className="search__results__item"
-										onClick={(event) =>
-											this.handleImageClick(event, {
-												...portrait,
-												type: 'portrait',
-											})
-										}
-										key={portrait.id}
-									>
-										<img
-											src={portrait.featuredMedia.sourceUrl}
-											alt=""
-											className=""
-										/>
-										<h1 dangerouslySetInnerHTML={{ __html: portrait.title }} />
-									</article>
-								);
-							})}
-						</div>
-					</section>
-					<section>
-						<h2>
-							Instagram Selfies<span> ({instagramSelfies.length})</span>
-						</h2>
-						<div className="search__results__row">
-							{instagramSelfies.map((instagramSelfie) => {
-								return (
-									<article
-										className="search__results__item"
-										onClick={(event) =>
-											this.handleImageClick(event, {
-												...instagramSelfie,
-												type: 'instagram-selfie',
-											})
-										}
-										key={instagramSelfie.id}
-									>
-										<img
-											src={instagramSelfie.featuredMedia.sourceUrl}
-											alt=""
-											className=""
-										/>
-										<h1
-											dangerouslySetInnerHTML={{
-												__html: instagramSelfie.title,
-											}}
-										/>
-									</article>
-								);
-							})}
-						</div>
-					</section>
 				</div>
-			</div>
+			</CSSTransition>
 		);
 	}
 }

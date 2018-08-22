@@ -296,11 +296,14 @@ class Home extends Component {
 					</div>
 				)}
 
-				{stage === 'search' && (
-					<div className="photo-booth-modal__search">
-						<SearchContainer url={url} />
-					</div>
-				)}
+				<div
+					className={[
+						'photo-booth-modal__search',
+						stage === 'search' ? 'photo-booth-modal__search--is-active' : '',
+					].join(' ')}
+				>
+					<SearchContainer isActive={stage === 'search'} url={url} />
+				</div>
 
 				<footer className="photo-booth-modal__footer">
 					{stage === 'start' && (

@@ -50,7 +50,7 @@ class PhotoBoothPage extends Component {
 							}
 						/>
 
-						<PhotoBoothModal stage={url.query.stage} />
+						<PhotoBoothModal stage={url.query.stage} url={url} />
 
 						{/* {url.query.stage === 'search' && (
 							<div className="photo-booth-page__search">

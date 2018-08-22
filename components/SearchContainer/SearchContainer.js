@@ -11,6 +11,8 @@ import './SearchContainer.css';
 class SearchContainer extends Component {
 	static propTypes = {
 		url: PropTypes.object.isRequired,
+		isActive: PropTypes.bool,
+		className: PropTypes.string,
 	};
 
 	static defaultProps = {
@@ -41,7 +43,7 @@ class SearchContainer extends Component {
 	};
 
 	render() {
-		const { url } = this.props;
+		const { url, className, isActive } = this.props;
 		const { inputTextValue } = this.state;
 
 		return (
@@ -65,6 +67,7 @@ class SearchContainer extends Component {
 
 					return (
 						<Search
+							className={className}
 							inputTextValue={inputTextValue}
 							url={url}
 							portraits={data.newSelfWales && data.newSelfWales.portraits}
@@ -75,6 +78,7 @@ class SearchContainer extends Component {
 								data.newSelfWales && data.newSelfWales.gallerySelfies
 							}
 							loading={loading}
+							isActive={isActive}
 							onSubmit={this.handleFormSubmit}
 						/>
 					);
