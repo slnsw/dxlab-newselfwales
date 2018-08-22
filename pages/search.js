@@ -17,11 +17,12 @@ class SearchPage extends Component {
 	}
 
 	render() {
+		const { url } = this.props;
 
 		return (
 			<ApolloProvider client={client}>
 				<App>
-					<SearchContainer />
+					<SearchContainer url={url} />
 				</App>
 			</ApolloProvider>
 		);

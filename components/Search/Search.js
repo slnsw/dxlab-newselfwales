@@ -6,6 +6,7 @@ import './Search.css';
 
 class Search extends Component {
 	static propTypes = {
+		url: PropTypes.object,
 		portraits: PropTypes.array,
 		instagramSelfies: PropTypes.array,
 		gallerySelfies: PropTypes.array,
@@ -26,22 +27,24 @@ class Search extends Component {
 	};
 
 	componentDidMount() {
-		// this.setState({
-		// 	inputTextValue: this.props.inputTextValue,
-		// });
+		console.log(this.props.url);
+
+		this.setState({
+			initialInputTextValue: this.props.url.query.q,
+		});
 	}
 
-	componentDidUpdate(prevProps) {
-		if (
-			prevProps.inputTextValue !== this.props.inputTextValue &&
-			!this.state.hasInitialValue
-		) {
-			this.setState({
-				inputTextValue: this.props.inputTextValue,
-				hasInitialValue: true,
-			});
-		}
-	}
+	// componentDidUpdate(prevProps) {
+	// 	if (
+	// 		prevProps.inputTextValue !== this.props.inputTextValue &&
+	// 		!this.state.hasInitialValue
+	// 	) {
+	// 		this.setState({
+	// 			inputTextValue: this.props.inputTextValue,
+	// 			hasInitialValue: true,
+	// 		});
+	// 	}
+	// }
 
 	handleInputTextChange = (event) => {
 		this.setState({ inputTextValue: event.target.value });
@@ -65,8 +68,7 @@ class Search extends Component {
 
 	render() {
 		const { portraits, instagramSelfies, gallerySelfies } = this.props;
-
-		const { inputTextValue } = this.state;
+		const { inputTextValue, initialInputTextValue } = this.state;
 
 		return (
 			<div className="search">
@@ -76,13 +78,13 @@ class Search extends Component {
 					isActive={this.state.imageId === null}
 					onClose={this.handleImageModalClose}
 				/>
+
 				<form onSubmit={this.handleFormSubmit}>
 					<input
 						type="text"
 						name="q"
 						placeholder="Start searching"
-						value={inputTextValue}
-						// defaultValue={url.query.q}
+						value={inputTextValue || initialInputTextValue || ''}
 						id="search-field"
 						onChange={this.handleInputTextChange}
 					/>
@@ -104,6 +106,7 @@ class Search extends Component {
 												type: 'gallery-selfie',
 											})
 										}
+										key={gallerySelfie.id}
 									>
 										<img
 											src={gallerySelfie.featuredMedia.sourceUrl}
@@ -135,6 +138,7 @@ class Search extends Component {
 												type: 'portrait',
 											})
 										}
+										key={portrait.id}
 									>
 										<img
 											src={portrait.featuredMedia.sourceUrl}
@@ -162,6 +166,7 @@ class Search extends Component {
 												type: 'instagram-selfie',
 											})
 										}
+										key={instagramSelfie.id}
 									>
 										<img
 											src={instagramSelfie.featuredMedia.sourceUrl}
