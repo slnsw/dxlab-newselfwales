@@ -1,19 +1,30 @@
 @import '../../styles/variables.css';
 
 .search {
-	padding: 4em 2em 2em 2em;
+	position: relative;
+	padding: 2em 2em 2em 2em;
 	background-color: var(--colour-black);
-} 
 
-h2 {
-	padding-top: var(--spacing-sm);
-	padding-left: var(--spacing-sm);
-	margin-bottom: 0;
+	& h2 {
+		padding-top: var(--spacing-sm);
+		/* padding-left: var(--spacing-sm); */
+		/* margin-bottom: 0; */
+	}
+
+	& h2 span {
+		font-weight: normal;
+		font-size: var(--font-size-xs);
+	}
 }
 
-h2 span {
-	font-weight: normal;
-	font-size: var(--font-size-xs);
+.search__form {
+	display: flex;
+	margin-bottom: 1em;
+}
+
+.search__form__input-text {
+	width: 30em;
+	margin-right: 1em;
 }
 
 .search__results__row {
@@ -22,7 +33,7 @@ h2 span {
 
 .search__results__item {
 	width: 10em;
-	margin: var(--spacing-sm);
+	margin-right: var(--spacing-sm);
 
 	& h1 {
 		font-size: var(--font-size-md);

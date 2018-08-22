@@ -26,25 +26,17 @@ class Search extends Component {
 		hasInitialValue: false,
 	};
 
-	componentDidMount() {
-		console.log(this.props.url);
-
-		this.setState({
-			initialInputTextValue: this.props.url.query.q,
-		});
+	componentDidUpdate(prevProps) {
+		if (
+			prevProps.inputTextValue !== this.props.inputTextValue &&
+			!this.state.hasInitialValue
+		) {
+			this.setState({
+				inputTextValue: this.props.inputTextValue,
+				hasInitialValue: true,
+			});
+		}
 	}
-
-	// componentDidUpdate(prevProps) {
-	// 	if (
-	// 		prevProps.inputTextValue !== this.props.inputTextValue &&
-	// 		!this.state.hasInitialValue
-	// 	) {
-	// 		this.setState({
-	// 			inputTextValue: this.props.inputTextValue,
-	// 			hasInitialValue: true,
-	// 		});
-	// 	}
-	// }
 
 	handleInputTextChange = (event) => {
 		this.setState({ inputTextValue: event.target.value });
@@ -68,7 +60,7 @@ class Search extends Component {
 
 	render() {
 		const { portraits, instagramSelfies, gallerySelfies } = this.props;
-		const { inputTextValue, initialInputTextValue } = this.state;
+		const { inputTextValue } = this.state;
 
 		return (
 			<div className="search">
@@ -79,17 +71,21 @@ class Search extends Component {
 					onClose={this.handleImageModalClose}
 				/>
 
-				<form onSubmit={this.handleFormSubmit}>
+				<h1>Search</h1>
+
+				<form onSubmit={this.handleFormSubmit} className="search__form">
 					<input
 						type="text"
 						name="q"
 						placeholder="Start searching"
-						value={inputTextValue || initialInputTextValue || ''}
+						value={inputTextValue || ''}
 						id="search-field"
+						className="search__form__input-text"
 						onChange={this.handleInputTextChange}
 					/>
 					<input type="submit" className="button" />
 				</form>
+
 				<div className="search__results">
 					<section>
 						<h2>

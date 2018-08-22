@@ -45,43 +45,41 @@ class SearchContainer extends Component {
 		const { inputTextValue } = this.state;
 
 		return (
-			<div className="search-container">
-				<Query
-					query={SEARCH_QUERY}
-					variables={{
-						search: inputTextValue, // (this.state.inputTextValue ? this.state.inputTextValue : ''),
-					}}
-				>
-					{({ loading, error, data }) => {
-						// if (loading) {
-						// 	return <div />;
-						// }
+			<Query
+				query={SEARCH_QUERY}
+				variables={{
+					search: inputTextValue, // (this.state.inputTextValue ? this.state.inputTextValue : ''),
+				}}
+			>
+				{({ loading, error, data }) => {
+					// if (loading) {
+					// 	return <div />;
+					// }
 
-						if (error) {
-							console.log(error);
-							return null;
-						}
+					if (error) {
+						console.log(error);
+						return null;
+					}
 
-						// console.log(data);
+					// console.log(data);
 
-						return (
-							<Search
-								inputTextValue={inputTextValue}
-								url={url}
-								portraits={data.newSelfWales && data.newSelfWales.portraits}
-								instagramSelfies={
-									data.newSelfWales && data.newSelfWales.instagramSelfies
-								}
-								gallerySelfies={
-									data.newSelfWales && data.newSelfWales.gallerySelfies
-								}
-								loading={loading}
-								onSubmit={this.handleFormSubmit}
-							/>
-						);
-					}}
-				</Query>
-			</div>
+					return (
+						<Search
+							inputTextValue={inputTextValue}
+							url={url}
+							portraits={data.newSelfWales && data.newSelfWales.portraits}
+							instagramSelfies={
+								data.newSelfWales && data.newSelfWales.instagramSelfies
+							}
+							gallerySelfies={
+								data.newSelfWales && data.newSelfWales.gallerySelfies
+							}
+							loading={loading}
+							onSubmit={this.handleFormSubmit}
+						/>
+					);
+				}}
+			</Query>
 		);
 	}
 }

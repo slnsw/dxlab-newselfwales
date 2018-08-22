@@ -3,3 +3,9 @@
 .photo-booth-page {
 	position: relative;
 }
+
+.photo-booth-page__search {
+	position: absolute;
+	top: 0;
+	left: 0;
+}

@@ -5,7 +5,7 @@ import './photo-booth.css';
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
 import ImageModalContainer from '../components/ImageModalContainer';
-import SearchContainer from '../components/SearchContainer/SearchContainer';
+// import SearchContainer from '../components/SearchContainer/SearchContainer';
 import PhotoBoothModal from '../components/PhotoBoothModal';
 import { client } from '../lib/initApollo';
 import { Router } from '../routes';
@@ -18,7 +18,7 @@ class PhotoBoothPage extends Component {
 
 	handleImageClick = (event, image) => {
 		// console.log(event.target.parentElement.getBoundingClientRect(), image);
-		console.log(image);
+		// console.log(image);
 
 		Router.pushRoute(`/photo-booth/${image.type}/${image.id}`);
 
@@ -41,11 +41,9 @@ class PhotoBoothPage extends Component {
 			<ApolloProvider client={client}>
 				<App title="Photo Booth">
 					<div className="photo-booth-page">
-						<SearchContainer url={url} />
-
 						<ImageFeedContainer
-							startImages={20}
-							maxImages={30}
+							startImages={30}
+							maxImages={50}
 							enableAnimation={enableAnimation}
 							onImageClick={(event, image) =>
 								this.handleImageClick(event, image)
@@ -53,6 +51,12 @@ class PhotoBoothPage extends Component {
 						/>
 
 						<PhotoBoothModal stage={url.query.stage} />
+
+						{/* {url.query.stage === 'search' && (
+							<div className="photo-booth-page__search">
+								<SearchContainer url={url} />
+							</div>
+						)} */}
 
 						<ImageModalContainer
 							isActive={showImageModal}

@@ -1,8 +1,10 @@
 import { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 
 import './PhotoBoothModal.css';
 import './Keyboard.css';
 import PhotoBoothModalForm from '../PhotoBoothModalForm';
+import SearchContainer from '../SearchContainer';
 import { Router } from '../../routes';
 import webcam, { dataURItoBlob } from '../../lib/webcam';
 
@@ -10,6 +12,11 @@ const TRIGGER_LETTER = 192; // backtick
 const CAM_NAME = 'HD Pro Webcam C920';
 
 class Home extends Component {
+	static propTypes = {
+		url: PropTypes.object,
+		stage: PropTypes.string,
+	};
+
 	constructor(props) {
 		super(props);
 
@@ -134,9 +141,13 @@ class Home extends Component {
 		}
 	};
 
+	handleSearchButton = () => {
+		Router.pushRoute('/photo-booth?stage=search');
+	};
+
 	render() {
 		const { isBlink } = this.state;
-		const { stage } = this.props;
+		const { stage, url } = this.props;
 
 		return (
 			<div
@@ -285,10 +296,19 @@ class Home extends Component {
 					</div>
 				)}
 
+				{stage === 'search' && (
+					<div className="photo-booth-modal__search">
+						<SearchContainer url={url} />
+					</div>
+				)}
+
 				<footer className="photo-booth-modal__footer">
 					{stage === 'start' && (
 						<ul className="photo-booth-modal__menu">
-							<li className="photo-booth-modal__menu-item">
+							<li
+								className="photo-booth-modal__menu-item"
+								onClick={this.handleSearchButton}
+							>
 								<i className="ion-md-search" /> Search
 							</li>
 							<li className="photo-booth-modal__menu-item">
