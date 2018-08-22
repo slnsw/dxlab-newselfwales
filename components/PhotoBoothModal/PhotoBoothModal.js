@@ -1,5 +1,6 @@
 import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import Keyboard from 'react-screen-keyboard';
 
 import './PhotoBoothModal.css';
 import './Keyboard.css';
@@ -7,6 +8,7 @@ import PhotoBoothModalForm from '../PhotoBoothModalForm';
 import SearchContainer from '../SearchContainer';
 import { Router } from '../../routes';
 import webcam, { dataURItoBlob } from '../../lib/webcam';
+import { LatinLayoutCustom } from '../../lib';
 
 const TRIGGER_LETTER = 192; // backtick
 const CAM_NAME = 'HD Pro Webcam C920';
@@ -145,8 +147,16 @@ class Home extends Component {
 		Router.pushRoute('/photo-booth?stage=search');
 	};
 
+	handleSearchInputTextFocus = (input) => {
+		// console.log(input);
+
+		this.setState({
+			inputNode: input,
+		});
+	};
+
 	render() {
-		const { isBlink } = this.state;
+		const { isBlink, inputNode } = this.state;
 		const { stage, url } = this.props;
 
 		return (
@@ -302,7 +312,11 @@ class Home extends Component {
 						stage === 'search' ? 'photo-booth-modal__search--is-active' : '',
 					].join(' ')}
 				>
-					<SearchContainer isActive={stage === 'search'} url={url} />
+					<SearchContainer
+						isActive={stage === 'search'}
+						url={url}
+						onInputTextFocus={this.handleSearchInputTextFocus}
+					/>
 				</div>
 
 				<footer className="photo-booth-modal__footer">
@@ -326,6 +340,11 @@ class Home extends Component {
 						src="../../static/newselfwales/newselfwales-logo-01.gif"
 					/>
 				</footer>
+
+				{process.browser &&
+					inputNode && (
+						<Keyboard inputNode={inputNode} layouts={[LatinLayoutCustom]} />
+					)}
 			</div>
 		);
 	}

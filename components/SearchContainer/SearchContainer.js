@@ -13,6 +13,7 @@ class SearchContainer extends Component {
 		url: PropTypes.object.isRequired,
 		isActive: PropTypes.bool,
 		className: PropTypes.string,
+		onInputTextFocus: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -43,7 +44,7 @@ class SearchContainer extends Component {
 	};
 
 	render() {
-		const { url, className, isActive } = this.props;
+		const { url, className, isActive, onInputTextFocus } = this.props;
 		const { inputTextValue } = this.state;
 
 		return (
@@ -80,6 +81,7 @@ class SearchContainer extends Component {
 							loading={loading}
 							isActive={isActive}
 							onSubmit={this.handleFormSubmit}
+							onInputTextFocus={onInputTextFocus}
 						/>
 					);
 				}}

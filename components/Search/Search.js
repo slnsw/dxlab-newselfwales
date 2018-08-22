@@ -16,6 +16,7 @@ class Search extends Component {
 		loading: PropTypes.bool,
 		isActive: PropTypes.bool,
 		onSubmit: PropTypes.func,
+		onInputTextFocus: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -45,11 +46,18 @@ class Search extends Component {
 		this.setState({ inputTextValue: event.target.value });
 	};
 
+	handleInputTextFocus = (event) => {
+		if (typeof this.props.onInputTextFocus === 'function') {
+			this.props.onInputTextFocus(event);
+		}
+	};
+
 	handleFormSubmit = (event) => {
 		if (typeof this.props.onSubmit === 'function') {
 			this.props.onSubmit(event, this.state.inputTextValue);
 		}
 
+		// Stops page from refreshing
 		event.preventDefault();
 	};
 
@@ -87,10 +95,14 @@ class Search extends Component {
 							type="text"
 							name="q"
 							placeholder="Start searching"
-							value={inputTextValue || ''}
+							value={inputTextValue}
 							id="search-field"
 							className="search__form__input-text"
-							onChange={this.handleInputTextChange}
+							onInput={(event) => this.handleInputTextChange(event)}
+							onFocus={() => this.handleInputTextFocus(this.searchInput)}
+							ref={(input) => {
+								this.searchInput = input;
+							}}
 						/>
 						<input type="submit" className="button" />
 					</form>

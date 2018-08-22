@@ -4,6 +4,7 @@ import WPAPI from 'wpapi';
 import Keyboard from 'react-screen-keyboard';
 
 import './PhotoBoothModalForm.css';
+import { LatinLayoutCustom } from '../../lib';
 
 class PhotoBoothModalForm extends Component {
 	static propTypes = {
@@ -354,12 +355,3 @@ class PhotoBoothModalForm extends Component {
 }
 
 export default PhotoBoothModalForm;
-
-const LatinLayoutCustom = {
-	symbolsKeyValue: 'Abc',
-	layout: [
-		['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
-		['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '@'],
-		['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.'],
-	],
-};
