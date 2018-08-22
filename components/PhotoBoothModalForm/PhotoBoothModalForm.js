@@ -1,15 +1,16 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import WPAPI from 'wpapi';
-import Keyboard from 'react-screen-keyboard';
+// import Keyboard from 'react-screen-keyboard';
 
 import './PhotoBoothModalForm.css';
-import { LatinLayoutCustom } from '../../lib';
+// import { LatinLayoutCustom } from '../../lib';
 
 class PhotoBoothModalForm extends Component {
 	static propTypes = {
 		onQuitClick: PropTypes.func,
 		onFormSubmitComplete: PropTypes.func,
+		onInputTextFocus: PropTypes.func,
 	};
 
 	constructor(props) {
@@ -191,7 +192,10 @@ class PhotoBoothModalForm extends Component {
 	};
 
 	handleInputFocus = (input) => {
-		this.setState({ inputNode: input });
+		if (typeof this.props.onInputTextFocus === 'function') {
+			this.props.onInputTextFocus(input);
+		}
+		// this.setState({ inputNode: input });
 	};
 
 	handleNameInput = (event) => {
@@ -219,7 +223,7 @@ class PhotoBoothModalForm extends Component {
 	};
 
 	render() {
-		const { inputNode, formErrors } = this.state;
+		const { formErrors } = this.state;
 
 		return (
 			<div className="photo-booth-modal-form">
@@ -345,10 +349,10 @@ class PhotoBoothModalForm extends Component {
 					)}
 				</div>
 
-				{process.browser &&
+				{/* {process.browser &&
 					inputNode && (
 						<Keyboard inputNode={inputNode} layouts={[LatinLayoutCustom]} />
-					)}
+					)} */}
 			</div>
 		);
 	}

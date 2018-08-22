@@ -1,14 +1,11 @@
 @import '../../styles/variables.css';
 
 .keyboard {
-	position: fixed;
-	left: 50%;
-	transform: translateX(-50%);
-	bottom: 1em;
-	width: 50%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding: var(--spacing-sm);
+	background-color: var(--colour-black);
 	font-family: var(--font-secondary);
 }
 
@@ -37,6 +34,7 @@
 	flex: 1;
 	height: 3em;
 	margin: 0 2px;
-	background-color: var(--colour-grey-darker);
+	background-color: var(--colour-grey-darkest);
 	text-transform: none;
+	font-family: var(--font-secondary);
 }

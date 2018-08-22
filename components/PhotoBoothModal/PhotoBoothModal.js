@@ -103,6 +103,11 @@ class Home extends Component {
 
 	goHome = () => {
 		Router.pushRoute('/photo-booth?stage=start');
+
+		// Reset keyboard
+		this.setState({
+			inputNode: null,
+		});
 	};
 
 	blinkIt = () => {
@@ -134,8 +139,6 @@ class Home extends Component {
 	};
 
 	handleHideButtonClick = () => {
-		console.log(this.state.stage);
-
 		if (this.props.stage === 'start') {
 			Router.pushRoute('/photo-booth?stage=hidden');
 		} else if (this.props.stage === 'hidden') {
@@ -291,6 +294,7 @@ class Home extends Component {
 							blob={this.blob}
 							onFormSubmitComplete={this.handleFormSubmitComplete}
 							onQuitClick={this.goHome}
+							onInputTextFocus={this.handleSearchInputTextFocus}
 						/>
 					)}
 				</div>
@@ -341,10 +345,17 @@ class Home extends Component {
 					/>
 				</footer>
 
-				{process.browser &&
-					inputNode && (
-						<Keyboard inputNode={inputNode} layouts={[LatinLayoutCustom]} />
-					)}
+				<div
+					className={[
+						'photo-booth-modal__keyboard',
+						inputNode ? 'photo-booth-modal__keyboard--is-active' : '',
+					].join(' ')}
+				>
+					{process.browser &&
+						inputNode && (
+							<Keyboard inputNode={inputNode} layouts={[LatinLayoutCustom]} />
+						)}
+				</div>
 			</div>
 		);
 	}

@@ -197,3 +197,20 @@
 	max-width: 21em;
 	height: auto;
 }
+
+/* =========================================================================
+ * Keyboard
+ * ========================================================================= */
+
+.photo-booth-modal__keyboard {
+	position: fixed;
+	left: 50%;
+	transform: translate(-50%, 105%);
+	bottom: 1em;
+	width: 50%;
+	transition: 0.5s var(--ease-in-out-quart);
+}
+
+.photo-booth-modal__keyboard--is-active {
+	transform: translate(-50%, 0);
+}
