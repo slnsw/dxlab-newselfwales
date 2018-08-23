@@ -29,7 +29,11 @@ class PhotoBoothPage extends Component {
 	};
 
 	handleImageModalClose = () => {
-		Router.pushRoute('/photo-booth');
+		const { url } = this.props;
+
+		Router.pushRoute(
+			`${url.pathname}${url.query.stage === 'search' ? '?stage=search' : ''}`,
+		);
 	};
 
 	render() {

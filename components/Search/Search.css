@@ -37,7 +37,7 @@
 }
 
 .search__form {
-	display: block;
+	display: flex;
 	margin-bottom: 2em;
 }
 

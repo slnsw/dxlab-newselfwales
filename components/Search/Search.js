@@ -1,8 +1,10 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
+import queryString from 'query-string';
 
 import ImageModalContainer from '../ImageModalContainer';
+import Link from '../Link';
 import './Search.css';
 
 class Search extends Component {
@@ -78,6 +80,7 @@ class Search extends Component {
 
 	render() {
 		const {
+			url,
 			portraits,
 			instagramSelfies,
 			gallerySelfies,
@@ -97,122 +100,90 @@ class Search extends Component {
 				<div className={['search', className].join(' ')}>
 					<h1>Search</h1>
 
-					<form onSubmit={this.handleFormSubmit} className="search__form">
-						<input
-							type="text"
-							name="q"
-							placeholder="Start searching"
-							value={inputTextValue}
-							id="search-field"
-							className="search__form__input-text"
-							onInput={(event) => this.handleInputTextChange(event)}
-							onFocus={() => this.handleInputTextFocus(this.searchInput)}
-							onBlur={this.handleInputTextBlur}
-							ref={(input) => {
-								this.searchInput = input;
-							}}
-						/>
-						<input type="submit" className="button" />
+					<form onSubmit={this.handleFormSubmit}>
+						<div className="search__form">
+							<input
+								type="text"
+								name="q"
+								placeholder="Start searching"
+								value={inputTextValue}
+								id="search-field"
+								className="search__form__input-text"
+								onInput={(event) => this.handleInputTextChange(event)}
+								onFocus={() => this.handleInputTextFocus(this.searchInput)}
+								onBlur={this.handleInputTextBlur}
+								ref={(input) => {
+									this.searchInput = input;
+								}}
+							/>
+							<input type="submit" className="button" />
+						</div>
 					</form>
 
 					<div className="search__results">
-						<section>
-							<h2 className="search__results__title">
-								Gallery Selfies<span> ({gallerySelfies.length})</span>
-							</h2>
-							<div className="search__results__row">
-								{gallerySelfies.map((gallerySelfie) => {
-									return (
-										<article
-											className="search__results__item"
-											onClick={(event) =>
-												this.handleImageClick(event, {
-													...gallerySelfie,
-													type: 'gallery-selfie',
-												})
-											}
-											key={gallerySelfie.id}
-										>
-											<img
-												src={gallerySelfie.featuredMedia.sourceUrl}
-												alt=""
-												className=""
-											/>
-											<br />
-											<h1
-												dangerouslySetInnerHTML={{
-													__html: gallerySelfie.galleryName,
-												}}
-											/>
-										</article>
-									);
-								})}
-							</div>
-						</section>
-						<section>
-							<h2 className="search__results__title">
-								portraits<span> ({portraits.length})</span>
-							</h2>
-							<div className="search__results__row">
-								{portraits.map((portrait) => {
-									return (
-										<article
-											className="search__results__item"
-											onClick={(event) =>
-												this.handleImageClick(event, {
-													...portrait,
-													type: 'portrait',
-												})
-											}
-											key={portrait.id}
-										>
-											<img
-												src={portrait.featuredMedia.sourceUrl}
-												alt=""
-												className=""
-											/>
-											<br />
-											<h1
-												dangerouslySetInnerHTML={{ __html: portrait.title }}
-											/>
-										</article>
-									);
-								})}
-							</div>
-						</section>
-						<section>
-							<h2 className="search__results__title">
-								Instagram Selfies<span> ({instagramSelfies.length})</span>
-							</h2>
-							<div className="search__results__row">
-								{instagramSelfies.map((instagramSelfie) => {
-									return (
-										<article
-											className="search__results__item"
-											onClick={(event) =>
-												this.handleImageClick(event, {
-													...instagramSelfie,
-													type: 'instagram-selfie',
-												})
-											}
-											key={instagramSelfie.id}
-										>
-											<img
-												src={instagramSelfie.featuredMedia.sourceUrl}
-												alt=""
-												className=""
-											/>
-											<br />
-											<h1
-												dangerouslySetInnerHTML={{
-													__html: instagramSelfie.title,
-												}}
-											/>
-										</article>
-									);
-								})}
-							</div>
-						</section>
+						{['gallery-selfie', 'portrait', 'instagram-selfie'].map((type) => {
+							let items = [];
+							let titleField = 'title';
+							let typeTitle;
+
+							if (type === 'gallery-selfie') {
+								items = gallerySelfies;
+								titleField = 'galleryName';
+								typeTitle = 'Gallery Selfies';
+							} else if (type === 'portrait') {
+								items = portraits;
+								typeTitle = 'Portraits';
+							} else if (type === 'instagram-selfie') {
+								items = instagramSelfies;
+								typeTitle = 'Instagram Selfies';
+							}
+
+							return (
+								<section>
+									<h2 className="search__results__title">
+										{typeTitle} <span> ({items.length})</span>
+									</h2>
+									<div className="search__results__row">
+										{items.map((item) => {
+											return (
+												<Link
+													href={`${url.pathname}?${queryString.stringify({
+														...url.query,
+														imageType: type,
+														id: item.id,
+													})}`}
+												>
+													<a>
+														<article
+															className="search__results__item"
+															onClick={(event) =>
+																this.handleImageClick(event, {
+																	...item,
+																	type,
+																})
+															}
+															key={item.id}
+														>
+															<img
+																src={item.featuredMedia.sourceUrl}
+																alt=""
+																className=""
+															/>
+															<br />
+															<h1
+																dangerouslySetInnerHTML={{
+																	__html: item[titleField],
+																}}
+															/>
+														</article>
+													</a>
+												</Link>
+											);
+										})}
+									</div>
+								</section>
+							);
+						})}
 					</div>
 
 					<ImageModalContainer
