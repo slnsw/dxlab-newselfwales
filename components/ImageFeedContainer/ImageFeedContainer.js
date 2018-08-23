@@ -21,7 +21,7 @@ class ImageFeedContainer extends Component {
 	static defaultProps = {
 		enableAnimation: undefined,
 		maxImages: 1000,
-		startImages: 100,
+		startImages: 50,
 		fetchMoreImages: 10,
 		intervalTime: 20000,
 	};
@@ -30,7 +30,7 @@ class ImageFeedContainer extends Component {
 		super();
 
 		this.state = {
-			enableAnimation: false,
+			enableAnimation: true,
 			increment: 0.5,
 		};
 	}
@@ -119,7 +119,7 @@ class ImageFeedContainer extends Component {
 				>
 					{({ loading, error, data, fetchMore }) => {
 						if (loading) {
-							return <div />;
+							return <div>Loading...</div>;
 						}
 
 						if (error) {
