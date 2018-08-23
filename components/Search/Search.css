@@ -6,7 +6,7 @@
 	flex-direction: column;
 	width: 100vw;
 	height: 100%;
-	padding: 2em 2em 2em 2em;
+	padding: 3em;
 	background-color: var(--colour-black);
 	opacity: 0;
 	transition: 0.3s;
@@ -17,8 +17,18 @@
 	}
 
 	& section {
+		position: relative;
 		padding-top: 1em;
-		border-top: 1px solid var(--colour-grey-darkest);
+		/* border-top: 1px solid var(--colour-grey-darkest); */
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 1em;
+			border-top: 1px dashed var(--colour-white);
+		}
 	}
 }
 
@@ -48,6 +58,7 @@
 }
 
 .search__results__title {
+	position: relative;
 	flex: 1;
 	margin-top: 0;
 	font-size: var(--font-size-md);
@@ -56,6 +67,15 @@
 	& span {
 		font-weight: normal;
 		font-size: var(--font-size-xs);
+	}
+
+	&:before {
+		content: '';
+		position: absolute;
+		top: -1em;
+		right: calc(var(--spacing-xxlg) * -1);
+		width: var(--spacing-xxlg);
+		border-top: 1px solid var(--colour-white);
 	}
 }
 

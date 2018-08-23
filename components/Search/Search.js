@@ -17,6 +17,7 @@ class Search extends Component {
 		isActive: PropTypes.bool,
 		onSubmit: PropTypes.func,
 		onInputTextFocus: PropTypes.func,
+		onInputTextBlur: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -49,6 +50,12 @@ class Search extends Component {
 	handleInputTextFocus = (event) => {
 		if (typeof this.props.onInputTextFocus === 'function') {
 			this.props.onInputTextFocus(event);
+		}
+	};
+
+	handleInputTextBlur = () => {
+		if (typeof this.props.onInputTextBlur === 'function') {
+			this.props.onInputTextFocus();
 		}
 	};
 
@@ -100,6 +107,7 @@ class Search extends Component {
 							className="search__form__input-text"
 							onInput={(event) => this.handleInputTextChange(event)}
 							onFocus={() => this.handleInputTextFocus(this.searchInput)}
+							onBlur={this.handleInputTextBlur}
 							ref={(input) => {
 								this.searchInput = input;
 							}}

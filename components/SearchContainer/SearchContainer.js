@@ -14,6 +14,7 @@ class SearchContainer extends Component {
 		isActive: PropTypes.bool,
 		className: PropTypes.string,
 		onInputTextFocus: PropTypes.func,
+		onInputTextBlur: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -44,7 +45,7 @@ class SearchContainer extends Component {
 	};
 
 	render() {
-		const { url, className, isActive, onInputTextFocus } = this.props;
+		// const { url, className, isActive, onInputTextFocus } = this.props;
 		const { inputTextValue } = this.state;
 
 		return (
@@ -68,9 +69,7 @@ class SearchContainer extends Component {
 
 					return (
 						<Search
-							className={className}
 							inputTextValue={inputTextValue}
-							url={url}
 							portraits={data.newSelfWales && data.newSelfWales.portraits}
 							instagramSelfies={
 								data.newSelfWales && data.newSelfWales.instagramSelfies
@@ -79,9 +78,8 @@ class SearchContainer extends Component {
 								data.newSelfWales && data.newSelfWales.gallerySelfies
 							}
 							loading={loading}
-							isActive={isActive}
 							onSubmit={this.handleFormSubmit}
-							onInputTextFocus={onInputTextFocus}
+							{...this.props}
 						/>
 					);
 				}}

@@ -159,10 +159,16 @@ class Home extends Component {
 	};
 
 	handleSearchInputTextFocus = (input) => {
-		// console.log(input);
-
 		this.setState({
 			inputNode: input,
+		});
+	};
+
+	handleSearchInputTextBlur = () => {
+		console.log('hi');
+
+		this.setState({
+			inputNode: null,
 		});
 	};
 
@@ -325,9 +331,10 @@ class Home extends Component {
 					].join(' ')}
 				>
 					<SearchContainer
-						isActive={stage === 'search'}
 						url={url}
+						isActive={stage === 'search'}
 						onInputTextFocus={this.handleSearchInputTextFocus}
+						onInputTextBlur={this.handleSearchInputTextBlur}
 					/>
 				</div>
 
