@@ -130,11 +130,16 @@
 	transform: translateY(-50%);
 }
 
+/* =========================================================================
+ * Search
+ * ========================================================================= */
+
 .photo-booth-modal__search {
 	position: absolute;
 	top: 0;
 	left: 0;
 	display: none;
+	height: 100%;
 }
 
 .photo-booth-modal__search--is-active {

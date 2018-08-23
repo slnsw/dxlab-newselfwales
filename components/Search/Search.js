@@ -109,7 +109,7 @@ class Search extends Component {
 
 					<div className="search__results">
 						<section>
-							<h2>
+							<h2 className="search__results__title">
 								Gallery Selfies<span> ({gallerySelfies.length})</span>
 							</h2>
 							<div className="search__results__row">
@@ -130,6 +130,7 @@ class Search extends Component {
 												alt=""
 												className=""
 											/>
+											<br />
 											<h1
 												dangerouslySetInnerHTML={{
 													__html: gallerySelfie.galleryName,
@@ -141,7 +142,7 @@ class Search extends Component {
 							</div>
 						</section>
 						<section>
-							<h2>
+							<h2 className="search__results__title">
 								portraits<span> ({portraits.length})</span>
 							</h2>
 							<div className="search__results__row">
@@ -162,6 +163,7 @@ class Search extends Component {
 												alt=""
 												className=""
 											/>
+											<br />
 											<h1
 												dangerouslySetInnerHTML={{ __html: portrait.title }}
 											/>
@@ -171,7 +173,7 @@ class Search extends Component {
 							</div>
 						</section>
 						<section>
-							<h2>
+							<h2 className="search__results__title">
 								Instagram Selfies<span> ({instagramSelfies.length})</span>
 							</h2>
 							<div className="search__results__row">
@@ -192,6 +194,7 @@ class Search extends Component {
 												alt=""
 												className=""
 											/>
+											<br />
 											<h1
 												dangerouslySetInnerHTML={{
 													__html: instagramSelfie.title,
