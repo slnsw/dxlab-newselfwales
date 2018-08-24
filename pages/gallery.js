@@ -17,12 +17,16 @@ class GalleryPage extends Component {
 	}
 
 	render() {
+		const { url } = this.props;
 		const { enableAnimation } = this.state;
 
 		return (
 			<ApolloProvider client={client}>
 				<App>
-					<ImageFeedContainer enableAnimation={enableAnimation} />
+					<ImageFeedContainer
+						startImages={url.query.startImages || 50}
+						enableAnimation={enableAnimation}
+					/>
 				</App>
 			</ApolloProvider>
 		);

@@ -21,7 +21,7 @@ class ImageFeed extends Component {
 
 	static defaultProps = {
 		axis: 'x',
-		enableAnimation: false,
+		enableAnimation: true,
 		maxImages: 1000,
 		increment: 0.5,
 		intervalTime: 10000,

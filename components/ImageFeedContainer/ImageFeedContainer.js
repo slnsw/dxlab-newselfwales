@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 
 import './ImageFeedContainer.css';
 import ImageFeed from '../ImageFeed';
+import dedupe from '../../lib/dedupe';
 // import shuffle from '../../lib/shuffle';
 
 class ImageFeedContainer extends Component {
@@ -70,22 +71,22 @@ class ImageFeedContainer extends Component {
 		if (event.code === 'ArrowUp') {
 			this.setState(
 				{
-					increment: this.state.increment + 0.5,
+					increment: this.state.increment + 0.1,
 				},
 				() => console.log('increment: ', this.state.increment),
 			);
 		} else if (event.code === 'ArrowDown') {
 			this.setState(
 				{
-					increment: this.state.increment - 0.5,
+					increment: this.state.increment - 0.1,
 				},
 				() => console.log('increment: ', this.state.increment),
 			);
 		} else if (event.code === 'Space') {
 			// Disabled for now
-			// this.setState({
-			// 	enableAnimation: !this.state.enableAnimation,
-			// });
+			this.setState({
+				enableAnimation: !this.state.enableAnimation,
+			});
 		}
 	};
 
@@ -133,6 +134,7 @@ class ImageFeedContainer extends Component {
 							// Set image type
 							let type;
 
+							/* eslint-disable no-underscore-dangle */
 							const { __typename } = image;
 							if (__typename === 'NewSelfWalesPortrait') {
 								type = 'portrait';
@@ -165,18 +167,24 @@ class ImageFeedContainer extends Component {
 										variables: {
 											offset: images.length,
 											limit: fetchMoreImages,
-											dateStart: '2018-05-17T00:00:00',
-
-											// dateStart: new Date().toISOString(),
+											dateStart: new Date().toISOString(),
 										},
 										updateQuery: (prev, { fetchMoreResult }) => {
 											if (!fetchMoreResult) return prev;
 
-											console.log(fetchMoreResult);
+											console.log(
+												fetchMoreResult.feed.map((f) => f.__typename),
+											);
 
-											return Object.assign({}, prev, {
-												feed: [...prev.feed, ...fetchMoreResult.feed.slice(1)],
-											});
+											const newFeed = dedupe([
+												...prev.feed,
+												...fetchMoreResult.feed,
+											]);
+
+											return {
+												...prev,
+												feed: newFeed,
+											};
 										},
 									})
 								}
