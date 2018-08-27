@@ -13,7 +13,7 @@ class ImageFeedContainer extends Component {
 		enableAnimation: PropTypes.bool,
 		maxImages: PropTypes.number,
 		startImages: PropTypes.number,
-		fetchMoreImages: PropTypes.number,
+		// fetchMoreImages: PropTypes.number,
 		onImagesUpdate: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
@@ -23,8 +23,8 @@ class ImageFeedContainer extends Component {
 		enableAnimation: undefined,
 		maxImages: 1000,
 		startImages: 50,
-		fetchMoreImages: 10,
-		intervalTime: 20000,
+		// fetchMoreImages: 10,
+		intervalTime: 10000,
 	};
 
 	constructor() {
@@ -44,6 +44,11 @@ class ImageFeedContainer extends Component {
 				enableAnimation: this.props.enableAnimation,
 			});
 		}
+
+		// const timeout = setTimeout(() => {
+		// 	console.log(this.props.);
+
+		// }, timeout);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -100,13 +105,14 @@ class ImageFeedContainer extends Component {
 		const {
 			maxImages,
 			startImages,
-			fetchMoreImages,
+			// fetchMoreImages,
 			intervalTime,
 			onImagesUpdate,
 			onLayoutComplete,
+			enableAnimation,
 		} = this.props;
 
-		const { enableAnimation, increment } = this.state;
+		const { increment } = this.state;
 
 		return (
 			<div className="image-feed-container">
@@ -115,7 +121,9 @@ class ImageFeedContainer extends Component {
 					variables={{
 						offset: 0,
 						limit: startImages,
-						dateStart: '2018-05-17T00:00:00',
+						// dateStart: '2018-05-17T00:00:00',
+						dateStart: new Date().toISOString(),
+						portraitPercentage: 0.6,
 					}}
 				>
 					{({ loading, error, data, fetchMore }) => {
@@ -147,7 +155,7 @@ class ImageFeedContainer extends Component {
 							return {
 								...image,
 								type,
-								imageUrl: image.featuredMedia && image.featuredMedia.sourceUrl,
+								// imageUrl: image.featuredMedia && image.featuredMedia.sourceUrl,
 							};
 						});
 
@@ -162,19 +170,21 @@ class ImageFeedContainer extends Component {
 								enableAnimation={enableAnimation}
 								increment={increment}
 								intervalTime={intervalTime}
-								onLoadMore={() =>
+								onLoadMore={(fetchMoreImages = 0) =>
 									fetchMore({
 										variables: {
 											offset: images.length,
 											limit: fetchMoreImages,
 											dateStart: new Date().toISOString(),
+											portraitPercentage: 0.4,
 										},
 										updateQuery: (prev, { fetchMoreResult }) => {
 											if (!fetchMoreResult) return prev;
 
-											console.log(
-												fetchMoreResult.feed.map((f) => f.__typename),
-											);
+											// Log out image types
+											// console.log(
+											// 	fetchMoreResult.feed.map((f) => f.__typename),
+											// );
 
 											const newFeed = dedupe([
 												...prev.feed,
@@ -202,13 +212,19 @@ class ImageFeedContainer extends Component {
 }
 
 const PAGE_QUERY = gql`
-	query getFeed($limit: Int, $offset: Int, $dateStart: String) {
+	query getFeed(
+		$limit: Int
+		$offset: Int
+		$dateStart: String
+		$portraitPercentage: Float
+	) {
 		feed: newSelfWalesFeed(
 			dateStart: $dateStart
 			limit: $limit
 			offset: $offset
 			order: ASC
 			orderBy: DATE
+			portraitPercentage: $portraitPercentage
 		) {
 			... on NewSelfWalesPortrait {
 				id
@@ -216,6 +232,18 @@ const PAGE_QUERY = gql`
 				date
 				featuredMedia {
 					sourceUrl
+					sizes {
+						medium {
+							sourceUrl
+							width
+							height
+						}
+						full {
+							sourceUrl
+							width
+							height
+						}
+					}
 				}
 				__typename
 			}
@@ -225,6 +253,18 @@ const PAGE_QUERY = gql`
 				date
 				featuredMedia {
 					sourceUrl
+					sizes {
+						medium {
+							sourceUrl
+							width
+							height
+						}
+						full {
+							sourceUrl
+							width
+							height
+						}
+					}
 				}
 				__typename
 			}
@@ -234,6 +274,18 @@ const PAGE_QUERY = gql`
 				date
 				featuredMedia {
 					sourceUrl
+					sizes {
+						medium {
+							sourceUrl
+							width
+							height
+						}
+						full {
+							sourceUrl
+							width
+							height
+						}
+					}
 				}
 				__typename
 			}

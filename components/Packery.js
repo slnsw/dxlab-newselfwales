@@ -153,6 +153,8 @@ PackeryComponent = createReactClass({
 		var diff = this.diffDomChildren();
 
 		if (diff.removed.length > 0) {
+			console.log('diff removed');
+
 			this.packery.remove(diff.removed);
 		}
 
