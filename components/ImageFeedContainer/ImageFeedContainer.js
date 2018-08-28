@@ -127,16 +127,12 @@ class ImageFeedContainer extends Component {
 					}}
 				>
 					{({ loading, error, data, fetchMore }) => {
-						if (loading) {
-							return <div>Loading...</div>;
-						}
-
 						if (error) {
 							console.log(error);
 							return null;
 						}
 
-						const { feed } = data;
+						const { feed = [] } = data;
 
 						let images = feed.map((image) => {
 							// Set image type
@@ -165,6 +161,7 @@ class ImageFeedContainer extends Component {
 
 						return (
 							<ImageFeed
+								loading={loading}
 								images={images}
 								maxImages={maxImages}
 								enableAnimation={enableAnimation}
@@ -174,7 +171,7 @@ class ImageFeedContainer extends Component {
 									fetchMore({
 										variables: {
 											offset: images.length,
-											limit: fetchMoreImages,
+											limit: fetchMoreImages >= 100 ? 100 : fetchMoreImages,
 											dateStart: new Date().toISOString(),
 											portraitPercentage: 0.4,
 										},

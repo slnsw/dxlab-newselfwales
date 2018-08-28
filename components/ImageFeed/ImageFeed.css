@@ -2,11 +2,23 @@
 
 .image-feed {
 	overflow: auto;
+	position: relative;
 }
 
 .image-feed::-webkit-scrollbar {
 	width: 0 !important;
 	height: 0 !important;
+}
+
+.image-feed--is-loading {
+	height: 100vh;
+}
+
+.image-feed__loading-logo {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 .image-feed__image--is-person {

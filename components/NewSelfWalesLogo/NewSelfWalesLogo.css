@@ -1,0 +1,11 @@
+@import '../../styles/variables.css';
+
+.new-self-wales-logo {
+	width: 300px;
+	opacity: 0;
+	transition: 1s;
+}
+
+.new-self-wales-logo--is-active {
+	opacity: 1;
+}

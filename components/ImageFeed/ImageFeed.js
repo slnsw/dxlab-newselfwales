@@ -3,18 +3,20 @@ import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
 import Packery from '../Packery';
+import NewSelfWalesLogo from '../NewSelfWalesLogo';
 import { scroller } from '../../lib/scroll';
 
 import './ImageFeed.css';
 
 class ImageFeed extends Component {
 	static propTypes = {
-		axis: PropTypes.string,
+		loading: PropTypes.bool,
+		enableAnimation: PropTypes.bool,
 		images: PropTypes.array,
 		maxImages: PropTypes.number,
-		enableAnimation: PropTypes.bool,
 		intervalTime: PropTypes.number,
 		increment: PropTypes.number,
+		axis: PropTypes.string,
 		onLoadMore: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
@@ -117,8 +119,16 @@ class ImageFeed extends Component {
 	};
 
 	render() {
-		const { images, enableAnimation, onLayoutComplete } = this.props;
+		const { loading, images, enableAnimation, onLayoutComplete } = this.props;
 		// const { hiddenImageIds } = this.state;
+
+		if (loading) {
+			return (
+				<div className="image-feed image-feed--is-loading">
+					<NewSelfWalesLogo className="image-feed__loading-logo" />
+				</div>
+			);
+		}
 
 		return (
 			<div className="image-feed">
@@ -157,13 +167,12 @@ class ImageFeed extends Component {
 					}}
 				>
 					{images.map((image, i) => {
+						// Return null if there is no image
+						if (!image.featuredMedia) {
+							return null;
+						}
+
 						const isHidden = this.state.hiddenImageIds.indexOf(image.id) > -1;
-						// console.log(isHidden, image.id);
-
-						// if (isHidden) {
-						// 	return <div className="image-feed__image-holder" />;
-						// }
-
 						const imageSize = setSize(i);
 
 						const imageUrl =
