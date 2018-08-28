@@ -52,6 +52,7 @@ class ImageFeed extends Component {
 				clearTimeout(this.interval);
 			} else {
 				// Work how much of a black gap there is due to auto scrolling
+				// TOTRY - Loop through all imageHolders and find the one furthest to the right
 				// Get last imageHolder
 				// const lastImageHolder = Array.from(this.imageHolderRefs)[
 				// 	this.imageHolderRefs.size - 1
@@ -75,9 +76,9 @@ class ImageFeed extends Component {
 					console.log('Load more images', { gap }, { fetchMoreImages });
 				} else {
 					console.log('Remove images');
-					// this.props.onLoadMore(0);
+					this.props.onLoadMore(0);
 
-					this.randomlyAddToHiddenImageIds();
+					// this.randomlyAddToHiddenImageIds();
 				}
 
 				if (typeof this.state.laidOutItems !== 'undefined') {
@@ -92,6 +93,7 @@ class ImageFeed extends Component {
 		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
 			scroller.init(
 				this.imagesRef.refs.packeryContainer,
+				// this.imageFeedRef,
 				this.state.laidOutItems,
 				{
 					axis: this.props.axis,
@@ -147,7 +149,12 @@ class ImageFeed extends Component {
 		// const { hiddenImageIds } = this.state;
 
 		return (
-			<div className="image-feed">
+			<div
+				className="image-feed"
+				ref={(element) => {
+					this.imageFeedRef = element;
+				}}
+			>
 				{loading && (
 					<div className="image-feed__loading">
 						<div className="image-feed__loading-content">
@@ -175,7 +182,7 @@ class ImageFeed extends Component {
 						stagger: 100,
 						isHorizontal: true,
 					}}
-					stamps={[...this.imageStampRefs].map((stamp) => stamp[1])}
+					// stamps={[...this.imageStampRefs].map((stamp) => stamp[1])}
 					onLayoutComplete={(laidOutItems) => {
 						if (!this.state.laidOutItems) {
 							this.setState({
@@ -199,9 +206,9 @@ class ImageFeed extends Component {
 						}
 
 						const isHidden = this.state.hiddenImageIds.indexOf(image.id) > -1;
-						const imageSize = setSize(i);
+						// const imageSize = setSize(i);
 
-						// const imageSize = image.size;
+						const imageSize = image.size;
 
 						const imageUrl =
 							imageSize === 'md'
@@ -275,12 +282,12 @@ class ImageFeed extends Component {
 
 export default ImageFeed;
 
-function setSize(i) {
-	if (i % 6 === 1) {
-		return 'lg';
-	} else if (i % 10 === 1) {
-		return 'xlg';
-	}
+// function setSize(i) {
+// 	if (i % 6 === 1) {
+// 		return 'lg';
+// 	} else if (i % 10 === 1) {
+// 		return 'xlg';
+// 	}
 
-	return 'md';
-}
+// 	return 'md';
+// }

@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 
 import './ImageFeedContainer.css';
 import ImageFeed from '../ImageFeed';
-import dedupe from '../../lib/dedupe';
+import { dedupeByField } from '../../lib/dedupe';
 // import shuffle from '../../lib/shuffle';
 
 class ImageFeedContainer extends Component {
@@ -137,7 +137,7 @@ class ImageFeedContainer extends Component {
 						let images = feed.map((image, i) => {
 							// Set image type
 							let type;
-							// const size = setSize(i);
+							const size = setSize(i);
 
 							/* eslint-disable no-underscore-dangle */
 							const { __typename } = image;
@@ -152,7 +152,7 @@ class ImageFeedContainer extends Component {
 							return {
 								...image,
 								type,
-								// size,
+								size,
 							};
 						});
 
@@ -184,11 +184,14 @@ class ImageFeedContainer extends Component {
 											// 	fetchMoreResult.feed.map((f) => f.__typename),
 											// );
 
-											const newFeed = dedupe([
-												...prev.feed,
-												// Apply setSize to this
-												...fetchMoreResult.feed,
-											]);
+											const newFeed = dedupeByField(
+												[
+													...prev.feed,
+													// Apply setSize to this
+													...fetchMoreResult.feed,
+												],
+												'id',
+											);
 
 											return {
 												...prev,
