@@ -11,7 +11,6 @@ class GalleryPage extends Component {
 	static defaultProps = {
 		url: {
 			query: {
-				enableAnimation: false,
 				startImages: 50,
 				intervalTime: 10000,
 				fetchMoreImages: 5,

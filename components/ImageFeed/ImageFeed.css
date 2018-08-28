@@ -3,6 +3,7 @@
 .image-feed {
 	overflow: auto;
 	position: relative;
+	z-index: 0;
 }
 
 .image-feed::-webkit-scrollbar {
@@ -10,20 +11,28 @@
 	height: 0 !important;
 }
 
-.image-feed--is-loading {
-	height: 100vh;
-}
-
-.image-feed__loading-logo {
+.image-feed__loading {
 	position: absolute;
+	z-index: 10;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
 
+.image-feed__stamp {
+	position: absolute;
+	background-color: red;
+	width: 10px;
+	height: 100vh;
+}
+
 .image-feed__image--is-person {
 	background-color: var(--colour-grey-dark);
 }
+
+/* ----------------------------------------------------------------------------
+ * Image Holder 
+ * ------------------------------------------------------------------------- */
 
 .image-feed__image-holder {
 	position: relative;
@@ -31,7 +40,7 @@
 	padding: 5px;
 	cursor: pointer;
 	opacity: 1;
-	transition: opacity 2s var(--ease-in-out-quart);
+	transition: opacity 3s var(--ease-in-out-quart);
 
 	@media (--screen-md) {
 		height: calc(20%);
@@ -54,6 +63,7 @@
 
 .image-feed__image-holder--exit-done {
 	display: none;
+	/* visibility: hidden; */
 }
 
 .image-feed__image-holder--lg {

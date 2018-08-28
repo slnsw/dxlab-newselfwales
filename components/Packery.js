@@ -72,12 +72,12 @@ PackeryComponent = createReactClass({
 		return Array.prototype.slice.call(children);
 	},
 
-	diffDomChildren: function() {
+	diffDomChildren: function(prevProps) {
 		var oldChildren = this.domChildren.filter(function(element) {
 			/*
-                 * take only elements attached to DOM
-                 * (aka the parent is the packery container, not null)
-                 */
+			 * take only elements attached to DOM
+			 * (aka the parent is the packery container, not null)
+			 */
 			return !!element.parentNode;
 		});
 
@@ -111,22 +111,22 @@ PackeryComponent = createReactClass({
 		});
 
 		/*
-             * otherwise we reverse it because so we're going through the list picking off the items that
-             * have been added at the end of the list. this complex logic is preserved in case it needs to be
-             * invoked
-             *
-             * var endingIndex = newChildren.length - 1;
-             *
-             * domDiff.reverse().filter(function(newChild, i){
-             *     var append = endingIndex == newChildren.indexOf(newChild);
-             *
-             *     if (append) {
-             *         endingIndex--;
-             *     }
-             *
-             *     return append;
-             * });
-             */
+		* otherwise we reverse it because so we're going through the list picking off the items that
+		* have been added at the end of the list. this complex logic is preserved in case it needs to be
+		* invoked
+		*
+		* var endingIndex = newChildren.length - 1;
+		*
+		* domDiff.reverse().filter(function(newChild, i){
+		*     var append = endingIndex == newChildren.indexOf(newChild);
+		*
+		*     if (append) {
+		*         endingIndex--;
+		*     }
+		*
+		*     return append;
+		* });
+		*/
 
 		// get everything added to the end of the DOMNode list
 		var moved = [];
@@ -149,8 +149,8 @@ PackeryComponent = createReactClass({
 		};
 	},
 
-	performLayout: function() {
-		var diff = this.diffDomChildren();
+	performLayout: function(prevProps) {
+		var diff = this.diffDomChildren(prevProps);
 
 		if (diff.removed.length > 0) {
 			console.log('diff removed');
@@ -167,6 +167,7 @@ PackeryComponent = createReactClass({
 		}
 
 		this.packery.reloadItems();
+
 		if (this.props.enableDragging) {
 			this.packery.getItemElements().forEach(this.makeDraggable);
 		}
@@ -183,6 +184,16 @@ PackeryComponent = createReactClass({
 					if (this.props.onImagesLoaded) {
 						this.props.onImagesLoaded(instance);
 					}
+
+					const itemsToLayout = Array.from(this.refs[refName].children).filter(
+						(element) => {
+							return element.getBoundingClientRect().right > 0;
+						},
+					);
+
+					// console.log(itemsToLayout);
+
+					// this.packery.layoutItems(itemsToLayout);
 					this.packery.layout();
 				}.bind(this),
 				100,
@@ -195,8 +206,8 @@ PackeryComponent = createReactClass({
 		this.imagesLoaded();
 	},
 
-	componentDidUpdate: function() {
-		this.performLayout();
+	componentDidUpdate: function(prevProps) {
+		this.performLayout(prevProps);
 		this.imagesLoaded();
 	},
 
@@ -220,6 +231,7 @@ PackeryComponent = createReactClass({
 
 	render: function() {
 		var props = omit(this.props, Object.keys(propTypes));
+
 		return React.createElement(
 			this.props.elementType,
 			assign({}, props, { ref: refName }),

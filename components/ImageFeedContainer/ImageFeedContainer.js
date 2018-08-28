@@ -134,9 +134,10 @@ class ImageFeedContainer extends Component {
 
 						const { feed = [] } = data;
 
-						let images = feed.map((image) => {
+						let images = feed.map((image, i) => {
 							// Set image type
 							let type;
+							// const size = setSize(i);
 
 							/* eslint-disable no-underscore-dangle */
 							const { __typename } = image;
@@ -151,7 +152,7 @@ class ImageFeedContainer extends Component {
 							return {
 								...image,
 								type,
-								// imageUrl: image.featuredMedia && image.featuredMedia.sourceUrl,
+								// size,
 							};
 						});
 
@@ -185,6 +186,7 @@ class ImageFeedContainer extends Component {
 
 											const newFeed = dedupe([
 												...prev.feed,
+												// Apply setSize to this
 												...fetchMoreResult.feed,
 											]);
 
@@ -291,3 +293,13 @@ const PAGE_QUERY = gql`
 `;
 
 export default ImageFeedContainer;
+
+function setSize(i) {
+	if (i % 6 === 1) {
+		return 'lg';
+	} else if (i % 10 === 1) {
+		return 'xlg';
+	}
+
+	return 'md';
+}
