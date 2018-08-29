@@ -235,10 +235,11 @@ class ImageFeed extends Component {
 					>
 						{images.map((image, i) => {
 							// Return null if there is no image
-							if (!image.featuredMedia) {
+							if (!image.featuredMedia || !this.state.imageSizes[image.id]) {
 								return null;
 							}
 
+							console.log(this.state.imageSizes[image.id], image);
 							const isHidden = this.state.hiddenImageIds.indexOf(image.id) > -1;
 
 							// Get imageSize from internal imageSizes state
