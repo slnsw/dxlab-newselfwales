@@ -30,13 +30,14 @@ class ImageFeed extends Component {
 		intervalTime: 10000,
 	};
 
+	state = {
+		laidOutItems: undefined,
+		hiddenImageIds: [],
+		imageSizes: {},
+	};
+
 	constructor() {
 		super();
-
-		this.state = {
-			laidOutItems: undefined,
-			hiddenImageIds: [],
-		};
 
 		this.imageHolderRefs = new Map();
 		this.imageStampRefs = new Map();
@@ -76,9 +77,9 @@ class ImageFeed extends Component {
 					console.log('Load more images', { gap }, { fetchMoreImages });
 				} else {
 					console.log('Remove images');
-					this.props.onLoadMore(0);
+					// this.props.onLoadMore(0);
 
-					// this.randomlyAddToHiddenImageIds();
+					this.randomlyAddToHiddenImageIds();
 				}
 
 				if (typeof this.state.laidOutItems !== 'undefined') {
@@ -112,13 +113,30 @@ class ImageFeed extends Component {
 		if (prevProps.increment !== this.props.increment) {
 			scroller.updateIncrement(this.props.increment);
 		}
+
+		if (prevProps.images !== this.props.images) {
+			// Loop through all images and set image sizes for them
+			// eg ('md', 'lg' or 'xlg').
+			// Size is only assigned once, hence why we keep it in internal state
+			this.props.images.forEach((image, i) =>
+				this.updateImageSizes(this.state.imageSizes, image.id, i),
+			);
+		}
 	}
 
-	// handleScroll = (e) => {
-	// 	console.log('Handlescroll');
+	updateImageSizes = (imageSizes, id, index) => {
+		const size = setSize(index);
 
-	// 	console.log(e.target.scrollLeft);
-	// };
+		// Check if image already has size assigned
+		if (imageSizes[id] === undefined) {
+			this.setState((prevState) => ({
+				imageSizes: {
+					...prevState.imageSizes,
+					[id]: size,
+				},
+			}));
+		}
+	};
 
 	randomlyAddToHiddenImageIds = () => {
 		const randomIndex = Math.floor(Math.random() * this.props.images.length);
@@ -146,7 +164,6 @@ class ImageFeed extends Component {
 
 	render() {
 		const { loading, images, enableAnimation, onLayoutComplete } = this.props;
-		// const { hiddenImageIds } = this.state;
 
 		return (
 			<div
@@ -206,9 +223,10 @@ class ImageFeed extends Component {
 						}
 
 						const isHidden = this.state.hiddenImageIds.indexOf(image.id) > -1;
-						// const imageSize = setSize(i);
 
-						const imageSize = image.size;
+						// Get imageSize from internal imageSizes state
+						const imageSize = this.state.imageSizes[image.id];
+						// const imageSize = setSize(i);
 
 						const imageUrl =
 							imageSize === 'md'
@@ -226,7 +244,6 @@ class ImageFeed extends Component {
 										className={[
 											'image-feed__image-holder',
 											`image-feed__image-holder--${imageSize}`,
-											// isHidden ? 'image-feed__image-holder--is-hidden' : '',
 											image.isSilhouette
 												? 'image-feed__image-holder--is-person'
 												: '',
@@ -264,10 +281,16 @@ class ImageFeed extends Component {
 									</button>
 								</CSSTransition>
 
-								{/* {i % 10 === 0 && (
+								{/* {i % 20 === 0 && (
 									<div
-										style={{ left: `${i * 50}px`, top: 0 }}
-										className="image-feed__stamp"
+										style={{
+											left: `${i * 100}px`,
+											top: 0,
+											width: '1px',
+											height: '100vh',
+											backgroundColor: 'red',
+										}}
+										className="image-feed__image-holder"
 										ref={(c) => this.imageStampRefs.set(i, c)}
 									/>
 								)} */}
@@ -282,12 +305,12 @@ class ImageFeed extends Component {
 
 export default ImageFeed;
 
-// function setSize(i) {
-// 	if (i % 6 === 1) {
-// 		return 'lg';
-// 	} else if (i % 10 === 1) {
-// 		return 'xlg';
-// 	}
+function setSize(i) {
+	if (i % 6 === 1) {
+		return 'lg';
+	} else if (i % 10 === 1) {
+		return 'xlg';
+	}
 
-// 	return 'md';
-// }
+	return 'md';
+}

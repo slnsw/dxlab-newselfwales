@@ -26,10 +26,6 @@
 	height: 100vh;
 }
 
-.image-feed__image--is-person {
-	background-color: var(--colour-grey-dark);
-}
-
 /* ----------------------------------------------------------------------------
  * Image Holder 
  * ------------------------------------------------------------------------- */
@@ -116,4 +112,8 @@
 			font-size: 3vh;
 		}
 	}
+}
+
+.image-feed__image--is-person {
+	background-color: var(--colour-grey-dark);
 }
