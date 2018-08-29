@@ -12,8 +12,8 @@ class GalleryPage extends Component {
 		const {
 			url: {
 				query: {
-					enableAnimation = false,
-					startImages = 10,
+					enableAnimation = true,
+					startImages = 20,
 					maxImages = 100,
 					intervalTime,
 					fetchMoreImages,

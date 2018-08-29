@@ -51,14 +51,18 @@ class ImageFeed extends Component {
 
 	componentDidMount() {
 		log('<ImageFeed />', 'mount', {
+			name: this.props.name,
 			images: this.props.images,
 			maxImages: this.props.maxImages,
+			enableAnimation: this.props.enableAnimation,
 		});
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		// Init scroller and loop
 		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
+			log('<ImageFeed />', 'Init scroller');
+
 			scroller.init(
 				this.imagesRef[this.props.name].refs.packeryContainer,
 				this.state.laidOutItems,
@@ -67,6 +71,11 @@ class ImageFeed extends Component {
 					increment: this.props.increment,
 				},
 			);
+
+			if (this.props.enableAnimation) {
+				log('<ImageFeed />', 'Start scrolling');
+				scroller.start();
+			}
 
 			this.initLoop();
 		}
@@ -133,7 +142,7 @@ class ImageFeed extends Component {
 					if (true) {
 						// Work out how many more images to fetch
 						const gapConstant = Math.ceil(Math.abs(gap) / 50);
-						const fetchMoreImages = gapConstant * 4;
+						const fetchMoreImages = gapConstant * 3;
 
 						this.props.onLoadMore(fetchMoreImages);
 
@@ -249,9 +258,11 @@ class ImageFeed extends Component {
 									laidOutItems,
 								});
 
-								if (enableAnimation) {
-									scroller.start();
-								}
+								// if (enableAnimation) {
+								// 	console.log('start!');
+
+								// 	scroller.start();
+								// }
 
 								if (typeof onLayoutComplete !== 'undefined') {
 									onLayoutComplete();
