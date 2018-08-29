@@ -37,6 +37,7 @@ class GalleryPage extends Component {
 				<App>
 					<ImageFeedContainer
 						enableAnimation={enableAnimation}
+						name="top"
 						intervalTime={
 							typeof intervalTime === 'string'
 								? parseInt(intervalTime, 10)
@@ -58,6 +59,31 @@ class GalleryPage extends Component {
 								: fetchMoreImages
 						}
 					/>
+
+					{/* <ImageFeedContainer
+						enableAnimation={enableAnimation}
+						name="bottom"
+						intervalTime={
+							typeof intervalTime === 'string'
+								? parseInt(intervalTime, 10)
+								: intervalTime
+						}
+						startImages={
+							typeof startImages === 'string'
+								? parseInt(startImages, 10)
+								: startImages
+						}
+						maxImages={
+							typeof maxImages === 'string'
+								? parseInt(maxImages, 10)
+								: maxImages
+						}
+						fetchMoreImages={
+							typeof fetchMoreImages === 'string'
+								? parseInt(fetchMoreImages, 10)
+								: fetchMoreImages
+						}
+					/> */}
 				</App>
 			</ApolloProvider>
 		);

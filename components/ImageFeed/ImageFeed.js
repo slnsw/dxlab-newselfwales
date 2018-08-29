@@ -5,12 +5,14 @@ import { CSSTransition } from 'react-transition-group';
 import Packery from '../Packery';
 import NewSelfWalesLogo from '../NewSelfWalesLogo';
 import { scroller } from '../../lib/scroll';
+import log from '../../lib/log';
 
 import './ImageFeed.css';
 
 class ImageFeed extends Component {
 	static propTypes = {
 		loading: PropTypes.bool,
+		name: PropTypes.string.isRequired,
 		enableAnimation: PropTypes.bool,
 		images: PropTypes.array,
 		maxImages: PropTypes.number,
@@ -39,6 +41,8 @@ class ImageFeed extends Component {
 	constructor() {
 		super();
 
+		this.imagesRef = {};
+		this.imagesFeedScrollerRef = {};
 		this.imageHolderRefs = new Map();
 		this.imageStampRefs = new Map();
 	}
@@ -65,8 +69,8 @@ class ImageFeed extends Component {
 				// const gap = window.innerWidth - lastImageHolderRight;
 				const gap = window.innerWidth - scroller.getBoundingClientRect().right;
 
-				console.log('Total images', this.props.images.length);
-				console.log('Total hidden images', this.state.hiddenImageIds.length);
+				log('Total images', this.props.images.length);
+				log('Total hidden images', this.state.hiddenImageIds.length);
 
 				if (gap > -50) {
 					// Work out how many more images to fetch
@@ -74,9 +78,9 @@ class ImageFeed extends Component {
 					const fetchMoreImages = gapConstant * 4;
 					this.props.onLoadMore(fetchMoreImages);
 
-					console.log('Load more images', { gap }, { fetchMoreImages });
+					log('Load more images', { gap }, { fetchMoreImages });
 				} else {
-					console.log('Remove images');
+					log('Remove images');
 					// this.props.onLoadMore(0);
 
 					this.randomlyAddToHiddenImageIds();
@@ -93,8 +97,9 @@ class ImageFeed extends Component {
 		// Init scroller
 		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
 			scroller.init(
-				this.imagesRef.refs.packeryContainer,
+				this.imagesRef[this.props.name].refs.packeryContainer,
 				// this.imageFeedRef,
+				// this.imagesFeedScrollerRef[this.props.name],
 				this.state.laidOutItems,
 				{
 					axis: this.props.axis,
@@ -144,11 +149,11 @@ class ImageFeed extends Component {
 
 		// Check if randomImage is already in hiddenImageIds array
 		if (this.state.hiddenImageIds.indexOf(randomImage.id) > -1) {
-			console.log('Image already in hiddenImageIds, try again.');
+			log('Image already in hiddenImageIds, try again.');
 
 			this.randomlyAddToHiddenImageIds();
 		} else {
-			console.log(randomIndex, randomImage.title);
+			log(randomIndex, randomImage.title);
 
 			this.setState({
 				hiddenImageIds: [...this.state.hiddenImageIds, randomImage.id],
@@ -163,11 +168,17 @@ class ImageFeed extends Component {
 	};
 
 	render() {
-		const { loading, images, enableAnimation, onLayoutComplete } = this.props;
+		const {
+			loading,
+			name,
+			images,
+			enableAnimation,
+			onLayoutComplete,
+		} = this.props;
 
 		return (
 			<div
-				className="image-feed"
+				className={['image-feed', name ? `image-feed--${name}` : '']}
 				ref={(element) => {
 					this.imageFeedRef = element;
 				}}
@@ -181,107 +192,114 @@ class ImageFeed extends Component {
 					</div>
 				)}
 
-				<Packery
-					className="image-feed__images"
+				<div
+					className="image-feed__scroller"
 					ref={(element) => {
-						this.imagesRef = element;
-					}}
-					style={{
-						marginTop: '5px',
-						height: 'calc(100vh - 10px)',
-					}}
-					options={{
-						itemSelector: '.image-feed__image-holder',
-						gutter: 0,
-						horizontalOrder: true,
-						fitWidth: true,
-						transitionDuration: '1s',
-						stagger: 100,
-						isHorizontal: true,
-					}}
-					// stamps={[...this.imageStampRefs].map((stamp) => stamp[1])}
-					onLayoutComplete={(laidOutItems) => {
-						if (!this.state.laidOutItems) {
-							this.setState({
-								laidOutItems,
-							});
-
-							if (enableAnimation) {
-								scroller.start();
-							}
-
-							if (typeof onLayoutComplete !== 'undefined') {
-								onLayoutComplete();
-							}
-						}
+						this.imagesFeedScrollerRef[name] = element;
 					}}
 				>
-					{images.map((image, i) => {
-						// Return null if there is no image
-						if (!image.featuredMedia) {
-							return null;
-						}
+					<Packery
+						className="image-feed__images"
+						ref={(element) => {
+							this.imagesRef[name] = element;
+						}}
+						style={{
+							marginTop: '5px',
+							height: 'calc(100vh - 10px)',
+						}}
+						options={{
+							itemSelector: '.image-feed__image-holder',
+							gutter: 0,
+							horizontalOrder: true,
+							fitWidth: true,
+							transitionDuration: '1s',
+							stagger: 100,
+							isHorizontal: true,
+						}}
+						// stamps={[...this.imageStampRefs].map((stamp) => stamp[1])}
+						onLayoutComplete={(laidOutItems) => {
+							if (!this.state.laidOutItems) {
+								this.setState({
+									laidOutItems,
+								});
 
-						const isHidden = this.state.hiddenImageIds.indexOf(image.id) > -1;
+								if (enableAnimation) {
+									scroller.start();
+								}
 
-						// Get imageSize from internal imageSizes state
-						const imageSize = this.state.imageSizes[image.id];
-						// const imageSize = setSize(i);
+								if (typeof onLayoutComplete !== 'undefined') {
+									onLayoutComplete();
+								}
+							}
+						}}
+					>
+						{images.map((image, i) => {
+							// Return null if there is no image
+							if (!image.featuredMedia) {
+								return null;
+							}
 
-						const imageUrl =
-							imageSize === 'md'
-								? image.featuredMedia.sizes.medium.sourceUrl
-								: image.featuredMedia.sizes.full.sourceUrl;
+							const isHidden = this.state.hiddenImageIds.indexOf(image.id) > -1;
 
-						return (
-							<Fragment key={`image-${image.id}`}>
-								<CSSTransition
-									in={!isHidden}
-									timeout={3000}
-									classNames="image-feed__image-holder-"
-								>
-									<button
-										className={[
-											'image-feed__image-holder',
-											`image-feed__image-holder--${imageSize}`,
-											image.isSilhouette
-												? 'image-feed__image-holder--is-person'
-												: '',
-										].join(' ')}
-										onClick={(event) =>
-											!image.isSilhouette && this.handleImageClick(event, image)
-										}
-										ref={(c) => this.imageHolderRefs.set(i, c)}
+							// Get imageSize from internal imageSizes state
+							const imageSize = this.state.imageSizes[image.id];
+							// const imageSize = setSize(i);
+
+							const imageUrl =
+								imageSize === 'md'
+									? image.featuredMedia.sizes.medium.sourceUrl
+									: image.featuredMedia.sizes.full.sourceUrl;
+
+							return (
+								<Fragment key={`image-${image.id}`}>
+									<CSSTransition
+										in={!isHidden}
+										timeout={3000}
+										classNames="image-feed__image-holder-"
 									>
-										{image.isSilhouette && (
-											<div className="image-feed__image-holder__content">
-												<span>?</span>
-												<p>This could be you!</p>
-											</div>
-										)}
-
-										<img
+										<button
 											className={[
-												`image-feed__image`,
+												'image-feed__image-holder',
+												`image-feed__image-holder--${imageSize}`,
 												image.isSilhouette
-													? 'image-feed__image--is-person'
+													? 'image-feed__image-holder--is-person'
 													: '',
 											].join(' ')}
-											src={imageUrl}
-											// src={`/static/newselfwales/${
-											// 	image.isSelfie ? 'selfies' : 'images'
-											// }/${image.imageUrl}`}
-											style={{
-												// height: imageSize,
-												marginBottom: '-4px',
-											}}
-											key={`${imageUrl}-${i}`}
-											alt="Portrait from the State Library of NSW collection"
-										/>
-									</button>
-								</CSSTransition>
+											onClick={(event) =>
+												!image.isSilhouette &&
+												this.handleImageClick(event, image)
+											}
+											ref={(c) => this.imageHolderRefs.set(i, c)}
+										>
+											{image.isSilhouette && (
+												<div className="image-feed__image-holder__content">
+													<span>?</span>
+													<p>This could be you!</p>
+												</div>
+											)}
 
-								{/* {i % 20 === 0 && (
+											<img
+												className={[
+													`image-feed__image`,
+													image.isSilhouette
+														? 'image-feed__image--is-person'
+														: '',
+												].join(' ')}
+												src={imageUrl}
+												// src={`/static/newselfwales/${
+												// 	image.isSelfie ? 'selfies' : 'images'
+												// }/${image.imageUrl}`}
+												style={{
+													// height: imageSize,
+													marginBottom: '-4px',
+												}}
+												key={`${imageUrl}-${i}`}
+												alt="Portrait from the State Library of NSW collection"
+											/>
+										</button>
+									</CSSTransition>
+
+									{/* {i % 20 === 0 && (
 									<div
 										style={{
 											left: `${i * 100}px`,
@@ -294,10 +312,11 @@ class ImageFeed extends Component {
 										ref={(c) => this.imageStampRefs.set(i, c)}
 									/>
 								)} */}
-							</Fragment>
-						);
-					})}
-				</Packery>
+								</Fragment>
+							);
+						})}
+					</Packery>
+				</div>
 			</div>
 		);
 	}

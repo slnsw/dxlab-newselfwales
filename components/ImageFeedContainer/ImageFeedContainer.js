@@ -10,6 +10,7 @@ import { dedupeByField } from '../../lib/dedupe';
 
 class ImageFeedContainer extends Component {
 	static propTypes = {
+		name: PropTypes.string.isRequired,
 		enableAnimation: PropTypes.bool,
 		maxImages: PropTypes.number,
 		startImages: PropTypes.number,
@@ -103,6 +104,7 @@ class ImageFeedContainer extends Component {
 
 	render() {
 		const {
+			name,
 			maxImages,
 			startImages,
 			// fetchMoreImages,
@@ -115,99 +117,98 @@ class ImageFeedContainer extends Component {
 		const { increment } = this.state;
 
 		return (
-			<div className="image-feed-container">
-				<Query
-					query={PAGE_QUERY}
-					variables={{
-						offset: 0,
-						limit: startImages,
-						// dateStart: '2018-05-17T00:00:00',
-						dateStart: new Date().toISOString(),
-						portraitPercentage: 0.6,
-					}}
-				>
-					{({ loading, error, data, fetchMore }) => {
-						if (error) {
-							console.log(error);
-							return null;
+			<Query
+				query={PAGE_QUERY}
+				variables={{
+					offset: 0,
+					limit: startImages,
+					// dateStart: '2018-05-17T00:00:00',
+					dateStart: new Date().toISOString(),
+					portraitPercentage: 0.6,
+				}}
+			>
+				{({ loading, error, data, fetchMore }) => {
+					if (error) {
+						console.log(error);
+						return null;
+					}
+
+					const { feed = [] } = data;
+
+					let images = feed.map((image) => {
+						// Set image type
+						let type;
+
+						/* eslint-disable no-underscore-dangle */
+						const { __typename } = image;
+						if (__typename === 'NewSelfWalesPortrait') {
+							type = 'portrait';
+						} else if (__typename === 'NewSelfWalesInstagramSelfie') {
+							type = 'instagram-selfie';
+						} else if (__typename === 'NewSelfWalesGallerySelfie') {
+							type = 'gallery-selfie';
 						}
 
-						const { feed = [] } = data;
+						return {
+							...image,
+							type,
+						};
+					});
 
-						let images = feed.map((image) => {
-							// Set image type
-							let type;
+					// Run extra functions on images
+					if (typeof onImagesUpdate === 'function') {
+						images = onImagesUpdate(images);
+					}
 
-							/* eslint-disable no-underscore-dangle */
-							const { __typename } = image;
-							if (__typename === 'NewSelfWalesPortrait') {
-								type = 'portrait';
-							} else if (__typename === 'NewSelfWalesInstagramSelfie') {
-								type = 'instagram-selfie';
-							} else if (__typename === 'NewSelfWalesGallerySelfie') {
-								type = 'gallery-selfie';
+					return (
+						<ImageFeed
+							loading={loading}
+							name={name}
+							images={images}
+							maxImages={maxImages}
+							enableAnimation={enableAnimation}
+							increment={increment}
+							intervalTime={intervalTime}
+							onLoadMore={(fetchMoreImages = 0) =>
+								fetchMore({
+									variables: {
+										offset: images.length,
+										limit: fetchMoreImages >= 100 ? 100 : fetchMoreImages,
+										dateStart: new Date().toISOString(),
+										portraitPercentage: 0.4,
+									},
+									updateQuery: (prev, { fetchMoreResult }) => {
+										if (!fetchMoreResult) return prev;
+
+										// Log out image types
+										// console.log(
+										// 	fetchMoreResult.feed.map((f) => f.__typename),
+										// );
+
+										const newFeed = dedupeByField(
+											[
+												...prev.feed,
+												// Apply setSize to this
+												...fetchMoreResult.feed,
+											],
+											'id',
+										);
+
+										return {
+											...prev,
+											feed: newFeed,
+										};
+									},
+								})
 							}
-
-							return {
-								...image,
-								type,
-							};
-						});
-
-						// Run extra functions on images
-						if (typeof onImagesUpdate === 'function') {
-							images = onImagesUpdate(images);
-						}
-
-						return (
-							<ImageFeed
-								loading={loading}
-								images={images}
-								maxImages={maxImages}
-								enableAnimation={enableAnimation}
-								increment={increment}
-								intervalTime={intervalTime}
-								onLoadMore={(fetchMoreImages = 0) =>
-									fetchMore({
-										variables: {
-											offset: images.length,
-											limit: fetchMoreImages >= 100 ? 100 : fetchMoreImages,
-											dateStart: new Date().toISOString(),
-											portraitPercentage: 0.4,
-										},
-										updateQuery: (prev, { fetchMoreResult }) => {
-											if (!fetchMoreResult) return prev;
-
-											// Log out image types
-											// console.log(
-											// 	fetchMoreResult.feed.map((f) => f.__typename),
-											// );
-
-											const newFeed = dedupeByField(
-												[
-													...prev.feed,
-													// Apply setSize to this
-													...fetchMoreResult.feed,
-												],
-												'id',
-											);
-
-											return {
-												...prev,
-												feed: newFeed,
-											};
-										},
-									})
-								}
-								onImageClick={(event, image) =>
-									this.handleImageClick(event, image)
-								}
-								onLayoutComplete={onLayoutComplete}
-							/>
-						);
-					}}
-				</Query>
-			</div>
+							onImageClick={(event, image) =>
+								this.handleImageClick(event, image)
+							}
+							onLayoutComplete={onLayoutComplete}
+						/>
+					);
+				}}
+			</Query>
 		);
 	}
 }
