@@ -33,8 +33,11 @@ class ImageFeed extends Component {
 	};
 
 	state = {
+		// Packery items
 		laidOutItems: undefined,
+		// Images to hide
 		hiddenImageIds: [],
+		// [id]: 'md', 'lg' or 'xlg'
 		imageSizes: {},
 	};
 
@@ -42,70 +45,30 @@ class ImageFeed extends Component {
 		super();
 
 		this.imagesRef = {};
-		this.imagesFeedScrollerRef = {};
 		this.imageHolderRefs = new Map();
-		this.imageStampRefs = new Map();
+		// this.imageStampRefs = new Map();
 	}
 
 	componentDidMount() {
-		// Set up repeating interval to add and remove images
-		this.interval = setInterval(() => {
-			if (this.props.images.length > this.props.maxImages) {
-				// Stop timeout once maxImages is reached
-				console.log('MaxImages reached');
-
-				clearTimeout(this.interval);
-			} else {
-				// Work how much of a black gap there is due to auto scrolling
-				// TOTRY - Loop through all imageHolders and find the one furthest to the right
-				// Get last imageHolder
-				// const lastImageHolder = Array.from(this.imageHolderRefs)[
-				// 	this.imageHolderRefs.size - 1
-				// ][1];
-				// // Work out right edge window position
-				// const lastImageHolderRight = lastImageHolder.getBoundingClientRect()
-				// 	.right;
-				// Work out gap
-				// const gap = window.innerWidth - lastImageHolderRight;
-				const gap = window.innerWidth - scroller.getBoundingClientRect().right;
-
-				log('Total images', this.props.images.length);
-				log('Total hidden images', this.state.hiddenImageIds.length);
-
-				if (gap > -50) {
-					// Work out how many more images to fetch
-					const gapConstant = Math.ceil(Math.abs(gap) / 50);
-					const fetchMoreImages = gapConstant * 4;
-					this.props.onLoadMore(fetchMoreImages);
-
-					log('Load more images', { gap }, { fetchMoreImages });
-				} else {
-					log('Remove images');
-					// this.props.onLoadMore(0);
-
-					this.randomlyAddToHiddenImageIds();
-				}
-
-				if (typeof this.state.laidOutItems !== 'undefined') {
-					// scroller.updateLaidOutItems(this.state.laidOutItems);
-				}
-			}
-		}, this.props.intervalTime);
+		log('<ImageFeed />', 'mount', {
+			images: this.props.images,
+			maxImages: this.props.maxImages,
+		});
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		// Init scroller
+		// Init scroller and loop
 		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
 			scroller.init(
 				this.imagesRef[this.props.name].refs.packeryContainer,
-				// this.imageFeedRef,
-				// this.imagesFeedScrollerRef[this.props.name],
 				this.state.laidOutItems,
 				{
 					axis: this.props.axis,
 					increment: this.props.increment,
 				},
 			);
+
+			this.initLoop();
 		}
 
 		// Start or stop scroller
@@ -129,6 +92,74 @@ class ImageFeed extends Component {
 		}
 	}
 
+	initLoop = () => {
+		log('<ImageFeed />', 'initLoop');
+
+		// Set up repeating interval to add and remove images
+		this.interval = setInterval(() => {
+			if (this.props.images.length > this.props.maxImages) {
+				// Stop timeout once maxImages is reached
+				log('<ImageFeed />', 'MaxImages reached');
+
+				clearTimeout(this.interval);
+			} else {
+				// Work how much of a black gap there is due to auto scrolling
+				// TOTRY - Loop through all imageHolders and find the one furthest to the right
+				// Get last imageHolder
+				// const lastImageHolder = Array.from(this.imageHolderRefs)[
+				// 	this.imageHolderRefs.size - 1
+				// ][1];
+				// // Work out right edge window position
+				// const lastImageHolderRight = lastImageHolder.getBoundingClientRect()
+				// 	.right;
+				// Work out gap
+				// const gap = window.innerWidth - lastImageHolderRight;
+
+				log(
+					'<ImageFeed />',
+					'Total images',
+					this.props.images.length,
+					'Hidden images',
+					this.state.hiddenImageIds.length,
+				);
+
+				// TODO: Use state.laidOutItems to work out far right
+				const gap = window.innerWidth - scroller.getBoundingClientRect().right;
+
+				// Make sure gap is larger than -50
+				if (gap > -50) {
+					// Check if same as previous fetch, otherwise it will keep on trying to fetch more
+					// TODO!!
+					if (true) {
+						// Work out how many more images to fetch
+						const gapConstant = Math.ceil(Math.abs(gap) / 50);
+						const fetchMoreImages = gapConstant * 4;
+
+						this.props.onLoadMore(fetchMoreImages);
+
+						log(
+							'<ImageFeed />',
+							'Load more images',
+							{ gap },
+							{ fetchMoreImages },
+						);
+					} else {
+						log('<ImageFeed />', 'Waiting on previous fetch, skip fetch');
+					}
+				} else {
+					log('<ImageFeed />', 'Remove images');
+					// this.props.onLoadMore(0);
+
+					this.randomlyAddToHiddenImageIds();
+				}
+
+				if (typeof this.state.laidOutItems !== 'undefined') {
+					// scroller.updateLaidOutItems(this.state.laidOutItems);
+				}
+			}
+		}, this.props.intervalTime);
+	};
+
 	updateImageSizes = (imageSizes, id, index) => {
 		const size = setSize(index);
 
@@ -149,7 +180,7 @@ class ImageFeed extends Component {
 
 		// Check if randomImage is already in hiddenImageIds array
 		if (this.state.hiddenImageIds.indexOf(randomImage.id) > -1) {
-			log('Image already in hiddenImageIds, try again.');
+			log('<ImageFeed />', 'Image already in hiddenImageIds, try again.');
 
 			this.randomlyAddToHiddenImageIds();
 		} else {
@@ -178,10 +209,10 @@ class ImageFeed extends Component {
 
 		return (
 			<div
-				className={['image-feed', name ? `image-feed--${name}` : '']}
-				ref={(element) => {
-					this.imageFeedRef = element;
-				}}
+				className={['image-feed', name ? `image-feed--${name}` : ''].join(' ')}
+				// ref={(element) => {
+				// 	this.imageFeedRef = element;
+				// }}
 			>
 				{loading && (
 					<div className="image-feed__loading">
@@ -192,12 +223,7 @@ class ImageFeed extends Component {
 					</div>
 				)}
 
-				<div
-					className="image-feed__scroller"
-					ref={(element) => {
-						this.imagesFeedScrollerRef[name] = element;
-					}}
-				>
+				<div className="image-feed__scroller">
 					<Packery
 						className="image-feed__images"
 						ref={(element) => {
@@ -218,7 +244,7 @@ class ImageFeed extends Component {
 						}}
 						// stamps={[...this.imageStampRefs].map((stamp) => stamp[1])}
 						onLayoutComplete={(laidOutItems) => {
-							if (!this.state.laidOutItems) {
+							if (!this.state.laidOutItems && laidOutItems.length > 0) {
 								this.setState({
 									laidOutItems,
 								});
@@ -234,8 +260,8 @@ class ImageFeed extends Component {
 						}}
 					>
 						{images.map((image, i) => {
-							// Return null if there is no image
-							if (!image.featuredMedia) {
+							// Return null if there is no image or image hasn't been added to hiddenImageIds
+							if (!image.featuredMedia || !this.state.imageSizes[image.id]) {
 								return null;
 							}
 
@@ -245,10 +271,11 @@ class ImageFeed extends Component {
 							const imageSize = this.state.imageSizes[image.id];
 							// const imageSize = setSize(i);
 
-							const imageUrl =
-								imageSize === 'md'
-									? image.featuredMedia.sizes.medium.sourceUrl
-									: image.featuredMedia.sizes.full.sourceUrl;
+							// const imageUrl =
+							// 	imageSize === 'md'
+							// 		? image.featuredMedia.sizes.medium.sourceUrl
+							// 		: image.featuredMedia.sizes.full.sourceUrl;
+							const imageUrl = image.featuredMedia.sizes.medium.sourceUrl;
 
 							return (
 								<Fragment key={`image-${image.id}`}>
@@ -309,7 +336,7 @@ class ImageFeed extends Component {
 											backgroundColor: 'red',
 										}}
 										className="image-feed__image-holder"
-										ref={(c) => this.imageStampRefs.set(i, c)}
+										// ref={(c) => this.imageStampRefs.set(i, c)}
 									/>
 								)} */}
 								</Fragment>

@@ -186,11 +186,7 @@ class ImageFeedContainer extends Component {
 										// );
 
 										const newFeed = dedupeByField(
-											[
-												...prev.feed,
-												// Apply setSize to this
-												...fetchMoreResult.feed,
-											],
+											[...prev.feed, ...fetchMoreResult.feed],
 											'id',
 										);
 

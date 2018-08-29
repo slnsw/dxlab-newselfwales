@@ -8,26 +8,15 @@ import { client } from '../lib/initApollo';
 import './gallery.css';
 
 class GalleryPage extends Component {
-	static defaultProps = {
-		url: {
-			query: {
-				startImages: 50,
-				intervalTime: 10000,
-				fetchMoreImages: 5,
-				maxImages: 1000,
-			},
-		},
-	};
-
 	render() {
 		const {
 			url: {
 				query: {
-					enableAnimation = true,
-					startImages,
+					enableAnimation = false,
+					startImages = 10,
+					maxImages = 100,
 					intervalTime,
 					fetchMoreImages,
-					maxImages,
 				},
 			},
 		} = this.props;
