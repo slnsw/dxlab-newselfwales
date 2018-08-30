@@ -22,6 +22,7 @@ class ImageFeedContainer extends Component {
 		onImagesUpdate: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
+		onMaxImagesComplete: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -38,6 +39,7 @@ class ImageFeedContainer extends Component {
 		this.state = {
 			enableAnimation: true,
 			increment: 0.5,
+			shouldHideAllImages: false,
 		};
 	}
 
@@ -74,6 +76,14 @@ class ImageFeedContainer extends Component {
 		}
 	}
 
+	handleMaxImagesComplete = () => {
+		log('handleMaxImagesComplete');
+
+		this.setState({
+			shouldHideAllImages: true,
+		});
+	};
+
 	handleKey = (event) => {
 		// TODO: Disable this when photobooth form is running
 		if (event.code === 'ArrowUp') {
@@ -106,16 +116,17 @@ class ImageFeedContainer extends Component {
 
 	render() {
 		const {
+			enableAnimation,
 			name,
 			maxImages,
 			startImages,
 			intervalTime,
 			onImagesUpdate,
 			onLayoutComplete,
-			enableAnimation,
+			// onMaxImagesComplete,
 		} = this.props;
 
-		const { increment } = this.state;
+		const { increment, shouldHideAllImages } = this.state;
 
 		return (
 			<Query
@@ -171,6 +182,7 @@ class ImageFeedContainer extends Component {
 							enableAnimation={enableAnimation}
 							increment={increment}
 							intervalTime={intervalTime}
+							shouldHideAllImages={shouldHideAllImages}
 							onLoadMore={(fetchMoreImages = 0) =>
 								fetchMore({
 									variables: {
@@ -203,6 +215,7 @@ class ImageFeedContainer extends Component {
 								this.handleImageClick(event, image)
 							}
 							onLayoutComplete={onLayoutComplete}
+							onMaxImagesComplete={this.handleMaxImagesComplete}
 						/>
 					);
 				}}

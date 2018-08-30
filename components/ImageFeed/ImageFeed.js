@@ -22,9 +22,11 @@ class ImageFeed extends Component {
 		intervalTime: PropTypes.number,
 		increment: PropTypes.number,
 		axis: PropTypes.string,
+		shouldHideAllImages: PropTypes.bool,
 		onLoadMore: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
+		onMaxImagesComplete: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -33,6 +35,7 @@ class ImageFeed extends Component {
 		maxImages: 1000,
 		increment: 0.5,
 		intervalTime: 10000,
+		shouldHideAllImages: false,
 	};
 
 	state = {
@@ -91,10 +94,12 @@ class ImageFeed extends Component {
 			scroller.stop();
 		}
 
+		// Update increment
 		if (prevProps.increment !== this.props.increment) {
 			scroller.updateIncrement(this.props.increment);
 		}
 
+		// Update image sizes
 		if (prevProps.images !== this.props.images) {
 			// Loop through all images and set image sizes for them
 			// eg ('md', 'lg' or 'xlg').
@@ -102,6 +107,14 @@ class ImageFeed extends Component {
 			this.props.images.forEach((image, i) =>
 				this.updateImageSizes(this.state.imageSizes, image.id, i),
 			);
+		}
+
+		// Hide all images, get ready to destroy thyself
+		if (
+			prevProps.shouldHideAllImages === false &&
+			this.props.shouldHideAllImages
+		) {
+			this.hideAllImages();
 		}
 	}
 
@@ -117,6 +130,10 @@ class ImageFeed extends Component {
 				log('MaxImages reached');
 
 				clearTimeout(this.interval);
+
+				if (typeof this.props.onMaxImagesComplete !== 'undefined') {
+					this.props.onMaxImagesComplete();
+				}
 			} else if (this.props.loading) {
 				log('Still loading, skip fetch');
 			} else {
@@ -149,7 +166,7 @@ class ImageFeed extends Component {
 
 					// Work out how many more images to fetch
 					const gapConstant = Math.ceil(Math.abs(gap) / 50);
-					const fetchMoreImages = gapConstant * 3;
+					const fetchMoreImages = gapConstant * 4;
 
 					this.props.onLoadMore(fetchMoreImages);
 
@@ -197,6 +214,16 @@ class ImageFeed extends Component {
 				hiddenImageIds: [...this.state.hiddenImageIds, randomImage.id],
 			});
 		}
+	};
+
+	hideAllImages = () => {
+		log('hideAllImages()');
+
+		console.log(this.props.images);
+
+		this.setState({
+			hiddenImageIds: this.props.images.map((image) => image.id),
+		});
 	};
 
 	handleImageClick = (event, image) => {
