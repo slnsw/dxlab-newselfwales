@@ -5,9 +5,12 @@ import { CSSTransition } from 'react-transition-group';
 import Packery from '../Packery';
 import NewSelfWalesLogo from '../NewSelfWalesLogo';
 import { scroller } from '../../lib/scroll';
-import log from '../../lib/log';
-
+import logBase from '../../lib/log';
 import './ImageFeed.css';
+
+const log = (...args) => {
+	return logBase('<ImageFeed />', ...args);
+};
 
 class ImageFeed extends Component {
 	static propTypes = {
@@ -50,7 +53,7 @@ class ImageFeed extends Component {
 	}
 
 	componentDidMount() {
-		log('<ImageFeed />', 'mount', {
+		log('mount', {
 			name: this.props.name,
 			images: this.props.images,
 			maxImages: this.props.maxImages,
@@ -61,7 +64,7 @@ class ImageFeed extends Component {
 	componentDidUpdate(prevProps, prevState) {
 		// Init scroller and loop
 		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
-			log('<ImageFeed />', 'Init scroller');
+			log('Init scroller');
 
 			scroller.init(
 				this.imagesRef[this.props.name].refs.packeryContainer,
@@ -73,7 +76,7 @@ class ImageFeed extends Component {
 			);
 
 			if (this.props.enableAnimation) {
-				log('<ImageFeed />', 'Start scrolling');
+				log('Start scrolling');
 				scroller.start();
 			}
 
@@ -102,13 +105,13 @@ class ImageFeed extends Component {
 	}
 
 	initLoop = () => {
-		log('<ImageFeed />', 'initLoop');
+		log('initLoop');
 
 		// Set up repeating interval to add and remove images
 		this.interval = setInterval(() => {
 			if (this.props.images.length > this.props.maxImages) {
 				// Stop timeout once maxImages is reached
-				log('<ImageFeed />', 'MaxImages reached');
+				log('MaxImages reached');
 
 				clearTimeout(this.interval);
 			} else {
@@ -125,7 +128,6 @@ class ImageFeed extends Component {
 				// const gap = window.innerWidth - lastImageHolderRight;
 
 				log(
-					'<ImageFeed />',
 					'Total images',
 					this.props.images.length,
 					'Hidden images',
@@ -139,24 +141,20 @@ class ImageFeed extends Component {
 				if (gap > -50) {
 					// Check if same as previous fetch, otherwise it will keep on trying to fetch more
 					// TODO!!
-					if (true) {
-						// Work out how many more images to fetch
-						const gapConstant = Math.ceil(Math.abs(gap) / 50);
-						const fetchMoreImages = gapConstant * 3;
 
-						this.props.onLoadMore(fetchMoreImages);
+					// if (true) {
+					// Work out how many more images to fetch
+					const gapConstant = Math.ceil(Math.abs(gap) / 50);
+					const fetchMoreImages = gapConstant * 3;
 
-						log(
-							'<ImageFeed />',
-							'Load more images',
-							{ gap },
-							{ fetchMoreImages },
-						);
-					} else {
-						log('<ImageFeed />', 'Waiting on previous fetch, skip fetch');
-					}
+					this.props.onLoadMore(fetchMoreImages);
+
+					log('Load more images', { gap }, { fetchMoreImages });
+					// } else {
+					// 	log('Waiting on previous fetch, skip fetch');
+					// }
 				} else {
-					log('<ImageFeed />', 'Remove images');
+					log('Remove images');
 					// this.props.onLoadMore(0);
 
 					this.randomlyAddToHiddenImageIds();
@@ -189,7 +187,7 @@ class ImageFeed extends Component {
 
 		// Check if randomImage is already in hiddenImageIds array
 		if (this.state.hiddenImageIds.indexOf(randomImage.id) > -1) {
-			log('<ImageFeed />', 'Image already in hiddenImageIds, try again.');
+			log('Image already in hiddenImageIds, try again.');
 
 			this.randomlyAddToHiddenImageIds();
 		} else {
@@ -212,16 +210,13 @@ class ImageFeed extends Component {
 			loading,
 			name,
 			images,
-			enableAnimation,
+			// enableAnimation,
 			onLayoutComplete,
 		} = this.props;
 
 		return (
 			<div
 				className={['image-feed', name ? `image-feed--${name}` : ''].join(' ')}
-				// ref={(element) => {
-				// 	this.imageFeedRef = element;
-				// }}
 			>
 				{loading && (
 					<div className="image-feed__loading">
@@ -280,13 +275,12 @@ class ImageFeed extends Component {
 
 							// Get imageSize from internal imageSizes state
 							const imageSize = this.state.imageSizes[image.id];
-							// const imageSize = setSize(i);
 
-							// const imageUrl =
-							// 	imageSize === 'md'
-							// 		? image.featuredMedia.sizes.medium.sourceUrl
-							// 		: image.featuredMedia.sizes.full.sourceUrl;
-							const imageUrl = image.featuredMedia.sizes.medium.sourceUrl;
+							const imageUrl =
+								imageSize === 'md'
+									? image.featuredMedia.sizes.medium.sourceUrl
+									: image.featuredMedia.sizes.full.sourceUrl;
+							// const imageUrl = image.featuredMedia.sizes.medium.sourceUrl;
 
 							return (
 								<Fragment key={`image-${image.id}`}>

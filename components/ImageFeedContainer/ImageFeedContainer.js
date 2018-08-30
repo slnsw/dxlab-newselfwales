@@ -6,7 +6,11 @@ import gql from 'graphql-tag';
 import './ImageFeedContainer.css';
 import ImageFeed from '../ImageFeed';
 import { dedupeByField } from '../../lib/dedupe';
-// import shuffle from '../../lib/shuffle';
+import logBase from '../../lib/log';
+
+const log = (...args) => {
+	return logBase('<ImageFeedContainer />', ...args);
+};
 
 class ImageFeedContainer extends Component {
 	static propTypes = {
@@ -38,6 +42,8 @@ class ImageFeedContainer extends Component {
 	}
 
 	componentDidMount() {
+		log('mount');
+
 		window.addEventListener('keyup', this.handleKey, true);
 
 		if (this.props.enableAnimation !== this.state.enableAnimation) {
@@ -65,10 +71,6 @@ class ImageFeedContainer extends Component {
 			this.setState({
 				enableAnimation: this.props.enableAnimation,
 			});
-		}
-
-		if (prevProps.images !== this.props.images) {
-			console.log('hi');
 		}
 	}
 
@@ -107,7 +109,6 @@ class ImageFeedContainer extends Component {
 			name,
 			maxImages,
 			startImages,
-			// fetchMoreImages,
 			intervalTime,
 			onImagesUpdate,
 			onLayoutComplete,
@@ -126,6 +127,7 @@ class ImageFeedContainer extends Component {
 					dateStart: new Date().toISOString(),
 					portraitPercentage: 0.6,
 				}}
+				notifyOnNetworkStatusChange={true}
 			>
 				{({ loading, error, data, fetchMore }) => {
 					if (error) {
