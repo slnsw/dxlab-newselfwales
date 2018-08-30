@@ -54,10 +54,11 @@ class ImageFeed extends Component {
 
 	componentDidMount() {
 		log('mount', {
-			name: this.props.name,
 			images: this.props.images,
-			maxImages: this.props.maxImages,
 			enableAnimation: this.props.enableAnimation,
+			maxImages: this.props.maxImages,
+			name: this.props.name,
+			intervalTime: this.props.intervalTime,
 		});
 	}
 
@@ -107,13 +108,17 @@ class ImageFeed extends Component {
 	initLoop = () => {
 		log('initLoop');
 
-		// Set up repeating interval to add and remove images
+		// Set up repeating interval loop to add and remove images
 		this.interval = setInterval(() => {
+			console.log('%c Start Loop', 'color: #e6007e');
+
 			if (this.props.images.length > this.props.maxImages) {
 				// Stop timeout once maxImages is reached
 				log('MaxImages reached');
 
 				clearTimeout(this.interval);
+			} else if (this.props.loading) {
+				log('Still loading, skip fetch');
 			} else {
 				// Work how much of a black gap there is due to auto scrolling
 				// TOTRY - Loop through all imageHolders and find the one furthest to the right
@@ -142,7 +147,6 @@ class ImageFeed extends Component {
 					// Check if same as previous fetch, otherwise it will keep on trying to fetch more
 					// TODO!!
 
-					// if (true) {
 					// Work out how many more images to fetch
 					const gapConstant = Math.ceil(Math.abs(gap) / 50);
 					const fetchMoreImages = gapConstant * 3;
@@ -150,13 +154,7 @@ class ImageFeed extends Component {
 					this.props.onLoadMore(fetchMoreImages);
 
 					log('Load more images', { gap }, { fetchMoreImages });
-					// } else {
-					// 	log('Waiting on previous fetch, skip fetch');
-					// }
 				} else {
-					log('Remove images');
-					// this.props.onLoadMore(0);
-
 					this.randomlyAddToHiddenImageIds();
 				}
 
@@ -182,6 +180,8 @@ class ImageFeed extends Component {
 	};
 
 	randomlyAddToHiddenImageIds = () => {
+		// log('Attempt to hide image');
+
 		const randomIndex = Math.floor(Math.random() * this.props.images.length);
 		const randomImage = this.props.images[randomIndex];
 
@@ -191,7 +191,7 @@ class ImageFeed extends Component {
 
 			this.randomlyAddToHiddenImageIds();
 		} else {
-			log(randomIndex, randomImage.title);
+			log('Hide image', randomImage.id, randomImage.title);
 
 			this.setState({
 				hiddenImageIds: [...this.state.hiddenImageIds, randomImage.id],
@@ -206,13 +206,7 @@ class ImageFeed extends Component {
 	};
 
 	render() {
-		const {
-			loading,
-			name,
-			images,
-			// enableAnimation,
-			onLayoutComplete,
-		} = this.props;
+		const { loading, name, images, onLayoutComplete } = this.props;
 
 		return (
 			<div
@@ -253,14 +247,8 @@ class ImageFeed extends Component {
 									laidOutItems,
 								});
 
-								// if (enableAnimation) {
-								// 	console.log('start!');
-
-								// 	scroller.start();
-								// }
-
 								if (typeof onLayoutComplete !== 'undefined') {
-									onLayoutComplete();
+									onLayoutComplete(laidOutItems);
 								}
 							}
 						}}
@@ -322,7 +310,6 @@ class ImageFeed extends Component {
 												// 	image.isSelfie ? 'selfies' : 'images'
 												// }/${image.imageUrl}`}
 												style={{
-													// height: imageSize,
 													marginBottom: '-4px',
 												}}
 												key={`${imageUrl}-${i}`}
