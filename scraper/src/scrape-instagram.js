@@ -42,7 +42,7 @@ try {
 // Get list of Instagram selfies
 export const getPostsByHashtag = async (hashtag) => {
   try {
-    const result = await axios.get(
+    let result = await axios.get(
       `https://www.instagram.com/explore/tags/${hashtag}/`,
       {
         responseType: saveFile && 'stream',
@@ -57,9 +57,36 @@ export const getPostsByHashtag = async (hashtag) => {
       );
     }
 
-    const data = JSON.parse(parsePage(result.data));
-    const selfiesRaw =
+    let data = JSON.parse(parsePage(result.data));
+    let selfiesRaw =
       data.entry_data.TagPage[0].graphql.hashtag.edge_hashtag_to_media.edges;
+console.log(selfiesRaw.length);
+    let endCursor; //
+    endCursor = data.entry_data.TagPage[0].graphql.hashtag.edge_hashtag_to_media.page_info.end_cursor;
+console.log(endCursor);
+    let ecc = 0;
+    let selfiesRawNew;
+    
+    while (endCursor) {
+      console.log('Loop count '+ecc);
+      result = await axios.get(
+        `https://www.instagram.com/explore/tags/${hashtag}/?max_id=${endCursor}`,
+        {
+          responseType: saveFile && 'stream',
+        },
+      );
+      data = JSON.parse(parsePage(result.data));
+      selfiesRawNew = data.entry_data.TagPage[0].graphql.hashtag.edge_hashtag_to_media.edges;
+  console.log('Num new ones this pass:');
+  console.log(selfiesRawNew.length);
+      selfiesRaw = selfiesRaw.concat(selfiesRawNew);
+  console.log('Total num so far:');
+  console.log(selfiesRaw.length);   
+      ecc = ecc + 1;
+      endCursor = data.entry_data.TagPage[0].graphql.hashtag.edge_hashtag_to_media.page_info.end_cursor;
+
+    }
+//console.log(selfiesRaw);
 
     // Remap raw selfies into nice objects
     const selfies = selfiesRaw.map(({ node }) => {
@@ -89,7 +116,7 @@ export const getPostsByHashtag = async (hashtag) => {
     return selfies;
   } catch (e) {
     console.log(`getPostsByHashtag ${hashtag} failed!`);
-    //  console.log(e);
+    console.log(e);
     console.log('================');
     logtxt += `getPostsByHashtag ${hashtag} failed!\n================\n`;
     return false;
@@ -254,6 +281,7 @@ export default async (hashtag, limit) => {
 
     const d = await getPostsByHashtag(hashtag);
     if (d) {
+    // if (false) {
       console.log(`${d.length} found`);
       logtxt += `${d.length} found\n================\n`;
       for (var data of d) {
