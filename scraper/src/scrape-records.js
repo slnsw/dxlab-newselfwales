@@ -22,21 +22,49 @@ export default async (ids, offset, limit, max, term) => {
 				  let log = '=========================================================' + nl;
 				  let dt = new Date().toLocaleString("en-AU", {timeZone: "Australia/Sydney"});
 				  log += 'Beginning scrape of ' + ids.length + ' records at ' + dt + nl;
+console.log('Beginning scrape of ' + ids.length + ' records at ' + dt);
 
-				  for (const id of ids) {
+				  for (let id of ids) {
 				  	log += '-----------------------------------------------' + nl + id + nl;
-					  try {
-					    const response = await axios.get(process.env.WP_API_ENDPOINT + '/wp/v2/portraits/?meta_key=primo_ref&meta_value=' +  id);
-					    if (response.data && response.data.length) {
-					    	console.log(response.data.length + ' records already exist with ID: ' + id);
-					    	log += response.data.length + ' records already exist with ID: ' + id + nl;
-					    	for (const data of response.data) {
-					    		console.log('Wordpress ID: ' + data.id);
-					    		log += 'Wordpress ID: ' + data.id + nl;
+
+				  	let aid = false;
+				  	let fl = null;
+																console.log(id);
+				  	if (id.substring(0, 2).toLowerCase() == 'fl') {
+				  		// we are being fed an FL num - try to find corresponsing ADLIB num:
+				  		fl = id; // make a copy of FL for later
+											console.log('we have an FL!');
+
+				  		try {
+					    	const response = await axios.get('https://oai-archival.sl.nsw.gov.au/oaix_primo/wwwopac.ashx?database=archive&output=json&search=reproduction.reference=' +  id);
+					    	if (response.data && response.data.adlibJSON.recordList.record[0]['@attributes'].priref) {
+					    		aid = response.data.adlibJSON.recordList.record[0]['@attributes'].priref;
+					    		console.log('Found ADLIB ID: ' + aid);
 					    	}
-					    	log += nl;
-					    } else {
-					    	t = await scrapeRecord(id);
+					  	} catch (error) {
+						    console.error(error);
+						    log += error + nl;
+						    fails += id + nl;
+						  }
+						  
+			  			id = 'ADLIB' + aid;
+						  
+				  	} 
+
+
+				  	
+					  try {
+					 //   const response = await axios.get(process.env.WP_API_ENDPOINT + '/wp/v2/portraits/?meta_key=primo_ref&meta_value=' +  id);
+					 //   if (response.data && response.data.length) {
+					 //   	console.log(response.data.length + ' records already exist with ID: ' + id);
+					 //   	log += response.data.length + ' records already exist with ID: ' + id + nl;
+					 //   	for (const data of response.data) {
+					 //   		console.log('Wordpress ID: ' + data.id);
+					 //   		log += 'Wordpress ID: ' + data.id + nl;
+					 //   	}
+					 //   	log += nl;
+					 //   } else {
+					    	t = await scrapeRecord(id, fl); 
 					    	o = t.log;
 					    	errr = t.err.toString();
 					    	log += o;
@@ -44,7 +72,7 @@ export default async (ids, offset, limit, max, term) => {
 					    	if (errr && errr.substring(0,5).toLowerCase() == 'error') {
 					    		fails += id + nl;
 					    	}
-					    }
+					  //  }
 					  } catch (error) {
 					    console.error(error);
 					    log += error + nl;

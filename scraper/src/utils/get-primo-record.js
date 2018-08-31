@@ -16,7 +16,7 @@ export default async (id) => {
           topics
           notes
           physicalDescription
-          images(size: FULL) {
+          images(size: FULL, limit: 500) {
             url
             width
             height

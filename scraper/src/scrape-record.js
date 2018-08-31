@@ -2,12 +2,13 @@ import gql from 'graphql-tag';
 import axios from 'axios';
 import chalk from 'chalk';
 import chalkAnimation from 'chalk-animation';
-import wpUpload from '@slnsw/dxlab-selfie-uploader';
+// import wpUpload from '@slnsw/dxlab-selfie-uploader';
 
+import wpUpload from '../../uploader';
 import client from './lib/client';
 import getPrimoRecord from './utils/get-primo-record';
 
-export default async (id) => {
+export default async (id, fl = null) => {
   const nl = '\n';
   let err;
   let log = '';
@@ -19,15 +20,26 @@ export default async (id) => {
       chalkAnimation.rainbow('Fetching primoRecord');
       log += 'Fetching primoRecord ' + id + nl;
       const { data: { primoRecord } } = await getPrimoRecord(id);
-      console.log(JSON.stringify(primoRecord));
+  //    console.log(JSON.stringify(primoRecord));
       log += JSON.stringify(primoRecord) + nl + '......................' + nl;
       // Get Image
       chalkAnimation.rainbow('Fetching image');
       console.log('Fetching image');
       log += 'Fetching image' + nl;
-      console.log(primoRecord.images[0].url);
-      log += primoRecord.images[0].url + nl;
-      const image = await axios.get(primoRecord.images[0].url, {
+      // so at this point we may have multiple images - check for the one that matches the FL, if it was sent
+      let x=0;
+      if (fl) {
+        for (let xc = 0; xc<primoRecord.images.length; xc++) {
+          if (primoRecord.images[xc].fileNumber == fl) {
+            x = xc;
+          }
+        }
+        console.log('Looking for FL in list of images. Found array key: '+x);      
+      }
+
+      console.log(primoRecord.images[x].url);
+      log += primoRecord.images[x].url + nl;
+      const image = await axios.get(primoRecord.images[x].url, {
         responseType: 'arraybuffer',
       });
       const imgBuf = new Buffer(image.data, 'binary');
@@ -47,14 +59,14 @@ export default async (id) => {
       console.log('Upload to WP API');
       log += 'Upload to WP API' + nl;
       // smoosh topics and subjects together
-      const t = primoRecord.topics.concat(primoRecord.subjects);
+      const t = ( primoRecord.topics ? primoRecord.topics.concat(primoRecord.subjects) : primoRecord.subjects);
       // remove duplicates
-      const s = t.filter((v, i, a) => a.indexOf(v) === i);
+      const s = (t ? t.filter((v, i, a) => a.indexOf(v) === i) : null);
       wpUpload.upload(
         {
           type: 'portrait',
           title: primoRecord.title,
-          status: 'publish',
+          status: 'draft', // 'publish',
           description: ( s ? s.join(', ') : '' ), // imploded list of subjects and topics
           dateText: primoRecord.date,
           name: (primoRecord.personNames ? primoRecord.personNames.join('. ') : '' ), // primoRecord.name,
@@ -62,12 +74,14 @@ export default async (id) => {
           primoRef: id,
           digId: '',
           blob: imgBuf,
+          fl: fl
         },
         () => {
           console.log('done');
           // log += 'Done!' + nl;
         },
       );
+
       log += 'Done!' + nl + nl;
       err = '';
       return { log: log, err: err };
