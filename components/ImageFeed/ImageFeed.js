@@ -23,6 +23,7 @@ class ImageFeed extends Component {
 		increment: PropTypes.number,
 		axis: PropTypes.string,
 		shouldHideAllImages: PropTypes.bool,
+		loadMoreGap: PropTypes.number,
 		onLoadMore: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
@@ -36,6 +37,7 @@ class ImageFeed extends Component {
 		increment: 0.5,
 		intervalTime: 10000,
 		shouldHideAllImages: false,
+		loadMoreGap: -50,
 	};
 
 	state = {
@@ -62,6 +64,7 @@ class ImageFeed extends Component {
 			maxImages: this.props.maxImages,
 			name: this.props.name,
 			intervalTime: this.props.intervalTime,
+			loadMoreGap: this.props.loadMoreGap,
 		});
 	}
 
@@ -116,6 +119,11 @@ class ImageFeed extends Component {
 		) {
 			this.hideAllImages();
 		}
+
+		// log(
+		// 	'Compare laidOutItems',
+		// 	prevState.laidOutItems === this.state.laidOutItems,
+		// );
 	}
 
 	initLoop = () => {
@@ -130,6 +138,9 @@ class ImageFeed extends Component {
 				log('MaxImages reached');
 
 				clearTimeout(this.interval);
+
+				// Trigger ImageFeedContainer to load more images for UPCOMING update
+				// this.props.onLoadMore(this.props.maxImages, 'UPCOMING');
 
 				if (typeof this.props.onMaxImagesComplete !== 'undefined') {
 					this.props.onMaxImagesComplete();
@@ -160,7 +171,7 @@ class ImageFeed extends Component {
 				const gap = window.innerWidth - scroller.getBoundingClientRect().right;
 
 				// Make sure gap is larger than -50
-				if (gap > -50) {
+				if (gap > this.props.loadMoreGap) {
 					// Check if same as previous fetch, otherwise it will keep on trying to fetch more
 					// TODO!!
 

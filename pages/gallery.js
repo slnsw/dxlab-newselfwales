@@ -17,6 +17,7 @@ class GalleryPage extends Component {
 					maxImages = 100,
 					intervalTime,
 					fetchMoreImages,
+					loadMoreGap,
 				},
 			},
 		} = this.props;
@@ -46,6 +47,11 @@ class GalleryPage extends Component {
 							typeof fetchMoreImages === 'string'
 								? parseInt(fetchMoreImages, 10)
 								: fetchMoreImages
+						}
+						loadMoreGap={
+							typeof loadMoreGap === 'string'
+								? parseInt(loadMoreGap, 10)
+								: loadMoreGap
 						}
 					/>
 

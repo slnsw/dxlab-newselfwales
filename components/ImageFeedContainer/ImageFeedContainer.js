@@ -18,6 +18,7 @@ class ImageFeedContainer extends Component {
 		enableAnimation: PropTypes.bool,
 		maxImages: PropTypes.number,
 		startImages: PropTypes.number,
+		loadMoreGap: PropTypes.number,
 		// fetchMoreImages: PropTypes.number,
 		onImagesUpdate: PropTypes.func,
 		onImageClick: PropTypes.func,
@@ -123,6 +124,7 @@ class ImageFeedContainer extends Component {
 			maxImages,
 			startImages,
 			intervalTime,
+			loadMoreGap,
 			onImagesUpdate,
 			onLayoutComplete,
 			// onMaxImagesComplete,
@@ -148,7 +150,10 @@ class ImageFeedContainer extends Component {
 						return null;
 					}
 
-					const { feed = [] } = data;
+					const { feed = [], currentOrUpcoming } = data;
+
+					log('main');
+					log(currentOrUpcoming);
 
 					let images = feed.map((image) => {
 						// Set image type
@@ -184,8 +189,12 @@ class ImageFeedContainer extends Component {
 							enableAnimation={enableAnimation}
 							increment={increment}
 							intervalTime={intervalTime}
+							loadMoreGap={loadMoreGap}
 							shouldHideAllImages={shouldHideAllImages}
-							onLoadMore={(fetchMoreImages = 0) =>
+							onLoadMore={(
+								fetchMoreImages = 0,
+								currentOrUpcoming = 'CURRENT',
+							) =>
 								fetchMore({
 									variables: {
 										offset: images.length,
@@ -201,6 +210,8 @@ class ImageFeedContainer extends Component {
 										// 	fetchMoreResult.feed.map((f) => f.__typename),
 										// );
 
+										log({ currentOrUpcoming });
+
 										const newFeed = dedupeByField(
 											[...prev.feed, ...fetchMoreResult.feed],
 											'id',
@@ -208,7 +219,10 @@ class ImageFeedContainer extends Component {
 
 										return {
 											...prev,
-											feed: newFeed,
+											feed: newFeed.map((image) => ({
+												...image,
+												// title: 'UPCOMING',
+											})),
 										};
 									},
 								})
@@ -227,8 +241,25 @@ class ImageFeedContainer extends Component {
 }
 
 class ImageFeedHolder extends Component {
+	state = {
+		currentImages: [],
+		upcomingImages: [],
+	};
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.images !== this.props.images) {
+			// console.log(this.props.images);
+
+			this.setState({
+				currentImages: this.props.images,
+			});
+		}
+	}
+
 	render() {
-		return <ImageFeed {...this.props} />;
+		const { currentImages } = this.state;
+
+		return <ImageFeed {...this.props} images={currentImages} />;
 	}
 }
 
