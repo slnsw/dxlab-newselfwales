@@ -219,11 +219,9 @@ class ImageFeed extends Component {
 	hideAllImages = () => {
 		log('hideAllImages()');
 
-		console.log(this.props.images);
-
-		this.setState({
+		this.setState(() => ({
 			hiddenImageIds: this.props.images.map((image) => image.id),
-		});
+		}));
 	};
 
 	handleImageClick = (event, image) => {

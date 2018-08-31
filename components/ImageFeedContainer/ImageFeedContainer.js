@@ -82,6 +82,8 @@ class ImageFeedContainer extends Component {
 		this.setState({
 			shouldHideAllImages: true,
 		});
+
+		window.location.reload();
 	};
 
 	handleKey = (event) => {
@@ -174,7 +176,7 @@ class ImageFeedContainer extends Component {
 					}
 
 					return (
-						<ImageFeed
+						<ImageFeedHolder
 							loading={loading}
 							name={name}
 							images={images}
@@ -221,6 +223,12 @@ class ImageFeedContainer extends Component {
 				}}
 			</Query>
 		);
+	}
+}
+
+class ImageFeedHolder extends Component {
+	render() {
+		return <ImageFeed {...this.props} />;
 	}
 }
 
