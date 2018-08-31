@@ -120,6 +120,14 @@ class ImageFeed extends Component {
 			this.hideAllImages();
 		}
 
+		if (
+			prevProps.shouldHideAllImages === true &&
+			this.props.shouldHideAllImages === false
+		) {
+			log('start her up again!');
+			this.initLoop();
+		}
+
 		// log(
 		// 	'Compare laidOutItems',
 		// 	prevState.laidOutItems === this.state.laidOutItems,
@@ -140,11 +148,11 @@ class ImageFeed extends Component {
 				clearTimeout(this.interval);
 
 				// Trigger ImageFeedContainer to load more images for UPCOMING update
-				// this.props.onLoadMore(this.props.maxImages, 'UPCOMING');
+				this.props.onLoadMore(30, 'UPCOMING');
 
-				if (typeof this.props.onMaxImagesComplete !== 'undefined') {
-					this.props.onMaxImagesComplete();
-				}
+				// if (typeof this.props.onMaxImagesComplete !== 'undefined') {
+				// 	this.props.onMaxImagesComplete();
+				// }
 			} else if (this.props.loading) {
 				log('Still loading, skip fetch');
 			} else {
@@ -233,6 +241,13 @@ class ImageFeed extends Component {
 		this.setState(() => ({
 			hiddenImageIds: this.props.images.map((image) => image.id),
 		}));
+
+		setTimeout(() => {
+			// Tell container to remove all non-upcoming images
+			this.props.onLoadMore(0, 'REMOVE_CURRENT');
+			// Reset scroller window
+			// scroller.resetScrollCount();
+		}, 1000);
 	};
 
 	handleImageClick = (event, image) => {

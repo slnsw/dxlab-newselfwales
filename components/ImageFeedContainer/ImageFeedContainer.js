@@ -34,15 +34,12 @@ class ImageFeedContainer extends Component {
 		intervalTime: 10000,
 	};
 
-	constructor() {
-		super();
-
-		this.state = {
-			enableAnimation: true,
-			increment: 0.5,
-			shouldHideAllImages: false,
-		};
-	}
+	state = {
+		enableAnimation: true,
+		increment: 0.5,
+		shouldHideAllImages: false,
+		status: 'CURRENT', // or UPCOMING
+	};
 
 	componentDidMount() {
 		log('mount');
@@ -84,7 +81,7 @@ class ImageFeedContainer extends Component {
 			shouldHideAllImages: true,
 		});
 
-		window.location.reload();
+		// window.location.reload();
 	};
 
 	handleKey = (event) => {
@@ -117,6 +114,12 @@ class ImageFeedContainer extends Component {
 		}
 	};
 
+	test = () => {
+		this.setState({
+			status: 'UPCOMING',
+		});
+	};
+
 	render() {
 		const {
 			enableAnimation,
@@ -130,7 +133,7 @@ class ImageFeedContainer extends Component {
 			// onMaxImagesComplete,
 		} = this.props;
 
-		const { increment, shouldHideAllImages } = this.state;
+		const { increment, shouldHideAllImages, status } = this.state;
 
 		return (
 			<Query
@@ -150,10 +153,7 @@ class ImageFeedContainer extends Component {
 						return null;
 					}
 
-					const { feed = [], currentOrUpcoming } = data;
-
-					log('main');
-					log(currentOrUpcoming);
+					const { feed = [] } = data;
 
 					let images = feed.map((image) => {
 						// Set image type
@@ -183,6 +183,7 @@ class ImageFeedContainer extends Component {
 					return (
 						<ImageFeedHolder
 							loading={loading}
+							status={status}
 							name={name}
 							images={images}
 							maxImages={maxImages}
@@ -210,19 +211,37 @@ class ImageFeedContainer extends Component {
 										// 	fetchMoreResult.feed.map((f) => f.__typename),
 										// );
 
-										log({ currentOrUpcoming });
+										log(currentOrUpcoming);
 
-										const newFeed = dedupeByField(
-											[...prev.feed, ...fetchMoreResult.feed],
-											'id',
-										);
+										let newFeed = [];
+
+										if (currentOrUpcoming === 'REMOVE_CURRENT') {
+											// Remove CURRENT ones, keeping UPCOMING
+											// then change UPCOMING images them to CURRENT!
+											newFeed = [
+												...prev.feed
+													.filter((image) => image.test === 'UPCOMING')
+													.map((image) => ({
+														...image,
+														test: 'CURRENT',
+													})),
+											];
+										} else {
+											newFeed = dedupeByField(
+												[
+													...prev.feed,
+													...fetchMoreResult.feed.map((image) => ({
+														...image,
+														test: currentOrUpcoming,
+													})),
+												],
+												'id',
+											);
+										}
 
 										return {
 											...prev,
-											feed: newFeed.map((image) => ({
-												...image,
-												// title: 'UPCOMING',
-											})),
+											feed: newFeed,
 										};
 									},
 								})
@@ -241,25 +260,71 @@ class ImageFeedContainer extends Component {
 }
 
 class ImageFeedHolder extends Component {
+	static propTypes = {
+		status: PropTypes.string,
+	};
+
 	state = {
 		currentImages: [],
 		upcomingImages: [],
+		shouldHideAllImages: false,
+		isUpcoming: false,
 	};
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
 		if (prevProps.images !== this.props.images) {
-			// console.log(this.props.images);
+			log(this.props.images);
+
+			// Check if any images have 'UPCOMING'
+			if (this.props.images.some((image) => image.test === 'UPCOMING')) {
+				this.setState({
+					upcomingImages: this.props.images.filter(
+						(image) => image.test === 'UPCOMING',
+					),
+					shouldHideAllImages: true,
+					isUpcoming: true,
+				});
+			} else {
+				// if (prevState.shouldHideAllImages !== this.state.shouldHideAllImages) {
+				// 	log('hi');
+				// }
+				this.setState({
+					currentImages: this.props.images.filter(
+						(image) => image.test !== 'UPCOMING',
+					),
+					shouldHideAllImages: false,
+				});
+			}
+
+			// log('UPCOMING');
+			// console.log(
+			// 	this.props.images.filter((image) => image.test === 'UPCOMING'),
+			// );
 
 			this.setState({
-				currentImages: this.props.images,
+				currentImages: this.props.images.filter(
+					(image) => image.test !== 'UPCOMING',
+				),
+				upcomingImages: this.props.images.filter(
+					(image) => image.test === 'UPCOMING',
+				),
 			});
 		}
 	}
 
 	render() {
-		const { currentImages } = this.state;
+		// const { status } = this.props;
+		const { currentImages, shouldHideAllImages } = this.state;
 
-		return <ImageFeed {...this.props} images={currentImages} />;
+		// console.log(status, currentImages);
+
+		return (
+			<ImageFeed
+				{...this.props}
+				images={currentImages}
+				shouldHideAllImages={shouldHideAllImages}
+			/>
+		);
 	}
 }
 
@@ -281,6 +346,7 @@ const PAGE_QUERY = gql`
 			... on NewSelfWalesPortrait {
 				id
 				title
+				test: status
 				date
 				featuredMedia {
 					sourceUrl
@@ -302,6 +368,7 @@ const PAGE_QUERY = gql`
 			... on NewSelfWalesInstagramSelfie {
 				id
 				title
+				test: status
 				date
 				featuredMedia {
 					sourceUrl
@@ -323,6 +390,7 @@ const PAGE_QUERY = gql`
 			... on NewSelfWalesGallerySelfie {
 				id
 				title
+				test: status
 				date
 				featuredMedia {
 					sourceUrl
