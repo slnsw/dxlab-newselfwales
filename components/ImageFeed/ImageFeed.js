@@ -34,7 +34,7 @@ class ImageFeed extends Component {
 		axis: 'x',
 		enableAnimation: true,
 		maxImages: 1000,
-		increment: 0.5,
+		increment: 0.2,
 		intervalTime: 10000,
 		shouldHideAllImages: false,
 		loadMoreGap: -50,
@@ -64,6 +64,7 @@ class ImageFeed extends Component {
 			maxImages: this.props.maxImages,
 			name: this.props.name,
 			intervalTime: this.props.intervalTime,
+			increment: this.props.increment,
 			loadMoreGap: this.props.loadMoreGap,
 		});
 	}
@@ -125,7 +126,11 @@ class ImageFeed extends Component {
 			this.props.shouldHideAllImages === false
 		) {
 			log('start her up again!');
+			scroller.resetScrollCount();
 			this.initLoop();
+			this.setState({
+				hiddenImageIds: [],
+			});
 		}
 
 		// log(
@@ -148,7 +153,7 @@ class ImageFeed extends Component {
 				clearTimeout(this.interval);
 
 				// Trigger ImageFeedContainer to load more images for UPCOMING update
-				this.props.onLoadMore(30, 'UPCOMING');
+				this.props.onLoadMore(50, 'UPCOMING');
 
 				// if (typeof this.props.onMaxImagesComplete !== 'undefined') {
 				// 	this.props.onMaxImagesComplete();
@@ -315,11 +320,11 @@ class ImageFeed extends Component {
 							// Get imageSize from internal imageSizes state
 							const imageSize = this.state.imageSizes[image.id];
 
-							const imageUrl =
-								imageSize === 'md'
-									? image.featuredMedia.sizes.medium.sourceUrl
-									: image.featuredMedia.sizes.full.sourceUrl;
-							// const imageUrl = image.featuredMedia.sizes.medium.sourceUrl;
+							// const imageUrl =
+							// 	imageSize === 'md'
+							// 		? image.featuredMedia.sizes.medium.sourceUrl
+							// 		: image.featuredMedia.sizes.full.sourceUrl;
+							const imageUrl = image.featuredMedia.sizes.medium.sourceUrl;
 
 							return (
 								<Fragment key={`image-${image.id}`}>

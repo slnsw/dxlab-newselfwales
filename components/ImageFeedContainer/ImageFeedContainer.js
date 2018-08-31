@@ -36,7 +36,7 @@ class ImageFeedContainer extends Component {
 
 	state = {
 		enableAnimation: true,
-		increment: 0.5,
+		increment: 0.3,
 		shouldHideAllImages: false,
 		status: 'CURRENT', // or UPCOMING
 	};
