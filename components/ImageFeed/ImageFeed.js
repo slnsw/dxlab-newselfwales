@@ -34,7 +34,7 @@ class ImageFeed extends Component {
 		axis: 'x',
 		enableAnimation: true,
 		maxImages: 1000,
-		increment: 0.2,
+		increment: 0.5,
 		intervalTime: 10000,
 		shouldHideAllImages: false,
 		loadMoreGap: -50,
@@ -320,11 +320,11 @@ class ImageFeed extends Component {
 							// Get imageSize from internal imageSizes state
 							const imageSize = this.state.imageSizes[image.id];
 
-							// const imageUrl =
-							// 	imageSize === 'md'
-							// 		? image.featuredMedia.sizes.medium.sourceUrl
-							// 		: image.featuredMedia.sizes.full.sourceUrl;
-							const imageUrl = image.featuredMedia.sizes.medium.sourceUrl;
+							const imageUrl =
+								imageSize === 'md'
+									? image.featuredMedia.sizes.medium.sourceUrl
+									: image.featuredMedia.sizes.full.sourceUrl;
+							// const imageUrl = image.featuredMedia.sizes.medium.sourceUrl;
 
 							return (
 								<Fragment key={`image-${image.id}`}>

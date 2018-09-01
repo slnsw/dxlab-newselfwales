@@ -12,9 +12,10 @@ class GalleryPage extends Component {
 		const {
 			url: {
 				query: {
-					enableAnimation = true,
+					enableAnimation = 'true',
 					startImages = 20,
 					maxImages = 100,
+					increment = 0.5,
 					intervalTime,
 					fetchMoreImages,
 					loadMoreGap,
@@ -26,7 +27,7 @@ class GalleryPage extends Component {
 			<ApolloProvider client={client}>
 				<App>
 					<ImageFeedContainer
-						enableAnimation={enableAnimation}
+						enableAnimation={enableAnimation === 'true'}
 						name="top"
 						intervalTime={
 							typeof intervalTime === 'string'
@@ -42,6 +43,11 @@ class GalleryPage extends Component {
 							typeof maxImages === 'string'
 								? parseInt(maxImages, 10)
 								: maxImages
+						}
+						increment={
+							typeof increment === 'string'
+								? parseFloat(increment, 10)
+								: increment
 						}
 						fetchMoreImages={
 							typeof fetchMoreImages === 'string'

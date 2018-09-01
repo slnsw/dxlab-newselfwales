@@ -36,7 +36,7 @@ class ImageFeedContainer extends Component {
 
 	state = {
 		enableAnimation: true,
-		increment: 0.3,
+		// increment: 0.5,
 		shouldHideAllImages: false,
 		status: 'CURRENT', // or UPCOMING
 	};
@@ -84,29 +84,29 @@ class ImageFeedContainer extends Component {
 		// window.location.reload();
 	};
 
-	handleKey = (event) => {
-		// TODO: Disable this when photobooth form is running
-		if (event.code === 'ArrowUp') {
-			this.setState(
-				{
-					increment: this.state.increment + 0.1,
-				},
-				() => console.log('increment: ', this.state.increment),
-			);
-		} else if (event.code === 'ArrowDown') {
-			this.setState(
-				{
-					increment: this.state.increment - 0.1,
-				},
-				() => console.log('increment: ', this.state.increment),
-			);
-		} else if (event.code === 'Space') {
-			// Disabled for now
-			this.setState({
-				enableAnimation: !this.state.enableAnimation,
-			});
-		}
-	};
+	// handleKey = (event) => {
+	// 	// TODO: Disable this when photobooth form is running
+	// 	if (event.code === 'ArrowUp') {
+	// 		this.setState(
+	// 			{
+	// 				increment: this.state.increment + 0.1,
+	// 			},
+	// 			() => console.log('increment: ', this.state.increment),
+	// 		);
+	// 	} else if (event.code === 'ArrowDown') {
+	// 		this.setState(
+	// 			{
+	// 				increment: this.state.increment - 0.1,
+	// 			},
+	// 			() => console.log('increment: ', this.state.increment),
+	// 		);
+	// 	} else if (event.code === 'Space') {
+	// 		// Disabled for now
+	// 		this.setState({
+	// 			enableAnimation: !this.state.enableAnimation,
+	// 		});
+	// 	}
+	// };
 
 	handleImageClick = (event, image) => {
 		if (typeof this.props.onImageClick !== 'undefined') {
@@ -126,6 +126,7 @@ class ImageFeedContainer extends Component {
 			name,
 			maxImages,
 			startImages,
+			increment,
 			intervalTime,
 			loadMoreGap,
 			onImagesUpdate,
@@ -133,7 +134,7 @@ class ImageFeedContainer extends Component {
 			// onMaxImagesComplete,
 		} = this.props;
 
-		const { increment, shouldHideAllImages, status } = this.state;
+		const { shouldHideAllImages, status } = this.state;
 
 		return (
 			<Query
@@ -271,7 +272,7 @@ class ImageFeedHolder extends Component {
 		isUpcoming: false,
 	};
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(prevProps) {
 		if (prevProps.images !== this.props.images) {
 			log(this.props.images);
 
