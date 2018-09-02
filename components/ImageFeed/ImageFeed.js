@@ -19,6 +19,7 @@ class ImageFeed extends Component {
 		enableAnimation: PropTypes.bool,
 		images: PropTypes.array,
 		maxImages: PropTypes.number,
+		startImages: PropTypes.number,
 		intervalTime: PropTypes.number,
 		increment: PropTypes.number,
 		axis: PropTypes.string,
@@ -47,6 +48,7 @@ class ImageFeed extends Component {
 		hiddenImageIds: [],
 		// [id]: 'md', 'lg' or 'xlg'
 		imageSizes: {},
+		// For testing
 		highlightedImageIds: [],
 	};
 
@@ -55,7 +57,6 @@ class ImageFeed extends Component {
 
 		this.imagesRef = {};
 		this.imageHolderRefs = new Map();
-		this.laidOutItems = [];
 		// this.imageStampRefs = new Map();
 	}
 
@@ -64,6 +65,7 @@ class ImageFeed extends Component {
 			images: this.props.images,
 			enableAnimation: this.props.enableAnimation,
 			maxImages: this.props.maxImages,
+			startImages: this.props.startImages,
 			name: this.props.name,
 			intervalTime: this.props.intervalTime,
 			increment: this.props.increment,
@@ -155,7 +157,7 @@ class ImageFeed extends Component {
 				clearTimeout(this.interval);
 
 				// Trigger ImageFeedContainer to load more images for UPCOMING update
-				this.props.onLoadMore(50, 'UPCOMING');
+				this.props.onLoadMore(this.props.startImages, 'UPCOMING');
 
 				// if (typeof this.props.onMaxImagesComplete !== 'undefined') {
 				// 	this.props.onMaxImagesComplete();
@@ -275,8 +277,7 @@ class ImageFeed extends Component {
 				JSON.stringify(currentItemPositions)) ===
 			false;
 
-		log({ didPositionsChange });
-
+		// Check if positions changed
 		if (didPositionsChange) {
 			let max;
 
@@ -289,6 +290,7 @@ class ImageFeed extends Component {
 						: current;
 					// }
 				});
+
 				console.log(max);
 			}
 
@@ -297,7 +299,11 @@ class ImageFeed extends Component {
 				highlightedImageIds: max && max.element ? [max.element.dataset.id] : [],
 			});
 
-			console.log(this.state.highlightedImageIds);
+			if (typeof onLayoutComplete !== 'undefined') {
+				this.props.onLayoutComplete(laidOutItems);
+			}
+
+			// console.log(this.state.highlightedImageIds);
 
 			// console.log(
 			// 	Math.max(
@@ -315,7 +321,7 @@ class ImageFeed extends Component {
 	};
 
 	render() {
-		const { loading, name, images, onLayoutComplete } = this.props;
+		const { loading, name, images } = this.props;
 
 		return (
 			<div
@@ -354,15 +360,11 @@ class ImageFeed extends Component {
 							// log(laidOutItems);
 							this.handleLayoutComplete(laidOutItems);
 
-							if (!this.state.laidOutItems && laidOutItems.length > 0) {
-								// this.setState({
-								// 	laidOutItems,
-								// });
-
-								if (typeof onLayoutComplete !== 'undefined') {
-									onLayoutComplete(laidOutItems);
-								}
-							}
+							// if (!this.state.laidOutItems && laidOutItems.length > 0) {
+							// this.setState({
+							// 	laidOutItems,
+							// });
+							// }
 						}}
 					>
 						{images.map((image, i) => {

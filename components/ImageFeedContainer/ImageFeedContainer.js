@@ -187,6 +187,7 @@ class ImageFeedContainer extends Component {
 							status={status}
 							name={name}
 							images={images}
+							startImages={startImages}
 							maxImages={maxImages}
 							enableAnimation={enableAnimation}
 							increment={increment}
