@@ -80,6 +80,10 @@
 	}
 }
 
+.image-feed__image-holder--highlighted {
+	background-color: red;
+}
+
 .image-feed__image-holder__content {
 	position: absolute;
 	top: 0;

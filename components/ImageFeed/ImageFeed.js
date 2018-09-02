@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
 import Packery from '../Packery';
-import NewSelfWalesLogo from '../NewSelfWalesLogo';
+// import NewSelfWalesLogo from '../NewSelfWalesLogo';
 import { scroller } from '../../lib/scroll';
 import logBase from '../../lib/log';
 import './ImageFeed.css';
@@ -47,6 +47,7 @@ class ImageFeed extends Component {
 		hiddenImageIds: [],
 		// [id]: 'md', 'lg' or 'xlg'
 		imageSizes: {},
+		highlightedImageIds: [],
 	};
 
 	constructor() {
@@ -54,6 +55,7 @@ class ImageFeed extends Component {
 
 		this.imagesRef = {};
 		this.imageHolderRefs = new Map();
+		this.laidOutItems = [];
 		// this.imageStampRefs = new Map();
 	}
 
@@ -180,6 +182,8 @@ class ImageFeed extends Component {
 					this.state.hiddenImageIds.length,
 				);
 
+				// log(this.state.laidOutItems);
+
 				// TODO: Use state.laidOutItems to work out far right
 				const gap = window.innerWidth - scroller.getBoundingClientRect().right;
 
@@ -261,6 +265,55 @@ class ImageFeed extends Component {
 		}
 	};
 
+	handleLayoutComplete = (laidOutItems) => {
+		const prevItemPositions =
+			this.state.laidOutItems &&
+			this.state.laidOutItems.map((image) => image.position);
+		const currentItemPositions = laidOutItems.map((image) => image.position);
+		const didPositionsChange =
+			(JSON.stringify(prevItemPositions) ===
+				JSON.stringify(currentItemPositions)) ===
+			false;
+
+		log({ didPositionsChange });
+
+		if (didPositionsChange) {
+			let max;
+
+			if (laidOutItems.length > 0) {
+				max = laidOutItems.reduce((prev, current) => {
+					// if (prev && prev.rect) {
+					return prev.rect.x + prev.rect.width >
+						current.rect.x + current.rect.width
+						? prev
+						: current;
+					// }
+				});
+				console.log(max);
+			}
+
+			this.setState({
+				laidOutItems,
+				highlightedImageIds: max && max.element ? [max.element.dataset.id] : [],
+			});
+
+			console.log(this.state.highlightedImageIds);
+
+			// console.log(
+			// 	Math.max(
+			// 		...laidOutItems.map((image) => image.rect.x + image.rect.width),
+			// 	),
+			// );
+		}
+		// this.laidOutItems = laidOutItems;
+
+		// log(
+		// 	laidOutItems.map((image) => {
+		// 		return image.position;
+		// 	}),
+		// );
+	};
+
 	render() {
 		const { loading, name, images, onLayoutComplete } = this.props;
 
@@ -271,8 +324,8 @@ class ImageFeed extends Component {
 				{loading && (
 					<div className="image-feed__loading">
 						<div className="image-feed__loading-content">
-							<NewSelfWalesLogo />
-							<p>Loading</p>
+							{/* <NewSelfWalesLogo /> */}
+							<p>Loading...</p>
 						</div>
 					</div>
 				)}
@@ -298,10 +351,13 @@ class ImageFeed extends Component {
 						}}
 						// stamps={[...this.imageStampRefs].map((stamp) => stamp[1])}
 						onLayoutComplete={(laidOutItems) => {
+							// log(laidOutItems);
+							this.handleLayoutComplete(laidOutItems);
+
 							if (!this.state.laidOutItems && laidOutItems.length > 0) {
-								this.setState({
-									laidOutItems,
-								});
+								// this.setState({
+								// 	laidOutItems,
+								// });
 
 								if (typeof onLayoutComplete !== 'undefined') {
 									onLayoutComplete(laidOutItems);
@@ -340,12 +396,19 @@ class ImageFeed extends Component {
 												image.isSilhouette
 													? 'image-feed__image-holder--is-person'
 													: '',
+												`image-feed__image-holder--id-${image.id}`,
+												this.state.hiddenImageIds[0] &&
+												parseInt(this.state.highlightedImageIds[0], 10) ===
+													image.id
+													? 'image-feed__image-holder--highlighted'
+													: '',
 											].join(' ')}
 											onClick={(event) =>
 												!image.isSilhouette &&
 												this.handleImageClick(event, image)
 											}
 											ref={(c) => this.imageHolderRefs.set(i, c)}
+											data-id={image.id}
 										>
 											{image.isSilhouette && (
 												<div className="image-feed__image-holder__content">
