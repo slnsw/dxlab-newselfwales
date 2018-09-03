@@ -146,7 +146,7 @@ class ImageFeedContainer extends Component {
 					dateStart: new Date().toISOString(),
 					portraitPercentage: 0.6,
 				}}
-				notifyOnNetworkStatusChange={true}
+				notifyOnNetworkStatusChange={false}
 			>
 				{({ loading, error, data, fetchMore }) => {
 					if (error) {

@@ -38,7 +38,7 @@ class ImageFeed extends Component {
 		increment: 0.5,
 		intervalTime: 10000,
 		shouldHideAllImages: false,
-		loadMoreGap: -50,
+		loadMoreGap: -100,
 	};
 
 	state = {
@@ -50,6 +50,7 @@ class ImageFeed extends Component {
 		imageSizes: {},
 		// For testing
 		highlightedImageIds: [],
+		intervalCounter: 0,
 	};
 
 	constructor() {
@@ -136,11 +137,6 @@ class ImageFeed extends Component {
 				hiddenImageIds: [],
 			});
 		}
-
-		// log(
-		// 	'Compare laidOutItems',
-		// 	prevState.laidOutItems === this.state.laidOutItems,
-		// );
 	}
 
 	initLoop = () => {
@@ -148,7 +144,10 @@ class ImageFeed extends Component {
 
 		// Set up repeating interval loop to add and remove images
 		this.interval = setInterval(() => {
-			console.log('%c Start Loop', 'color: #e6007e');
+			console.log(
+				`%c Start Loop ${this.state.intervalCounter}`,
+				'color: #e6007e',
+			);
 
 			if (this.props.images.length > this.props.maxImages) {
 				// Stop timeout once maxImages is reached
@@ -205,9 +204,14 @@ class ImageFeed extends Component {
 					this.randomlyAddToHiddenImageIds();
 				}
 
-				if (typeof this.state.laidOutItems !== 'undefined') {
-					// scroller.updateLaidOutItems(this.state.laidOutItems);
-				}
+				// Increment the intervalCounter
+				this.setState({
+					intervalCounter: this.state.intervalCounter + 1,
+				});
+
+				// if (typeof this.state.laidOutItems !== 'undefined') {
+				// scroller.updateLaidOutItems(this.state.laidOutItems);
+				// }
 			}
 		}, this.props.intervalTime);
 	};
@@ -227,13 +231,13 @@ class ImageFeed extends Component {
 	};
 
 	randomlyAddToHiddenImageIds = () => {
-		// log('Attempt to hide image');
-
 		const randomIndex = Math.floor(Math.random() * this.props.images.length);
 		const randomImage = this.props.images[randomIndex];
 
-		// Check if randomImage is already in hiddenImageIds array
-		if (this.state.hiddenImageIds.indexOf(randomImage.id) > -1) {
+		if (this.state.hiddenImageIds.length >= this.props.images.length) {
+			log('All images are hidden');
+		} else if (this.state.hiddenImageIds.indexOf(randomImage.id) > -1) {
+			// Check if randomImage is already in hiddenImageIds array
 			log('Image already in hiddenImageIds, try again.');
 
 			this.randomlyAddToHiddenImageIds();
@@ -291,7 +295,7 @@ class ImageFeed extends Component {
 					// }
 				});
 
-				console.log(max);
+				// console.log(max);
 			}
 
 			this.setState({
