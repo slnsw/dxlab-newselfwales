@@ -275,7 +275,7 @@ class ImageFeedHolder extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.images !== this.props.images) {
-			log(this.props.images);
+			log('Total images', this.props.images.length);
 
 			// Check if any images have 'UPCOMING'
 			if (this.props.images.some((image) => image.test === 'UPCOMING')) {

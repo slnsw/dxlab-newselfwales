@@ -359,17 +359,10 @@ class ImageFeed extends Component {
 							stagger: 100,
 							isHorizontal: true,
 						}}
-						// stamps={[...this.imageStampRefs].map((stamp) => stamp[1])}
 						onLayoutComplete={(laidOutItems) => {
-							// log(laidOutItems);
 							this.handleLayoutComplete(laidOutItems);
-
-							// if (!this.state.laidOutItems && laidOutItems.length > 0) {
-							// this.setState({
-							// 	laidOutItems,
-							// });
-							// }
 						}}
+						// stamps={[...this.imageStampRefs].map((stamp) => stamp[1])}
 					>
 						{images.map((image, i) => {
 							// Return null if there is no image or image hasn't been added to hiddenImageIds
@@ -388,6 +381,15 @@ class ImageFeed extends Component {
 									: image.featuredMedia.sizes.full.sourceUrl;
 							// const imageUrl = image.featuredMedia.sizes.medium.sourceUrl;
 
+							let imageAlt;
+							if (image.type === 'portrait') {
+								imageAlt = 'Portrait from the State Library of NSW collection';
+							} else if (image.type === 'instagram-selfie') {
+								imageAlt = 'Selfie from Instagram';
+							} else if (image.type === 'gallery-selfie') {
+								imageAlt = 'Selfie from photo booth';
+							}
+
 							return (
 								<Fragment key={`image-${image.id}`}>
 									<CSSTransition
@@ -399,6 +401,7 @@ class ImageFeed extends Component {
 											className={[
 												'image-feed__image-holder',
 												`image-feed__image-holder--${imageSize}`,
+												`image-feed__image-holder--${image.type}`,
 												image.isSilhouette
 													? 'image-feed__image-holder--is-person'
 													: '',
@@ -438,7 +441,7 @@ class ImageFeed extends Component {
 													marginBottom: '-4px',
 												}}
 												key={`${imageUrl}-${i}`}
-												alt="Portrait from the State Library of NSW collection"
+												alt={imageAlt}
 											/>
 										</button>
 									</CSSTransition>

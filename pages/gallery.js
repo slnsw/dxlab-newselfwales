@@ -8,6 +8,15 @@ import { client } from '../lib/initApollo';
 import './gallery.css';
 
 class GalleryPage extends Component {
+	handleImageClick = (event, image) => {
+		window.open(
+			`https://newselfwales.dxlab.sl.nsw.gov.au/selfie/wp-admin/post.php?post=${
+				image.id
+			}&action=edit`,
+			'_blank',
+		);
+	};
+
 	render() {
 		const {
 			url: {
@@ -59,6 +68,7 @@ class GalleryPage extends Component {
 								? parseInt(loadMoreGap, 10)
 								: loadMoreGap
 						}
+						onImageClick={this.handleImageClick}
 					/>
 
 					{/* <ImageFeedContainer
