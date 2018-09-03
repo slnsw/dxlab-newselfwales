@@ -6,7 +6,11 @@ import gql from 'graphql-tag';
 import './ImageFeedContainer.css';
 import ImageFeed from '../ImageFeed';
 import { dedupeByField } from '../../lib/dedupe';
-// import shuffle from '../../lib/shuffle';
+import logBase from '../../lib/log';
+
+const log = (...args) => {
+	return logBase('<ImageFeedContainer />', ...args);
+};
 
 class ImageFeedContainer extends Component {
 	static propTypes = {
@@ -14,10 +18,12 @@ class ImageFeedContainer extends Component {
 		enableAnimation: PropTypes.bool,
 		maxImages: PropTypes.number,
 		startImages: PropTypes.number,
+		loadMoreGap: PropTypes.number,
 		// fetchMoreImages: PropTypes.number,
 		onImagesUpdate: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
+		onMaxImagesComplete: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -28,16 +34,16 @@ class ImageFeedContainer extends Component {
 		intervalTime: 10000,
 	};
 
-	constructor() {
-		super();
-
-		this.state = {
-			enableAnimation: true,
-			increment: 0.5,
-		};
-	}
+	state = {
+		enableAnimation: true,
+		// increment: 0.5,
+		shouldHideAllImages: false,
+		status: 'CURRENT', // or UPCOMING
+	};
 
 	componentDidMount() {
+		log('mount');
+
 		window.addEventListener('keyup', this.handleKey, true);
 
 		if (this.props.enableAnimation !== this.state.enableAnimation) {
@@ -66,35 +72,41 @@ class ImageFeedContainer extends Component {
 				enableAnimation: this.props.enableAnimation,
 			});
 		}
-
-		if (prevProps.images !== this.props.images) {
-			console.log('hi');
-		}
 	}
 
-	handleKey = (event) => {
-		// TODO: Disable this when photobooth form is running
-		if (event.code === 'ArrowUp') {
-			this.setState(
-				{
-					increment: this.state.increment + 0.1,
-				},
-				() => console.log('increment: ', this.state.increment),
-			);
-		} else if (event.code === 'ArrowDown') {
-			this.setState(
-				{
-					increment: this.state.increment - 0.1,
-				},
-				() => console.log('increment: ', this.state.increment),
-			);
-		} else if (event.code === 'Space') {
-			// Disabled for now
-			this.setState({
-				enableAnimation: !this.state.enableAnimation,
-			});
-		}
+	handleMaxImagesComplete = () => {
+		log('handleMaxImagesComplete');
+
+		this.setState({
+			shouldHideAllImages: true,
+		});
+
+		// window.location.reload();
 	};
+
+	// handleKey = (event) => {
+	// 	// TODO: Disable this when photobooth form is running
+	// 	if (event.code === 'ArrowUp') {
+	// 		this.setState(
+	// 			{
+	// 				increment: this.state.increment + 0.1,
+	// 			},
+	// 			() => console.log('increment: ', this.state.increment),
+	// 		);
+	// 	} else if (event.code === 'ArrowDown') {
+	// 		this.setState(
+	// 			{
+	// 				increment: this.state.increment - 0.1,
+	// 			},
+	// 			() => console.log('increment: ', this.state.increment),
+	// 		);
+	// 	} else if (event.code === 'Space') {
+	// 		// Disabled for now
+	// 		this.setState({
+	// 			enableAnimation: !this.state.enableAnimation,
+	// 		});
+	// 	}
+	// };
 
 	handleImageClick = (event, image) => {
 		if (typeof this.props.onImageClick !== 'undefined') {
@@ -102,19 +114,27 @@ class ImageFeedContainer extends Component {
 		}
 	};
 
+	test = () => {
+		this.setState({
+			status: 'UPCOMING',
+		});
+	};
+
 	render() {
 		const {
+			enableAnimation,
 			name,
 			maxImages,
 			startImages,
-			// fetchMoreImages,
+			increment,
 			intervalTime,
+			loadMoreGap,
 			onImagesUpdate,
 			onLayoutComplete,
-			enableAnimation,
+			// onMaxImagesComplete,
 		} = this.props;
 
-		const { increment } = this.state;
+		const { shouldHideAllImages, status } = this.state;
 
 		return (
 			<Query
@@ -126,6 +146,7 @@ class ImageFeedContainer extends Component {
 					dateStart: new Date().toISOString(),
 					portraitPercentage: 0.6,
 				}}
+				notifyOnNetworkStatusChange={false}
 			>
 				{({ loading, error, data, fetchMore }) => {
 					if (error) {
@@ -161,15 +182,22 @@ class ImageFeedContainer extends Component {
 					}
 
 					return (
-						<ImageFeed
+						<ImageFeedHolder
 							loading={loading}
+							status={status}
 							name={name}
 							images={images}
+							startImages={startImages}
 							maxImages={maxImages}
 							enableAnimation={enableAnimation}
 							increment={increment}
 							intervalTime={intervalTime}
-							onLoadMore={(fetchMoreImages = 0) =>
+							loadMoreGap={loadMoreGap}
+							shouldHideAllImages={shouldHideAllImages}
+							onLoadMore={(
+								fetchMoreImages = 0,
+								currentOrUpcoming = 'CURRENT',
+							) =>
 								fetchMore({
 									variables: {
 										offset: images.length,
@@ -185,14 +213,33 @@ class ImageFeedContainer extends Component {
 										// 	fetchMoreResult.feed.map((f) => f.__typename),
 										// );
 
-										const newFeed = dedupeByField(
-											[
-												...prev.feed,
-												// Apply setSize to this
-												...fetchMoreResult.feed,
-											],
-											'id',
-										);
+										log(currentOrUpcoming);
+
+										let newFeed = [];
+
+										if (currentOrUpcoming === 'REMOVE_CURRENT') {
+											// Remove CURRENT ones, keeping UPCOMING
+											// then change UPCOMING images them to CURRENT!
+											newFeed = [
+												...prev.feed
+													.filter((image) => image.test === 'UPCOMING')
+													.map((image) => ({
+														...image,
+														test: 'CURRENT',
+													})),
+											];
+										} else {
+											newFeed = dedupeByField(
+												[
+													...prev.feed,
+													...fetchMoreResult.feed.map((image) => ({
+														...image,
+														test: currentOrUpcoming,
+													})),
+												],
+												'id',
+											);
+										}
 
 										return {
 											...prev,
@@ -205,10 +252,80 @@ class ImageFeedContainer extends Component {
 								this.handleImageClick(event, image)
 							}
 							onLayoutComplete={onLayoutComplete}
+							onMaxImagesComplete={this.handleMaxImagesComplete}
 						/>
 					);
 				}}
 			</Query>
+		);
+	}
+}
+
+class ImageFeedHolder extends Component {
+	static propTypes = {
+		status: PropTypes.string,
+	};
+
+	state = {
+		currentImages: [],
+		upcomingImages: [],
+		shouldHideAllImages: false,
+		isUpcoming: false,
+	};
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.images !== this.props.images) {
+			log('Total images', this.props.images.length);
+
+			// Check if any images have 'UPCOMING'
+			if (this.props.images.some((image) => image.test === 'UPCOMING')) {
+				this.setState({
+					upcomingImages: this.props.images.filter(
+						(image) => image.test === 'UPCOMING',
+					),
+					shouldHideAllImages: true,
+					isUpcoming: true,
+				});
+			} else {
+				// if (prevState.shouldHideAllImages !== this.state.shouldHideAllImages) {
+				// 	log('hi');
+				// }
+				this.setState({
+					currentImages: this.props.images.filter(
+						(image) => image.test !== 'UPCOMING',
+					),
+					shouldHideAllImages: false,
+				});
+			}
+
+			// log('UPCOMING');
+			// console.log(
+			// 	this.props.images.filter((image) => image.test === 'UPCOMING'),
+			// );
+
+			this.setState({
+				currentImages: this.props.images.filter(
+					(image) => image.test !== 'UPCOMING',
+				),
+				upcomingImages: this.props.images.filter(
+					(image) => image.test === 'UPCOMING',
+				),
+			});
+		}
+	}
+
+	render() {
+		// const { status } = this.props;
+		const { currentImages, shouldHideAllImages } = this.state;
+
+		// console.log(status, currentImages);
+
+		return (
+			<ImageFeed
+				{...this.props}
+				images={currentImages}
+				shouldHideAllImages={shouldHideAllImages}
+			/>
 		);
 	}
 }
@@ -231,6 +348,7 @@ const PAGE_QUERY = gql`
 			... on NewSelfWalesPortrait {
 				id
 				title
+				test: status
 				date
 				featuredMedia {
 					sourceUrl
@@ -252,6 +370,7 @@ const PAGE_QUERY = gql`
 			... on NewSelfWalesInstagramSelfie {
 				id
 				title
+				test: status
 				date
 				featuredMedia {
 					sourceUrl
@@ -273,6 +392,7 @@ const PAGE_QUERY = gql`
 			... on NewSelfWalesGallerySelfie {
 				id
 				title
+				test: status
 				date
 				featuredMedia {
 					sourceUrl

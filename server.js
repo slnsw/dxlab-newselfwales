@@ -4,6 +4,7 @@ const express = require('express');
 const next = require('next');
 const uaCompatible = require('ua-compatible');
 const helmet = require('helmet');
+const proxy = require('http-proxy-middleware');
 
 const dev = process.env.NODE_ENV !== 'production' && !process.env.NOW;
 const app = next({ dev });
@@ -34,6 +35,17 @@ app
 
 		// Adds X-UA-Compatible: IE=edge, chrome=1 header for our IE friends.
 		server.use(uaCompatible);
+
+		// Proxy GraphQL API
+		server.use(
+			proxy('/api/graphql', {
+				target: process.env.GRAPHQL_HOST,
+				changeOrigin: true,
+				pathRewrite: {
+					'^/api/graphql': '/graphql',
+				},
+			}),
+		);
 
 		server.use('/newselfwales/assets', app.getRequestHandler());
 

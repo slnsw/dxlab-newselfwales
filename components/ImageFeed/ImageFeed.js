@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
 import Packery from '../Packery';
-import NewSelfWalesLogo from '../NewSelfWalesLogo';
+// import NewSelfWalesLogo from '../NewSelfWalesLogo';
 import { scroller } from '../../lib/scroll';
-import log from '../../lib/log';
-
+import logBase from '../../lib/log';
 import './ImageFeed.css';
+
+const log = (...args) => {
+	return logBase('<ImageFeed />', ...args);
+};
 
 class ImageFeed extends Component {
 	static propTypes = {
@@ -16,12 +19,16 @@ class ImageFeed extends Component {
 		enableAnimation: PropTypes.bool,
 		images: PropTypes.array,
 		maxImages: PropTypes.number,
+		startImages: PropTypes.number,
 		intervalTime: PropTypes.number,
 		increment: PropTypes.number,
 		axis: PropTypes.string,
+		shouldHideAllImages: PropTypes.bool,
+		loadMoreGap: PropTypes.number,
 		onLoadMore: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
+		onMaxImagesComplete: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -30,31 +37,135 @@ class ImageFeed extends Component {
 		maxImages: 1000,
 		increment: 0.5,
 		intervalTime: 10000,
+		shouldHideAllImages: false,
+		loadMoreGap: -200,
 	};
 
 	state = {
+		// Packery items
 		laidOutItems: undefined,
+		// Images to hide
 		hiddenImageIds: [],
+		// [id]: 'md', 'lg' or 'xlg'
 		imageSizes: {},
+		// For testing
+		highlightedImageIds: [],
+		intervalCounter: 0,
 	};
 
 	constructor() {
 		super();
 
 		this.imagesRef = {};
-		this.imagesFeedScrollerRef = {};
 		this.imageHolderRefs = new Map();
-		this.imageStampRefs = new Map();
+		// this.imageStampRefs = new Map();
 	}
 
 	componentDidMount() {
-		// Set up repeating interval to add and remove images
+		log('mount', {
+			images: this.props.images,
+			enableAnimation: this.props.enableAnimation,
+			maxImages: this.props.maxImages,
+			startImages: this.props.startImages,
+			name: this.props.name,
+			intervalTime: this.props.intervalTime,
+			increment: this.props.increment,
+			loadMoreGap: this.props.loadMoreGap,
+		});
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		// Init scroller and loop
+		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
+			log('Init scroller');
+
+			scroller.init(
+				this.imagesRef[this.props.name].refs.packeryContainer,
+				this.state.laidOutItems,
+				{
+					axis: this.props.axis,
+					increment: this.props.increment,
+				},
+			);
+
+			if (this.props.enableAnimation) {
+				log('Start scrolling');
+				scroller.start();
+			}
+
+			this.initLoop();
+		}
+
+		// Start or stop scroller
+		if (!prevProps.enableAnimation && this.props.enableAnimation) {
+			scroller.start();
+		} else if (prevProps.enableAnimation && !this.props.enableAnimation) {
+			scroller.stop();
+		}
+
+		// Update increment
+		if (prevProps.increment !== this.props.increment) {
+			scroller.updateIncrement(this.props.increment);
+		}
+
+		// Update image sizes
+		if (prevProps.images !== this.props.images) {
+			// Loop through all images and set image sizes for them
+			// eg ('md', 'lg' or 'xlg').
+			// Size is only assigned once, hence why we keep it in internal state
+			this.props.images.forEach((image, i) =>
+				this.updateImageSizes(this.state.imageSizes, image.id, i),
+			);
+		}
+
+		// Hide all images, get ready to destroy thyself
+		if (
+			prevProps.shouldHideAllImages === false &&
+			this.props.shouldHideAllImages
+		) {
+			this.hideAllImages();
+		}
+
+		if (
+			prevProps.shouldHideAllImages === true &&
+			this.props.shouldHideAllImages === false
+		) {
+			log('start her up again!');
+			scroller.resetScrollCount();
+			this.initLoop();
+			this.setState({
+				hiddenImageIds: [],
+			});
+		}
+	}
+
+	initLoop = () => {
+		log('initLoop');
+
+		// Set up repeating interval loop to add and remove images
 		this.interval = setInterval(() => {
-			if (this.props.images.length > this.props.maxImages) {
+			console.log(
+				`%c Start Loop ${this.state.intervalCounter}`,
+				'color: #e6007e',
+			);
+
+			if (this.props.images.length >= this.props.maxImages) {
 				// Stop timeout once maxImages is reached
-				console.log('MaxImages reached');
+				log('MaxImages reached');
 
 				clearTimeout(this.interval);
+				// TODO: If app hits and error at this stage, we need
+				// to work out a way to continue interval
+
+				// Trigger ImageFeedContainer to load more images for UPCOMING update
+				log('Load more images in the background', this.props.startImages);
+				this.props.onLoadMore(this.props.startImages, 'UPCOMING');
+
+				// if (typeof this.props.onMaxImagesComplete !== 'undefined') {
+				// 	this.props.onMaxImagesComplete();
+				// }
+			} else if (this.props.loading) {
+				log('Still loading, skip fetch');
 			} else {
 				// Work how much of a black gap there is due to auto scrolling
 				// TOTRY - Loop through all imageHolders and find the one furthest to the right
@@ -67,67 +178,48 @@ class ImageFeed extends Component {
 				// 	.right;
 				// Work out gap
 				// const gap = window.innerWidth - lastImageHolderRight;
+
+				log(
+					'Total images',
+					this.props.images.length,
+					'Hidden images',
+					this.state.hiddenImageIds.length,
+				);
+
+				// log(this.state.laidOutItems);
+
+				// TODO: Use state.laidOutItems to work out far right
 				const gap = window.innerWidth - scroller.getBoundingClientRect().right;
 
-				log('Total images', this.props.images.length);
-				log('Total hidden images', this.state.hiddenImageIds.length);
+				// Make sure gap is larger than -50
+				if (gap > this.props.loadMoreGap) {
+					// TODO!!
+					// Check if same as previous fetch, otherwise it will keep on trying to fetch more
 
-				if (gap > -50) {
 					// Work out how many more images to fetch
 					const gapConstant = Math.ceil(Math.abs(gap) / 50);
 					const fetchMoreImages = gapConstant * 4;
-					this.props.onLoadMore(fetchMoreImages);
+					// WIP
+					// Make sure we don't fetch more than maxImages
+					// const fetchMoreImages =
+					// 	fetchMoreImagesCheck + this.props.images.length >
+					// 	this.props.maxImages
+					// 		? this.props.maxImages - this.props.images.length
+					// 		: fetchMoreImagesCheck;
 
 					log('Load more images', { gap }, { fetchMoreImages });
+					this.props.onLoadMore(fetchMoreImages);
 				} else {
-					log('Remove images');
-					// this.props.onLoadMore(0);
-
 					this.randomlyAddToHiddenImageIds();
 				}
 
-				if (typeof this.state.laidOutItems !== 'undefined') {
-					// scroller.updateLaidOutItems(this.state.laidOutItems);
-				}
+				// Increment the intervalCounter
+				this.setState({
+					intervalCounter: this.state.intervalCounter + 1,
+				});
 			}
 		}, this.props.intervalTime);
-	}
-
-	componentDidUpdate(prevProps, prevState) {
-		// Init scroller
-		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
-			scroller.init(
-				this.imagesRef[this.props.name].refs.packeryContainer,
-				// this.imageFeedRef,
-				// this.imagesFeedScrollerRef[this.props.name],
-				this.state.laidOutItems,
-				{
-					axis: this.props.axis,
-					increment: this.props.increment,
-				},
-			);
-		}
-
-		// Start or stop scroller
-		if (!prevProps.enableAnimation && this.props.enableAnimation) {
-			scroller.start();
-		} else if (prevProps.enableAnimation && !this.props.enableAnimation) {
-			scroller.stop();
-		}
-
-		if (prevProps.increment !== this.props.increment) {
-			scroller.updateIncrement(this.props.increment);
-		}
-
-		if (prevProps.images !== this.props.images) {
-			// Loop through all images and set image sizes for them
-			// eg ('md', 'lg' or 'xlg').
-			// Size is only assigned once, hence why we keep it in internal state
-			this.props.images.forEach((image, i) =>
-				this.updateImageSizes(this.state.imageSizes, image.id, i),
-			);
-		}
-	}
+	};
 
 	updateImageSizes = (imageSizes, id, index) => {
 		const size = setSize(index);
@@ -143,22 +235,47 @@ class ImageFeed extends Component {
 		}
 	};
 
-	randomlyAddToHiddenImageIds = () => {
+	randomlyAddToHiddenImageIds = (onComplete) => {
 		const randomIndex = Math.floor(Math.random() * this.props.images.length);
 		const randomImage = this.props.images[randomIndex];
 
-		// Check if randomImage is already in hiddenImageIds array
-		if (this.state.hiddenImageIds.indexOf(randomImage.id) > -1) {
-			log('Image already in hiddenImageIds, try again.');
+		if (this.state.hiddenImageIds.length >= this.props.images.length) {
+			log('All images are hidden');
+
+			if (typeof onComplete === 'function') {
+				onComplete();
+			}
+		} else if (this.state.hiddenImageIds.indexOf(randomImage.id) > -1) {
+			// Check if randomImage is already in hiddenImageIds array
+			// log('Image already in hiddenImageIds, try again.');
 
 			this.randomlyAddToHiddenImageIds();
 		} else {
-			log(randomIndex, randomImage.title);
+			log('Hide image', randomImage.id, randomImage.title);
 
 			this.setState({
 				hiddenImageIds: [...this.state.hiddenImageIds, randomImage.id],
 			});
 		}
+	};
+
+	hideAllImages = () => {
+		log('hideAllImages()');
+		const intervalTime = 50;
+
+		const interval = setInterval(() => {
+			// Stagger hiding images and run callback onComplete.
+			this.randomlyAddToHiddenImageIds(() => {
+				clearInterval(interval);
+			});
+		}, intervalTime);
+
+		const timeout = setTimeout(() => {
+			// Tell container to remove all non-upcoming images
+			this.props.onLoadMore(0, 'REMOVE_CURRENT');
+
+			clearTimeout(timeout);
+		}, intervalTime * (this.props.images.length + 1));
 	};
 
 	handleImageClick = (event, image) => {
@@ -167,37 +284,76 @@ class ImageFeed extends Component {
 		}
 	};
 
+	handleLayoutComplete = (laidOutItems) => {
+		const prevItemPositions =
+			this.state.laidOutItems &&
+			this.state.laidOutItems.map((image) => image.position);
+		const currentItemPositions = laidOutItems.map((image) => image.position);
+		const didPositionsChange =
+			(JSON.stringify(prevItemPositions) ===
+				JSON.stringify(currentItemPositions)) ===
+			false;
+
+		// Check if positions changed
+		if (didPositionsChange) {
+			let max;
+
+			if (laidOutItems.length > 0) {
+				max = laidOutItems.reduce((prev, current) => {
+					// if (prev && prev.rect) {
+					return prev.rect.x + prev.rect.width >
+						current.rect.x + current.rect.width
+						? prev
+						: current;
+					// }
+				});
+
+				// console.log(max);
+			}
+
+			this.setState({
+				laidOutItems,
+				highlightedImageIds: max && max.element ? [max.element.dataset.id] : [],
+			});
+
+			if (typeof onLayoutComplete !== 'undefined') {
+				this.props.onLayoutComplete(laidOutItems);
+			}
+
+			// console.log(this.state.highlightedImageIds);
+
+			// console.log(
+			// 	Math.max(
+			// 		...laidOutItems.map((image) => image.rect.x + image.rect.width),
+			// 	),
+			// );
+		}
+		// this.laidOutItems = laidOutItems;
+
+		// log(
+		// 	laidOutItems.map((image) => {
+		// 		return image.position;
+		// 	}),
+		// );
+	};
+
 	render() {
-		const {
-			loading,
-			name,
-			images,
-			enableAnimation,
-			onLayoutComplete,
-		} = this.props;
+		const { loading, name, images } = this.props;
 
 		return (
 			<div
-				className={['image-feed', name ? `image-feed--${name}` : '']}
-				ref={(element) => {
-					this.imageFeedRef = element;
-				}}
+				className={['image-feed', name ? `image-feed--${name}` : ''].join(' ')}
 			>
 				{loading && (
 					<div className="image-feed__loading">
 						<div className="image-feed__loading-content">
-							<NewSelfWalesLogo />
-							<p>Loading</p>
+							{/* <NewSelfWalesLogo /> */}
+							<p>Loading...</p>
 						</div>
 					</div>
 				)}
 
-				<div
-					className="image-feed__scroller"
-					ref={(element) => {
-						this.imagesFeedScrollerRef[name] = element;
-					}}
-				>
+				<div className="image-feed__scroller">
 					<Packery
 						className="image-feed__images"
 						ref={(element) => {
@@ -216,25 +372,13 @@ class ImageFeed extends Component {
 							stagger: 100,
 							isHorizontal: true,
 						}}
-						// stamps={[...this.imageStampRefs].map((stamp) => stamp[1])}
 						onLayoutComplete={(laidOutItems) => {
-							if (!this.state.laidOutItems) {
-								this.setState({
-									laidOutItems,
-								});
-
-								if (enableAnimation) {
-									scroller.start();
-								}
-
-								if (typeof onLayoutComplete !== 'undefined') {
-									onLayoutComplete();
-								}
-							}
+							this.handleLayoutComplete(laidOutItems);
 						}}
+						// stamps={[...this.imageStampRefs].map((stamp) => stamp[1])}
 					>
 						{images.map((image, i) => {
-							// Return null if there is no image
+							// Return null if there is no image or image hasn't been added to hiddenImageIds
 							if (!image.featuredMedia || !this.state.imageSizes[image.id]) {
 								return null;
 							}
@@ -244,12 +388,21 @@ class ImageFeed extends Component {
 
 							// Get imageSize from internal imageSizes state
 							const imageSize = this.state.imageSizes[image.id];
-							// const imageSize = setSize(i);
 
 							const imageUrl =
 								imageSize === 'md'
 									? image.featuredMedia.sizes.medium.sourceUrl
 									: image.featuredMedia.sizes.full.sourceUrl;
+							// const imageUrl = image.featuredMedia.sizes.medium.sourceUrl;
+
+							let imageAlt;
+							if (image.type === 'portrait') {
+								imageAlt = 'Portrait from the State Library of NSW collection';
+							} else if (image.type === 'instagram-selfie') {
+								imageAlt = 'Selfie from Instagram';
+							} else if (image.type === 'gallery-selfie') {
+								imageAlt = 'Selfie from photo booth';
+							}
 
 							return (
 								<Fragment key={`image-${image.id}`}>
@@ -262,8 +415,15 @@ class ImageFeed extends Component {
 											className={[
 												'image-feed__image-holder',
 												`image-feed__image-holder--${imageSize}`,
+												`image-feed__image-holder--${image.type}`,
 												image.isSilhouette
 													? 'image-feed__image-holder--is-person'
+													: '',
+												`image-feed__image-holder--id-${image.id}`,
+												this.state.hiddenImageIds[0] &&
+												parseInt(this.state.highlightedImageIds[0], 10) ===
+													image.id
+													? 'image-feed__image-holder--highlighted'
 													: '',
 											].join(' ')}
 											onClick={(event) =>
@@ -271,6 +431,7 @@ class ImageFeed extends Component {
 												this.handleImageClick(event, image)
 											}
 											ref={(c) => this.imageHolderRefs.set(i, c)}
+											data-id={image.id}
 										>
 											{image.isSilhouette && (
 												<div className="image-feed__image-holder__content">
@@ -291,11 +452,10 @@ class ImageFeed extends Component {
 												// 	image.isSelfie ? 'selfies' : 'images'
 												// }/${image.imageUrl}`}
 												style={{
-													// height: imageSize,
 													marginBottom: '-4px',
 												}}
 												key={`${imageUrl}-${i}`}
-												alt="Portrait from the State Library of NSW collection"
+												alt={imageAlt}
 											/>
 										</button>
 									</CSSTransition>
@@ -310,7 +470,7 @@ class ImageFeed extends Component {
 											backgroundColor: 'red',
 										}}
 										className="image-feed__image-holder"
-										ref={(c) => this.imageStampRefs.set(i, c)}
+										// ref={(c) => this.imageStampRefs.set(i, c)}
 									/>
 								)} */}
 								</Fragment>

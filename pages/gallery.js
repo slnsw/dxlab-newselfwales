@@ -8,26 +8,26 @@ import { client } from '../lib/initApollo';
 import './gallery.css';
 
 class GalleryPage extends Component {
-	static defaultProps = {
-		url: {
-			query: {
-				startImages: 50,
-				intervalTime: 10000,
-				fetchMoreImages: 5,
-				maxImages: 1000,
-			},
-		},
+	handleImageClick = (event, image) => {
+		window.open(
+			`https://newselfwales.dxlab.sl.nsw.gov.au/selfie/wp-admin/post.php?post=${
+				image.id
+			}&action=edit`,
+			'_blank',
+		);
 	};
 
 	render() {
 		const {
 			url: {
 				query: {
-					enableAnimation = true,
-					startImages,
+					enableAnimation = 'true',
+					startImages = 20,
+					maxImages = 100,
+					increment = 0.5,
 					intervalTime,
 					fetchMoreImages,
-					maxImages,
+					loadMoreGap,
 				},
 			},
 		} = this.props;
@@ -36,7 +36,7 @@ class GalleryPage extends Component {
 			<ApolloProvider client={client}>
 				<App>
 					<ImageFeedContainer
-						enableAnimation={enableAnimation}
+						enableAnimation={enableAnimation === 'true'}
 						name="top"
 						intervalTime={
 							typeof intervalTime === 'string'
@@ -53,37 +53,23 @@ class GalleryPage extends Component {
 								? parseInt(maxImages, 10)
 								: maxImages
 						}
+						increment={
+							typeof increment === 'string'
+								? parseFloat(increment, 10)
+								: increment
+						}
 						fetchMoreImages={
 							typeof fetchMoreImages === 'string'
 								? parseInt(fetchMoreImages, 10)
 								: fetchMoreImages
 						}
+						loadMoreGap={
+							typeof loadMoreGap === 'string'
+								? parseInt(loadMoreGap, 10)
+								: loadMoreGap
+						}
+						onImageClick={this.handleImageClick}
 					/>
-
-					{/* <ImageFeedContainer
-						enableAnimation={enableAnimation}
-						name="bottom"
-						intervalTime={
-							typeof intervalTime === 'string'
-								? parseInt(intervalTime, 10)
-								: intervalTime
-						}
-						startImages={
-							typeof startImages === 'string'
-								? parseInt(startImages, 10)
-								: startImages
-						}
-						maxImages={
-							typeof maxImages === 'string'
-								? parseInt(maxImages, 10)
-								: maxImages
-						}
-						fetchMoreImages={
-							typeof fetchMoreImages === 'string'
-								? parseInt(fetchMoreImages, 10)
-								: fetchMoreImages
-						}
-					/> */}
 				</App>
 			</ApolloProvider>
 		);
