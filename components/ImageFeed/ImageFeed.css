@@ -4,6 +4,15 @@
 	overflow: auto;
 	position: relative;
 	z-index: 0;
+
+	&:before {
+		content: '';
+		position: absolute;
+		left: 400px;
+		top: 0;
+		height: 100vh;
+		border-left: 1px solid white;
+	}
 }
 
 .image-feed::-webkit-scrollbar {
@@ -26,6 +35,10 @@
 	background-color: red;
 	width: 10px;
 	height: 100vh;
+}
+
+.image-feed__images {
+	border-left: 1px solid white;
 }
 
 /* ----------------------------------------------------------------------------
@@ -57,6 +70,7 @@
 
 .image-feed__image-holder--exit {
 	opacity: 0;
+	display: none;
 }
 
 .image-feed__image-holder--exit-done {
@@ -81,7 +95,7 @@
 }
 
 .image-feed__image-holder--highlighted {
-	/* background-color: red; */
+	background-color: red;
 }
 
 .image-feed__image-holder__content {

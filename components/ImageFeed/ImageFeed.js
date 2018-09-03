@@ -76,6 +76,8 @@ class ImageFeed extends Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		// Init scroller and loop
+		// console.log(this.state.laidOutItems);
+
 		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
 			log('Init scroller');
 
@@ -123,7 +125,7 @@ class ImageFeed extends Component {
 			prevProps.shouldHideAllImages === false &&
 			this.props.shouldHideAllImages
 		) {
-			this.hideAllImages();
+			// this.hideAllImages();
 		}
 
 		if (
@@ -148,6 +150,74 @@ class ImageFeed extends Component {
 				`%c Start Loop ${this.state.intervalCounter}`,
 				'color: #e6007e',
 			);
+
+			// ---------------------------------------------------------------
+			// Highlighted images
+			const imageHolderRefs = Array.from(this.imageHolderRefs);
+
+			const leftOfScreenImageHolderRefs = Array.from(imageHolderRefs).filter(
+				(image) => {
+					// Only count enabled images
+					if (image && image[1].disabled === false) {
+						console.log(image[1].disabled);
+
+						return (
+							image[1].getBoundingClientRect().x +
+								image[1].getBoundingClientRect().width <
+							-400
+						);
+					}
+				},
+			);
+
+			console.log(leftOfScreenImageHolderRefs);
+			if (leftOfScreenImageHolderRefs.length > 0) {
+				const rightOfScreenImageHolderRefs = Array.from(imageHolderRefs).filter(
+					(image) => {
+						if (image) {
+							// console.log(image[1].getBoundingClientRect());
+
+							return (
+								image[1].getBoundingClientRect().x +
+									image[1].getBoundingClientRect().width >=
+								-400
+							);
+						}
+					},
+				);
+
+				// Furtherst left image and position of onScreen images
+				const leftGap = Math.min(
+					...Array.from(rightOfScreenImageHolderRefs).map(
+						(image) => image[1].getBoundingClientRect().x,
+					),
+				);
+
+				console.log(leftGap);
+
+				// Move all right of screen images to the left
+				rightOfScreenImageHolderRefs.forEach((image) => {
+					// console.log(image[1].style.left);
+					const left = parseFloat(image[1].style.left.replace('px', ''), 10);
+					// console.log(left);
+					// Set new left
+					image[1].style.left = `${left - leftGap}px`;
+					// image[1].style.left = `0`;
+				});
+
+				this.setState({
+					hiddenImageIds: leftOfScreenImageHolderRefs.map((image) => image[0]),
+				});
+
+				// Move window to the right to compensate for all the images moving to the left
+				// this.imagesRef[
+				// 	this.props.name
+				// ].packery.element.style.transform = `translateX(${leftGap}px) translateZ(0)`;
+
+				scroller.adjustScrollCount(leftGap);
+			}
+
+			// ---------------------------------------------------------------
 
 			if (this.props.images.length >= this.props.maxImages) {
 				// Stop timeout once maxImages is reached
@@ -188,8 +258,15 @@ class ImageFeed extends Component {
 
 				// log(this.state.laidOutItems);
 
+				// console.log(scroller.getBoundingClientRect());
+
 				// TODO: Use state.laidOutItems to work out far right
 				const gap = window.innerWidth - scroller.getBoundingClientRect().right;
+				// console.log(
+				// 	window.innerWidth,
+				// 	scroller.getBoundingClientRect().right,
+				// 	gap,
+				// );
 
 				// Make sure gap is larger than -50
 				if (gap > this.props.loadMoreGap) {
@@ -210,7 +287,7 @@ class ImageFeed extends Component {
 					log('Load more images', { gap }, { fetchMoreImages });
 					this.props.onLoadMore(fetchMoreImages);
 				} else {
-					this.randomlyAddToHiddenImageIds();
+					// this.randomlyAddToHiddenImageIds();
 				}
 
 				// Increment the intervalCounter
@@ -296,6 +373,8 @@ class ImageFeed extends Component {
 
 		// Check if positions changed
 		if (didPositionsChange) {
+			// console.log({ didPositionsChange });
+
 			let max;
 
 			if (laidOutItems.length > 0) {
@@ -313,7 +392,7 @@ class ImageFeed extends Component {
 
 			this.setState({
 				laidOutItems,
-				highlightedImageIds: max && max.element ? [max.element.dataset.id] : [],
+				// highlightedImageIds: max && max.element ? [max.element.dataset.id] : [],
 			});
 
 			if (typeof onLayoutComplete !== 'undefined') {
@@ -378,12 +457,12 @@ class ImageFeed extends Component {
 						// stamps={[...this.imageStampRefs].map((stamp) => stamp[1])}
 					>
 						{images.map((image, i) => {
-							// Return null if there is no image or image hasn't been added to hiddenImageIds
+							// Return null if there is no image or image hasn't been added to imageSizes
 							if (!image.featuredMedia || !this.state.imageSizes[image.id]) {
 								return null;
 							}
 
-							console.log(this.state.imageSizes[image.id], image);
+							// console.log(this.state.imageSizes[image.id], image);
 							const isHidden = this.state.hiddenImageIds.indexOf(image.id) > -1;
 
 							// Get imageSize from internal imageSizes state
@@ -420,9 +499,7 @@ class ImageFeed extends Component {
 													? 'image-feed__image-holder--is-person'
 													: '',
 												`image-feed__image-holder--id-${image.id}`,
-												this.state.hiddenImageIds[0] &&
-												parseInt(this.state.highlightedImageIds[0], 10) ===
-													image.id
+												this.state.highlightedImageIds.indexOf(image.id) > -1
 													? 'image-feed__image-holder--highlighted'
 													: '',
 											].join(' ')}
@@ -430,7 +507,8 @@ class ImageFeed extends Component {
 												!image.isSilhouette &&
 												this.handleImageClick(event, image)
 											}
-											ref={(c) => this.imageHolderRefs.set(i, c)}
+											ref={(c) => this.imageHolderRefs.set(image.id, c)}
+											disabled={isHidden}
 											data-id={image.id}
 										>
 											{image.isSilhouette && (
