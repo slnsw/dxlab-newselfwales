@@ -50,27 +50,20 @@ class App extends Component {
 						content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=1"
 					/>
 					<meta property="og:type" content="website" />
-
 					{title && <meta property="og:title" content={title} />}
-
 					{metaDescription && (
 						<meta property="og:description" content={metaDescription} />
 					)}
-
 					{metaDescription && (
 						<meta name="description" content={metaDescription} />
 					)}
-
 					{metaImageUrl && (
 						<meta property="og:image" content={`${metaImageUrl}`} />
 					)}
-
 					{metaUrl && <meta property="og:url" content={metaUrl} />}
-
 					{metaImageAlt && (
 						<meta name="twitter:image:alt" content={metaImageAlt} />
 					)}
-
 					<meta name="twitter:card" content="summary_large_image" />
 					<meta
 						property="og:site_name"
@@ -78,13 +71,11 @@ class App extends Component {
 					/>
 					<meta property="fb:app_id" content={process.env.FB_APP_ID} />
 					<meta name="twitter:site" content="@statelibrarynsw" />
-
 					<link
 						rel="shortcut icon"
 						href="http://www.sl.nsw.gov.au/sites/all/themes/slnsw_frontend/favicon.ico"
 						type="image/vnd.microsoft.icon"
 					/>
-
 					<link
 						href="https://fonts.googleapis.com/css?family=Lekton:400,400i,700"
 						rel="stylesheet"
@@ -93,6 +84,11 @@ class App extends Component {
 						href="https://fonts.googleapis.com/css?family=Barlow:300,300i,400,400i,500,500i"
 						rel="stylesheet"
 					/>
+					<link
+						href="https://unpkg.com/ionicons@4.2.5/dist/css/ionicons.min.css"
+						rel="stylesheet"
+					/>
+					{/* <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js" /> */}
 				</Head>
 				{children}
 			</main>

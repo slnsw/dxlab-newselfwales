@@ -1,0 +1,221 @@
+@import '../../styles/variables.css';
+
+.photo-booth-modal {
+	display: flex;
+	position: absolute;
+	flex-direction: column;
+	align-items: center;
+	top: 0;
+	right: 0;
+	height: 100vh;
+	width: 25em;
+	padding: 5em 2em 2em 2em;
+	background-color: var(--colour-black);
+	/* background-color: rgba(0, 0, 0, 0.8); */
+	transition: all 700ms cubic-bezier(0.77, 0, 0.175, 1); /* easeInOutQuart */
+}
+
+.photo-booth-modal--full {
+	width: 100%;
+}
+
+.photo-booth-modal--hidden {
+	right: -20em;
+	/* width: 5em; */
+}
+
+.photo-booth-modal--is-blink {
+	background-color: var(--colour-white);
+}
+
+.photo-booth-modal__hide-button {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 2.2em;
+	height: 2.2em;
+	padding: 0;
+	font-size: var(--font-size-xxlg);
+}
+
+.photo-booth-modal__close-button {
+	position: absolute;
+	z-index: 10;
+	top: 0;
+	right: 0;
+	width: 2.2em;
+	height: 2.2em;
+	font-size: var(--font-size-xxlg);
+}
+
+.photo-booth-modal__buttons {
+	display: flex;
+
+	& .button {
+		margin: 0 1em;
+	}
+}
+
+.photo-booth-modal__camera-button {
+	margin: 15px auto;
+	background-color: var(--colour-primary);
+	width: 6em;
+	height: 6em;
+	border-radius: 3em;
+	@apply --font-uppercase;
+
+	box-shadow: 0 0 0 5px var(--colour-black),
+		0 0 0 15px var(--colour-primary-darkest);
+}
+
+.photo-booth-modal__photo-box {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	max-width: 25em;
+
+	@nest .photo-booth-modal--full & {
+		/* align-items: center; */
+	}
+}
+
+.photo-booth-modal__title {
+	margin-top: 0;
+	margin-bottom: var(--spacing-xxxs);
+	text-transform: none;
+	letter-spacing: 0;
+	font-family: var(--font-secondary);
+	font-size: var(--font-size-lg);
+}
+
+.photo-booth-modal__silhouette {
+	margin: 0 auto;
+	max-height: 21em;
+	max-width: 21em;
+	background-color: var(--colour-grey-darker);
+}
+
+.photo-booth-modal__video {
+	margin: 0 auto 1em;
+	max-height: 25em;
+	max-width: 25em;
+	transform: scaleX(-1);
+}
+
+.photo-booth-modal__video--feed {
+}
+
+.photo-booth-modal__video--preview {
+	border: 3px solid #e6007e;
+}
+
+.photo-booth-modal__send-selfie {
+	display: flex;
+	margin: 0 auto;
+	width: 80%;
+}
+
+.photo-booth-modal__send-selfie__preview {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-right: var(--spacing-xxlg);
+}
+
+.photo-booth-modal__show-thanks {
+	position: relative;
+	text-align: center;
+	margin-top: -2em;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+/* =========================================================================
+ * Search
+ * ========================================================================= */
+
+.photo-booth-modal__search {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	height: 100%;
+}
+
+.photo-booth-modal__search--is-active {
+	display: block;
+}
+
+/* =========================================================================
+ * Footer 
+ * ========================================================================= */
+
+.photo-booth-modal__footer {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	align-self: flex-end;
+	width: 100%;
+	margin-top: auto;
+	text-align: left;
+	opacity: 1;
+	transition: all 700ms var(--ease-in-out-quart); /* easeInOutQuart */
+
+	@nest .photo-booth-modal--hidden & {
+		opacity: 0;
+	}
+}
+
+.photo-booth-modal__menu {
+	position: relative;
+	display: block;
+	padding-left: 0;
+	margin-bottom: 3em;
+
+	&:before {
+		content: '';
+		position: absolute;
+		top: -0.5em;
+		width: 1em;
+		border-top: 1px solid var(--colour-white);
+	}
+}
+
+.photo-booth-modal__menu-item {
+	list-style: none;
+	font-size: var(--font-size-xlg);
+	font-family: var(--font-secondary);
+	font-weight: 800;
+	cursor: pointer;
+
+	& i {
+		width: 1em;
+		margin-right: var(--spacing-xxxs);
+	}
+
+	&:active {
+		color: var(--colour-primary);
+	}
+}
+
+.photo-booth-modal__nsw-logo {
+	max-width: 21em;
+	height: auto;
+}
+
+/* =========================================================================
+ * Keyboard
+ * ========================================================================= */
+
+.photo-booth-modal__keyboard {
+	position: fixed;
+	left: 50%;
+	transform: translate(-50%, 105%);
+	bottom: 1em;
+	width: 50%;
+	transition: 0.5s var(--ease-in-out-quart);
+}
+
+.photo-booth-modal__keyboard--is-active {
+	transform: translate(-50%, 0);
+}

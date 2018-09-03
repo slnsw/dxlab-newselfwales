@@ -1,0 +1,15 @@
+.DS_Store
+node_modules
+build
+npm-debug.log
+coverage
+.webpack
+.env
+log
+tempdata.js
+
+# serverless zip
+.serverless
+
+# vim
+*.swp

@@ -9,14 +9,24 @@ Save a .env with the following:
 ```
 PORT=5020
 BASE_URL=http://localhost:5020
+
+GRAPHQL_URL=http://localhost:5000/graphql
+GRAPHQL_HOST=http://localhost:5000
+GRAPHQL_SUBSCRIPTIONS_URL=ws://localhost:5000/subscriptions
+
 WP_API_ENDPOINT=https://local.dxlab.sl.nsw.gov.au/selfie/wp-json
 WP_USERNAME=XXXXXXXXXX
 WP_PASSWORD=XXXXXXXXXX
+
 FB_APP_ID=XXXXXXXXXX
 GOOGLE_ANALYTICS_ID=XXXXXXXXXX
 ```
 
 Save a `.env.staging` and `.env.production` file for staging and production deploys respectively.
+
+## Gallery Experience
+
+`/gallery`
 
 # TODO
 

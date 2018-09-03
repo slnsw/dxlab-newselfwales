@@ -1,95 +1,19 @@
 @import '../styles/variables.css';
 
-.image--is-person {
-  background-color: var(--colour-grey-dark);
-}
-
-.image-holder {
-  position: relative;
-  height: calc(20%);
-  padding: 5px;
-
-  @media (--screen-md) {
-    height: calc(20%);
-  }
-
-  & a {
-    display: block;
-    height: 100%;
-  }
-
-  & img {
-    height: 100%;
-    width: auto;
-  }
-}
-
-.image-holder--lg {
-  height: calc(40%);
-
-  @media (--screen-md) {
-    height: calc(40%);
-  }
-}
-
-.image-holder--xlg {
-  height: calc(60%);
-
-  @media (--screen-md) {
-    height: calc(60%);
-  }
-}
-
-.image-holder__content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  /* Question Mark */
-  & span {
-    flex: 1;
-    margin-top: 0.18em;
-    font-size: 10vh;
-
-    @nest .image-holder--lg & {
-      font-size: 20vh;
-    }
-  }
-
-  /* 'This could be you!' */
-  & p {
-    align-items: flex-end;
-    justify-content: flex-end;
-    margin-bottom: var(--spacing-xs);
-    text-align: center;
-    font-size: 1.5vh;
-
-    @nest .image-holder--lg & {
-      font-size: 3vh;
-    }
-  }
-}
-
 .landing__toggle-animation-button {
-  position: absolute;
-  top: var(--spacing-xxlg);
-  left: var(--spacing-md);
-  z-index: 2;
-  max-width: 7em;
-  border-radius: 0;
-  padding-top: var(--spacing-xxxs);
+	position: absolute;
+	top: var(--spacing-xxlg);
+	left: var(--spacing-md);
+	z-index: 2;
+	max-width: 7em;
+	border-radius: 0;
+	padding-top: var(--spacing-xxxs);
 
-  /* border: 1px solid var(--colour-grey-lightest); */
+	/* border: 1px solid var(--colour-grey-lightest); */
 
-  color: var(--colour-highlight);
-  background-color: var(--colour-black);
-  font-size: var(--font-size-xxs);
+	color: var(--colour-highlight);
+	background-color: var(--colour-black);
+	font-size: var(--font-size-xxs);
 
-  /* font-family: 'Lekton', Helvetica, Arial; */
+	/* font-family: 'Lekton', Helvetica, Arial; */
 }
