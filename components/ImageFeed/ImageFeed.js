@@ -38,7 +38,7 @@ class ImageFeed extends Component {
 		increment: 0.5,
 		intervalTime: 10000,
 		shouldHideAllImages: false,
-		loadMoreGap: -100,
+		loadMoreGap: -200,
 	};
 
 	state = {
@@ -149,13 +149,16 @@ class ImageFeed extends Component {
 				'color: #e6007e',
 			);
 
-			if (this.props.images.length > this.props.maxImages) {
+			if (this.props.images.length >= this.props.maxImages) {
 				// Stop timeout once maxImages is reached
 				log('MaxImages reached');
 
 				clearTimeout(this.interval);
+				// TODO: If app hits and error at this stage, we need
+				// to work out a way to continue interval
 
 				// Trigger ImageFeedContainer to load more images for UPCOMING update
+				log('Load more images in the background', this.props.startImages);
 				this.props.onLoadMore(this.props.startImages, 'UPCOMING');
 
 				// if (typeof this.props.onMaxImagesComplete !== 'undefined') {
@@ -190,16 +193,22 @@ class ImageFeed extends Component {
 
 				// Make sure gap is larger than -50
 				if (gap > this.props.loadMoreGap) {
-					// Check if same as previous fetch, otherwise it will keep on trying to fetch more
 					// TODO!!
+					// Check if same as previous fetch, otherwise it will keep on trying to fetch more
 
 					// Work out how many more images to fetch
 					const gapConstant = Math.ceil(Math.abs(gap) / 50);
 					const fetchMoreImages = gapConstant * 4;
-
-					this.props.onLoadMore(fetchMoreImages);
+					// WIP
+					// Make sure we don't fetch more than maxImages
+					// const fetchMoreImages =
+					// 	fetchMoreImagesCheck + this.props.images.length >
+					// 	this.props.maxImages
+					// 		? this.props.maxImages - this.props.images.length
+					// 		: fetchMoreImagesCheck;
 
 					log('Load more images', { gap }, { fetchMoreImages });
+					this.props.onLoadMore(fetchMoreImages);
 				} else {
 					this.randomlyAddToHiddenImageIds();
 				}
@@ -208,10 +217,6 @@ class ImageFeed extends Component {
 				this.setState({
 					intervalCounter: this.state.intervalCounter + 1,
 				});
-
-				// if (typeof this.state.laidOutItems !== 'undefined') {
-				// scroller.updateLaidOutItems(this.state.laidOutItems);
-				// }
 			}
 		}, this.props.intervalTime);
 	};
@@ -230,15 +235,19 @@ class ImageFeed extends Component {
 		}
 	};
 
-	randomlyAddToHiddenImageIds = () => {
+	randomlyAddToHiddenImageIds = (onComplete) => {
 		const randomIndex = Math.floor(Math.random() * this.props.images.length);
 		const randomImage = this.props.images[randomIndex];
 
 		if (this.state.hiddenImageIds.length >= this.props.images.length) {
 			log('All images are hidden');
+
+			if (typeof onComplete === 'function') {
+				onComplete();
+			}
 		} else if (this.state.hiddenImageIds.indexOf(randomImage.id) > -1) {
 			// Check if randomImage is already in hiddenImageIds array
-			log('Image already in hiddenImageIds, try again.');
+			// log('Image already in hiddenImageIds, try again.');
 
 			this.randomlyAddToHiddenImageIds();
 		} else {
@@ -252,17 +261,21 @@ class ImageFeed extends Component {
 
 	hideAllImages = () => {
 		log('hideAllImages()');
+		const intervalTime = 50;
 
-		this.setState(() => ({
-			hiddenImageIds: this.props.images.map((image) => image.id),
-		}));
+		const interval = setInterval(() => {
+			// Stagger hiding images and run callback onComplete.
+			this.randomlyAddToHiddenImageIds(() => {
+				clearInterval(interval);
+			});
+		}, intervalTime);
 
-		setTimeout(() => {
+		const timeout = setTimeout(() => {
 			// Tell container to remove all non-upcoming images
 			this.props.onLoadMore(0, 'REMOVE_CURRENT');
-			// Reset scroller window
-			// scroller.resetScrollCount();
-		}, 1000);
+
+			clearTimeout(timeout);
+		}, intervalTime * (this.props.images.length + 1));
 	};
 
 	handleImageClick = (event, image) => {
