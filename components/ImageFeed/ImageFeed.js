@@ -43,7 +43,7 @@ class ImageFeed extends Component {
 
 	state = {
 		// Packery items
-		laidOutItems: undefined,
+		laidOutItems: [],
 		// Images to hide
 		hiddenImageIds: [],
 		// [id]: 'md', 'lg' or 'xlg'
@@ -76,7 +76,10 @@ class ImageFeed extends Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		// Init scroller and loop
-		if (prevState.laidOutItems === undefined && this.state.laidOutItems) {
+		if (
+			prevState.laidOutItems.length === 0 &&
+			this.state.laidOutItems.length > 0
+		) {
 			log('Init scroller');
 
 			scroller.init(
@@ -275,7 +278,7 @@ class ImageFeed extends Component {
 			this.props.onLoadMore(0, 'REMOVE_CURRENT');
 
 			clearTimeout(timeout);
-		}, intervalTime * (this.props.images.length + 1));
+		}, intervalTime * (this.props.images.length * 2));
 	};
 
 	handleImageClick = (event, image) => {
@@ -285,6 +288,8 @@ class ImageFeed extends Component {
 	};
 
 	handleLayoutComplete = (laidOutItems) => {
+		console.log(laidOutItems);
+
 		const prevItemPositions =
 			this.state.laidOutItems &&
 			this.state.laidOutItems.map((image) => image.position);
@@ -293,6 +298,8 @@ class ImageFeed extends Component {
 			(JSON.stringify(prevItemPositions) ===
 				JSON.stringify(currentItemPositions)) ===
 			false;
+
+		// console.log(didPositionsChange);
 
 		// Check if positions changed
 		if (didPositionsChange) {
@@ -383,7 +390,7 @@ class ImageFeed extends Component {
 								return null;
 							}
 
-							console.log(this.state.imageSizes[image.id], image);
+							// console.log(this.state.imageSizes[image.id], image);
 							const isHidden = this.state.hiddenImageIds.indexOf(image.id) > -1;
 
 							// Get imageSize from internal imageSizes state
