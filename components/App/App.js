@@ -2,9 +2,15 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { initGA, logPageView } from '../../lib/analytics';
+import logBase from '../../lib/log';
+import packageJson from '../../package.json';
 
 import '../../styles/base.css';
 import '../../styles/helpers.css';
+
+const log = (...args) => {
+	return logBase('<App />', ...args);
+};
 
 class App extends Component {
 	static propTypes = {
@@ -26,6 +32,8 @@ class App extends Component {
 		}
 
 		logPageView();
+
+		log('version', packageJson.version);
 	}
 
 	render() {

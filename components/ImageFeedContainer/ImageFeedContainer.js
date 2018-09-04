@@ -75,12 +75,10 @@ class ImageFeedContainer extends Component {
 	}
 
 	handleMaxImagesComplete = () => {
-		log('handleMaxImagesComplete');
-
-		this.setState({
-			shouldHideAllImages: true,
-		});
-
+		// log('handleMaxImagesComplete');
+		// this.setState({
+		// 	shouldHideAllImages: true,
+		// });
 		// window.location.reload();
 	};
 

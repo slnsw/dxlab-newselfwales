@@ -4,11 +4,17 @@
 	overflow: auto;
 	position: relative;
 	z-index: 0;
+	opacity: 1;
+	transition: opacity 1s var(--ease-in-out-quart);
 }
 
 .image-feed::-webkit-scrollbar {
 	width: 0 !important;
 	height: 0 !important;
+}
+
+.image-feed--is-hidden {
+	opacity: 0;
 }
 
 .image-feed__loading {
@@ -55,7 +61,7 @@
 	}
 }
 
-.image-feed__image-holder--exit {
+.image-feed__image-holder--exit-active {
 	opacity: 0;
 }
 

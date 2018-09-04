@@ -38,19 +38,24 @@ class ImageFeed extends Component {
 		increment: 0.5,
 		intervalTime: 10000,
 		shouldHideAllImages: false,
-		loadMoreGap: -200,
+		loadMoreGap: -400,
 	};
 
 	state = {
 		// Packery items
-		laidOutItems: [],
-		// Images to hide
+		laidOutItems: undefined,
+		isLayingOut: false,
+		isImageFeedHidden: false,
+		// Images to hide (CSS display: none)
 		hiddenImageIds: [],
+		// Images to remove (return null)
+		removedImageIds: [],
 		// [id]: 'md', 'lg' or 'xlg'
 		imageSizes: {},
 		// For testing
 		highlightedImageIds: [],
 		intervalCounter: 0,
+		layingOutCounter: 0,
 	};
 
 	constructor() {
@@ -77,8 +82,8 @@ class ImageFeed extends Component {
 	componentDidUpdate(prevProps, prevState) {
 		// Init scroller and loop
 		if (
-			prevState.laidOutItems.length === 0 &&
-			this.state.laidOutItems.length > 0
+			prevState.laidOutItems === undefined &&
+			(this.state.laidOutItems && this.state.laidOutItems.length > 0)
 		) {
 			log('Init scroller');
 
@@ -138,7 +143,13 @@ class ImageFeed extends Component {
 			this.initLoop();
 			this.setState({
 				hiddenImageIds: [],
+				isImageFeedHidden: false,
 			});
+		}
+
+		// Track whether images are being layout out or not
+		if (prevState.isLayingOut !== this.state.isLayingOut) {
+			log('isLayingOut', this.state.isLayingOut);
 		}
 	}
 
@@ -152,24 +163,54 @@ class ImageFeed extends Component {
 				'color: #e6007e',
 			);
 
-			if (this.props.images.length >= this.props.maxImages) {
-				// Stop timeout once maxImages is reached
+			if (this.props.loading) {
+				// --------------------------------------------------------------------
+				// Skip if loading or laying out
+				// --------------------------------------------------------------------
+
+				// if (this.props.loading) {
+				log('Still loading, skip this interval.');
+				// } else if (this.state.isLayingOut) {
+				// }
+			} else if (this.props.images.length >= this.props.maxImages) {
+				// --------------------------------------------------------------------
+				// maxImages is reached. Trigger loading of UPCOMING images.
+				// clearInterval
+				// --------------------------------------------------------------------
+
 				log('MaxImages reached');
 
-				clearTimeout(this.interval);
 				// TODO: If app hits and error at this stage, we need
 				// to work out a way to continue interval
+				clearInterval(this.interval);
 
 				// Trigger ImageFeedContainer to load more images for UPCOMING update
 				log('Load more images in the background', this.props.startImages);
 				this.props.onLoadMore(this.props.startImages, 'UPCOMING');
 
-				// if (typeof this.props.onMaxImagesComplete !== 'undefined') {
-				// 	this.props.onMaxImagesComplete();
-				// }
-			} else if (this.props.loading) {
-				log('Still loading, skip fetch');
+				if (typeof this.props.onMaxImagesComplete !== 'undefined') {
+					this.props.onMaxImagesComplete();
+				}
+			} else if (this.state.isLayingOut && this.state.layingOutCounter < 2) {
+				log(
+					'Still laying out, skip this interval.',
+					this.state.layingOutCounter,
+				);
+
+				// Force layout end, sometimes packery doesn't detect layout complete.
+				this.setState({
+					layingOutCounter: this.state.layingOutCounter + 1,
+					isLayingOut: false,
+				});
 			} else {
+				// --------------------------------------------------------------------
+				// Load more or hide depending on gap
+				// --------------------------------------------------------------------
+
+				this.setState({
+					layingOutCounter: 0,
+				});
+
 				// Work how much of a black gap there is due to auto scrolling
 				// TOTRY - Loop through all imageHolders and find the one furthest to the right
 				// Get last imageHolder
@@ -187,6 +228,8 @@ class ImageFeed extends Component {
 					this.props.images.length,
 					'Hidden images',
 					this.state.hiddenImageIds.length,
+					'Removed images',
+					this.state.removedImageIds.length,
 				);
 
 				// log(this.state.laidOutItems);
@@ -212,6 +255,9 @@ class ImageFeed extends Component {
 
 					log('Load more images', { gap }, { fetchMoreImages });
 					this.props.onLoadMore(fetchMoreImages);
+					this.setState({
+						isLayingOut: true,
+					});
 				} else {
 					this.randomlyAddToHiddenImageIds();
 				}
@@ -256,29 +302,49 @@ class ImageFeed extends Component {
 		} else {
 			log('Hide image', randomImage.id, randomImage.title);
 
+			// Add id to hiddenImageIds to trigger animation
 			this.setState({
 				hiddenImageIds: [...this.state.hiddenImageIds, randomImage.id],
+				isLayingOut: true,
 			});
+
+			// Add id to removedImageIds to remove from DOM and trigger layout
+			const timeout = setTimeout(() => {
+				// console.log('hi');
+
+				this.setState({
+					removedImageIds: [...this.state.removedImageIds, randomImage.id],
+				});
+
+				clearTimeout(timeout);
+			}, 3000);
 		}
 	};
 
 	hideAllImages = () => {
 		log('hideAllImages()');
-		const intervalTime = 50;
 
-		const interval = setInterval(() => {
-			// Stagger hiding images and run callback onComplete.
-			this.randomlyAddToHiddenImageIds(() => {
-				clearInterval(interval);
-			});
-		}, intervalTime);
+		// Hide image feed div
+		this.setState({
+			isImageFeedHidden: true,
+		});
+
+		// const intervalTime = 50;
+
+		// TODO: Stagger animation. Activate when better animate out is working
+		// const interval = setInterval(() => {
+		// 	// Stagger hiding images and run callback onComplete.
+		// 	this.randomlyAddToHiddenImageIds(() => {
+		// 		clearInterval(interval);
+		// 	});
+		// }, intervalTime);
 
 		const timeout = setTimeout(() => {
 			// Tell container to remove all non-upcoming images
 			this.props.onLoadMore(0, 'REMOVE_CURRENT');
 
 			clearTimeout(timeout);
-		}, intervalTime * (this.props.images.length * 2));
+		}, 500);
 	};
 
 	handleImageClick = (event, image) => {
@@ -288,68 +354,68 @@ class ImageFeed extends Component {
 	};
 
 	handleLayoutComplete = (laidOutItems) => {
-		console.log(laidOutItems);
+		// Reset isLayingOut to false
+		if (this.state.isLayingOut) {
+			this.setState({
+				isLayingOut: false,
+			});
+		}
 
-		const prevItemPositions =
-			this.state.laidOutItems &&
-			this.state.laidOutItems.map((image) => image.position);
-		const currentItemPositions = laidOutItems.map((image) => image.position);
-		const didPositionsChange =
-			(JSON.stringify(prevItemPositions) ===
-				JSON.stringify(currentItemPositions)) ===
-			false;
-
-		// console.log(didPositionsChange);
-
-		// Check if positions changed
-		if (didPositionsChange) {
-			let max;
-
-			if (laidOutItems.length > 0) {
-				max = laidOutItems.reduce((prev, current) => {
-					// if (prev && prev.rect) {
-					return prev.rect.x + prev.rect.width >
-						current.rect.x + current.rect.width
-						? prev
-						: current;
-					// }
-				});
-
-				// console.log(max);
-			}
-
+		if (
+			this.state.laidOutItems === undefined &&
+			(laidOutItems && laidOutItems.length > 0)
+		) {
 			this.setState({
 				laidOutItems,
-				highlightedImageIds: max && max.element ? [max.element.dataset.id] : [],
 			});
-
-			if (typeof onLayoutComplete !== 'undefined') {
-				this.props.onLayoutComplete(laidOutItems);
-			}
-
-			// console.log(this.state.highlightedImageIds);
-
-			// console.log(
-			// 	Math.max(
-			// 		...laidOutItems.map((image) => image.rect.x + image.rect.width),
-			// 	),
-			// );
 		}
-		// this.laidOutItems = laidOutItems;
 
-		// log(
-		// 	laidOutItems.map((image) => {
-		// 		return image.position;
-		// 	}),
+		// console.log(laidOutItems);
+		// const prevItemPositions =
+		// 	this.state.laidOutItems &&
+		// 	this.state.laidOutItems.map((image) => image.position);
+		// const currentItemPositions = laidOutItems.map((image) => image.position);
+		// const didPositionsChange =
+		// 	(JSON.stringify(prevItemPositions) ===
+		// 		JSON.stringify(currentItemPositions)) ===
+		// 	false;
+		// console.log(didPositionsChange);
+		// Check if positions changed
+		// if (didPositionsChange) {
+		// 	let max;
+		// 	if (laidOutItems.length > 0) {
+		// 		max = laidOutItems.reduce((prev, current) => {
+		// 			// if (prev && prev.rect) {
+		// 			return prev.rect.x + prev.rect.width >
+		// 				current.rect.x + current.rect.width
+		// 				? prev
+		// 				: current;
+		// 			// }
+		// 		});
+		// 		// console.log(max);
+		// 	}
+		// if (typeof onLayoutComplete !== 'undefined') {
+		// 	this.props.onLayoutComplete(laidOutItems);
+		// }
+		// console.log(
+		// 	Math.max(
+		// 		...laidOutItems.map((image) => image.rect.x + image.rect.width),
+		// 	),
 		// );
+		// }
 	};
 
 	render() {
 		const { loading, name, images } = this.props;
+		const { isImageFeedHidden } = this.state;
 
 		return (
 			<div
-				className={['image-feed', name ? `image-feed--${name}` : ''].join(' ')}
+				className={[
+					'image-feed',
+					isImageFeedHidden ? 'image-feed--is-hidden' : '',
+					name ? `image-feed--${name}` : '',
+				].join(' ')}
 			>
 				{loading && (
 					<div className="image-feed__loading">
@@ -375,7 +441,7 @@ class ImageFeed extends Component {
 							gutter: 0,
 							horizontalOrder: true,
 							fitWidth: true,
-							transitionDuration: '1s',
+							transitionDuration: '2s',
 							stagger: 100,
 							isHorizontal: true,
 						}}
@@ -392,6 +458,12 @@ class ImageFeed extends Component {
 
 							// console.log(this.state.imageSizes[image.id], image);
 							const isHidden = this.state.hiddenImageIds.indexOf(image.id) > -1;
+							const isRemoved =
+								this.state.removedImageIds.indexOf(image.id) > -1;
+
+							if (isRemoved) {
+								return null;
+							}
 
 							// Get imageSize from internal imageSizes state
 							const imageSize = this.state.imageSizes[image.id];
@@ -423,6 +495,7 @@ class ImageFeed extends Component {
 												'image-feed__image-holder',
 												`image-feed__image-holder--${imageSize}`,
 												`image-feed__image-holder--${image.type}`,
+												// isHidden ? 'image-feed__image-holder--exit' : '',
 												image.isSilhouette
 													? 'image-feed__image-holder--is-person'
 													: '',
