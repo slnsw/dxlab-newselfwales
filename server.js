@@ -51,6 +51,9 @@ app
 
 		server.all('*', (req, res) => handler(req, res));
 
+		// Use this for testing across same network
+		// server.listen(port, '0.0.0.0', (err) => {
+
 		server.listen(port, (err) => {
 			if (err) throw err;
 			console.log(`> Ready on http://localhost:${port}`);

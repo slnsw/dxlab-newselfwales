@@ -1,6 +1,7 @@
 import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { CSSTransition } from 'react-transition-group';
+// import { CSSTransition } from 'react-transition-group';
+import { Transition } from 'react-spring';
 
 import Packery from '../Packery';
 // import NewSelfWalesLogo from '../NewSelfWalesLogo';
@@ -461,9 +462,9 @@ class ImageFeed extends Component {
 							const isRemoved =
 								this.state.removedImageIds.indexOf(image.id) > -1;
 
-							if (isRemoved) {
-								return null;
-							}
+							// if (isRemoved) {
+							// 	return null;
+							// }
 
 							// Get imageSize from internal imageSizes state
 							const imageSize = this.state.imageSizes[image.id];
@@ -485,74 +486,72 @@ class ImageFeed extends Component {
 
 							return (
 								<Fragment key={`image-${image.id}`}>
-									<CSSTransition
-										in={!isHidden}
-										timeout={3000}
-										classNames="image-feed__image-holder-"
+									{/* // <CSSTransition
+								// 	in={!isHidden}
+								// 	timeout={2000}
+								// 	classNames="image-feed__image-holder-"
+								// 	key={`image-${image.id}`}
+								// > */}
+
+									<Transition
+										from={{ opacity: 0 }}
+										enter={{ opacity: 1 }}
+										leave={{ opacity: 0, height: 0, pointerEvents: 'none' }}
 									>
-										<button
-											className={[
-												'image-feed__image-holder',
-												`image-feed__image-holder--${imageSize}`,
-												`image-feed__image-holder--${image.type}`,
-												// isHidden ? 'image-feed__image-holder--exit' : '',
-												image.isSilhouette
-													? 'image-feed__image-holder--is-person'
-													: '',
-												`image-feed__image-holder--id-${image.id}`,
-												this.state.hiddenImageIds[0] &&
-												parseInt(this.state.highlightedImageIds[0], 10) ===
-													image.id
-													? 'image-feed__image-holder--highlighted'
-													: '',
-											].join(' ')}
-											onClick={(event) =>
-												!image.isSilhouette &&
-												this.handleImageClick(event, image)
-											}
-											ref={(c) => this.imageHolderRefs.set(i, c)}
-											data-id={image.id}
-										>
-											{image.isSilhouette && (
-												<div className="image-feed__image-holder__content">
-													<span>?</span>
-													<p>This could be you!</p>
-												</div>
-											)}
+										{!isHidden &&
+											((styles) => (
+												<button
+													style={styles}
+													className={[
+														'image-feed__image-holder',
+														`image-feed__image-holder--${imageSize}`,
+														`image-feed__image-holder--${image.type}`,
+														// isHidden ? 'image-feed__image-holder--exit' : '',
+														image.isSilhouette
+															? 'image-feed__image-holder--is-person'
+															: '',
+														`image-feed__image-holder--id-${image.id}`,
+														this.state.hiddenImageIds[0] &&
+														parseInt(this.state.highlightedImageIds[0], 10) ===
+															image.id
+															? 'image-feed__image-holder--highlighted'
+															: '',
+													].join(' ')}
+													onClick={(event) =>
+														!image.isSilhouette &&
+														this.handleImageClick(event, image)
+													}
+													ref={(c) => this.imageHolderRefs.set(i, c)}
+													data-id={image.id}
+												>
+													{image.isSilhouette && (
+														<div className="image-feed__image-holder__content">
+															<span>?</span>
+															<p>This could be you!</p>
+														</div>
+													)}
 
-											<img
-												className={[
-													`image-feed__image`,
-													image.isSilhouette
-														? 'image-feed__image--is-person'
-														: '',
-												].join(' ')}
-												src={imageUrl}
-												// src={`/static/newselfwales/${
-												// 	image.isSelfie ? 'selfies' : 'images'
-												// }/${image.imageUrl}`}
-												style={{
-													marginBottom: '-4px',
-												}}
-												key={`${imageUrl}-${i}`}
-												alt={imageAlt}
-											/>
-										</button>
-									</CSSTransition>
-
-									{/* {i % 20 === 0 && (
-									<div
-										style={{
-											left: `${i * 100}px`,
-											top: 0,
-											width: '1px',
-											height: '100vh',
-											backgroundColor: 'red',
-										}}
-										className="image-feed__image-holder"
-										// ref={(c) => this.imageStampRefs.set(i, c)}
-									/>
-								)} */}
+													<img
+														className={[
+															`image-feed__image`,
+															image.isSilhouette
+																? 'image-feed__image--is-person'
+																: '',
+														].join(' ')}
+														src={imageUrl}
+														// src={`/static/newselfwales/${
+														// 	image.isSelfie ? 'selfies' : 'images'
+														// }/${image.imageUrl}`}
+														style={{
+															marginBottom: '-4px',
+														}}
+														key={`${imageUrl}-${i}`}
+														alt={imageAlt}
+													/>
+												</button>
+											))}
+									</Transition>
+									{/* </CSSTransition> */}
 								</Fragment>
 							);
 						})}
