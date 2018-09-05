@@ -126,6 +126,10 @@ class ImageFeed extends Component {
 			this.props.images.forEach((image, i) =>
 				this.updateImageSizes(this.state.imageSizes, image.id, i),
 			);
+
+			this.setState({
+				isLayingOut: true,
+			});
 		}
 
 		// Hide all images, get ready to destroy thyself
@@ -203,17 +207,18 @@ class ImageFeed extends Component {
 				if (typeof this.props.onMaxImagesComplete !== 'undefined') {
 					this.props.onMaxImagesComplete();
 				}
-			} else if (this.state.isLayingOut && this.state.layingOutCounter < 2) {
+			} else if (this.state.isLayingOut) {
 				log(
 					'Still laying out, skip this interval.',
 					this.state.layingOutCounter,
 				);
 
-				// Force layout end, sometimes packery doesn't detect layout complete.
+				// Increment and force layout end after layingOutCounter is at 2
+				// Sometimes packery doesn't detect layout complete. :(
 				this.setState({
-					layingOutCounter: this.state.layingOutCounter + 1,
+					isLayingOut: this.state.layingOutCounter < 1,
 					intervalCounter: this.state.intervalCounter + 1,
-					isLayingOut: false,
+					layingOutCounter: this.state.layingOutCounter + 1,
 				});
 			} else {
 				// --------------------------------------------------------------------
@@ -269,9 +274,9 @@ class ImageFeed extends Component {
 					log('Load more images', { gap }, { fetchMoreImages });
 					this.props.onLoadMore(fetchMoreImages);
 
-					this.setState({
-						isLayingOut: true,
-					});
+					// this.setState({
+					// 	isLayingOut: true,
+					// });
 				} else {
 					this.randomlyAddToHiddenImageIds();
 				}
@@ -417,6 +422,8 @@ class ImageFeed extends Component {
 			hiddenImageIds,
 			removedImageIds,
 		} = this.state;
+
+		log(images.length);
 
 		return (
 			<div
