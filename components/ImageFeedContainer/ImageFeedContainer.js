@@ -268,7 +268,6 @@ class ImageFeedHolder extends Component {
 		currentImages: [],
 		upcomingImages: [],
 		shouldHideAllImages: false,
-		isUpcoming: false,
 	};
 
 	componentDidUpdate(prevProps) {
@@ -286,7 +285,6 @@ class ImageFeedHolder extends Component {
 						(image) => image.test === 'UPCOMING',
 					),
 					shouldHideAllImages: true,
-					isUpcoming: true,
 				});
 			} else {
 				// if (prevState.shouldHideAllImages !== this.state.shouldHideAllImages) {

@@ -51,8 +51,6 @@ class ImageFeed extends Component {
 		hiddenImageIds: [],
 		// Images to remove (return null)
 		removedImageIds: [],
-		// [id]: 'md', 'lg' or 'xlg'
-		imageSizes: {},
 		// For testing
 		highlightedImageIds: [],
 		intervalCounter: 0,
@@ -120,13 +118,6 @@ class ImageFeed extends Component {
 
 		// Track changes in images
 		if (prevProps.images !== this.props.images) {
-			// Loop through all images and set image sizes for them
-			// eg ('md', 'lg' or 'xlg').
-			// Size is only assigned once, hence why we keep it in internal state
-			// this.props.images.forEach((image, i) =>
-			// 	this.updateImageSizes(this.state.imageSizes, image.id, i),
-			// );
-
 			this.setState({
 				isLayingOut: true,
 			});
@@ -475,8 +466,6 @@ class ImageFeed extends Component {
 								return null;
 							}
 
-							// Get imageSize from internal imageSizes state
-							// const imageSize = this.state.imageSizes[image.id];
 							const { imageSize } = image;
 
 							// Work out image URL
