@@ -109,7 +109,7 @@ const INSTAGRAM_SELFIE_QUERY = gql`
 const GALLERY_SELFIE_QUERY = gql`
 	query getImage($id: Int) {
 		newSelfWales {
-			image: portrait(id: $id) {
+			image: gallerySelfie(id: $id) {
 				title
 				content
 				featuredMedia {

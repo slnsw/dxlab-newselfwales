@@ -1,4 +1,5 @@
 import { Component, Fragment } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
@@ -138,7 +139,7 @@ class ImageFeed extends Component {
 			prevProps.shouldHideAllImages === true &&
 			this.props.shouldHideAllImages === false
 		) {
-			log('start her up again!');
+			log('Start her up again!');
 			scroller.resetScrollCount();
 			this.initLoop();
 			this.setState({
@@ -286,8 +287,27 @@ class ImageFeed extends Component {
 	};
 
 	randomlyAddToHiddenImageIds = (onComplete) => {
-		const randomIndex = Math.floor(Math.random() * this.props.images.length);
-		const randomImage = this.props.images[randomIndex];
+		// Filter out hidden images
+		const images = this.props.images.filter(
+			(image) => this.state.hiddenImageIds.indexOf(image.id) === -1,
+		);
+
+		// Get random image
+		const randomIndex = Math.floor(Math.random() * images.length);
+		const randomImage = images[randomIndex];
+
+		// Work out x/y of randomly selected image
+		const randomImageRef = Array.from(this.imageHolderRefs).filter((image) => {
+			return randomImage.id === image[0];
+		})[0][1];
+		const randomImageBox = ReactDOM.findDOMNode(
+			randomImageRef,
+		).getBoundingClientRect();
+
+		// Work out if visible within viewport
+		const isVisible =
+			randomImageBox.x > 0 &&
+			randomImageBox.x + randomImageBox.width < window.innerWidth;
 
 		if (this.state.hiddenImageIds.length >= this.props.images.length) {
 			log('All images are hidden');
@@ -295,9 +315,16 @@ class ImageFeed extends Component {
 			if (typeof onComplete === 'function') {
 				onComplete();
 			}
-		} else if (this.state.hiddenImageIds.indexOf(randomImage.id) > -1) {
+		} else if (
+			isVisible === false ||
+			this.state.hiddenImageIds.indexOf(randomImage.id) > -1
+		) {
+			// Run function again if image is not visible
+			// AND
 			// Check if randomImage is already in hiddenImageIds array
-			// log('Image already in hiddenImageIds, try again.');
+			//
+			// TODO: May not need this anymore as we are filtering out
+			// hidden images earlier
 
 			this.randomlyAddToHiddenImageIds();
 		} else {
@@ -458,7 +485,7 @@ class ImageFeed extends Component {
 								<Fragment key={`image-${image.id}`}>
 									<CSSTransition
 										in={!isHidden}
-										timeout={3000}
+										timeout={2000}
 										classNames="image-feed__image-holder-"
 									>
 										<button
@@ -480,7 +507,7 @@ class ImageFeed extends Component {
 												!image.isSilhouette &&
 												this.handleImageClick(event, image)
 											}
-											ref={(c) => this.imageHolderRefs.set(i, c)}
+											ref={(c) => this.imageHolderRefs.set(image.id, c)}
 											data-id={image.id}
 										>
 											{image.isSilhouette && (
