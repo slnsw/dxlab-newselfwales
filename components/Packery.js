@@ -59,7 +59,7 @@ PackeryComponent = createReactClass({
 			if (typeof this.props.onLayoutComplete === 'function') {
 				this.packery.on('layoutComplete', this.props.onLayoutComplete);
 				// this.packery.on('removeComplete', this.props.onLayoutComplete);
-				// this.packery.on('fitComplete', this.props.onLayoutComplete);
+				this.packery.on('fitComplete', this.props.onLayoutComplete);
 			}
 
 			this.domChildren = this.getNewDomChildren();

@@ -277,6 +277,10 @@ class ImageFeedHolder extends Component {
 
 			// Check if any images have 'UPCOMING'
 			if (this.props.images.some((image) => image.test === 'UPCOMING')) {
+				// If they do, store them in upcoming and flag shouldHideAllImages to true
+				// This will trigger ImageFeed to switch UPCOMING images to CURRENT in
+				// ImageFeedContainer
+
 				this.setState({
 					upcomingImages: this.props.images.filter(
 						(image) => image.test === 'UPCOMING',
@@ -302,9 +306,16 @@ class ImageFeedHolder extends Component {
 			// );
 
 			this.setState({
-				currentImages: this.props.images.filter(
-					(image) => image.test !== 'UPCOMING',
-				),
+				currentImages: this.props.images
+					.filter((image) => image.test !== 'UPCOMING')
+					// Assign an index and imageSize
+					// NOTE: these will change if currentImages has any images removed
+					// so be careful.
+					.map((image, i) => ({
+						...image,
+						index: i,
+						imageSize: setSize(i),
+					})),
 				upcomingImages: this.props.images.filter(
 					(image) => image.test === 'UPCOMING',
 				),
@@ -414,3 +425,13 @@ const PAGE_QUERY = gql`
 `;
 
 export default ImageFeedContainer;
+
+function setSize(i) {
+	if (i % 6 === 1) {
+		return 'lg';
+	} else if (i % 10 === 1) {
+		return 'xlg';
+	}
+
+	return 'md';
+}

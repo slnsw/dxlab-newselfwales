@@ -123,9 +123,9 @@ class ImageFeed extends Component {
 			// Loop through all images and set image sizes for them
 			// eg ('md', 'lg' or 'xlg').
 			// Size is only assigned once, hence why we keep it in internal state
-			this.props.images.forEach((image, i) =>
-				this.updateImageSizes(this.state.imageSizes, image.id, i),
-			);
+			// this.props.images.forEach((image, i) =>
+			// 	this.updateImageSizes(this.state.imageSizes, image.id, i),
+			// );
 
 			this.setState({
 				isLayingOut: true,
@@ -213,10 +213,10 @@ class ImageFeed extends Component {
 					this.state.layingOutCounter,
 				);
 
-				// Increment and force layout end after layingOutCounter is at 2
+				// Increment and force layout end after one interval
 				// Sometimes packery doesn't detect layout complete. :(
 				this.setState({
-					isLayingOut: this.state.layingOutCounter < 1,
+					isLayingOut: false,
 					intervalCounter: this.state.intervalCounter + 1,
 					layingOutCounter: this.state.layingOutCounter + 1,
 				});
@@ -289,19 +289,19 @@ class ImageFeed extends Component {
 		}, this.props.intervalTime);
 	};
 
-	updateImageSizes = (imageSizes, id, index) => {
-		const size = setSize(index);
+	// updateImageSizes = (imageSizes, id, index) => {
+	// 	const size = setSize(index);
 
-		// Check if image already has size assigned
-		if (imageSizes[id] === undefined) {
-			this.setState((prevState) => ({
-				imageSizes: {
-					...prevState.imageSizes,
-					[id]: size,
-				},
-			}));
-		}
-	};
+	// 	// Check if image already has size assigned
+	// 	if (imageSizes[id] === undefined) {
+	// 		this.setState((prevState) => ({
+	// 			imageSizes: {
+	// 				...prevState.imageSizes,
+	// 				[id]: size,
+	// 			},
+	// 		}));
+	// 	}
+	// };
 
 	randomlyAddToHiddenImageIds = (onComplete) => {
 		// Filter out hidden images
@@ -354,12 +354,14 @@ class ImageFeed extends Component {
 			}));
 
 			// Add id to removedImageIds to remove from DOM and trigger layout
-			const timeout = setTimeout(() => {
+			if (this.timeout) {
+				clearTimeout(this.timeout);
+			}
+
+			this.timeout = setTimeout(() => {
 				this.setState((prevState) => ({
 					removedImageIds: [...prevState.removedImageIds, randomImage.id],
 				}));
-
-				clearTimeout(timeout);
 			}, 4000);
 		}
 	};
@@ -416,14 +418,7 @@ class ImageFeed extends Component {
 
 	render() {
 		const { loading, name, images } = this.props;
-		const {
-			isImageFeedHidden,
-			imageSizes,
-			hiddenImageIds,
-			removedImageIds,
-		} = this.state;
-
-		log(images.length);
+		const { isImageFeedHidden, hiddenImageIds, removedImageIds } = this.state;
 
 		return (
 			<div
@@ -468,7 +463,7 @@ class ImageFeed extends Component {
 					>
 						{images.map((image, i) => {
 							// Return null if there is no image or image hasn't been added to hiddenImageIds
-							if (!image.featuredMedia || !imageSizes[image.id]) {
+							if (!image.featuredMedia) {
 								return null;
 							}
 
@@ -481,7 +476,8 @@ class ImageFeed extends Component {
 							}
 
 							// Get imageSize from internal imageSizes state
-							const imageSize = this.state.imageSizes[image.id];
+							// const imageSize = this.state.imageSizes[image.id];
+							const { imageSize } = image;
 
 							// Work out image URL
 							const imageUrl =
@@ -566,13 +562,3 @@ class ImageFeed extends Component {
 }
 
 export default ImageFeed;
-
-function setSize(i) {
-	if (i % 6 === 1) {
-		return 'lg';
-	} else if (i % 10 === 1) {
-		return 'xlg';
-	}
-
-	return 'md';
-}
