@@ -343,16 +343,16 @@ class ImageFeed extends Component {
 			log('Hide image', randomImage.id, randomImage.title);
 
 			// Add id to hiddenImageIds to trigger animation
-			this.setState({
-				hiddenImageIds: [...this.state.hiddenImageIds, randomImage.id],
+			this.setState((prevState) => ({
+				hiddenImageIds: [...prevState.hiddenImageIds, randomImage.id],
 				isLayingOut: true,
-			});
+			}));
 
 			// Add id to removedImageIds to remove from DOM and trigger layout
 			const timeout = setTimeout(() => {
-				this.setState({
-					removedImageIds: [...this.state.removedImageIds, randomImage.id],
-				});
+				this.setState((prevState) => ({
+					removedImageIds: [...prevState.removedImageIds, randomImage.id],
+				}));
 
 				clearTimeout(timeout);
 			}, 4000);
