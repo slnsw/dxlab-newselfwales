@@ -9,27 +9,13 @@ import { client } from '../lib/initApollo';
 import './gallery.css';
 
 class GalleryPage extends Component {
-	state = {
-		image: null,
-	};
-
 	handleImageClick = (event, image) => {
-		// window.open(
-		// 	`https://newselfwales.dxlab.sl.nsw.gov.au/selfie/wp-admin/post.php?post=${
-		// 		image.id
-		// 	}&action=edit`,
-		// 	'_blank',
-		// );
-
-		this.setState({
-			image,
-		});
-	};
-
-	handleImageClose = () => {
-		this.setState({
-			image: null,
-		});
+		window.open(
+			`https://newselfwales.dxlab.sl.nsw.gov.au/selfie/wp-admin/post.php?post=${
+				image.id
+			}&action=edit`,
+			'_blank',
+		);
 	};
 
 	render() {
@@ -46,8 +32,6 @@ class GalleryPage extends Component {
 				},
 			},
 		} = this.props;
-
-		const { image } = this.state;
 
 		return (
 			<ApolloProvider client={client}>
@@ -87,13 +71,6 @@ class GalleryPage extends Component {
 						}
 						onImageClick={this.handleImageClick}
 					/>
-
-					{/* <ImageModalContainer
-						isActive={typeof image === 'object'}
-						id={image && image.id}
-						imageType={image && image.type}
-						onClose={this.handleImageClose}
-					/> */}
 				</App>
 			</ApolloProvider>
 		);
