@@ -116,7 +116,7 @@ class ImageFeed extends Component {
 			scroller.updateIncrement(this.props.increment);
 		}
 
-		// Update image sizes
+		// Track changes in images
 		if (prevProps.images !== this.props.images) {
 			// Loop through all images and set image sizes for them
 			// eg ('md', 'lg' or 'xlg').
@@ -255,6 +255,7 @@ class ImageFeed extends Component {
 
 					log('Load more images', { gap }, { fetchMoreImages });
 					this.props.onLoadMore(fetchMoreImages);
+
 					this.setState({
 						isLayingOut: true,
 					});
@@ -310,14 +311,12 @@ class ImageFeed extends Component {
 
 			// Add id to removedImageIds to remove from DOM and trigger layout
 			const timeout = setTimeout(() => {
-				// console.log('hi');
-
 				this.setState({
 					removedImageIds: [...this.state.removedImageIds, randomImage.id],
 				});
 
 				clearTimeout(timeout);
-			}, 3000);
+			}, 4000);
 		}
 	};
 
@@ -369,45 +368,16 @@ class ImageFeed extends Component {
 				laidOutItems,
 			});
 		}
-
-		// console.log(laidOutItems);
-		// const prevItemPositions =
-		// 	this.state.laidOutItems &&
-		// 	this.state.laidOutItems.map((image) => image.position);
-		// const currentItemPositions = laidOutItems.map((image) => image.position);
-		// const didPositionsChange =
-		// 	(JSON.stringify(prevItemPositions) ===
-		// 		JSON.stringify(currentItemPositions)) ===
-		// 	false;
-		// console.log(didPositionsChange);
-		// Check if positions changed
-		// if (didPositionsChange) {
-		// 	let max;
-		// 	if (laidOutItems.length > 0) {
-		// 		max = laidOutItems.reduce((prev, current) => {
-		// 			// if (prev && prev.rect) {
-		// 			return prev.rect.x + prev.rect.width >
-		// 				current.rect.x + current.rect.width
-		// 				? prev
-		// 				: current;
-		// 			// }
-		// 		});
-		// 		// console.log(max);
-		// 	}
-		// if (typeof onLayoutComplete !== 'undefined') {
-		// 	this.props.onLayoutComplete(laidOutItems);
-		// }
-		// console.log(
-		// 	Math.max(
-		// 		...laidOutItems.map((image) => image.rect.x + image.rect.width),
-		// 	),
-		// );
-		// }
 	};
 
 	render() {
 		const { loading, name, images } = this.props;
-		const { isImageFeedHidden } = this.state;
+		const {
+			isImageFeedHidden,
+			imageSizes,
+			hiddenImageIds,
+			removedImageIds,
+		} = this.state;
 
 		return (
 			<div
@@ -452,15 +422,14 @@ class ImageFeed extends Component {
 					>
 						{images.map((image, i) => {
 							// Return null if there is no image or image hasn't been added to hiddenImageIds
-							if (!image.featuredMedia || !this.state.imageSizes[image.id]) {
+							if (!image.featuredMedia || !imageSizes[image.id]) {
 								return null;
 							}
 
-							// console.log(this.state.imageSizes[image.id], image);
-							const isHidden = this.state.hiddenImageIds.indexOf(image.id) > -1;
-							const isRemoved =
-								this.state.removedImageIds.indexOf(image.id) > -1;
+							const isHidden = hiddenImageIds.indexOf(image.id) > -1;
+							const isRemoved = removedImageIds.indexOf(image.id) > -1;
 
+							// Remove image from DOM. Should only happen after it has been 'hidden'
 							if (isRemoved) {
 								return null;
 							}
@@ -468,12 +437,14 @@ class ImageFeed extends Component {
 							// Get imageSize from internal imageSizes state
 							const imageSize = this.state.imageSizes[image.id];
 
+							// Work out image URL
 							const imageUrl =
 								imageSize === 'md'
 									? image.featuredMedia.sizes.medium.sourceUrl
 									: image.featuredMedia.sizes.full.sourceUrl;
 							// const imageUrl = image.featuredMedia.sizes.medium.sourceUrl;
 
+							// Build image alt
 							let imageAlt;
 							if (image.type === 'portrait') {
 								imageAlt = 'Portrait from the State Library of NSW collection';
@@ -495,7 +466,6 @@ class ImageFeed extends Component {
 												'image-feed__image-holder',
 												`image-feed__image-holder--${imageSize}`,
 												`image-feed__image-holder--${image.type}`,
-												// isHidden ? 'image-feed__image-holder--exit' : '',
 												image.isSilhouette
 													? 'image-feed__image-holder--is-person'
 													: '',
@@ -539,20 +509,6 @@ class ImageFeed extends Component {
 											/>
 										</button>
 									</CSSTransition>
-
-									{/* {i % 20 === 0 && (
-									<div
-										style={{
-											left: `${i * 100}px`,
-											top: 0,
-											width: '1px',
-											height: '100vh',
-											backgroundColor: 'red',
-										}}
-										className="image-feed__image-holder"
-										// ref={(c) => this.imageStampRefs.set(i, c)}
-									/>
-								)} */}
 								</Fragment>
 							);
 						})}
