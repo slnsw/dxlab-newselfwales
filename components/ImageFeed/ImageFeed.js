@@ -57,6 +57,7 @@ class ImageFeed extends Component {
 		highlightedImageIds: [],
 		intervalCounter: 0,
 		layingOutCounter: 0,
+		refreshCounter: 0,
 	};
 
 	constructor() {
@@ -139,12 +140,20 @@ class ImageFeed extends Component {
 			prevProps.shouldHideAllImages === true &&
 			this.props.shouldHideAllImages === false
 		) {
-			log('Start her up again!');
+			console.log(
+				`%c Refresh and start up again ${this.state.refreshCounter} `,
+				'background-color: #e6007e; color: #FFFFFF',
+			);
+
 			scroller.resetScrollCount();
 			this.initLoop();
+
 			this.setState({
 				hiddenImageIds: [],
+				removedImageIds: [],
 				isImageFeedHidden: false,
+				intervalCounter: 0,
+				refreshCounter: this.state.refreshCounter + 1,
 			});
 		}
 
@@ -160,7 +169,9 @@ class ImageFeed extends Component {
 		// Set up repeating interval loop to add and remove images
 		this.interval = setInterval(() => {
 			console.log(
-				`%c Start Loop ${this.state.intervalCounter}`,
+				`%c Interval ${this.state.intervalCounter} (${
+					this.state.refreshCounter
+				})`,
 				'color: #e6007e',
 			);
 
@@ -201,6 +212,7 @@ class ImageFeed extends Component {
 				// Force layout end, sometimes packery doesn't detect layout complete.
 				this.setState({
 					layingOutCounter: this.state.layingOutCounter + 1,
+					intervalCounter: this.state.intervalCounter + 1,
 					isLayingOut: false,
 				});
 			} else {
