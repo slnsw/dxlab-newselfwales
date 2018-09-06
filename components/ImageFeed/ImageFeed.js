@@ -252,7 +252,9 @@ class ImageFeed extends Component {
 					// Check if same as previous fetch, otherwise it will keep on trying to fetch more
 
 					// Work out how many more images to fetch
-					const gapConstant = Math.ceil(Math.abs(gap) / 50);
+					const gapConstant = Math.ceil(
+						Math.abs(this.props.loadMoreGap - gap) / 50,
+					);
 					const fetchMoreImages = gapConstant * 4;
 					// WIP
 					// Make sure we don't fetch more than maxImages
