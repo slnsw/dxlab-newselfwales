@@ -154,25 +154,28 @@ class ImageFeedContainer extends Component {
 
 					const { feed = [] } = data;
 
-					let images = feed.map((image) => {
-						// Set image type
-						let type;
+					let images = dedupeByField(
+						feed.map((image) => {
+							// Set image type
+							let type;
 
-						/* eslint-disable no-underscore-dangle */
-						const { __typename } = image;
-						if (__typename === 'NewSelfWalesPortrait') {
-							type = 'portrait';
-						} else if (__typename === 'NewSelfWalesInstagramSelfie') {
-							type = 'instagram-selfie';
-						} else if (__typename === 'NewSelfWalesGallerySelfie') {
-							type = 'gallery-selfie';
-						}
+							/* eslint-disable no-underscore-dangle */
+							const { __typename } = image;
+							if (__typename === 'NewSelfWalesPortrait') {
+								type = 'portrait';
+							} else if (__typename === 'NewSelfWalesInstagramSelfie') {
+								type = 'instagram-selfie';
+							} else if (__typename === 'NewSelfWalesGallerySelfie') {
+								type = 'gallery-selfie';
+							}
 
-						return {
-							...image,
-							type,
-						};
-					});
+							return {
+								...image,
+								type,
+							};
+						}),
+						'id',
+					);
 
 					// Run extra functions on images
 					if (typeof onImagesUpdate === 'function') {
@@ -218,14 +221,17 @@ class ImageFeedContainer extends Component {
 										if (currentOrUpcoming === 'REMOVE_CURRENT') {
 											// Remove CURRENT ones, keeping UPCOMING
 											// then change UPCOMING images them to CURRENT!
-											newFeed = [
-												...prev.feed
-													.filter((image) => image.test === 'UPCOMING')
-													.map((image) => ({
-														...image,
-														test: 'CURRENT',
-													})),
-											];
+											newFeed = dedupeByField(
+												[
+													...prev.feed
+														.filter((image) => image.test === 'UPCOMING')
+														.map((image) => ({
+															...image,
+															test: 'CURRENT',
+														})),
+												],
+												'id',
+											);
 										} else {
 											newFeed = dedupeByField(
 												[
