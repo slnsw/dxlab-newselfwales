@@ -294,7 +294,7 @@ class ImageFeed extends Component {
 	// 	}
 	// };
 
-	randomlyAddToHiddenImageIds = (onComplete) => {
+	randomlyAddToHiddenImageIds = (onComplete, count = 0) => {
 		// Filter out hidden images
 		const images = this.props.images.filter(
 			(image) => this.state.hiddenImageIds.indexOf(image.id) === -1,
@@ -313,9 +313,13 @@ class ImageFeed extends Component {
 		).getBoundingClientRect();
 
 		// Work out if visible within viewport
-		const isVisible =
-			randomImageBox.x > 0 &&
-			randomImageBox.x + randomImageBox.width < window.innerWidth;
+		// NOTE: Use this once image fade is more solid
+		// const isVisible =
+		// 	randomImageBox.x > 0 &&
+		// 	randomImageBox.x + randomImageBox.width < window.innerWidth;
+
+		// Work out if leftOfViewport
+		const isLeftOfViewport = randomImageBox.x + randomImageBox.width < 0;
 
 		if (this.state.hiddenImageIds.length >= this.props.images.length) {
 			log('All images are hidden');
@@ -323,18 +327,21 @@ class ImageFeed extends Component {
 			if (typeof onComplete === 'function') {
 				onComplete();
 			}
+		} else if (count > this.props.maxImages.length) {
+			log('No images available to make hidden', count);
 		} else if (
-			isVisible === false ||
+			// isVisible === false ||
+			isLeftOfViewport === false ||
 			this.state.hiddenImageIds.indexOf(randomImage.id) > -1
 		) {
-			// Run function again if image is not visible
+			// Run function again if image is not left of viewport
 			// AND
 			// Check if randomImage is already in hiddenImageIds array
 			//
 			// TODO: May not need this anymore as we are filtering out
 			// hidden images earlier
 
-			this.randomlyAddToHiddenImageIds();
+			this.randomlyAddToHiddenImageIds(onComplete, count + 1);
 		} else {
 			log('Hide image', randomImage.id, randomImage.title);
 
