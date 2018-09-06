@@ -26,6 +26,7 @@ class ImageFeed extends Component {
 		axis: PropTypes.string,
 		shouldHideAllImages: PropTypes.bool,
 		loadMoreGap: PropTypes.number,
+		marginBottom: PropTypes.string,
 		onLoadMore: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
@@ -40,6 +41,8 @@ class ImageFeed extends Component {
 		intervalTime: 10000,
 		shouldHideAllImages: false,
 		loadMoreGap: -400,
+		marginTop: '5px',
+		heightAdjust: '-10px',
 	};
 
 	state = {
@@ -419,8 +422,10 @@ class ImageFeed extends Component {
 	};
 
 	render() {
-		const { loading, name, images } = this.props;
+		const { loading, name, images, marginTop, heightAdjust } = this.props;
 		const { isImageFeedHidden, hiddenImageIds, removedImageIds } = this.state;
+
+		console.log(marginTop);
 
 		return (
 			<div
@@ -446,8 +451,8 @@ class ImageFeed extends Component {
 							this.imagesRef[name] = element;
 						}}
 						style={{
-							marginTop: '5px',
-							height: 'calc(100vh - 10px)',
+							marginTop,
+							height: `calc(100vh + ${heightAdjust})`,
 						}}
 						options={{
 							itemSelector: '.image-feed__image-holder',

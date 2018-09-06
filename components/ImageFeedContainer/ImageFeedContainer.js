@@ -184,6 +184,7 @@ class ImageFeedContainer extends Component {
 
 					return (
 						<ImageFeedHolder
+							{...this.props}
 							loading={loading}
 							status={status}
 							name={name}
