@@ -360,7 +360,9 @@ class ImageFeed extends Component {
 				this.setState((prevState) => ({
 					removedImageIds: [...prevState.removedImageIds, randomImage.id],
 				}));
-			}, 4000);
+				// NOTE: This was previously 4000, but since we are only hiding images left
+				// of the viewport, lets keep it short for now.
+			}, 50);
 		}
 	};
 
