@@ -40,7 +40,7 @@ class ImageFeedContainer extends Component {
 		status: 'CURRENT', // or UPCOMING
 	};
 
-	componentDidMount() {
+	async componentDidMount() {
 		log('mount');
 
 		window.addEventListener('keyup', this.handleKey, true);
@@ -269,8 +269,6 @@ class ImageFeedHolder extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		console.log(prevProps.images === this.props.images);
-
 		if (prevProps.images !== this.props.images) {
 			log('Total images', this.props.images.length);
 

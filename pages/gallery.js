@@ -37,8 +37,6 @@ class GalleryPage extends Component {
 			},
 		} = this.props;
 
-		console.log(this.props);
-
 		return (
 			<ApolloProvider client={client}>
 				<App>
