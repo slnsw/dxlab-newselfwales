@@ -20,7 +20,6 @@ class ImageFeedContainer extends Component {
 		maxImages: PropTypes.number,
 		startImages: PropTypes.number,
 		loadMoreGap: PropTypes.number,
-		// fetchMoreImages: PropTypes.number,
 		onImagesUpdate: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
@@ -31,7 +30,6 @@ class ImageFeedContainer extends Component {
 		enableAnimation: undefined,
 		maxImages: 1000,
 		startImages: 50,
-		// fetchMoreImages: 10,
 		intervalTime: 10000,
 	};
 
@@ -52,11 +50,6 @@ class ImageFeedContainer extends Component {
 				enableAnimation: this.props.enableAnimation,
 			});
 		}
-
-		// const timeout = setTimeout(() => {
-		// 	console.log(this.props.);
-
-		// }, timeout);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -276,6 +269,8 @@ class ImageFeedHolder extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
+		console.log(prevProps.images === this.props.images);
+
 		if (prevProps.images !== this.props.images) {
 			log('Total images', this.props.images.length);
 
@@ -292,9 +287,6 @@ class ImageFeedHolder extends Component {
 					shouldHideAllImages: true,
 				});
 			} else {
-				// if (prevState.shouldHideAllImages !== this.state.shouldHideAllImages) {
-				// 	log('hi');
-				// }
 				this.setState({
 					currentImages: this.props.images
 						.filter((image) => image.test !== 'UPCOMING')
