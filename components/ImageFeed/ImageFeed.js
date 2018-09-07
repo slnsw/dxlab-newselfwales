@@ -267,7 +267,8 @@ class ImageFeed extends Component {
 					// 		: fetchMoreImagesCheck;
 
 					log('Load more images', { gap }, { fetchMoreImages });
-					this.props.onLoadMore(fetchMoreImages);
+					// this.props.onLoadMore(fetchMoreImages);
+					this.props.onLoadMore({ limit: fetchMoreImages });
 
 					// this.setState({
 					// 	isLayingOut: true,
