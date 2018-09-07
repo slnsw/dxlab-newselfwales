@@ -177,13 +177,10 @@ class ImageFeed extends Component {
 
 			if (this.props.loading) {
 				// --------------------------------------------------------------------
-				// Skip if loading or laying out
+				// Skip if loading
 				// --------------------------------------------------------------------
 
-				// if (this.props.loading) {
 				log('Still loading, skip this interval.');
-				// } else if (this.state.isLayingOut) {
-				// }
 			} else if (this.props.images.length >= this.props.maxImages) {
 				// --------------------------------------------------------------------
 				// maxImages is reached. Trigger loading of UPCOMING images.
@@ -302,10 +299,16 @@ class ImageFeed extends Component {
 	// };
 
 	randomlyAddToHiddenImageIds = (onComplete, count = 0) => {
-		// Filter out hidden images
-		const images = this.props.images.filter(
-			(image) => this.state.hiddenImageIds.indexOf(image.id) === -1,
-		);
+		// console.log(this.state.hiddenImageIds.indexOf(1));
+
+		// Filter out hidden images, making sure to not run indexOf if
+		// hiddenImageIds is empty
+		const images =
+			this.state.hiddenImageIds.length > 0
+				? this.props.images.filter(
+						(image) => this.state.hiddenImageIds.indexOf(image.id) === -1,
+					)
+				: this.props.images;
 
 		// Get random image
 		const randomIndex = Math.floor(Math.random() * images.length);
@@ -334,20 +337,15 @@ class ImageFeed extends Component {
 			if (typeof onComplete === 'function') {
 				onComplete();
 			}
-		} else if (count > this.props.maxImages.length) {
+		} else if (count > this.props.maxImages || count > 500) {
 			log('No images available to make hidden', count);
 		} else if (
 			// isVisible === false ||
-			isLeftOfViewport === false ||
-			this.state.hiddenImageIds.indexOf(randomImage.id) > -1
+			isLeftOfViewport === false
 		) {
 			// Run function again if image is not left of viewport
 			// AND
 			// Check if randomImage is already in hiddenImageIds array
-			//
-			// TODO: May not need this anymore as we are filtering out
-			// hidden images earlier
-
 			this.randomlyAddToHiddenImageIds(onComplete, count + 1);
 		} else {
 			log('Hide image', randomImage.id, randomImage.title);
