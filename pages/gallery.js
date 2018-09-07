@@ -23,7 +23,7 @@ class GalleryPage extends Component {
 			url: {
 				query: {
 					enableAnimation = 'true',
-					startImages = 20,
+					startImages,
 					maxImages = 100,
 					increment = 0.5,
 					intervalTime,

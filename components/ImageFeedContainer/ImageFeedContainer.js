@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 import './ImageFeedContainer.css';
 import ImageFeed from '../ImageFeed';
 import { dedupeByField } from '../../lib/dedupe';
+import { getDate } from '../../lib/date';
 import logBase from '../../lib/log';
 
 const log = (...args) => {
@@ -140,8 +141,7 @@ class ImageFeedContainer extends Component {
 				variables={{
 					offset: 0,
 					limit: startImages,
-					// dateStart: '2018-05-17T00:00:00',
-					dateStart: new Date().toISOString(),
+					dateStart: getDate(-120),
 					portraitPercentage: 0.6,
 				}}
 				notifyOnNetworkStatusChange={false}
@@ -204,16 +204,14 @@ class ImageFeedContainer extends Component {
 									variables: {
 										offset: images.length,
 										limit: fetchMoreImages >= 100 ? 100 : fetchMoreImages,
-										dateStart: new Date().toISOString(),
+										dateStart: getDate(-120),
 										portraitPercentage: 0.4,
 									},
 									updateQuery: (prev, { fetchMoreResult }) => {
 										if (!fetchMoreResult) return prev;
 
 										// Log out image types
-										// console.log(
-										// 	fetchMoreResult.feed.map((f) => f.__typename),
-										// );
+										// log(fetchMoreResult.feed.map((f) => f.__typename));
 
 										log(currentOrUpcoming);
 
@@ -298,33 +296,19 @@ class ImageFeedHolder extends Component {
 				// 	log('hi');
 				// }
 				this.setState({
-					currentImages: this.props.images.filter(
-						(image) => image.test !== 'UPCOMING',
-					),
+					currentImages: this.props.images
+						.filter((image) => image.test !== 'UPCOMING')
+						// Assign an index and imageSize
+						// NOTE: these will change if currentImages has any images removed
+						// so be careful.
+						.map((image, i) => ({
+							...image,
+							index: i,
+							imageSize: setSize(i),
+						})),
 					shouldHideAllImages: false,
 				});
 			}
-
-			// log('UPCOMING');
-			// console.log(
-			// 	this.props.images.filter((image) => image.test === 'UPCOMING'),
-			// );
-
-			this.setState({
-				currentImages: this.props.images
-					.filter((image) => image.test !== 'UPCOMING')
-					// Assign an index and imageSize
-					// NOTE: these will change if currentImages has any images removed
-					// so be careful.
-					.map((image, i) => ({
-						...image,
-						index: i,
-						imageSize: setSize(i),
-					})),
-				upcomingImages: this.props.images.filter(
-					(image) => image.test === 'UPCOMING',
-				),
-			});
 		}
 	}
 

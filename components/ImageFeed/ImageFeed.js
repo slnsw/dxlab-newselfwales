@@ -79,6 +79,8 @@ class ImageFeed extends Component {
 			intervalTime: this.props.intervalTime,
 			increment: this.props.increment,
 			loadMoreGap: this.props.loadMoreGap,
+			marginBottom: this.props.marginBottom,
+			heightAdjust: this.props.heightAdjust,
 		});
 	}
 
@@ -424,8 +426,6 @@ class ImageFeed extends Component {
 	render() {
 		const { loading, name, images, marginTop, heightAdjust } = this.props;
 		const { isImageFeedHidden, hiddenImageIds, removedImageIds } = this.state;
-
-		console.log(marginTop);
 
 		return (
 			<div
