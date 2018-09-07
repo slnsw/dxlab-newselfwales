@@ -26,6 +26,7 @@ class ImageFeed extends Component {
 		axis: PropTypes.string,
 		shouldHideAllImages: PropTypes.bool,
 		loadMoreGap: PropTypes.number,
+		marginBottom: PropTypes.string,
 		onLoadMore: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
@@ -40,6 +41,8 @@ class ImageFeed extends Component {
 		intervalTime: 10000,
 		shouldHideAllImages: false,
 		loadMoreGap: -400,
+		marginTop: '5px',
+		heightAdjust: '-10px',
 	};
 
 	state = {
@@ -76,6 +79,8 @@ class ImageFeed extends Component {
 			intervalTime: this.props.intervalTime,
 			increment: this.props.increment,
 			loadMoreGap: this.props.loadMoreGap,
+			marginBottom: this.props.marginBottom,
+			heightAdjust: this.props.heightAdjust,
 		});
 	}
 
@@ -172,13 +177,10 @@ class ImageFeed extends Component {
 
 			if (this.props.loading) {
 				// --------------------------------------------------------------------
-				// Skip if loading or laying out
+				// Skip if loading
 				// --------------------------------------------------------------------
 
-				// if (this.props.loading) {
 				log('Still loading, skip this interval.');
-				// } else if (this.state.isLayingOut) {
-				// }
 			} else if (this.props.images.length >= this.props.maxImages) {
 				// --------------------------------------------------------------------
 				// maxImages is reached. Trigger loading of UPCOMING images.
@@ -297,10 +299,16 @@ class ImageFeed extends Component {
 	// };
 
 	randomlyAddToHiddenImageIds = (onComplete, count = 0) => {
-		// Filter out hidden images
-		const images = this.props.images.filter(
-			(image) => this.state.hiddenImageIds.indexOf(image.id) === -1,
-		);
+		// console.log(this.state.hiddenImageIds.indexOf(1));
+
+		// Filter out hidden images, making sure to not run indexOf if
+		// hiddenImageIds is empty
+		const images =
+			this.state.hiddenImageIds.length > 0
+				? this.props.images.filter(
+						(image) => this.state.hiddenImageIds.indexOf(image.id) === -1,
+					)
+				: this.props.images;
 
 		// Get random image
 		const randomIndex = Math.floor(Math.random() * images.length);
@@ -329,20 +337,15 @@ class ImageFeed extends Component {
 			if (typeof onComplete === 'function') {
 				onComplete();
 			}
-		} else if (count > this.props.maxImages.length) {
+		} else if (count > this.props.maxImages || count > 500) {
 			log('No images available to make hidden', count);
 		} else if (
 			// isVisible === false ||
-			isLeftOfViewport === false ||
-			this.state.hiddenImageIds.indexOf(randomImage.id) > -1
+			isLeftOfViewport === false
 		) {
 			// Run function again if image is not left of viewport
 			// AND
 			// Check if randomImage is already in hiddenImageIds array
-			//
-			// TODO: May not need this anymore as we are filtering out
-			// hidden images earlier
-
 			this.randomlyAddToHiddenImageIds(onComplete, count + 1);
 		} else {
 			log('Hide image', randomImage.id, randomImage.title);
@@ -419,7 +422,7 @@ class ImageFeed extends Component {
 	};
 
 	render() {
-		const { loading, name, images } = this.props;
+		const { loading, name, images, marginTop, heightAdjust } = this.props;
 		const { isImageFeedHidden, hiddenImageIds, removedImageIds } = this.state;
 
 		return (
@@ -446,8 +449,8 @@ class ImageFeed extends Component {
 							this.imagesRef[name] = element;
 						}}
 						style={{
-							marginTop: '5px',
-							height: 'calc(100vh - 10px)',
+							marginTop,
+							height: `calc(100vh + ${heightAdjust})`,
 						}}
 						options={{
 							itemSelector: '.image-feed__image-holder',

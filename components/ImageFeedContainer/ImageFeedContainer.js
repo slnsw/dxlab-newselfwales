@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 import './ImageFeedContainer.css';
 import ImageFeed from '../ImageFeed';
 import { dedupeByField } from '../../lib/dedupe';
+import { getDate } from '../../lib/date';
 import logBase from '../../lib/log';
 
 const log = (...args) => {
@@ -19,7 +20,6 @@ class ImageFeedContainer extends Component {
 		maxImages: PropTypes.number,
 		startImages: PropTypes.number,
 		loadMoreGap: PropTypes.number,
-		// fetchMoreImages: PropTypes.number,
 		onImagesUpdate: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
@@ -30,7 +30,6 @@ class ImageFeedContainer extends Component {
 		enableAnimation: undefined,
 		maxImages: 1000,
 		startImages: 50,
-		// fetchMoreImages: 10,
 		intervalTime: 10000,
 	};
 
@@ -51,11 +50,6 @@ class ImageFeedContainer extends Component {
 				enableAnimation: this.props.enableAnimation,
 			});
 		}
-
-		// const timeout = setTimeout(() => {
-		// 	console.log(this.props.);
-
-		// }, timeout);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -140,8 +134,7 @@ class ImageFeedContainer extends Component {
 				variables={{
 					offset: 0,
 					limit: startImages,
-					// dateStart: '2018-05-17T00:00:00',
-					dateStart: new Date().toISOString(),
+					dateStart: getDate(-120),
 					portraitPercentage: 0.6,
 				}}
 				notifyOnNetworkStatusChange={false}
@@ -184,6 +177,7 @@ class ImageFeedContainer extends Component {
 
 					return (
 						<ImageFeedHolder
+							{...this.props}
 							loading={loading}
 							status={status}
 							name={name}
@@ -203,16 +197,14 @@ class ImageFeedContainer extends Component {
 									variables: {
 										offset: images.length,
 										limit: fetchMoreImages >= 100 ? 100 : fetchMoreImages,
-										dateStart: new Date().toISOString(),
+										dateStart: getDate(-120),
 										portraitPercentage: 0.4,
 									},
 									updateQuery: (prev, { fetchMoreResult }) => {
 										if (!fetchMoreResult) return prev;
 
 										// Log out image types
-										// console.log(
-										// 	fetchMoreResult.feed.map((f) => f.__typename),
-										// );
+										// log(fetchMoreResult.feed.map((f) => f.__typename));
 
 										log(currentOrUpcoming);
 
@@ -277,6 +269,8 @@ class ImageFeedHolder extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
+		console.log(prevProps.images === this.props.images);
+
 		if (prevProps.images !== this.props.images) {
 			log('Total images', this.props.images.length);
 
@@ -293,37 +287,20 @@ class ImageFeedHolder extends Component {
 					shouldHideAllImages: true,
 				});
 			} else {
-				// if (prevState.shouldHideAllImages !== this.state.shouldHideAllImages) {
-				// 	log('hi');
-				// }
 				this.setState({
-					currentImages: this.props.images.filter(
-						(image) => image.test !== 'UPCOMING',
-					),
+					currentImages: this.props.images
+						.filter((image) => image.test !== 'UPCOMING')
+						// Assign an index and imageSize
+						// NOTE: these will change if currentImages has any images removed
+						// so be careful.
+						.map((image, i) => ({
+							...image,
+							index: i,
+							imageSize: setSize(i),
+						})),
 					shouldHideAllImages: false,
 				});
 			}
-
-			// log('UPCOMING');
-			// console.log(
-			// 	this.props.images.filter((image) => image.test === 'UPCOMING'),
-			// );
-
-			this.setState({
-				currentImages: this.props.images
-					.filter((image) => image.test !== 'UPCOMING')
-					// Assign an index and imageSize
-					// NOTE: these will change if currentImages has any images removed
-					// so be careful.
-					.map((image, i) => ({
-						...image,
-						index: i,
-						imageSize: setSize(i),
-					})),
-				upcomingImages: this.props.images.filter(
-					(image) => image.test === 'UPCOMING',
-				),
-			});
 		}
 	}
 

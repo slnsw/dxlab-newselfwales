@@ -25,12 +25,14 @@ class GalleryPage extends Component {
 			url: {
 				query: {
 					enableAnimation = 'true',
-					startImages = 20,
+					startImages,
 					maxImages = 100,
 					increment = 0.5,
 					intervalTime,
 					fetchMoreImages,
 					loadMoreGap,
+					marginTop,
+					heightAdjust,
 				},
 			},
 		} = this.props;
@@ -73,6 +75,8 @@ class GalleryPage extends Component {
 								? parseInt(loadMoreGap, 10)
 								: loadMoreGap
 						}
+						marginTop={marginTop}
+						heightAdjust={heightAdjust}
 						onImageClick={this.handleImageClick}
 					/>
 				</App>
