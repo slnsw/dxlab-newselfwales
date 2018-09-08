@@ -7,6 +7,7 @@ import Packery from '../Packery';
 // import NewSelfWalesLogo from '../NewSelfWalesLogo';
 import { scroller } from '../../lib/scroll';
 import logBase from '../../lib/log';
+import { getDate } from '../../lib/date';
 import './ImageFeed.css';
 
 const log = (...args) => {
@@ -15,7 +16,7 @@ const log = (...args) => {
 
 class ImageFeed extends Component {
 	static propTypes = {
-		loading: PropTypes.bool,
+		isLoading: PropTypes.bool,
 		name: PropTypes.string.isRequired,
 		enableAnimation: PropTypes.bool,
 		images: PropTypes.array,
@@ -175,7 +176,7 @@ class ImageFeed extends Component {
 				'color: #e6007e',
 			);
 
-			if (this.props.loading) {
+			if (this.props.isLoading) {
 				// --------------------------------------------------------------------
 				// Skip if loading
 				// --------------------------------------------------------------------
@@ -195,7 +196,7 @@ class ImageFeed extends Component {
 
 				// Trigger ImageFeedContainer to load more images for UPCOMING update
 				log('Load more images in the background', this.props.startImages);
-				this.props.onLoadMore(this.props.startImages, 'UPCOMING');
+				// this.props.onLoadMore(this.props.startImages, 'UPCOMING');
 
 				if (typeof this.props.onMaxImagesComplete !== 'undefined') {
 					this.props.onMaxImagesComplete();
@@ -268,7 +269,11 @@ class ImageFeed extends Component {
 
 					log('Load more images', { gap }, { fetchMoreImages });
 					// this.props.onLoadMore(fetchMoreImages);
-					this.props.onLoadMore({ limit: fetchMoreImages });
+					this.props.onLoadMore({
+						limit: fetchMoreImages,
+						portraitPercentage: 0.4,
+						dateStart: getDate(-120),
+					});
 
 					// this.setState({
 					// 	isLayingOut: true,
@@ -390,12 +395,16 @@ class ImageFeed extends Component {
 		// 	});
 		// }, intervalTime);
 
-		const timeout = setTimeout(() => {
-			// Tell container to remove all non-upcoming images
-			this.props.onLoadMore(0, 'REMOVE_CURRENT');
+		if (typeof this.props.onHideAllImagesComplete === 'function') {
+			const timeout = setTimeout(() => {
+				// Tell container to remove all non-upcoming images
+				// this.props.onLoadMore(0, 'REMOVE_CURRENT');
 
-			clearTimeout(timeout);
-		}, 500);
+				this.props.onHideAllImagesComplete();
+
+				clearTimeout(timeout);
+			}, 1000);
+		}
 	};
 
 	handleImageClick = (event, image) => {
@@ -423,7 +432,7 @@ class ImageFeed extends Component {
 	};
 
 	render() {
-		const { loading, name, images, marginTop, heightAdjust } = this.props;
+		const { isLoading, name, images, marginTop, heightAdjust } = this.props;
 		const { isImageFeedHidden, hiddenImageIds, removedImageIds } = this.state;
 
 		return (
@@ -434,7 +443,7 @@ class ImageFeed extends Component {
 					name ? `image-feed--${name}` : '',
 				].join(' ')}
 			>
-				{loading && (
+				{isLoading && (
 					<div className="image-feed__loading">
 						<div className="image-feed__loading-content">
 							{/* <NewSelfWalesLogo /> */}

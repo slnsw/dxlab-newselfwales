@@ -5,10 +5,15 @@ import { client } from '../lib/initApollo';
 // IMAGE FEED ACTIONS
 // ----------------------------------------------------------------------------
 
-export const fetchImages = ({ limit, dateStart, portraitPercentage }) => (
-	dispatch,
-) => {
-	dispatch({ type: 'FETCH_IMAGES_REQUEST' });
+export const fetchImages = ({
+	limit,
+	dateStart,
+	portraitPercentage,
+	isUpcoming = false,
+}) => (dispatch) => {
+	dispatch({
+		type: isUpcoming ? 'FETCH_UPCOMING_IMAGES_REQUEST' : 'FETCH_IMAGES_REQUEST',
+	});
 
 	return client
 		.query({
@@ -19,9 +24,21 @@ export const fetchImages = ({ limit, dateStart, portraitPercentage }) => (
 				portraitPercentage,
 			},
 		})
-		.then((data) => dispatch({ type: 'FETCH_IMAGES_SUCCESS', payload: data }))
+		.then((data) =>
+			dispatch({
+				type: isUpcoming
+					? 'FETCH_UPCOMING_IMAGES_SUCCESS'
+					: 'FETCH_IMAGES_SUCCESS',
+				payload: data,
+			}),
+		)
 		.catch((error) =>
-			dispatch({ type: 'FETCH_IMAGES_FAILURE', payload: error }),
+			dispatch({
+				type: isUpcoming
+					? 'FETCH_UPCOMING_IMAGES_FAILURE'
+					: 'FETCH_IMAGES_FAILURE',
+				payload: error,
+			}),
 		);
 };
 

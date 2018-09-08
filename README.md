@@ -34,7 +34,7 @@ The ImageFeed loop ticks every 10 seconds.
 
 #### A. Initial Fetch
 
-1. ImageFeedContainer: On first mount, `FETCH_INITIAL_IMAGES` into `currentImages` and `spareImages`.
+1. ImageFeedContainer: On first mount, `FETCH_IMAGES` into `currentImages` and `spareImages`.
 2. ImageFeed: Receive images and start loop interval.
 
 #### B. Fetch Loop
@@ -49,7 +49,7 @@ The ImageFeed loop ticks every 10 seconds.
 #### C. Max Images Reached Loop
 
 1. ImageFeed: On loop interval, if `images` amount is greater than `maxImages`, send `MAX_IMAGES_REACHED`.
-2. ImageFeedContainer: This should trigger `FETCH_UPCOMING_IMAGES` using `startImages` amount.
+2. ImageFeedContainer: This should trigger `FETCH_UPCOMING_IMAGES` using `startImages` amount into `upcomingImages`.
 3. ImageFeedContainer: When ready, send `UPCOMING_IMAGES_READY` to ImageFeed.
 4. ImageFeed: On loop interval, check `emptyGap`. If it is greater than 0, send `RESET_IMAGES`, triggering animate out.
 5. ImageFeed: On animate out end, send `CLEAR_CURRENT_IMAGES` and then `GET_UPCOMING_IMAGES`.
@@ -65,6 +65,12 @@ The ImageFeed loop ticks every 10 seconds.
 
 1. ImageFeed: On loop interval, if there is a network error, send `GET_SPARE_IMAGES` and set `NETWORK_STATUS` to be `error`.
 2. ImageFeed: If network is back on, set `NETWORK_STATUS` to be `normal`.
+
+### Hardware Notes
+
+* Projectors should turn on before PC to ensure mosaic mode is active on startup
+* Unplug mouse to ensure pointer is not visible on screen
+* Startup loads Chrome in full screen kiosk mode
 
 # TODO
 
