@@ -10,7 +10,7 @@ const initialState = {
 	currentImages: [],
 	upcomingImage: [],
 	spareImages: [],
-	isUpcomingImagesReady: false,
+	status: 'CURRENT_IMAGES',
 };
 
 // REDUCERS
@@ -78,7 +78,7 @@ export default (state = initialState, action) => {
 						index: i,
 						imageSize: setSize(i),
 					})),
-				isUpcomingImagesReady: true,
+				status: 'UPCOMING_IMAGES_READY',
 			};
 
 		case 'FETCH_UPCOMING_IMAGES_FAILURE':
@@ -103,7 +103,7 @@ export default (state = initialState, action) => {
 				...state,
 				upcomingImages: [],
 				currentImages: state.upcomingImages,
-				isUpcomingImagesReady: false,
+				status: 'CURRENT_IMAGES',
 			};
 
 		default:

@@ -25,7 +25,7 @@ class ImageFeed extends Component {
 		intervalTime: PropTypes.number,
 		increment: PropTypes.number,
 		axis: PropTypes.string,
-		shouldHideAllImages: PropTypes.bool,
+		status: PropTypes.string,
 		loadMoreGap: PropTypes.number,
 		marginBottom: PropTypes.string,
 		onLoadMore: PropTypes.func,
@@ -40,8 +40,8 @@ class ImageFeed extends Component {
 		maxImages: 1000,
 		increment: 0.5,
 		intervalTime: 10000,
-		shouldHideAllImages: false,
 		loadMoreGap: -400,
+		status: 'CURRENT_IMAGES',
 		marginTop: '5px',
 		heightAdjust: '-10px',
 	};
@@ -73,10 +73,10 @@ class ImageFeed extends Component {
 	componentDidMount() {
 		log('mount', {
 			images: this.props.images,
+			name: this.props.name,
 			enableAnimation: this.props.enableAnimation,
 			maxImages: this.props.maxImages,
 			startImages: this.props.startImages,
-			name: this.props.name,
 			intervalTime: this.props.intervalTime,
 			increment: this.props.increment,
 			loadMoreGap: this.props.loadMoreGap,
@@ -131,15 +131,15 @@ class ImageFeed extends Component {
 
 		// Hide all images, get ready to destroy thyself
 		if (
-			prevProps.shouldHideAllImages === false &&
-			this.props.shouldHideAllImages
+			prevProps.status !== 'UPCOMING_IMAGES_READY' &&
+			this.props.status === 'UPCOMING_IMAGES_READY'
 		) {
 			this.hideAllImages();
 		}
 
 		if (
-			prevProps.shouldHideAllImages === true &&
-			this.props.shouldHideAllImages === false
+			prevProps.status === 'UPCOMING_IMAGES_READY' &&
+			this.props.status === 'CURRENT_IMAGES'
 		) {
 			console.log(
 				`%c Refresh and start up again ${this.state.refreshCounter} `,

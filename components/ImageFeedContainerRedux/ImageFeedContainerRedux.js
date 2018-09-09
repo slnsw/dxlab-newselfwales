@@ -55,13 +55,13 @@ class ImageFeedContainerRedux extends Component {
 	};
 
 	render() {
-		const { currentImages, isUpcomingImagesReady } = this.props;
+		const { currentImages, status } = this.props;
 
 		return (
 			<ImageFeed
 				{...this.props}
 				images={currentImages}
-				shouldHideAllImages={isUpcomingImagesReady}
+				status={status}
 				onLoadMore={this.handleFetchImages}
 				onMaxImagesComplete={this.handleMaxImagesComplete}
 				onHideAllImagesComplete={this.handleHideAllImagesComplete}
