@@ -49,8 +49,10 @@ class ImageFeed extends Component {
 	state = {
 		// Packery items
 		laidOutItems: undefined,
+		// Internal state flags
 		isLayingOut: false,
 		isImageFeedHidden: false,
+		shouldHideAllWhenReady: false,
 		// Images to hide (CSS display: none)
 		hiddenImageIds: [],
 		// Images to remove (return null)
@@ -134,7 +136,11 @@ class ImageFeed extends Component {
 			prevProps.status !== 'UPCOMING_IMAGES_READY' &&
 			this.props.status === 'UPCOMING_IMAGES_READY'
 		) {
-			this.hideAllImages();
+			// this.hideAllImages();
+
+			this.setState({
+				shouldHideAllWhenReady: true,
+			});
 		}
 
 		if (
@@ -147,7 +153,7 @@ class ImageFeed extends Component {
 			);
 
 			scroller.resetScrollCount();
-			this.initLoop();
+			// this.initLoop();
 
 			this.setState({
 				hiddenImageIds: [],
@@ -155,6 +161,7 @@ class ImageFeed extends Component {
 				isImageFeedHidden: false,
 				intervalCounter: 0,
 				refreshCounter: this.state.refreshCounter + 1,
+				shouldHideAllWhenReady: false,
 			});
 		}
 
@@ -176,13 +183,20 @@ class ImageFeed extends Component {
 				'color: #e6007e',
 			);
 
+			if (this.state.shouldHideAllWhenReady) {
+				log('shouldHideAllWhenReady');
+			}
+
 			if (this.props.isLoading) {
 				// --------------------------------------------------------------------
 				// Skip if loading
 				// --------------------------------------------------------------------
 
 				log('Still loading, skip this interval.');
-			} else if (this.props.images.length >= this.props.maxImages) {
+			} else if (
+				this.props.images.length >= this.props.maxImages &&
+				this.state.shouldHideAllWhenReady === false
+			) {
 				// --------------------------------------------------------------------
 				// maxImages is reached. Trigger loading of UPCOMING images.
 				// clearInterval
@@ -192,7 +206,7 @@ class ImageFeed extends Component {
 
 				// TODO: If app hits and error at this stage, we need
 				// to work out a way to continue interval
-				clearInterval(this.interval);
+				// clearInterval(this.interval);
 
 				// Trigger ImageFeedContainer to load more images for UPCOMING update
 				log('Load more images in the background', this.props.startImages);
@@ -251,33 +265,37 @@ class ImageFeed extends Component {
 
 				// Make sure gap is larger than -50
 				if (gap > this.props.loadMoreGap) {
-					// TODO!!
-					// Check if same as previous fetch, otherwise it will keep on trying to fetch more
+					if (this.state.shouldHideAllWhenReady) {
+						this.hideAllImages();
+					} else {
+						// TODO!!
+						// Check if same as previous fetch, otherwise it will keep on trying to fetch more
 
-					// Work out how many more images to fetch
-					const gapConstant = Math.ceil(
-						Math.abs(this.props.loadMoreGap - gap) / 50,
-					);
-					const fetchMoreImages = gapConstant * 4;
-					// WIP
-					// Make sure we don't fetch more than maxImages
-					// const fetchMoreImages =
-					// 	fetchMoreImagesCheck + this.props.images.length >
-					// 	this.props.maxImages
-					// 		? this.props.maxImages - this.props.images.length
-					// 		: fetchMoreImagesCheck;
+						// Work out how many more images to fetch
+						const gapConstant = Math.ceil(
+							Math.abs(this.props.loadMoreGap - gap) / 50,
+						);
+						const fetchMoreImages = gapConstant * 4;
+						// WIP
+						// Make sure we don't fetch more than maxImages
+						// const fetchMoreImages =
+						// 	fetchMoreImagesCheck + this.props.images.length >
+						// 	this.props.maxImages
+						// 		? this.props.maxImages - this.props.images.length
+						// 		: fetchMoreImagesCheck;
 
-					log('Load more images', { gap }, { fetchMoreImages });
-					// this.props.onLoadMore(fetchMoreImages);
-					this.props.onLoadMore({
-						limit: fetchMoreImages,
-						portraitPercentage: 0.4,
-						dateStart: getDate(-120),
-					});
+						log('Load more images', { gap }, { fetchMoreImages });
+						// this.props.onLoadMore(fetchMoreImages);
+						this.props.onLoadMore({
+							limit: fetchMoreImages,
+							portraitPercentage: 0.4,
+							dateStart: getDate(-120),
+						});
 
-					// this.setState({
-					// 	isLayingOut: true,
-					// });
+						// this.setState({
+						// 	isLayingOut: true,
+						// });
+					}
 				} else {
 					this.randomlyAddToHiddenImageIds();
 				}
