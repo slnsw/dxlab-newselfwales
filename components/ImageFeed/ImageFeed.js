@@ -118,6 +118,10 @@ class ImageFeed extends Component {
 			this.props.images.forEach((image, i) =>
 				this.updateImageSizes(this.state.imageSizes, image.id, i),
 			);
+
+			this.setState({
+				isLayingOut: true,
+			});
 		}
 
 		// Hide all images, get ready to destroy thyself
@@ -153,69 +157,6 @@ class ImageFeed extends Component {
 
 			// ---------------------------------------------------------------
 			// Highlighted images
-			const imageHolderRefs = Array.from(this.imageHolderRefs);
-
-			const leftOfScreenImageHolderRefs = Array.from(imageHolderRefs).filter(
-				(image) => {
-					// Only count enabled images
-					if (image && image[1].disabled === false) {
-						console.log(image[1].disabled);
-
-						return (
-							image[1].getBoundingClientRect().x +
-								image[1].getBoundingClientRect().width <
-							-400
-						);
-					}
-				},
-			);
-
-			console.log(leftOfScreenImageHolderRefs);
-			if (leftOfScreenImageHolderRefs.length > 0) {
-				const rightOfScreenImageHolderRefs = Array.from(imageHolderRefs).filter(
-					(image) => {
-						if (image) {
-							// console.log(image[1].getBoundingClientRect());
-
-							return (
-								image[1].getBoundingClientRect().x +
-									image[1].getBoundingClientRect().width >=
-								-400
-							);
-						}
-					},
-				);
-
-				// Furtherst left image and position of onScreen images
-				const leftGap = Math.min(
-					...Array.from(rightOfScreenImageHolderRefs).map(
-						(image) => image[1].getBoundingClientRect().x,
-					),
-				);
-
-				console.log(leftGap);
-
-				// Move all right of screen images to the left
-				rightOfScreenImageHolderRefs.forEach((image) => {
-					// console.log(image[1].style.left);
-					const left = parseFloat(image[1].style.left.replace('px', ''), 10);
-					// console.log(left);
-					// Set new left
-					image[1].style.left = `${left - leftGap}px`;
-					// image[1].style.left = `0`;
-				});
-
-				this.setState({
-					hiddenImageIds: leftOfScreenImageHolderRefs.map((image) => image[0]),
-				});
-
-				// Move window to the right to compensate for all the images moving to the left
-				// this.imagesRef[
-				// 	this.props.name
-				// ].packery.element.style.transform = `translateX(${leftGap}px) translateZ(0)`;
-
-				scroller.adjustScrollCount(leftGap);
-			}
 
 			// ---------------------------------------------------------------
 
@@ -288,6 +229,76 @@ class ImageFeed extends Component {
 					this.props.onLoadMore(fetchMoreImages);
 				} else {
 					// this.randomlyAddToHiddenImageIds();
+
+					const imageHolderRefs = Array.from(this.imageHolderRefs);
+
+					const leftOfScreenImageHolderRefs = Array.from(
+						imageHolderRefs,
+					).filter((image) => {
+						// Only count enabled images
+						if (image && image[1].disabled === false) {
+							console.log(image[1].disabled);
+
+							return (
+								image[1].getBoundingClientRect().x +
+									image[1].getBoundingClientRect().width <
+								400
+							);
+						}
+					});
+
+					console.log(leftOfScreenImageHolderRefs);
+					if (leftOfScreenImageHolderRefs.length > 0) {
+						const rightOfScreenImageHolderRefs = Array.from(
+							imageHolderRefs,
+						).filter((image) => {
+							if (image) {
+								// console.log(image[1].getBoundingClientRect());
+
+								return (
+									image[1].getBoundingClientRect().x +
+										image[1].getBoundingClientRect().width >=
+									400
+								);
+							}
+						});
+
+						// Furtherst left image and position of onScreen images
+						const leftGap = Math.min(
+							...Array.from(rightOfScreenImageHolderRefs)
+								.filter((image) => image[1].getBoundingClientRect().x < 400)
+								.map((image) => 400 - image[1].getBoundingClientRect().x),
+						);
+
+						console.log(leftGap);
+
+						// Move all right of screen images to the left
+						rightOfScreenImageHolderRefs.forEach((image) => {
+							// console.log(image[1].style.left);
+							const left = parseFloat(
+								image[1].style.left.replace('px', ''),
+								10,
+							);
+							// console.log(left);
+							// Set new left
+							image[1].style.left = `${left - (400 - leftGap)}px`;
+							// image[1].style.left = `0`;
+						});
+
+						this.setState({
+							hiddenImageIds: [
+								...this.state.hiddenImageIds,
+								...leftOfScreenImageHolderRefs.map((image) => image[0]),
+							],
+						});
+
+						// Move window to the right to compensate for all the images moving to the left
+						// this.imagesRef[
+						// 	this.props.name
+						// ].packery.element.style.transform = `translateX(${leftGap}px) translateZ(0)`;
+
+						scroller.adjustScrollCount(400 - leftGap);
+					}
 				}
 
 				// Increment the intervalCounter
