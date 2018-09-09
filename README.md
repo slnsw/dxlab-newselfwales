@@ -51,7 +51,7 @@ The ImageFeed loop ticks every 10 seconds.
 1. ImageFeed: On loop interval, if `images` amount is greater than `maxImages`, send `MAX_IMAGES_REACHED`.
 2. ImageFeedContainer: This should trigger `FETCH_UPCOMING_IMAGES` using `startImages` amount into `upcomingImages`.
 3. ImageFeedContainer: When ready, send `UPCOMING_IMAGES_READY` to ImageFeed.
-4. ImageFeed: On loop interval, check `emptyGap`. If it is greater than 0, send `RESET_IMAGES`, triggering animate out.
+4. ImageFeed: On loop interval, check `emptyGap`. If it is greater than `loadMoreGap`, run `hideAllImages` internally and trigger hide images animation.
 5. ImageFeed: On animate out end, send `CLEAR_CURRENT_IMAGES` and then `GET_UPCOMING_IMAGES`.
 6. Go to `B4.`.
 

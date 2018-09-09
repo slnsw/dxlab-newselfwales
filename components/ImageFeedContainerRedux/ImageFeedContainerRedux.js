@@ -40,7 +40,7 @@ class ImageFeedContainerRedux extends Component {
 	handleMaxImagesComplete = () => {
 		this.props.dispatch(
 			fetchImages({
-				limit: 50,
+				limit: this.props.startImages,
 				dateStart: getDate(-120),
 				portraitPercentage: 0.6,
 				isUpcoming: true,
