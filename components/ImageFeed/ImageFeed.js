@@ -231,6 +231,7 @@ class ImageFeed extends Component {
 					// this.randomlyAddToHiddenImageIds();
 
 					const imageHolderRefs = Array.from(this.imageHolderRefs);
+					const threshold = 400;
 
 					const leftOfScreenImageHolderRefs = Array.from(
 						imageHolderRefs,
@@ -242,12 +243,13 @@ class ImageFeed extends Component {
 							return (
 								image[1].getBoundingClientRect().x +
 									image[1].getBoundingClientRect().width <
-								400
+								threshold
 							);
 						}
 					});
 
 					console.log(leftOfScreenImageHolderRefs);
+
 					if (leftOfScreenImageHolderRefs.length > 0) {
 						const rightOfScreenImageHolderRefs = Array.from(
 							imageHolderRefs,
@@ -258,7 +260,7 @@ class ImageFeed extends Component {
 								return (
 									image[1].getBoundingClientRect().x +
 										image[1].getBoundingClientRect().width >=
-									400
+									threshold
 								);
 							}
 						});
@@ -266,11 +268,24 @@ class ImageFeed extends Component {
 						// Furtherst left image and position of onScreen images
 						const leftGap = Math.min(
 							...Array.from(rightOfScreenImageHolderRefs)
-								.filter((image) => image[1].getBoundingClientRect().x < 400)
-								.map((image) => 400 - image[1].getBoundingClientRect().x),
+								.filter(
+									(image) => image[1].getBoundingClientRect().x < threshold,
+								)
+								.map((image) => image[1].getBoundingClientRect().x),
 						);
 
-						console.log(leftGap);
+						// var closest = counts.reduce(function(prev, curr) {
+						// 	return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
+						// });
+
+						// const leftGapFurtherst = Math.min(
+						// 	...Array.from(rightOfScreenImageHolderRefs).map(
+						// 		(image) => threshold - image[1].getBoundingClientRect().x,
+						// 	),
+						// );
+
+						// console.log(leftGapClosest, leftGapFurtherst);
+						// const leftGap = leftGapFurtherst - leftGapClosest;
 
 						// Move all right of screen images to the left
 						rightOfScreenImageHolderRefs.forEach((image) => {
@@ -281,7 +296,7 @@ class ImageFeed extends Component {
 							);
 							// console.log(left);
 							// Set new left
-							image[1].style.left = `${left - (400 - leftGap)}px`;
+							image[1].style.left = `${left - leftGap}px`;
 							// image[1].style.left = `0`;
 						});
 
@@ -297,7 +312,7 @@ class ImageFeed extends Component {
 						// 	this.props.name
 						// ].packery.element.style.transform = `translateX(${leftGap}px) translateZ(0)`;
 
-						scroller.adjustScrollCount(400 - leftGap);
+						scroller.adjustScrollCount(leftGap);
 					}
 				}
 
