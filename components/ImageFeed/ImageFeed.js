@@ -266,17 +266,22 @@ class ImageFeed extends Component {
 						});
 
 						// Furtherst left image and position of onScreen images
-						const leftGap = Math.min(
-							...Array.from(rightOfScreenImageHolderRefs)
-								.filter(
-									(image) => image[1].getBoundingClientRect().x < threshold,
-								)
-								.map((image) => image[1].getBoundingClientRect().x),
+						const leftGapFurtherst = Math.min(
+							...Array.from(leftOfScreenImageHolderRefs).map(
+								(image) => image[1].getBoundingClientRect().x,
+							),
 						);
 
-						// var closest = counts.reduce(function(prev, curr) {
-						// 	return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
-						// });
+						const leftGapClosest = Array.from(rightOfScreenImageHolderRefs)
+							.map((image) => image[1].getBoundingClientRect().x)
+							// .filter(
+							// 	(image) => image[1].getBoundingClientRect().x < threshold,
+							// )
+							.reduce(function(prev, curr) {
+								return Math.abs(curr - threshold) < Math.abs(prev - threshold)
+									? curr
+									: prev;
+							});
 
 						// const leftGapFurtherst = Math.min(
 						// 	...Array.from(rightOfScreenImageHolderRefs).map(
@@ -284,8 +289,12 @@ class ImageFeed extends Component {
 						// 	),
 						// );
 
-						// console.log(leftGapClosest, leftGapFurtherst);
-						// const leftGap = leftGapFurtherst - leftGapClosest;
+						const leftOfScroller = scroller.getBoundingClientRect().x;
+
+						console.log(leftOfScroller);
+
+						console.log(leftGapFurtherst, leftGapClosest);
+						const leftGap = leftGapFurtherst - leftGapClosest;
 
 						// Move all right of screen images to the left
 						rightOfScreenImageHolderRefs.forEach((image) => {
@@ -296,7 +305,7 @@ class ImageFeed extends Component {
 							);
 							// console.log(left);
 							// Set new left
-							image[1].style.left = `${left - leftGap}px`;
+							image[1].style.left = `${left + leftGap}px`;
 							// image[1].style.left = `0`;
 						});
 
@@ -312,7 +321,7 @@ class ImageFeed extends Component {
 						// 	this.props.name
 						// ].packery.element.style.transform = `translateX(${leftGap}px) translateZ(0)`;
 
-						scroller.adjustScrollCount(leftGap);
+						scroller.adjustScrollCount(leftGap * -1);
 					}
 				}
 
