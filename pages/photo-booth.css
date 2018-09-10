@@ -2,6 +2,7 @@
 
 .photo-booth-page {
 	position: relative;
+	overflow: hidden;
 }
 
 .photo-booth-page__search {
