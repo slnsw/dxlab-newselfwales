@@ -1,24 +1,27 @@
 {
 	"name": "dxlab-newselfwales",
 	"author": "Kaho Cheung",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"scripts": {
 		"dev": "npm start",
 		"build": "next build",
 		"start": "node server.js -p $PORT",
-		"deploy-production": "now --dotenv=.env.production && now alias dxlab-newselfwales.now.sh",
-		"deploy-staging": "now --dotenv=.env.staging --no-verify && now alias dxlab-staging-newselfwales.now.sh",
+		"deploy-production":
+			"now --dotenv=.env.production && now alias dxlab-newselfwales.now.sh",
+		"deploy-staging":
+			"now --dotenv=.env.staging --no-verify && now alias dxlab-staging-newselfwales.now.sh",
 		"alias-production": "now alias dxlab-selfie.now.sh",
 		"flow": "flow",
 		"test": "jest",
-		"test:lint": "eslint . --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --cache"
+		"test:lint":
+			"eslint . --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --cache"
 	},
 	"engines": {
 		"node": "~8.9.0"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/slnsw/dxlab-selfie"
+		"url": "https://github.com/slnsw/dxlab-newselfwales"
 	},
 	"dependencies": {
 		"@zeit/next-css": "^0.1.5",

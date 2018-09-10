@@ -7,6 +7,7 @@ import Packery from '../Packery';
 // import NewSelfWalesLogo from '../NewSelfWalesLogo';
 import { scroller } from '../../lib/scroll';
 import logBase from '../../lib/log';
+import { getDate } from '../../lib/date';
 import './ImageFeed.css';
 
 const log = (...args) => {
@@ -15,7 +16,7 @@ const log = (...args) => {
 
 class ImageFeed extends Component {
 	static propTypes = {
-		loading: PropTypes.bool,
+		isLoading: PropTypes.bool,
 		name: PropTypes.string.isRequired,
 		enableAnimation: PropTypes.bool,
 		images: PropTypes.array,
@@ -24,12 +25,14 @@ class ImageFeed extends Component {
 		intervalTime: PropTypes.number,
 		increment: PropTypes.number,
 		axis: PropTypes.string,
-		shouldHideAllImages: PropTypes.bool,
+		status: PropTypes.string,
 		loadMoreGap: PropTypes.number,
+		marginBottom: PropTypes.string,
 		onLoadMore: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
 		onMaxImagesComplete: PropTypes.func,
+		onHideAllImagesComplete: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -38,21 +41,27 @@ class ImageFeed extends Component {
 		maxImages: 1000,
 		increment: 0.5,
 		intervalTime: 10000,
-		shouldHideAllImages: false,
 		loadMoreGap: -400,
+		status: 'CURRENT_IMAGES',
+		marginTop: '5px',
+		heightAdjust: '-10px',
 	};
 
 	state = {
 		// Packery items
 		laidOutItems: undefined,
+		// Internal state flags
+		isFirstLoad: true,
 		isLayingOut: false,
 		isImageFeedHidden: false,
-		// Images to hide (CSS display: none)
+		shouldHideAllWhenReady: false,
+		// Images to hide
 		hiddenImageIds: [],
 		// Images to remove (return null)
 		removedImageIds: [],
 		// For testing
 		highlightedImageIds: [],
+		// Counters
 		intervalCounter: 0,
 		layingOutCounter: 0,
 		refreshCounter: 0,
@@ -69,18 +78,23 @@ class ImageFeed extends Component {
 	componentDidMount() {
 		log('mount', {
 			images: this.props.images,
+			name: this.props.name,
 			enableAnimation: this.props.enableAnimation,
 			maxImages: this.props.maxImages,
 			startImages: this.props.startImages,
-			name: this.props.name,
 			intervalTime: this.props.intervalTime,
 			increment: this.props.increment,
 			loadMoreGap: this.props.loadMoreGap,
+			marginBottom: this.props.marginBottom,
+			heightAdjust: this.props.heightAdjust,
 		});
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		// Init scroller and loop
+		// ------------------------------------------------------------------------
+		// SCROLLER AND LOOP
+		// ------------------------------------------------------------------------
+
 		if (
 			prevState.laidOutItems === undefined &&
 			(this.state.laidOutItems && this.state.laidOutItems.length > 0)
@@ -116,24 +130,23 @@ class ImageFeed extends Component {
 			scroller.updateIncrement(this.props.increment);
 		}
 
-		// Track changes in images
-		if (prevProps.images !== this.props.images) {
+		// ------------------------------------------------------------------------
+		// HANDLE IMAGE STATUS AND LAYING OUT
+		// ------------------------------------------------------------------------
+
+		// Hide all images, get ready to destroy thyself when ready
+		if (
+			prevProps.status !== 'UPCOMING_IMAGES_READY' &&
+			this.props.status === 'UPCOMING_IMAGES_READY'
+		) {
 			this.setState({
-				isLayingOut: true,
+				shouldHideAllWhenReady: true,
 			});
 		}
 
-		// Hide all images, get ready to destroy thyself
 		if (
-			prevProps.shouldHideAllImages === false &&
-			this.props.shouldHideAllImages
-		) {
-			this.hideAllImages();
-		}
-
-		if (
-			prevProps.shouldHideAllImages === true &&
-			this.props.shouldHideAllImages === false
+			prevProps.status === 'UPCOMING_IMAGES_READY' &&
+			this.props.status === 'CURRENT_IMAGES'
 		) {
 			console.log(
 				`%c Refresh and start up again ${this.state.refreshCounter} `,
@@ -141,7 +154,6 @@ class ImageFeed extends Component {
 			);
 
 			scroller.resetScrollCount();
-			this.initLoop();
 
 			this.setState({
 				hiddenImageIds: [],
@@ -149,12 +161,32 @@ class ImageFeed extends Component {
 				isImageFeedHidden: false,
 				intervalCounter: 0,
 				refreshCounter: this.state.refreshCounter + 1,
+				shouldHideAllWhenReady: false,
+			});
+		}
+
+		// Track changes in images
+		if (prevProps.images !== this.props.images) {
+			this.setState({
+				isLayingOut: true,
 			});
 		}
 
 		// Track whether images are being layout out or not
 		if (prevState.isLayingOut !== this.state.isLayingOut) {
 			log('isLayingOut', this.state.isLayingOut);
+		}
+
+		// Distinguish between first load and subsequent loading states
+		if (
+			prevProps.images !== this.props.images &&
+			this.state.isFirstLoad === true
+		) {
+			log('set isFirstLoad to false');
+
+			this.setState({
+				isFirstLoad: false,
+			});
 		}
 	}
 
@@ -170,30 +202,28 @@ class ImageFeed extends Component {
 				'color: #e6007e',
 			);
 
-			if (this.props.loading) {
+			if (this.state.shouldHideAllWhenReady) {
+				log('shouldHideAllWhenReady');
+			}
+
+			if (this.props.isLoading) {
 				// --------------------------------------------------------------------
-				// Skip if loading or laying out
+				// Skip if loading
 				// --------------------------------------------------------------------
 
-				// if (this.props.loading) {
 				log('Still loading, skip this interval.');
-				// } else if (this.state.isLayingOut) {
-				// }
-			} else if (this.props.images.length >= this.props.maxImages) {
+			} else if (
+				this.props.images.length >= this.props.maxImages &&
+				this.state.shouldHideAllWhenReady === false
+			) {
 				// --------------------------------------------------------------------
 				// maxImages is reached. Trigger loading of UPCOMING images.
-				// clearInterval
 				// --------------------------------------------------------------------
 
 				log('MaxImages reached');
 
-				// TODO: If app hits and error at this stage, we need
-				// to work out a way to continue interval
-				clearInterval(this.interval);
-
 				// Trigger ImageFeedContainer to load more images for UPCOMING update
 				log('Load more images in the background', this.props.startImages);
-				this.props.onLoadMore(this.props.startImages, 'UPCOMING');
 
 				if (typeof this.props.onMaxImagesComplete !== 'undefined') {
 					this.props.onMaxImagesComplete();
@@ -220,18 +250,6 @@ class ImageFeed extends Component {
 					layingOutCounter: 0,
 				});
 
-				// Work how much of a black gap there is due to auto scrolling
-				// TOTRY - Loop through all imageHolders and find the one furthest to the right
-				// Get last imageHolder
-				// const lastImageHolder = Array.from(this.imageHolderRefs)[
-				// 	this.imageHolderRefs.size - 1
-				// ][1];
-				// // Work out right edge window position
-				// const lastImageHolderRight = lastImageHolder.getBoundingClientRect()
-				// 	.right;
-				// Work out gap
-				// const gap = window.innerWidth - lastImageHolderRight;
-
 				log(
 					'Total images',
 					this.props.images.length,
@@ -241,33 +259,40 @@ class ImageFeed extends Component {
 					this.state.removedImageIds.length,
 				);
 
-				// log(this.state.laidOutItems);
+				// Amount of black space on right hand side. Can be negative if scroller is
+				// larger than viewport.
+				const emptyGap =
+					window.innerWidth - scroller.getBoundingClientRect().right;
 
-				// TODO: Use state.laidOutItems to work out far right
-				const gap = window.innerWidth - scroller.getBoundingClientRect().right;
+				if (emptyGap > this.props.loadMoreGap) {
+					if (this.state.shouldHideAllWhenReady) {
+						this.hideAllImages();
+					} else {
+						// TODO!!
+						// Check still loading previous fetch, otherwise it will keep on trying to fetch more
 
-				// Make sure gap is larger than -50
-				if (gap > this.props.loadMoreGap) {
-					// TODO!!
-					// Check if same as previous fetch, otherwise it will keep on trying to fetch more
+						// Work out how many more images to fetch
+						const gapConstant = Math.ceil(
+							Math.abs(this.props.loadMoreGap - emptyGap) / 50,
+						);
+						const fetchMoreImagesTemp = gapConstant * 4;
 
-					// Work out how many more images to fetch
-					const gapConstant = Math.ceil(Math.abs(gap) / 50);
-					const fetchMoreImages = gapConstant * 4;
-					// WIP
-					// Make sure we don't fetch more than maxImages
-					// const fetchMoreImages =
-					// 	fetchMoreImagesCheck + this.props.images.length >
-					// 	this.props.maxImages
-					// 		? this.props.maxImages - this.props.images.length
-					// 		: fetchMoreImagesCheck;
+						// WIP
+						// Make sure we don't fetch more than maxImages
+						const fetchMoreImages =
+							fetchMoreImagesTemp + this.props.images.length >
+							this.props.maxImages
+								? this.props.maxImages - this.props.images.length
+								: fetchMoreImagesTemp;
 
-					log('Load more images', { gap }, { fetchMoreImages });
-					this.props.onLoadMore(fetchMoreImages);
+						log('Load more images', { emptyGap }, { fetchMoreImages });
 
-					// this.setState({
-					// 	isLayingOut: true,
-					// });
+						this.props.onLoadMore({
+							limit: fetchMoreImages,
+							portraitPercentage: 0.4,
+							dateStart: getDate(-120),
+						});
+					}
 				} else {
 					this.randomlyAddToHiddenImageIds();
 				}
@@ -295,10 +320,16 @@ class ImageFeed extends Component {
 	// };
 
 	randomlyAddToHiddenImageIds = (onComplete, count = 0) => {
-		// Filter out hidden images
-		const images = this.props.images.filter(
-			(image) => this.state.hiddenImageIds.indexOf(image.id) === -1,
-		);
+		// console.log(this.state.hiddenImageIds.indexOf(1));
+
+		// Filter out hidden images, making sure to not run indexOf if
+		// hiddenImageIds is empty
+		const images =
+			this.state.hiddenImageIds.length > 0
+				? this.props.images.filter(
+						(image) => this.state.hiddenImageIds.indexOf(image.id) === -1,
+					)
+				: this.props.images;
 
 		// Get random image
 		const randomIndex = Math.floor(Math.random() * images.length);
@@ -327,20 +358,15 @@ class ImageFeed extends Component {
 			if (typeof onComplete === 'function') {
 				onComplete();
 			}
-		} else if (count > this.props.maxImages.length) {
+		} else if (count > this.props.maxImages || count > 500) {
 			log('No images available to make hidden', count);
 		} else if (
 			// isVisible === false ||
-			isLeftOfViewport === false ||
-			this.state.hiddenImageIds.indexOf(randomImage.id) > -1
+			isLeftOfViewport === false
 		) {
 			// Run function again if image is not left of viewport
 			// AND
 			// Check if randomImage is already in hiddenImageIds array
-			//
-			// TODO: May not need this anymore as we are filtering out
-			// hidden images earlier
-
 			this.randomlyAddToHiddenImageIds(onComplete, count + 1);
 		} else {
 			log('Hide image', randomImage.id, randomImage.title);
@@ -384,12 +410,16 @@ class ImageFeed extends Component {
 		// 	});
 		// }, intervalTime);
 
-		const timeout = setTimeout(() => {
-			// Tell container to remove all non-upcoming images
-			this.props.onLoadMore(0, 'REMOVE_CURRENT');
+		if (typeof this.props.onHideAllImagesComplete === 'function') {
+			const timeout = setTimeout(() => {
+				// Tell container to remove all non-upcoming images
+				// this.props.onLoadMore(0, 'REMOVE_CURRENT');
 
-			clearTimeout(timeout);
-		}, 500);
+				this.props.onHideAllImagesComplete();
+
+				clearTimeout(timeout);
+			}, 1000);
+		}
 	};
 
 	handleImageClick = (event, image) => {
@@ -417,8 +447,13 @@ class ImageFeed extends Component {
 	};
 
 	render() {
-		const { loading, name, images } = this.props;
-		const { isImageFeedHidden, hiddenImageIds, removedImageIds } = this.state;
+		const { isLoading, name, images, marginTop, heightAdjust } = this.props;
+		const {
+			isImageFeedHidden,
+			isFirstLoad,
+			hiddenImageIds,
+			removedImageIds,
+		} = this.state;
 
 		return (
 			<div
@@ -428,14 +463,15 @@ class ImageFeed extends Component {
 					name ? `image-feed--${name}` : '',
 				].join(' ')}
 			>
-				{loading && (
-					<div className="image-feed__loading">
-						<div className="image-feed__loading-content">
-							{/* <NewSelfWalesLogo /> */}
-							<p>Loading...</p>
+				{isLoading &&
+					isFirstLoad && (
+						<div className="image-feed__loading">
+							<div className="image-feed__loading-content">
+								{/* <NewSelfWalesLogo /> */}
+								<p>Loading...</p>
+							</div>
 						</div>
-					</div>
-				)}
+					)}
 
 				<div className="image-feed__scroller">
 					<Packery
@@ -444,8 +480,8 @@ class ImageFeed extends Component {
 							this.imagesRef[name] = element;
 						}}
 						style={{
-							marginTop: '5px',
-							height: 'calc(100vh - 10px)',
+							marginTop,
+							height: `calc(100vh + ${heightAdjust})`,
 						}}
 						options={{
 							itemSelector: '.image-feed__image-holder',

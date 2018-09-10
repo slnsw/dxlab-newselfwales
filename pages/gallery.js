@@ -1,10 +1,12 @@
 import { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
+import withRedux from 'next-redux-wrapper';
 
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
 // import ImageModalContainer from '../components/ImageModalContainer';
 import { client } from '../lib/initApollo';
+import { initStore } from '../lib/initRedux';
 
 import './gallery.css';
 
@@ -23,12 +25,13 @@ class GalleryPage extends Component {
 			url: {
 				query: {
 					enableAnimation = 'true',
-					startImages = 20,
+					startImages,
 					maxImages = 100,
 					increment = 0.5,
 					intervalTime,
-					fetchMoreImages,
 					loadMoreGap,
+					marginTop,
+					heightAdjust,
 				},
 			},
 		} = this.props;
@@ -37,38 +40,15 @@ class GalleryPage extends Component {
 			<ApolloProvider client={client}>
 				<App>
 					<ImageFeedContainer
+						name="gallery"
 						enableAnimation={enableAnimation === 'true'}
-						name="top"
-						intervalTime={
-							typeof intervalTime === 'string'
-								? parseInt(intervalTime, 10)
-								: intervalTime
-						}
-						startImages={
-							typeof startImages === 'string'
-								? parseInt(startImages, 10)
-								: startImages
-						}
-						maxImages={
-							typeof maxImages === 'string'
-								? parseInt(maxImages, 10)
-								: maxImages
-						}
-						increment={
-							typeof increment === 'string'
-								? parseFloat(increment, 10)
-								: increment
-						}
-						fetchMoreImages={
-							typeof fetchMoreImages === 'string'
-								? parseInt(fetchMoreImages, 10)
-								: fetchMoreImages
-						}
-						loadMoreGap={
-							typeof loadMoreGap === 'string'
-								? parseInt(loadMoreGap, 10)
-								: loadMoreGap
-						}
+						intervalTime={parseStringToInt(intervalTime)}
+						startImages={parseStringToInt(startImages)}
+						maxImages={parseStringToInt(maxImages)}
+						increment={parseStringToFloat(increment)}
+						loadMoreGap={parseStringToInt(loadMoreGap)}
+						marginTop={marginTop}
+						heightAdjust={heightAdjust}
 						onImageClick={this.handleImageClick}
 					/>
 				</App>
@@ -77,4 +57,12 @@ class GalleryPage extends Component {
 	}
 }
 
-export default GalleryPage;
+export default withRedux(initStore)(GalleryPage);
+
+function parseStringToInt(string) {
+	return typeof string === 'string' ? parseInt(string, 10) : string;
+}
+
+function parseStringToFloat(string) {
+	return typeof string === 'string' ? parseFloat(string, 10) : string;
+}
