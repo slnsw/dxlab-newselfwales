@@ -1,11 +1,13 @@
-import { Component, Fragment } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import Keyboard from 'react-screen-keyboard';
+import { CSSTransition } from 'react-transition-group';
 
 import './PhotoBoothModal.css';
 import './Keyboard.css';
 import PhotoBoothModalForm from '../PhotoBoothModalForm';
 import SearchContainer from '../SearchContainer';
+import PageContainer from '../PageContainer';
 import { Router } from '../../routes';
 import webcam, { dataURItoBlob } from '../../lib/webcam';
 import { LatinLayoutCustom } from '../../lib';
@@ -158,6 +160,10 @@ class Home extends Component {
 		Router.pushRoute('/photo-booth?stage=search');
 	};
 
+	handleAboutButton = () => {
+		Router.pushRoute('/photo-booth?stage=about');
+	};
+
 	handleSearchInputTextFocus = (input) => {
 		this.setState({
 			inputNode: input,
@@ -165,8 +171,6 @@ class Home extends Component {
 	};
 
 	handleSearchInputTextBlur = () => {
-		console.log('hi');
-
 		this.setState({
 			inputNode: null,
 		});
@@ -211,12 +215,14 @@ class Home extends Component {
 					)}
 
 				<div className="photo-booth-modal__photo-box">
-					{(stage === 'start' || stage === 'take-selfie') && (
-						<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
-					)}
-
-					{stage === 'start' && (
-						<Fragment>
+					<CSSTransition
+						in={stage === 'start'}
+						appear={true}
+						timeout={600}
+						classNames="css-transition-"
+					>
+						<div className="photo-booth-modal__photo-box__content css-transition">
+							<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
 							<img
 								src="../../static/newselfwales/images/silhouettes/silhouette.png"
 								alt="Silhouette of person"
@@ -228,28 +234,37 @@ class Home extends Component {
 							<button className="button" onClick={this.startSelfie}>
 								Start
 							</button>
-						</Fragment>
-					)}
+						</div>
+					</CSSTransition>
 
 					{stage === 'take-selfie' && (
-						<Fragment>
-							<video
-								className="photo-booth-modal__video photo-booth-modal__video--feed"
-								ref={(element) => {
-									this.videoFeed = element;
-								}}
-								width="1080"
-								height="1080"
-								autoPlay
-							/>
+						<CSSTransition
+							in={stage === 'take-selfie'}
+							appear={true}
+							timeout={600}
+							classNames="css-transition-"
+						>
+							<div className="photo-booth-modal__photo-box__content css-transition">
+								<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
 
-							<button
-								className="photo-booth-modal__camera-button"
-								onClick={this.takeSelfie}
-							>
-								Take
-							</button>
-						</Fragment>
+								<video
+									className="photo-booth-modal__video photo-booth-modal__video--feed"
+									ref={(element) => {
+										this.videoFeed = element;
+									}}
+									width="1080"
+									height="1080"
+									autoPlay
+								/>
+
+								<button
+									className="photo-booth-modal__camera-button"
+									onClick={this.takeSelfie}
+								>
+									Take
+								</button>
+							</div>
+						</CSSTransition>
 					)}
 
 					<div
@@ -338,6 +353,17 @@ class Home extends Component {
 					/>
 				</div>
 
+				<div
+					className={[
+						'photo-booth-modal__about',
+						stage === 'about' ? 'photo-booth-modal__about--is-active' : '',
+					].join(' ')}
+				>
+					{stage === 'about' && (
+						<PageContainer slug={'newselfwales'} title="About" />
+					)}
+				</div>
+
 				<footer className="photo-booth-modal__footer">
 					{stage === 'start' && (
 						<ul className="photo-booth-modal__menu">
@@ -347,7 +373,10 @@ class Home extends Component {
 							>
 								<i className="ion-md-search" /> Search
 							</li>
-							<li className="photo-booth-modal__menu-item">
+							<li
+								className="photo-booth-modal__menu-item"
+								onClick={this.handleAboutButton}
+							>
 								<i className="ion-md-information-circle-outline" /> About
 							</li>
 						</ul>
