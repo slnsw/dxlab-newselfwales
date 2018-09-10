@@ -32,6 +32,7 @@ class GalleryPage extends Component {
 					loadMoreGap,
 					marginTop,
 					heightAdjust,
+					fps,
 				},
 			},
 		} = this.props;
@@ -49,6 +50,7 @@ class GalleryPage extends Component {
 						loadMoreGap={parseStringToInt(loadMoreGap)}
 						marginTop={marginTop}
 						heightAdjust={heightAdjust}
+						fps={parseStringToInt(fps)}
 						onImageClick={this.handleImageClick}
 					/>
 				</App>

@@ -28,6 +28,8 @@ class ImageFeed extends Component {
 		status: PropTypes.string,
 		loadMoreGap: PropTypes.number,
 		marginBottom: PropTypes.string,
+		heightAdjust: PropTypes.string,
+		fps: PropTypes.number,
 		onLoadMore: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
@@ -87,6 +89,7 @@ class ImageFeed extends Component {
 			loadMoreGap: this.props.loadMoreGap,
 			marginBottom: this.props.marginBottom,
 			heightAdjust: this.props.heightAdjust,
+			fps: this.props.fps,
 		});
 	}
 
@@ -107,6 +110,7 @@ class ImageFeed extends Component {
 				{
 					axis: this.props.axis,
 					increment: this.props.increment,
+					fps: this.props.fps,
 				},
 			);
 
