@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
+import withRedux from 'next-redux-wrapper';
 
 import './photo-booth.css';
 import App from '../components/App';
@@ -8,6 +9,7 @@ import ImageModalContainer from '../components/ImageModalContainer';
 // import SearchContainer from '../components/SearchContainer/SearchContainer';
 import PhotoBoothModal from '../components/PhotoBoothModal';
 import { client } from '../lib/initApollo';
+import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
 
 class PhotoBoothPage extends Component {
@@ -76,4 +78,4 @@ class PhotoBoothPage extends Component {
 	}
 }
 
-export default PhotoBoothPage;
+export default withRedux(initStore)(PhotoBoothPage);

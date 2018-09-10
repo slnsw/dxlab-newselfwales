@@ -3,7 +3,7 @@ import { ApolloProvider } from 'react-apollo';
 import withRedux from 'next-redux-wrapper';
 
 import App from '../components/App';
-import ImageFeedContainerRedux from '../components/ImageFeedContainerRedux';
+import ImageFeedContainer from '../components/ImageFeedContainer';
 // import ImageModalContainer from '../components/ImageModalContainer';
 import { client } from '../lib/initApollo';
 import { initStore } from '../lib/initRedux';
@@ -39,7 +39,7 @@ class GalleryPage extends Component {
 		return (
 			<ApolloProvider client={client}>
 				<App>
-					<ImageFeedContainerRedux
+					<ImageFeedContainer
 						name="gallery"
 						enableAnimation={enableAnimation === 'true'}
 						intervalTime={parseStringToInt(intervalTime)}
