@@ -70,7 +70,7 @@ const wpUpload = {
 					// create custom post type 'portrait'
 					newPost = await this.wp.portraits().create({
 						title: data.title,
-						slug: data.primoRef,
+						slug: (data.fl ? data.primoRef+'-'+data.fl : data.primoRef),
 						content: data.description, // imploded list of subjects and topics
 						status: data.status,
 						meta: {
