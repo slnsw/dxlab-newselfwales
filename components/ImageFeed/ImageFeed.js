@@ -281,7 +281,6 @@ class ImageFeed extends Component {
 						);
 						const fetchMoreImagesTemp = gapConstant * 4;
 
-						// WIP
 						// Make sure we don't fetch more than maxImages
 						const fetchMoreImages =
 							fetchMoreImagesTemp + this.props.images.length >
@@ -324,8 +323,6 @@ class ImageFeed extends Component {
 	// };
 
 	randomlyAddToHiddenImageIds = (onComplete, count = 0) => {
-		// console.log(this.state.hiddenImageIds.indexOf(1));
-
 		// Filter out hidden images, making sure to not run indexOf if
 		// hiddenImageIds is empty
 		const images =
@@ -416,9 +413,6 @@ class ImageFeed extends Component {
 
 		if (typeof this.props.onHideAllImagesComplete === 'function') {
 			const timeout = setTimeout(() => {
-				// Tell container to remove all non-upcoming images
-				// this.props.onLoadMore(0, 'REMOVE_CURRENT');
-
 				this.props.onHideAllImagesComplete();
 
 				clearTimeout(timeout);

@@ -41,8 +41,8 @@ h1,
 h2,
 h3,
 h4 {
-	font-family: var(--font-primary);
-	@apply --font-uppercase;
+	font-family: var(--font-secondary);
+	/* @apply --font-uppercase; */
 	font-weight: 700;
 }
 
@@ -52,7 +52,7 @@ h1 {
 
 h2 {
 	font-size: var(--font-size-lg);
-	margin-top: var(--spacing-xxlg);
+	/* margin-top: var(--spacing-xxlg); */
 	line-height: 1.2;
 }
 
@@ -87,7 +87,11 @@ a:active {
 
 p {
 	margin-top: 0;
-	margin-bottom: var(--font-size-xxlg);
+	margin-bottom: var(--font-size-xlg);
+
+	& small {
+		line-height: 1;
+	}
 }
 
 strong,

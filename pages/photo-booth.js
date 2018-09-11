@@ -18,6 +18,33 @@ class PhotoBoothPage extends Component {
 		sourceImageBoundingClientRect: null,
 	};
 
+	static defaultProps = {
+		url: {
+			query: {
+				stage: null,
+			},
+		},
+	};
+
+	componentDidUpdate(prevProps) {
+		const { stage } = this.props.url.query;
+		const { stage: prevStage } = prevProps.url.query;
+
+		if (prevStage !== stage) {
+			// Control gallery animation depending on stage
+
+			if (stage === 'take-selfie' || stage === 'about') {
+				this.setState({
+					enableAnimation: false,
+				});
+			} else if (stage === 'start' || stage === 'hidden') {
+				this.setState({
+					enableAnimation: true,
+				});
+			}
+		}
+	}
+
 	handleImageClick = (event, image) => {
 		// console.log(event.target.parentElement.getBoundingClientRect(), image);
 		// console.log(image);
@@ -36,6 +63,10 @@ class PhotoBoothPage extends Component {
 		Router.pushRoute(
 			`${url.pathname}${url.query.stage === 'search' ? '?stage=search' : ''}`,
 		);
+
+		this.setState({
+			enableAnimation: true,
+		});
 	};
 
 	render() {
@@ -48,6 +79,7 @@ class PhotoBoothPage extends Component {
 				<App title="Photo Booth">
 					<div className="photo-booth-page">
 						<ImageFeedContainer
+							name="photo-booth"
 							startImages={30}
 							maxImages={50}
 							enableAnimation={enableAnimation}
@@ -65,7 +97,7 @@ class PhotoBoothPage extends Component {
 						)} */}
 
 						<ImageModalContainer
-							isActive={showImageModal}
+							isActive={showImageModal || false}
 							imageType={url.query.imageType}
 							id={parseInt(url.query.id, 10)}
 							sourceImageBoundingClientRect={sourceImageBoundingClientRect}

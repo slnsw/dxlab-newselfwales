@@ -314,12 +314,9 @@ class PhotoBoothModalForm extends Component {
 					</div>
 
 					<p>
-						Collection development added value index bibliography documentation
-						strategy acid migration classification overdue outdated web
-						exhibitions ephemeral value open stacks finding aids no you cannot
-						eat in the reading room access point conservation laboratory
-						clamshell case donor relations call number acid free file folders
-						Library of Congress Subject Headings
+						By submitting your photo from this photobooth, you are allowing the
+						State Library of NSW to collect, store and show your image as part
+						of this digital experience and online, including promotion.
 					</p>
 				</div>
 

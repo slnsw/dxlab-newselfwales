@@ -55,7 +55,7 @@ class App extends Component {
 					<title>#NewSelfWales | DX Lab - State Library of NSW</title>
 					<meta
 						name="viewport"
-						content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=1"
+						content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
 					/>
 					<meta property="og:type" content="website" />
 					{title && <meta property="og:title" content={title} />}
@@ -96,7 +96,6 @@ class App extends Component {
 						href="https://unpkg.com/ionicons@4.2.5/dist/css/ionicons.min.css"
 						rel="stylesheet"
 					/>
-					{/* <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js" /> */}
 				</Head>
 				{children}
 			</main>

@@ -1,7 +1,6 @@
 @import '../../styles/variables.css';
 
 .image-feed {
-	overflow: auto;
 	position: relative;
 	z-index: 0;
 	opacity: 1;
@@ -25,6 +24,10 @@
 	/* top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%); */
+}
+
+.image-feed__scroller {
+	overflow: auto;
 }
 
 .image-feed__stamp {

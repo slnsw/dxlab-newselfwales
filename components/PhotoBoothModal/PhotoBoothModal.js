@@ -1,11 +1,13 @@
-import { Component, Fragment } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import Keyboard from 'react-screen-keyboard';
+import { CSSTransition } from 'react-transition-group';
 
 import './PhotoBoothModal.css';
 import './Keyboard.css';
 import PhotoBoothModalForm from '../PhotoBoothModalForm';
 import SearchContainer from '../SearchContainer';
+import PageContainer from '../PageContainer';
 import { Router } from '../../routes';
 import webcam, { dataURItoBlob } from '../../lib/webcam';
 import { LatinLayoutCustom } from '../../lib';
@@ -17,6 +19,11 @@ class Home extends Component {
 	static propTypes = {
 		url: PropTypes.object,
 		stage: PropTypes.string,
+		useScreenKeyboard: PropTypes.bool,
+	};
+
+	static defaultProps = {
+		useScreenKeyboard: false,
 	};
 
 	constructor(props) {
@@ -158,23 +165,29 @@ class Home extends Component {
 		Router.pushRoute('/photo-booth?stage=search');
 	};
 
-	handleSearchInputTextFocus = (input) => {
-		this.setState({
-			inputNode: input,
-		});
+	handleAboutButton = () => {
+		Router.pushRoute('/photo-booth?stage=about');
 	};
 
-	handleSearchInputTextBlur = () => {
-		console.log('hi');
+	handleInputTextFocus = (input) => {
+		if (this.props.useScreenKeyboard) {
+			this.setState({
+				inputNode: input,
+			});
+		}
+	};
 
-		this.setState({
-			inputNode: null,
-		});
+	handleInputTextBlur = () => {
+		if (this.props.useScreenKeyboard) {
+			this.setState({
+				inputNode: null,
+			});
+		}
 	};
 
 	render() {
+		const { stage, url, useScreenKeyboard } = this.props;
 		const { isBlink, inputNode } = this.state;
-		const { stage, url } = this.props;
 
 		return (
 			<div
@@ -211,12 +224,14 @@ class Home extends Component {
 					)}
 
 				<div className="photo-booth-modal__photo-box">
-					{(stage === 'start' || stage === 'take-selfie') && (
-						<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
-					)}
-
-					{stage === 'start' && (
-						<Fragment>
+					<CSSTransition
+						in={stage === 'start'}
+						appear={true}
+						timeout={600}
+						classNames="css-transition-"
+					>
+						<div className="photo-booth-modal__photo-box__content css-transition">
+							<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
 							<img
 								src="../../static/newselfwales/images/silhouettes/silhouette.png"
 								alt="Silhouette of person"
@@ -228,28 +243,37 @@ class Home extends Component {
 							<button className="button" onClick={this.startSelfie}>
 								Start
 							</button>
-						</Fragment>
-					)}
+						</div>
+					</CSSTransition>
 
 					{stage === 'take-selfie' && (
-						<Fragment>
-							<video
-								className="photo-booth-modal__video photo-booth-modal__video--feed"
-								ref={(element) => {
-									this.videoFeed = element;
-								}}
-								width="1080"
-								height="1080"
-								autoPlay
-							/>
+						<CSSTransition
+							in={stage === 'take-selfie'}
+							appear={true}
+							timeout={600}
+							classNames="css-transition-"
+						>
+							<div className="photo-booth-modal__photo-box__content css-transition">
+								<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
 
-							<button
-								className="photo-booth-modal__camera-button"
-								onClick={this.takeSelfie}
-							>
-								Take
-							</button>
-						</Fragment>
+								<video
+									className="photo-booth-modal__video photo-booth-modal__video--feed"
+									ref={(element) => {
+										this.videoFeed = element;
+									}}
+									width="1080"
+									height="1080"
+									autoPlay
+								/>
+
+								<button
+									className="photo-booth-modal__camera-button"
+									onClick={this.takeSelfie}
+								>
+									Take
+								</button>
+							</div>
+						</CSSTransition>
 					)}
 
 					<div
@@ -269,7 +293,7 @@ class Home extends Component {
 
 						<div className="photo-booth-modal__buttons">
 							<button
-								className="button"
+								className="button button"
 								onClick={this.retakeSelfie}
 								id="retake"
 							>
@@ -281,7 +305,6 @@ class Home extends Component {
 						</div>
 					</div>
 				</div>
-
 				<div
 					className="photo-booth-modal__send-selfie"
 					style={{
@@ -298,8 +321,11 @@ class Home extends Component {
 							width="300"
 							height="300"
 						/>
-						<button className="button" onClick={this.retakeSelfie}>
-							<i className="ion-md-arrow-back" /> re-take
+						<button
+							className="button button--small"
+							onClick={this.retakeSelfie}
+						>
+							<i className="ion-md-arrow-back" /> try again
 						</button>
 					</div>
 
@@ -308,11 +334,10 @@ class Home extends Component {
 							blob={this.blob}
 							onFormSubmitComplete={this.handleFormSubmitComplete}
 							onQuitClick={this.goHome}
-							onInputTextFocus={this.handleSearchInputTextFocus}
+							onInputTextFocus={this.handleInputTextFocus}
 						/>
 					)}
 				</div>
-
 				{stage === 'show-thanks' && (
 					<div className="photo-booth-modal__show-thanks">
 						<h1>Thank you!</h1>
@@ -323,7 +348,6 @@ class Home extends Component {
 						</button>
 					</div>
 				)}
-
 				<div
 					className={[
 						'photo-booth-modal__search',
@@ -333,9 +357,19 @@ class Home extends Component {
 					<SearchContainer
 						url={url}
 						isActive={stage === 'search'}
-						onInputTextFocus={this.handleSearchInputTextFocus}
-						onInputTextBlur={this.handleSearchInputTextBlur}
+						onInputTextFocus={this.handleInputTextFocus}
+						onInputTextBlur={this.handleInputTextBlur}
 					/>
+				</div>
+				<div
+					className={[
+						'photo-booth-modal__about',
+						stage === 'about' ? 'photo-booth-modal__about--is-active' : '',
+					].join(' ')}
+				>
+					{stage === 'about' && (
+						<PageContainer slug={'newselfwales'} title="About" />
+					)}
 				</div>
 
 				<footer className="photo-booth-modal__footer">
@@ -347,7 +381,10 @@ class Home extends Component {
 							>
 								<i className="ion-md-search" /> Search
 							</li>
-							<li className="photo-booth-modal__menu-item">
+							<li
+								className="photo-booth-modal__menu-item"
+								onClick={this.handleAboutButton}
+							>
 								<i className="ion-md-information-circle-outline" /> About
 							</li>
 						</ul>
@@ -359,14 +396,14 @@ class Home extends Component {
 						src="../../static/newselfwales/newselfwales-logo-01.gif"
 					/>
 				</footer>
-
 				<div
 					className={[
 						'photo-booth-modal__keyboard',
 						inputNode ? 'photo-booth-modal__keyboard--is-active' : '',
 					].join(' ')}
 				>
-					{process.browser &&
+					{useScreenKeyboard &&
+						process.browser &&
 						inputNode && (
 							<Keyboard inputNode={inputNode} layouts={[LatinLayoutCustom]} />
 						)}
