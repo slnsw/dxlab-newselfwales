@@ -1,17 +1,22 @@
 {
 	"name": "dxlab-newselfwales",
 	"author": "Kaho Cheung",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"scripts": {
 		"dev": "npm start",
 		"build": "next build",
 		"start": "node server.js -p $PORT",
-		"deploy-production": "now --dotenv=.env.production && now alias dxlab-newselfwales.now.sh",
-		"deploy-staging": "now --dotenv=.env.staging --no-verify && now alias dxlab-staging-newselfwales.now.sh",
+		"deploy-production":
+			"now --dotenv=.env.production && now alias dxlab-newselfwales.now.sh",
+		"deploy-staging":
+			"now --dotenv=.env.staging --no-verify && now alias dxlab-staging-newselfwales.now.sh",
+		"deploy-dev":
+			"now --dotenv=.env.dev --no-verify && now alias dxlab-dev-newselfwales.now.sh",
 		"alias-production": "now alias dxlab-selfie.now.sh",
 		"flow": "flow",
 		"test": "jest",
-		"test:lint": "eslint . --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --cache"
+		"test:lint":
+			"eslint . --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --cache"
 	},
 	"engines": {
 		"node": "~8.9.0"

@@ -186,5 +186,8 @@ input[type='submit'] {
 	&:focus {
 		outline: 1;
 		outline-color: var(--colour-highlight);
+
+		/* TODO: Disable this for web version  */
+		outline-width: 0;
 	}
 }
