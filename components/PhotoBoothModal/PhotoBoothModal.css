@@ -94,11 +94,17 @@
 
 .photo-booth-modal__title {
 	margin-top: 0;
-	margin-bottom: var(--spacing-xxxs);
+	margin-bottom: var(--spacing-xxxxs);
 	text-transform: none;
 	letter-spacing: 0;
 	font-family: var(--font-secondary);
-	font-size: var(--font-size-lg);
+	font-size: var(--font-size-xlg);
+}
+
+.photo-booth-modal__subtitle {
+	font-size: var(--font-size-md);
+	margin-bottom: var(--spacing-lg);
+	color: var(--colour-grey-light);
 }
 
 .photo-booth-modal__silhouette {
