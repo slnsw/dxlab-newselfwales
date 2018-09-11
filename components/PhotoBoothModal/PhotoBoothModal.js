@@ -232,6 +232,10 @@ class Home extends Component {
 					>
 						<div className="photo-booth-modal__photo-box__content css-transition">
 							<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
+							<p className="photo-booth-modal__subtitle">
+								See yourself appear in the gallery
+							</p>
+
 							<img
 								src="../../static/newselfwales/images/silhouettes/silhouette.png"
 								alt="Silhouette of person"
@@ -255,6 +259,9 @@ class Home extends Component {
 						>
 							<div className="photo-booth-modal__photo-box__content css-transition">
 								<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
+								<p className="photo-booth-modal__subtitle">
+									Pick up the camera in the handset below
+								</p>
 
 								<video
 									className="photo-booth-modal__video photo-booth-modal__video--feed"

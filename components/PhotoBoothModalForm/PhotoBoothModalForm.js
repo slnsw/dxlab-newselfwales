@@ -226,12 +226,13 @@ class PhotoBoothModalForm extends Component {
 	render() {
 		const { formErrors, formValid } = this.state;
 
-		console.log(formValid);
-
 		return (
 			<div className="photo-booth-modal-form">
 				<h1>Your Details</h1>
-				<p>Fill in the form if you would like us to email you your selfie.</p>
+				<p>
+					If you are happy with this photo, please fill in the form and press
+					submit. Your photo will then appear in the gallery.
+				</p>
 
 				<p>
 					<label className="photo-booth-modal-form__label" htmlFor="name">
