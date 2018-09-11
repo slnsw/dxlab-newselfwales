@@ -8,8 +8,8 @@ import ImageModal from '../ImageModal';
 
 class ImageModalContainer extends Component {
 	static propTypes = {
-		id: PropTypes.number.isRequired,
-		imageType: PropTypes.string.isRequired,
+		id: PropTypes.number,
+		imageType: PropTypes.string,
 		sourceImageBoundingClientRect: PropTypes.object,
 		isActive: PropTypes.bool.isRequired,
 		onClose: PropTypes.func.isRequired,

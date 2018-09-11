@@ -296,7 +296,6 @@ class Home extends Component {
 						</div>
 					</div>
 				</div>
-
 				<div
 					className="photo-booth-modal__send-selfie"
 					style={{
@@ -327,7 +326,6 @@ class Home extends Component {
 						/>
 					)}
 				</div>
-
 				{stage === 'show-thanks' && (
 					<div className="photo-booth-modal__show-thanks">
 						<h1>Thank you!</h1>
@@ -338,7 +336,6 @@ class Home extends Component {
 						</button>
 					</div>
 				)}
-
 				<div
 					className={[
 						'photo-booth-modal__search',
@@ -352,7 +349,6 @@ class Home extends Component {
 						onInputTextBlur={this.handleSearchInputTextBlur}
 					/>
 				</div>
-
 				<div
 					className={[
 						'photo-booth-modal__about',
@@ -388,7 +384,6 @@ class Home extends Component {
 						src="../../static/newselfwales/newselfwales-logo-01.gif"
 					/>
 				</footer>
-
 				<div
 					className={[
 						'photo-booth-modal__keyboard',

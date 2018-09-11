@@ -139,7 +139,7 @@ class Search extends Component {
 							}
 
 							return (
-								<section>
+								<section key={type}>
 									<h2 className="search__results__title">
 										{typeTitle} <span> ({items.length})</span>
 									</h2>
@@ -152,6 +152,7 @@ class Search extends Component {
 														imageType: type,
 														id: item.id,
 													})}`}
+													key={item.id}
 												>
 													<a>
 														<article
@@ -162,7 +163,6 @@ class Search extends Component {
 																	type,
 																})
 															}
-															key={item.id}
 														>
 															<img
 																src={item.featuredMedia.sourceUrl}

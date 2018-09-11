@@ -48,6 +48,7 @@ class PhotoBoothPage extends Component {
 				<App title="Photo Booth">
 					<div className="photo-booth-page">
 						<ImageFeedContainer
+							name="photo-booth"
 							startImages={30}
 							maxImages={50}
 							enableAnimation={enableAnimation}
@@ -65,7 +66,7 @@ class PhotoBoothPage extends Component {
 						)} */}
 
 						<ImageModalContainer
-							isActive={showImageModal}
+							isActive={showImageModal || false}
 							imageType={url.query.imageType}
 							id={parseInt(url.query.id, 10)}
 							sourceImageBoundingClientRect={sourceImageBoundingClientRect}
