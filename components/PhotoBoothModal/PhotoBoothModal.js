@@ -19,6 +19,11 @@ class Home extends Component {
 	static propTypes = {
 		url: PropTypes.object,
 		stage: PropTypes.string,
+		useScreenKeyboard: PropTypes.bool,
+	};
+
+	static defaultProps = {
+		useScreenKeyboard: false,
 	};
 
 	constructor(props) {
@@ -164,21 +169,25 @@ class Home extends Component {
 		Router.pushRoute('/photo-booth?stage=about');
 	};
 
-	handleSearchInputTextFocus = (input) => {
-		this.setState({
-			inputNode: input,
-		});
+	handleInputTextFocus = (input) => {
+		if (this.props.useScreenKeyboard) {
+			this.setState({
+				inputNode: input,
+			});
+		}
 	};
 
-	handleSearchInputTextBlur = () => {
-		this.setState({
-			inputNode: null,
-		});
+	handleInputTextBlur = () => {
+		if (this.props.useScreenKeyboard) {
+			this.setState({
+				inputNode: null,
+			});
+		}
 	};
 
 	render() {
+		const { stage, url, useScreenKeyboard } = this.props;
 		const { isBlink, inputNode } = this.state;
-		const { stage, url } = this.props;
 
 		return (
 			<div
@@ -325,7 +334,7 @@ class Home extends Component {
 							blob={this.blob}
 							onFormSubmitComplete={this.handleFormSubmitComplete}
 							onQuitClick={this.goHome}
-							onInputTextFocus={this.handleSearchInputTextFocus}
+							onInputTextFocus={this.handleInputTextFocus}
 						/>
 					)}
 				</div>
@@ -348,8 +357,8 @@ class Home extends Component {
 					<SearchContainer
 						url={url}
 						isActive={stage === 'search'}
-						onInputTextFocus={this.handleSearchInputTextFocus}
-						onInputTextBlur={this.handleSearchInputTextBlur}
+						onInputTextFocus={this.handleInputTextFocus}
+						onInputTextBlur={this.handleInputTextBlur}
 					/>
 				</div>
 				<div
@@ -393,7 +402,8 @@ class Home extends Component {
 						inputNode ? 'photo-booth-modal__keyboard--is-active' : '',
 					].join(' ')}
 				>
-					{process.browser &&
+					{useScreenKeyboard &&
+						process.browser &&
 						inputNode && (
 							<Keyboard inputNode={inputNode} layouts={[LatinLayoutCustom]} />
 						)}
