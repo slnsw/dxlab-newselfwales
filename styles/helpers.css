@@ -117,3 +117,31 @@ input[type='text'] {
 		background-color: var(--colour-grey);
 	}
 }
+
+/*
+ * CSS Transitions
+ * -------------------------------------------------------------------------- */
+
+.css-transition {
+	opacity: 0;
+	transition: 0.3s var(--ease-in-out-quart);
+}
+
+.css-transition-enter {
+	display: block;
+	opacity: 0;
+}
+
+.css-transition--enter-active {
+	display: block;
+	opacity: 1;
+}
+
+.css-transition--enter-done {
+	display: block;
+	opacity: 1;
+}
+
+.css-transition--exit-done {
+	display: none;
+}
