@@ -3,6 +3,7 @@ import { ApolloProvider } from 'react-apollo';
 import withRedux from 'next-redux-wrapper';
 
 import './photo-booth.css';
+import '../styles/kiosk.css';
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
 import ImageModalContainer from '../components/ImageModalContainer';

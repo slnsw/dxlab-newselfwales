@@ -46,7 +46,7 @@ class PageContainer extends Component {
 				}}
 			>
 				{({ loading, error, data }) => {
-					if (loading) {
+					if (loading || !data.pages[0]) {
 						return null;
 					}
 
