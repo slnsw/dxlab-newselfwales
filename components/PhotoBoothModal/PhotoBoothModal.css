@@ -78,7 +78,7 @@
 	display: block;
 	flex-direction: column;
 	width: 100%;
-	max-width: 25em;
+	max-width: 30em;
 
 	@nest .photo-booth-modal--full & {
 		/* align-items: center; */
@@ -110,8 +110,8 @@
 
 .photo-booth-modal__video {
 	margin: 0 auto 1em;
-	max-height: 25em;
-	max-width: 25em;
+	max-height: 30em;
+	max-width: 30em;
 	transform: scaleX(-1);
 }
 
@@ -125,7 +125,11 @@
 .photo-booth-modal__send-selfie {
 	display: flex;
 	margin: 0 auto;
-	width: 80%;
+	width: 70%;
+
+	@media (--screen-xxlg) {
+		width: 60%;
+	}
 }
 
 .photo-booth-modal__send-selfie__preview {

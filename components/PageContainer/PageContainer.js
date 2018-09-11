@@ -66,12 +66,14 @@ class PageContainer extends Component {
 							classNames="page-container-"
 						>
 							<div className="page-container">
-								<h1>{title}</h1>
+								<article>
+									<h1>{title}</h1>
 
-								<div
-									className="page-container__content"
-									dangerouslySetInnerHTML={{ __html: content }}
-								/>
+									<div
+										className="page-container__content"
+										dangerouslySetInnerHTML={{ __html: content }}
+									/>
+								</article>
 							</div>
 						</CSSTransition>
 					);

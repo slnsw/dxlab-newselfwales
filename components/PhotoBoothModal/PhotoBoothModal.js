@@ -284,7 +284,7 @@ class Home extends Component {
 
 						<div className="photo-booth-modal__buttons">
 							<button
-								className="button"
+								className="button button"
 								onClick={this.retakeSelfie}
 								id="retake"
 							>
@@ -312,8 +312,11 @@ class Home extends Component {
 							width="300"
 							height="300"
 						/>
-						<button className="button" onClick={this.retakeSelfie}>
-							<i className="ion-md-arrow-back" /> re-take
+						<button
+							className="button button--small"
+							onClick={this.retakeSelfie}
+						>
+							<i className="ion-md-arrow-back" /> try again
 						</button>
 					</div>
 

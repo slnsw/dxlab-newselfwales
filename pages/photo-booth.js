@@ -18,6 +18,33 @@ class PhotoBoothPage extends Component {
 		sourceImageBoundingClientRect: null,
 	};
 
+	static defaultProps = {
+		url: {
+			query: {
+				stage: null,
+			},
+		},
+	};
+
+	componentDidUpdate(prevProps) {
+		const { stage } = this.props.url.query;
+		const { stage: prevStage } = prevProps.url.query;
+
+		if (prevStage !== stage) {
+			// Control gallery animation depending on stage
+
+			if (stage === 'take-selfie' || stage === 'about') {
+				this.setState({
+					enableAnimation: false,
+				});
+			} else if (stage === 'start' || stage === 'hidden') {
+				this.setState({
+					enableAnimation: true,
+				});
+			}
+		}
+	}
+
 	handleImageClick = (event, image) => {
 		// console.log(event.target.parentElement.getBoundingClientRect(), image);
 		// console.log(image);

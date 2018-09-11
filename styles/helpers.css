@@ -67,6 +67,10 @@ input[type='text'] {
 	}
 }
 
+.button--small {
+	font-size: var(--font-size-sm);
+}
+
 .button--dark {
 	background-color: var(--colour-black);
 	border: 1px solid var(--colour-primary);

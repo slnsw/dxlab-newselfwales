@@ -17,4 +17,17 @@
 	overflow: auto;
 	width: 35em;
 	height: calc(100vh - 20em);
+	padding-right: 2em;
+
+	&::-webkit-scrollbar-track {
+		background-color: var(--colour-grey-darkest);
+	}
+
+	&::-webkit-scrollbar {
+		width: 3px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: var(--colour-grey-dark);
+	}
 }
