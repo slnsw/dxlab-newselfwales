@@ -36,6 +36,10 @@ class PhotoBoothPage extends Component {
 		Router.pushRoute(
 			`${url.pathname}${url.query.stage === 'search' ? '?stage=search' : ''}`,
 		);
+
+		this.setState({
+			enableAnimation: true,
+		});
 	};
 
 	render() {

@@ -49,7 +49,7 @@ class ImageFeedContainer extends Component {
 	};
 
 	handleHideAllImagesComplete = () => {
-		console.log('hideAllImagesComplete');
+		console.log('handleHideAllImagesComplete');
 		this.props.dispatch({ type: 'CLEAR_CURRENT_IMAGES' });
 		this.props.dispatch({ type: 'SWITCH_UPCOMING_TO_CURRENT' });
 	};
