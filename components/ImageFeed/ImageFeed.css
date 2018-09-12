@@ -7,11 +7,6 @@
 	transition: opacity 1s var(--ease-in-out-quart);
 }
 
-.image-feed::-webkit-scrollbar {
-	width: 0 !important;
-	height: 0 !important;
-}
-
 .image-feed--is-hidden {
 	opacity: 0;
 }
@@ -20,14 +15,16 @@
 	position: absolute;
 	z-index: 10;
 	bottom: 0;
-	right: 2em;
-	/* top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%); */
+	left: 2em;
 }
 
 .image-feed__scroller {
 	overflow: auto;
+}
+
+.image-feed__scroller::-webkit-scrollbar {
+	width: 0 !important;
+	height: 0 !important;
 }
 
 .image-feed__stamp {
@@ -37,7 +34,7 @@
 	height: 100vh;
 }
 
-/* ----------------------------------------------------------------------------
+/* -------------------------------------------------------------------------
  * Image Holder 
  * ------------------------------------------------------------------------- */
 

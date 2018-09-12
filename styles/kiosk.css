@@ -1,0 +1,20 @@
+/*
+ * KIOSK STYLES
+ * Special styles specifically for Kiosk apps
+ * ========================================================================== */
+
+body {
+	/* Disable pinch zoom */
+	touch-action: none;
+}
+
+button,
+textarea,
+input[type='text'],
+input[type='button'],
+input[type='submit'] {
+	&:focus {
+		/* Hide ugly outlines - ensure other visual feedback is shown */
+		outline-width: 0;
+	}
+}

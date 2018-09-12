@@ -28,7 +28,7 @@
 
 .photo-booth-modal-form__terms-conditions {
 	margin-left: 25%;
-	margin-bottom: 2em;
+	margin-bottom: 3em;
 
 	/* & label {
 		width: inherit;
@@ -50,7 +50,16 @@
 	font-size: var(--font-size-lg);
 }
 
-.photo-booth-modal-form__form-error-message {
-	color: var(--colour-primary);
+.photo-booth-modal-form__button {
+	transition: 0.3s var(--ease-in-out-quint);
+}
+
+.photo-booth-modal-form__form-message {
 	margin-left: 1em;
+	line-height: var(--line-height-sm);
+	color: var(--colour-primary);
+}
+
+.photo-booth-modal-form__form-message-sending {
+	line-height: 1;
 }

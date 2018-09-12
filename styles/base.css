@@ -25,7 +25,7 @@ body {
 	color: var(--colour-white);
 	font-family: var(--font-primary);
 	font-weight: 400;
-	line-height: 1.5;
+	line-height: var(--line-height-md);
 	font-size: 17px;
 
 	/*-webkit-font-smoothing: antialiased;*/
@@ -140,7 +140,7 @@ textarea {
 	color: var(--colour-white);
 	background-color: var(--colour-grey-darker);
 	border-bottom: 4px solid var(--colour-grey-darkest);
-	border-right: 2px solid rgba(45, 45, 45);
+	border-right: 2px solid rgba(35, 35, 35);
 	border-left: none;
 	border-top: none;
 	border-radius: 0;

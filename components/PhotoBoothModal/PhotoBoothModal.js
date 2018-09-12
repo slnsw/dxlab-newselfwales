@@ -224,31 +224,33 @@ class Home extends Component {
 					)}
 
 				<div className="photo-booth-modal__photo-box">
-					<CSSTransition
-						in={stage === 'start'}
-						appear={true}
-						timeout={600}
-						classNames="css-transition-"
-					>
-						<div className="photo-booth-modal__photo-box__content css-transition">
-							<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
-							<p className="photo-booth-modal__subtitle">
-								See yourself appear in the gallery
-							</p>
+					{stage === 'start' && (
+						<CSSTransition
+							in={stage === 'start'}
+							appear={true}
+							timeout={600}
+							classNames="css-transition-"
+						>
+							<div className="photo-booth-modal__photo-box__content css-transition">
+								<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
+								<p className="photo-booth-modal__subtitle">
+									See yourself appear in the gallery
+								</p>
 
-							<img
-								src="../../static/newselfwales/images/silhouettes/silhouette.png"
-								alt="Silhouette of person"
-								className="photo-booth-modal__silhouette"
-							/>
+								<img
+									src="../../static/newselfwales/images/silhouettes/silhouette.png"
+									alt="Silhouette of person"
+									className="photo-booth-modal__silhouette"
+								/>
 
-							<br />
+								<br />
 
-							<button className="button" onClick={this.startSelfie}>
-								Start
-							</button>
-						</div>
-					</CSSTransition>
+								<button className="button" onClick={this.startSelfie}>
+									Start
+								</button>
+							</div>
+						</CSSTransition>
+					)}
 
 					{stage === 'take-selfie' && (
 						<CSSTransition
@@ -258,9 +260,11 @@ class Home extends Component {
 							classNames="css-transition-"
 						>
 							<div className="photo-booth-modal__photo-box__content css-transition">
-								<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
+								<h1 className="photo-booth-modal__title">
+									Smile, you're on camera...
+								</h1>
 								<p className="photo-booth-modal__subtitle">
-									Pick up the camera in the handset below
+									Pick up the camera in the handset below to take a selfie
 								</p>
 
 								<video
