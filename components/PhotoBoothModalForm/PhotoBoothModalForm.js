@@ -2,6 +2,8 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import WPAPI from 'wpapi';
 
+import LoaderText from '../LoaderText';
+import Modal from '../Modal';
 import './PhotoBoothModalForm.css';
 
 class PhotoBoothModalForm extends Component {
@@ -11,22 +13,20 @@ class PhotoBoothModalForm extends Component {
 		onInputTextFocus: PropTypes.func,
 	};
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			interests: '',
-			email: '',
-			name: '',
-			'terms-conditions': false,
-			isFormSending: false,
-			formErrors: { interests: '', email: '', 'terms-conditions': '' },
-			interestsValid: false,
-			emailValid: false,
-			termsConditionsValid: false,
-			formValid: false,
-		};
-	}
+	state = {
+		interests: '',
+		email: '',
+		name: '',
+		'terms-conditions': false,
+		isFormSending: false,
+		formErrors: { interests: '', email: '', 'terms-conditions': '' },
+		interestsValid: false,
+		emailValid: false,
+		termsConditionsValid: false,
+		formValid: false,
+		hasSubmitError: false,
+		submitError: '',
+	};
 
 	componentDidMount() {
 		// Set up Wordpress API
@@ -43,7 +43,7 @@ class PhotoBoothModalForm extends Component {
 
 	handleUserInput = (e) => {
 		const { target } = e;
-		const { name } = target;
+		const { name } = e.target;
 		const value = target.type === 'checkbox' ? target.checked : target.value;
 
 		this.setState({ [name]: value }, () => {
@@ -70,7 +70,7 @@ class PhotoBoothModalForm extends Component {
 					// no email is a valid email
 					emailValid = true;
 				}
-				formErrors.email = emailValid ? '' : 'Please enter a valid email.';
+				formErrors.email = emailValid ? '' : 'Please enter a valid email';
 				break;
 			}
 			// case 'interests': {
@@ -92,7 +92,7 @@ class PhotoBoothModalForm extends Component {
 				termsConditionsValid = value;
 				formErrors['terms-conditions'] = termsConditionsValid
 					? ''
-					: 'Please agree to the terms and conditions to continue.';
+					: 'Please agree to the terms and conditions to continue';
 				break;
 			}
 			default:
@@ -120,6 +120,10 @@ class PhotoBoothModalForm extends Component {
 	}
 
 	handleSubmitForm = () => {
+		this.sendForm();
+	};
+
+	sendForm = () => {
 		this.setState({
 			isFormSending: true,
 		});
@@ -170,17 +174,21 @@ class PhotoBoothModalForm extends Component {
 						}
 					})
 					.catch((error) => {
-						this.setState({
+						this.setState(() => ({
 							isFormSending: false,
-						});
+							hasSubmitError: true,
+							submitError: error.message,
+						}));
 
 						console.log(error);
 					});
 			})
 			.catch((error) => {
-				this.setState({
+				this.setState(() => ({
 					isFormSending: false,
-				});
+					hasSubmitError: true,
+					submitError: error.message,
+				}));
 
 				console.log(error);
 			});
@@ -223,8 +231,20 @@ class PhotoBoothModalForm extends Component {
 		});
 	};
 
+	handleErrorModal = () => {
+		window.location.href = '/photo-booth?stage=start';
+	};
+
 	render() {
-		const { formErrors, formValid } = this.state;
+		const {
+			formErrors,
+			formValid,
+			isFormSending,
+			hasSubmitError,
+			submitError,
+		} = this.state;
+
+		console.log(submitError);
 
 		return (
 			<div className="photo-booth-modal-form">
@@ -236,7 +256,7 @@ class PhotoBoothModalForm extends Component {
 
 				<p>
 					<label className="photo-booth-modal-form__label" htmlFor="name">
-						Name:
+						Name (required):
 					</label>
 					<input
 						type="text"
@@ -255,7 +275,7 @@ class PhotoBoothModalForm extends Component {
 
 				<p>
 					<label className="photo-booth-modal-form__label" htmlFor="email">
-						Email:
+						Email (required):
 					</label>
 					<input
 						// NOTE: Would prefer 'email', but react-screen-keyboard doesn't work
@@ -323,10 +343,10 @@ class PhotoBoothModalForm extends Component {
 
 				<div className="photo-booth-modal-form__footer">
 					<button
-						className="button"
+						className="button photo-booth-modal-form__button"
 						onClick={this.handleSubmitForm}
 						onChange={(event) => this.handleUserInput(event)}
-						disabled={formValid !== true || this.state.isFormSending}
+						disabled={formValid !== true || isFormSending}
 					>
 						Submit
 					</button>
@@ -337,18 +357,37 @@ class PhotoBoothModalForm extends Component {
 					>
 						Quit
 					</button>
-					{(formErrors.name ||
-						formErrors.email ||
-						formErrors.interests ||
-						formErrors['terms-conditions']) && (
-						<span className="photo-booth-modal-form__form-error-message">
-							{formErrors.name ||
-								formErrors.email ||
-								formErrors.interests ||
-								formErrors['terms-conditions']}
+					{isFormSending ? (
+						<span className="photo-booth-modal-form__form-message">
+							<LoaderText
+								text="Submitting form"
+								className="photo-booth-modal-form__form-message-sending"
+							/>
 						</span>
+					) : (
+						(formErrors.name ||
+							formErrors.email ||
+							formErrors.interests ||
+							formErrors['terms-conditions']) && (
+							<span className="photo-booth-modal-form__form-message">
+								{formErrors.name ||
+									formErrors.email ||
+									formErrors.interests ||
+									formErrors['terms-conditions']}
+							</span>
+						)
 					)}
 				</div>
+
+				<Modal isActive={hasSubmitError} onClose={this.handleErrorModal}>
+					<p>
+						Sorry, there is a problem: <br />
+						<code>{submitError}</code>
+					</p>
+					<button className="button" onClick={this.handleErrorModal}>
+						Try Again
+					</button>
+				</Modal>
 			</div>
 		);
 	}
