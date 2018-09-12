@@ -29,7 +29,10 @@ class PhotoBoothPage extends Component {
 	};
 
 	componentDidMount() {
-		idleTimer.init(20);
+		const { idleTimeout = 60 } = this.props.url.query;
+
+		idleTimer.init(idleTimeout);
+		console.log('Set idleTimeout to', idleTimeout);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -51,6 +54,7 @@ class PhotoBoothPage extends Component {
 
 			if (stage !== 'start') {
 				idleTimer.start(() => {
+					// TODO: Make sure other URL params are added to route
 					Router.pushRoute('/photo-booth?stage=start');
 				});
 			} else {
