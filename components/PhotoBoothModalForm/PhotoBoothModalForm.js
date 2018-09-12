@@ -19,11 +19,12 @@ class PhotoBoothModalForm extends Component {
 		name: '',
 		'terms-conditions': false,
 		isFormSending: false,
-		formErrors: { interests: '', email: '', 'terms-conditions': '' },
-		interestsValid: false,
-		emailValid: false,
-		termsConditionsValid: false,
-		formValid: false,
+		formErrors: { name: '', interests: '', email: '', 'terms-conditions': '' },
+		isNameValid: false,
+		isEmailValid: false,
+		isTermsConditionsValid: false,
+		isInterestsValid: false,
+		isFormValid: false,
 		hasSubmitError: false,
 		submitError: '',
 	};
@@ -57,20 +58,35 @@ class PhotoBoothModalForm extends Component {
 		};
 
 		let {
-			// interestsValid,
-			emailValid,
-			termsConditionsValid,
+			isNameValid,
+			isEmailValid,
+			isTermsConditionsValid,
+			// isInterestsValid,
 		} = this.state;
 
 		switch (fieldName) {
+			case 'name': {
+				isNameValid = value && value.length > 0;
+				formErrors.name = isNameValid ? '' : 'Please enter your name';
+
+				break;
+			}
+
 			case 'email': {
 				if (value.length > 0) {
-					emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+					isEmailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
 				} else {
 					// no email is a valid email
-					emailValid = true;
+					isEmailValid = false;
 				}
-				formErrors.email = emailValid ? '' : 'Please enter a valid email';
+				formErrors.email = isEmailValid ? '' : 'Please enter a valid email';
+				break;
+			}
+			case 'terms-conditions': {
+				isTermsConditionsValid = value;
+				formErrors['terms-conditions'] = isTermsConditionsValid
+					? ''
+					: 'Please agree to the terms and conditions to continue';
 				break;
 			}
 			// case 'interests': {
@@ -82,19 +98,12 @@ class PhotoBoothModalForm extends Component {
 			// 			(entry) => entry.trim().length >= 3,
 			// 		); // make sure they aren't too short
 
-			// 	interestsValid = t.length > 2; // and make sure we have at least 3
-			// 	formErrors.interests = interestsValid
+			// 	isInterestsValid = t.length > 2; // and make sure we have at least 3
+			// 	formErrors.interests = isInterestsValid
 			// 		? ''
 			// 		: 'Could you enter a bit more info about your interests? Ideally 4 or 5, separated by commas.';
 			// 	break;
 			// }
-			case 'terms-conditions': {
-				termsConditionsValid = value;
-				formErrors['terms-conditions'] = termsConditionsValid
-					? ''
-					: 'Please agree to the terms and conditions to continue';
-				break;
-			}
 			default:
 				break;
 		}
@@ -102,9 +111,10 @@ class PhotoBoothModalForm extends Component {
 		this.setState(
 			{
 				formErrors,
-				emailValid,
-				// interestsValid,
-				termsConditionsValid,
+				isNameValid,
+				isEmailValid,
+				isTermsConditionsValid,
+				// isInterestsValid,
 			},
 			this.validateForm,
 		);
@@ -112,15 +122,24 @@ class PhotoBoothModalForm extends Component {
 
 	validateForm() {
 		this.setState({
-			formValid:
-				this.state.emailValid &&
-				// this.state.interestsValid &&
-				this.state.termsConditionsValid,
+			isFormValid:
+				this.state.isNameValid &&
+				this.state.isEmailValid &&
+				this.state.isTermsConditionsValid,
+			// this.state.isInterestsValid &&
 		});
 	}
 
 	handleSubmitForm = () => {
-		this.sendForm();
+		if (this.state.isFormValid) {
+			this.sendForm();
+		} else if (!this.state.name) {
+			this.validateField('name', this.state.name);
+		} else if (!this.state.email) {
+			this.validateField('email', this.state.email);
+		} else {
+			this.validateField('terms-conditions', this.state['terms-conditions']);
+		}
 	};
 
 	sendForm = () => {
@@ -204,7 +223,6 @@ class PhotoBoothModalForm extends Component {
 		if (typeof this.props.onInputTextFocus === 'function') {
 			this.props.onInputTextFocus(input);
 		}
-		// this.setState({ inputNode: input });
 	};
 
 	handleNameInput = (event) => {
@@ -227,7 +245,7 @@ class PhotoBoothModalForm extends Component {
 
 	handleTermsConditionsClick = (event) => {
 		this.setState({
-			termsConditionsValid: event.target.checked,
+			isTermsConditionsValid: event.target.checked,
 		});
 	};
 
@@ -238,13 +256,11 @@ class PhotoBoothModalForm extends Component {
 	render() {
 		const {
 			formErrors,
-			formValid,
+			// isFormValid,
 			isFormSending,
 			hasSubmitError,
 			submitError,
 		} = this.state;
-
-		console.log(submitError);
 
 		return (
 			<div className="photo-booth-modal-form">
@@ -265,6 +281,7 @@ class PhotoBoothModalForm extends Component {
 						value={this.state.name}
 						placeholder="Your name"
 						onFocus={() => this.handleInputFocus(this.nameInput)}
+						onBlur={(event) => this.handleUserInput(event)}
 						onChange={(event) => this.handleUserInput(event)}
 						onInput={this.handleNameInput}
 						ref={(input) => {
@@ -346,7 +363,8 @@ class PhotoBoothModalForm extends Component {
 						className="button photo-booth-modal-form__button"
 						onClick={this.handleSubmitForm}
 						onChange={(event) => this.handleUserInput(event)}
-						disabled={formValid !== true || isFormSending}
+						// disabled={isFormValid !== true || isFormSending}
+						disabled={isFormSending}
 					>
 						Submit
 					</button>
