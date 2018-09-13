@@ -4,7 +4,7 @@ import withRedux from 'next-redux-wrapper';
 
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
-// import ImageModalContainer from '../components/ImageModalContainer';
+import TransceiverContainer from '../components/TransceiverContainer';
 import { client } from '../lib/initApollo';
 import { initStore } from '../lib/initRedux';
 
@@ -53,6 +53,8 @@ class GalleryPage extends Component {
 						fps={parseStringToInt(fps)}
 						onImageClick={this.handleImageClick}
 					/>
+
+					<TransceiverContainer />
 				</App>
 			</ApolloProvider>
 		);
