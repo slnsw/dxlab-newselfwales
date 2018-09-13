@@ -20,6 +20,12 @@ class GalleryPage extends Component {
 		);
 	};
 
+	handleReceive = (value) => {
+		if (value === 'reload') {
+			window.location.reload();
+		}
+	};
+
 	render() {
 		const {
 			url: {
@@ -54,7 +60,10 @@ class GalleryPage extends Component {
 						onImageClick={this.handleImageClick}
 					/>
 
-					<TransceiverContainer />
+					<TransceiverContainer
+						channel="NEWSELFWALES"
+						onReceive={this.handleReceive}
+					/>
 				</App>
 			</ApolloProvider>
 		);

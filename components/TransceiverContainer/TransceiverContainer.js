@@ -1,30 +1,31 @@
 import { Component } from 'react';
 import { Subscription } from 'react-apollo';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-// import PropTypes from 'prop-types';
 
 class TransceiverContainer extends Component {
-	// static propTypes = {};
+	static propTypes = {
+		channel: PropTypes.string,
+		onReceive: PropTypes.func,
+	};
 
 	render() {
-		// const {} = this.props;
+		const { channel, onReceive } = this.props;
 
 		return (
 			<div className="transceiver-container">
 				<Subscription
-					subscription={gql`
-						subscription {
-							onSendControl(channelSlug: "NEWSELFWALES") {
-								id
-								value
-							}
-						}
-					`}
+					subscription={TRANSCEIVER_SUBSCRIPTION}
+					variables={{ channelSlug: channel }}
 				>
 					{({ data, loading }) => {
-						console.log(data, loading);
+						if (loading) {
+							return null;
+						}
 
-						return <p>test</p>;
+						const { id, value } = data.onSendControl;
+
+						return <Transceiver id={id} value={value} onReceive={onReceive} />;
 					}}
 				</Subscription>
 				<span />
@@ -33,22 +34,37 @@ class TransceiverContainer extends Component {
 	}
 }
 
+class Transceiver extends Component {
+	static propTypes = {
+		id: PropTypes.string,
+		value: PropTypes.string,
+		onReceive: PropTypes.func,
+	};
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.id !== this.props.id) {
+			this.handleReceive(this.props.value);
+		}
+	}
+
+	handleReceive(value) {
+		if (typeof this.props.onReceive === 'function') {
+			this.props.onReceive(value);
+		}
+	}
+
+	render() {
+		return null;
+	}
+}
+
 export default TransceiverContainer;
 
-// const TRANSCEIVER_SUBSCRIPTION = gql`
-// 	subscription sendControl($channelSlug: String!) {
-// 		onSendControl(channelSlug: $channelSlug) {
-// 			id
-// 			value
-// 		}
-// 	}
-// `;
-
-// const TRANSCEIVER_SUBSCRIPTION = gql`
-// 	subscription {
-// 		onSendControl(channelSlug: "UNPACKED") {
-// 			id
-// 			value
-// 		}
-// 	}
-// `;
+const TRANSCEIVER_SUBSCRIPTION = gql`
+	subscription sendControl($channelSlug: String!) {
+		onSendControl(channelSlug: $channelSlug) {
+			id
+			value
+		}
+	}
+`;
