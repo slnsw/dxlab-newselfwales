@@ -8,6 +8,7 @@ import './Keyboard.css';
 import PhotoBoothModalForm from '../PhotoBoothModalForm';
 import SearchContainer from '../SearchContainer';
 import PageContainer from '../PageContainer';
+import ImageFaderContainer from '../ImageFaderContainer';
 import { Router } from '../../routes';
 import webcam, { dataURItoBlob } from '../../lib/webcam';
 import { LatinLayoutCustom } from '../../lib';
@@ -237,12 +238,7 @@ class Home extends Component {
 									See yourself appear in the gallery
 								</p>
 
-								<img
-									src="../../static/newselfwales/images/silhouettes/silhouette.png"
-									alt="Silhouette of person"
-									className="photo-booth-modal__silhouette"
-								/>
-
+								<ImageFaderContainer limit={5} />
 								<br />
 
 								<button className="button" onClick={this.startSelfie}>
