@@ -8,7 +8,7 @@ class ImageFader extends Component {
 
 	render() {
 		const { images } = this.props;
-console.log(images);
+
 		if (!images.length) {
 			return null;
 		}
@@ -16,7 +16,8 @@ console.log(images);
 		return (
 			<div className="image-fader">
 				<img
-					src={images[0].featuredMedia.sizes.medium.sourceUrl}
+					className="image-fader__image"
+					src={images[0].featuredMedia.sourceUrl}
 					alt={images[0].title}
 				/>
 			</div>
