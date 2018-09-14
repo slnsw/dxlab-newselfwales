@@ -20,8 +20,8 @@ class GalleryPage extends Component {
 		);
 	};
 
-	handleReceive = (value) => {
-		if (value === 'reload') {
+	handleReceive = (message) => {
+		if (message.action === 'reload' && message.value === 'gallery') {
 			window.location.reload();
 		}
 	};
@@ -61,7 +61,8 @@ class GalleryPage extends Component {
 					/>
 
 					<TransceiverContainer
-						channel="NEWSELFWALES"
+						appId="NEWSELFWALES"
+						channel="GALLERY"
 						onReceive={this.handleReceive}
 					/>
 				</App>
