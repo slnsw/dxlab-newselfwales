@@ -14,6 +14,7 @@ export const fetchFaderImages = ({ limit }) => (dispatch) => {
 		.query({
 			query: IMAGE_FADER_QUERY,
 			variables: { limit },
+			fetchPolicy: 'no-cache',
 		})
 		.then((data) =>
 			dispatch({

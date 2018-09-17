@@ -27,7 +27,6 @@ export default (state = initialState, action) => {
 
 		case 'FETCH_FADER_IMAGES_SUCCESS':
 			log('FETCH_FADER_IMAGES_SUCCESS');
-
 			return {
 				...state,
 				images: payload.data.newSelfWales.instagramSelfies,
