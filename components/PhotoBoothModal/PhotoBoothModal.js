@@ -237,10 +237,7 @@ class Home extends Component {
 								<p className="photo-booth-modal__subtitle">
 									See yourself appear in the gallery
 								</p>
-
 								<ImageFaderContainer limit={5} />
-								<br />
-
 								<button className="button" onClick={this.startSelfie}>
 									Start
 								</button>
