@@ -1,4 +1,4 @@
-// import { dedupeByField } from '../lib/dedupe';
+import { dedupeByField } from '../lib/dedupe';
 import logBase from '../lib/log';
 
 const log = (...args) => {
@@ -29,7 +29,13 @@ export default (state = initialState, action) => {
 			log('FETCH_FADER_IMAGES_SUCCESS');
 			return {
 				...state,
-				images: payload.data.newSelfWales.instagramSelfies,
+				images: dedupeByField(
+					[
+						...payload.data.newSelfWales.gallerySelfies,
+						...payload.data.newSelfWales.randomSelfies,
+					],
+					'id',
+				),
 				isLoading: false,
 			};
 

@@ -12,35 +12,49 @@ class ImageFader extends Component {
 	};
 
 	static defaultProps = {
-		timePerImage: 5000,
-		fadeTimePerImage: 1000,
+		timePerImage: 6000, // total time including fade
+		fadeTimePerImage: 3000, // length of fade (needs to match CSS)
 	};
 
 	state = {
 		imageNum: 0,
-		nextImageNum: 1,
+		imageUrl: null,
+		imageTitle: null,
+		nextImageUrl: null,
+		nextImageTitle: null,
 		isFading: false,
-		lastImage: null,
+		isFirstImages: false,
 	};
-
-	componentDidMount() {
-		this.init();
-	}
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.images.length && prevProps.images !== this.props.images) {
 			const lastID = prevProps.images.length - 1;
 			this.setState({
-				imageNum: 0,
-				nextImageNum: 1,
-				lastImage: prevProps.images[lastID],
+				imageNum: -1,
+				imageUrl: prevProps.images[lastID].featuredMedia.sourceUrl,
+				nextImageUrl: this.props.images[0].featuredMedia.sourceUrl,
+				imageTitle: prevProps.images[lastID].title,
+				nextImageTitle: this.props.images[0].title,
 			});
 			this.stopFade();
 			this.startTimeout();
 		}
+		if (this.state.isFirstImages === false && this.props.images.length > 0) {
+			console.log(this.state);
+			this.init();
+			this.setState({
+				isFirstImages: true,
+			});
+		}
 	}
 
 	init = () => {
+		this.setState({
+			imageUrl: this.props.images[0].featuredMedia.sourceUrl,
+			imageTitle: this.props.images[0].title,
+			nextImageUrl: this.props.images[1].featuredMedia.sourceUrl,
+			nextImageTitle: this.props.images[1].title,
+		});
 		this.startTimeout();
 	};
 
@@ -63,15 +77,15 @@ class ImageFader extends Component {
 		setTimeout(() => {
 			this.startFade();
 		}, this.props.timePerImage - this.props.fadeTimePerImage);
-
 		setTimeout(() => {
-			if (
-				this.state.nextImageNum <
-				this.props.images.length - (this.state.lastImage ? 0 : 1)
-			) {
+			if (this.state.imageNum < this.props.images.length - 2) {
+				const nextNum = this.state.imageNum + 1;
 				this.setState({
-					imageNum: this.state.imageNum + 1,
-					nextImageNum: this.state.nextImageNum + 1,
+					imageNum: nextNum,
+					imageUrl: this.props.images[nextNum].featuredMedia.sourceUrl,
+					imageTitle: this.props.images[nextNum].title,
+					nextImageUrl: this.props.images[nextNum + 1].featuredMedia.sourceUrl,
+					nextImageTitle: this.props.images[nextNum + 1].title,
 				});
 				this.startTimeout();
 			} else if (typeof this.props.onNoMoreImages === 'function') {
@@ -82,10 +96,7 @@ class ImageFader extends Component {
 	};
 
 	render() {
-		const images = this.state.lastImage
-			? [this.state.lastImage, ...this.props.images]
-			: this.props.images;
-		if (!images.length) {
+		if (!this.props.images.length) {
 			return null;
 		}
 		return (
@@ -95,13 +106,13 @@ class ImageFader extends Component {
 						'image-fader__image',
 						this.state.isFading ? 'image-fader__image--is-fading' : '',
 					].join(' ')}
-					src={images[this.state.imageNum].featuredMedia.sourceUrl}
-					alt={images[this.state.imageNum].title}
+					src={this.state.imageUrl}
+					alt={this.state.imageTitle}
 				/>
 				<img
 					className="image-fader__image image-fader__image--rear"
-					src={images[this.state.nextImageNum].featuredMedia.sourceUrl}
-					alt={images[this.state.nextImageNum].title}
+					src={this.state.nextImageUrl}
+					alt={this.state.nextImageTitle}
 				/>
 			</div>
 		);

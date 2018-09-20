@@ -33,6 +33,46 @@ export const fetchFaderImages = ({ limit }) => (dispatch) => {
 const IMAGE_FADER_QUERY = gql`
 	query getFaderImages($limit: Int) {
 		newSelfWales {
+			gallerySelfies(limit: 1, orderBy: DATE) {
+				id
+				title
+				featuredMedia {
+					sourceUrl
+					sizes {
+						medium {
+							file
+							width
+							height
+							mimeType
+							sourceUrl
+						}
+					}
+				}
+			}
+			randomSelfies: gallerySelfies(limit: $limit, orderBy: RANDOM) {
+				id
+				title
+				featuredMedia {
+					sourceUrl
+					sizes {
+						medium {
+							file
+							width
+							height
+							mimeType
+							sourceUrl
+						}
+					}
+				}
+			}
+		}
+	}
+`;
+
+/*
+const IMAGE_FADER_QUERY = gql`
+	query getFaderImages($limit: Int) {
+		newSelfWales {
 			instagramSelfies(limit: $limit, orderBy: RANDOM) {
 				id
 				title
@@ -52,3 +92,4 @@ const IMAGE_FADER_QUERY = gql`
 		}
 	}
 `;
+*/

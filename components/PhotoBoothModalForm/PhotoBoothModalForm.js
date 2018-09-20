@@ -156,7 +156,7 @@ class PhotoBoothModalForm extends Component {
 			.create({
 				title: `New post ${selfieTitle}`,
 				content: this.state.interests,
-				status: 'draft',
+				status: 'publish',
 				meta: {
 					email: this.state.email, // TODO: Hide email in API?
 					name: this.state.name,
