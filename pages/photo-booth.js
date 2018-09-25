@@ -33,6 +33,8 @@ class PhotoBoothPage extends Component {
 
 		idleTimer.init(idleTimeout);
 		console.log('Set idleTimeout to', idleTimeout);
+
+		document.addEventListener('contextmenu', (event) => event.preventDefault());
 	}
 
 	componentDidUpdate(prevProps) {
