@@ -1,14 +1,15 @@
 import { Component } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { CSSTransition } from 'react-transition-group';
+import PropTypes from 'prop-types';
 
-// import PropTypes from 'prop-types';
-
-import './PageContainer.css';
+import Page from '../Page';
 
 class PageContainer extends Component {
-	// static propTypes = {};
+	static propTypes = {
+		title: PropTypes.string,
+		slug: PropTypes.string,
+	};
 
 	state = {
 		isMounted: false,
@@ -58,24 +59,12 @@ class PageContainer extends Component {
 					const { content } = data.pages[0];
 
 					return (
-						<CSSTransition
-							in={isMounted}
-							timeout={600}
-							unmountOnExit={true}
-							appear={true}
-							classNames="page-container-"
-						>
-							<div className="page-container">
-								<article>
-									<h1>{title}</h1>
-
-									<div
-										className="page-container__content"
-										dangerouslySetInnerHTML={{ __html: content }}
-									/>
-								</article>
-							</div>
-						</CSSTransition>
+						<Page
+							title={title}
+							slug={slug}
+							content={content}
+							isMounted={isMounted}
+						/>
 					);
 				}}
 			</Query>

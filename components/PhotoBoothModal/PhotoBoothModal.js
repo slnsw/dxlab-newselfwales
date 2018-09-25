@@ -225,25 +225,28 @@ class Home extends Component {
 					)}
 
 				<div className="photo-booth-modal__photo-box">
-					{stage === 'start' && (
-						<CSSTransition
-							in={stage === 'start'}
-							appear={true}
-							timeout={600}
-							classNames="css-transition-"
-						>
-							<div className="photo-booth-modal__photo-box__content css-transition">
-								<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
-								<p className="photo-booth-modal__subtitle">
-									See yourself appear in the gallery
-								</p>
-								<ImageFaderContainer limit={5} />
-								<button className="button" onClick={this.startSelfie}>
-									Start
-								</button>
-							</div>
-						</CSSTransition>
-					)}
+					{/* {stage === 'start' && ( */}
+					<CSSTransition
+						in={stage === 'start'}
+						appear={true}
+						timeout={600}
+						classNames="css-transition-"
+					>
+						<div className="photo-booth-modal__photo-box__content css-transition">
+							<h1 className="photo-booth-modal__title">Take a Selfie!</h1>
+							<p className="photo-booth-modal__subtitle">
+								See yourself appear in the gallery
+							</p>
+							<ImageFaderContainer limit={5} />
+							<button
+								className="button photo-booth-modal__start-button"
+								onClick={this.startSelfie}
+							>
+								Start
+							</button>
+						</div>
+					</CSSTransition>
+					{/* )} */}
 
 					{stage === 'take-selfie' && (
 						<CSSTransition
@@ -372,27 +375,35 @@ class Home extends Component {
 					].join(' ')}
 				>
 					{stage === 'about' && (
-						<PageContainer slug={'newselfwales'} title="About" />
+						<PageContainer
+							slug={'newselfwales-photo-booth-about'}
+							title="About"
+						/>
 					)}
 				</div>
 
 				<footer className="photo-booth-modal__footer">
-					{stage === 'start' && (
-						<ul className="photo-booth-modal__menu">
-							<li
-								className="photo-booth-modal__menu-item"
-								onClick={this.handleSearchButton}
-							>
-								<i className="ion-md-search" /> Search
-							</li>
-							<li
-								className="photo-booth-modal__menu-item"
-								onClick={this.handleAboutButton}
-							>
-								<i className="ion-md-information-circle-outline" /> About
-							</li>
-						</ul>
-					)}
+					{/* {stage === 'start' && ( */}
+					<ul
+						className={[
+							'photo-booth-modal__menu',
+							stage === 'start' ? 'photo-booth-modal__menu--is-active' : '',
+						].join(' ')}
+					>
+						<li
+							className="photo-booth-modal__menu-item"
+							onClick={this.handleSearchButton}
+						>
+							<i className="ion-md-search" /> Search
+						</li>
+						<li
+							className="photo-booth-modal__menu-item"
+							onClick={this.handleAboutButton}
+						>
+							<i className="ion-md-information-circle-outline" /> About
+						</li>
+					</ul>
+					{/* )} */}
 
 					<img
 						className="photo-booth-modal__nsw-logo"

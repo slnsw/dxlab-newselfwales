@@ -11,16 +11,15 @@
 	object-fit: cover;
 	position: absolute;
 	z-index: 1;
-	border: 5px solid var(--colour-white);
+	border: var(--spacing-sm) solid var(--colour-grey-darkest);
 }
 
 .image-fader__image--rear {
 	z-index: 0;
-	border: 5px solid var(--colour-white);
 }
 
 .image-fader__image--is-fading {
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s 3s, opacity 3s linear;
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0s 3s, opacity 3s linear;
 }

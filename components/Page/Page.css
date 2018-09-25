@@ -1,23 +1,32 @@
 @import '../../styles/variables.css';
 
-.page-container {
+.page {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	margin: 5em;
 	opacity: 0;
 	transition: 0.4s var(--ease-in-out-quart);
+
+	& h1 {
+		font-size: var(--font-size-xxxlg);
+	}
 }
 
-.page-container--enter-done {
+.page--enter-done {
 	opacity: 1;
 }
 
-.page-container__content {
+.page__content {
 	overflow: auto;
 	width: 35em;
-	height: calc(100vh - 20em);
+	height: calc(100vh - 20rem);
+	font-size: var(--font-size-lg);
 	padding-right: 2em;
+
+	& h3 {
+		margin-bottom: var(--spacing-xxxs);
+	}
 
 	&::-webkit-scrollbar-track {
 		background-color: var(--colour-grey-darkest);

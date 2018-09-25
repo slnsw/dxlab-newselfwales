@@ -63,7 +63,7 @@ class ImageModal extends Component {
 				in={isActive}
 				timeout={timeout}
 				appear={true}
-				unmountOnExit={true}
+				// unmountOnExit={true}
 			>
 				{(state) => {
 					// if (loading) {
