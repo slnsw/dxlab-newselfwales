@@ -12,6 +12,7 @@ import PhotoBoothModal from '../components/PhotoBoothModal';
 import { client } from '../lib/initApollo';
 import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
+import { idleTimer } from '../lib/idleTimer';
 
 class PhotoBoothPage extends Component {
 	state = {
@@ -26,6 +27,15 @@ class PhotoBoothPage extends Component {
 			},
 		},
 	};
+
+	componentDidMount() {
+		const { idleTimeout = 60 } = this.props.url.query;
+
+		idleTimer.init(idleTimeout);
+		console.log('Set idleTimeout to', idleTimeout);
+
+		document.addEventListener('contextmenu', (event) => event.preventDefault());
+	}
 
 	componentDidUpdate(prevProps) {
 		const { stage } = this.props.url.query;
@@ -42,6 +52,15 @@ class PhotoBoothPage extends Component {
 				this.setState({
 					enableAnimation: true,
 				});
+			}
+
+			if (stage !== 'start') {
+				idleTimer.start(() => {
+					// TODO: Make sure other URL params are added to route
+					Router.pushRoute('/photo-booth?stage=start');
+				});
+			} else {
+				idleTimer.stop();
 			}
 		}
 	}

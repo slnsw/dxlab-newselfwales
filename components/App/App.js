@@ -24,8 +24,6 @@ class App extends Component {
 	};
 
 	componentDidMount() {
-		document.addEventListener('scroll', this.handleOnScroll);
-
 		if (!window.GA_INITIALIZED) {
 			initGA();
 			window.GA_INITIALIZED = true;

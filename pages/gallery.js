@@ -4,7 +4,7 @@ import withRedux from 'next-redux-wrapper';
 
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
-// import ImageModalContainer from '../components/ImageModalContainer';
+import TransceiverContainer from '../components/TransceiverContainer';
 import { client } from '../lib/initApollo';
 import { initStore } from '../lib/initRedux';
 
@@ -18,6 +18,12 @@ class GalleryPage extends Component {
 			}&action=edit`,
 			'_blank',
 		);
+	};
+
+	handleReceive = (message) => {
+		if (message.action === 'reload' && message.value === 'gallery') {
+			window.location.reload();
+		}
 	};
 
 	render() {
@@ -52,6 +58,12 @@ class GalleryPage extends Component {
 						heightAdjust={heightAdjust}
 						fps={parseStringToInt(fps)}
 						onImageClick={this.handleImageClick}
+					/>
+
+					<TransceiverContainer
+						appId="NEWSELFWALES"
+						channel="GALLERY"
+						onReceive={this.handleReceive}
 					/>
 				</App>
 			</ApolloProvider>

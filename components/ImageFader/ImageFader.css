@@ -1,0 +1,25 @@
+@import '../../styles/variables.css';
+
+.image-fader {
+	position: relative;
+	height: 21em;
+}
+
+.image-fader__image {
+	width: 21em;
+	height: 21em;
+	object-fit: cover;
+	position: absolute;
+	z-index: 1;
+	border: var(--spacing-sm) solid var(--colour-grey-darkest);
+}
+
+.image-fader__image--rear {
+	z-index: 0;
+}
+
+.image-fader__image--is-fading {
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0s 3s, opacity 3s linear;
+}
