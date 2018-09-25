@@ -419,6 +419,7 @@ class Home extends Component {
 				>
 					{useScreenKeyboard &&
 						process.browser &&
+						(stage === 'send-selfie' || stage === 'search') &&
 						inputNode && (
 							<Keyboard inputNode={inputNode} layouts={[LatinLayoutCustom]} />
 						)}

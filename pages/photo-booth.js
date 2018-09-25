@@ -34,7 +34,8 @@ class PhotoBoothPage extends Component {
 		idleTimer.init(idleTimeout);
 		console.log('Set idleTimeout to', idleTimeout);
 
-		document.addEventListener('contextmenu', (event) => event.preventDefault());
+		// Disable right click
+		// document.addEventListener('contextmenu', (event) => event.preventDefault());
 	}
 
 	componentDidUpdate(prevProps) {
@@ -108,7 +109,11 @@ class PhotoBoothPage extends Component {
 							}
 						/>
 
-						<PhotoBoothModal stage={url.query.stage} url={url} />
+						<PhotoBoothModal
+							stage={url.query.stage}
+							url={url}
+							useScreenKeyboard={true}
+						/>
 
 						{/* {url.query.stage === 'search' && (
 							<div className="photo-booth-page__search">
