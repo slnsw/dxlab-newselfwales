@@ -30,15 +30,23 @@ class PhotoBoothPage extends Component {
 	};
 
 	componentDidMount() {
-		const { idleTimeout = 60, position } = this.props.url.query;
+		const { url } = this.props;
+		const { idleTimeout = 10, stage, position } = url.query;
 
 		// Redirect if no position param is found, otherwise things will break.
 		if (!position) {
 			window.location = `/photo-booth/test`;
 		}
 
-		idleTimer.init(idleTimeout);
+		// Idle Timer
 		console.log('Set idleTimeout to', idleTimeout);
+		idleTimer.init(idleTimeout);
+
+		if (stage !== 'start') {
+			idleTimer.start(() => {
+				Router.pushRoute(`${url.pathname}/${position}?stage=start`);
+			});
+		}
 
 		if (process.env.BASE_URL !== 'http://localhost:5020') {
 			// Disable right click
@@ -51,7 +59,8 @@ class PhotoBoothPage extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { url, stage, position } = this.props.url.query;
+		const { url } = this.props;
+		const { stage, position } = url.query;
 		const { stage: prevStage } = prevProps.url.query;
 
 		if (prevStage !== stage) {
@@ -69,7 +78,6 @@ class PhotoBoothPage extends Component {
 
 			if (stage !== 'start') {
 				idleTimer.start(() => {
-					// TODO: Make sure other URL params are added to route
 					Router.pushRoute(`${url.pathname}/${position}?stage=start`);
 				});
 			} else {
