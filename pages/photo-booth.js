@@ -113,8 +113,6 @@ class PhotoBoothPage extends Component {
 		const { sourceImageBoundingClientRect, enableAnimation } = this.state;
 		const showImageModal = url && url.query.imageType && url.query.id && true;
 
-		console.log(url);
-
 		return (
 			<ApolloProvider client={client}>
 				<App title="Photo Booth">
