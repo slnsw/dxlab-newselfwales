@@ -123,7 +123,7 @@ class PhotoBoothPage extends Component {
 
 		return (
 			<ApolloProvider client={client}>
-				<App title="Photo Booth">
+				<App title="Photo Booth" url={url}>
 					<div className="photo-booth-page">
 						<ImageFeedContainer
 							name="photo-booth"

@@ -34,6 +34,12 @@ class App extends Component {
 		log('version', packageJson.version);
 	}
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.url !== this.props.url) {
+			logPageView();
+		}
+	}
+
 	render() {
 		const {
 			title,
