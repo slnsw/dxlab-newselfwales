@@ -24,22 +24,34 @@ class PhotoBoothPage extends Component {
 		url: {
 			query: {
 				stage: null,
+				location: 'local',
 			},
 		},
 	};
 
 	componentDidMount() {
-		const { idleTimeout = 60 } = this.props.url.query;
+		const { idleTimeout = 60, position } = this.props.url.query;
+
+		// Redirect if no position param is found, otherwise things will break.
+		if (!position) {
+			window.location = `/photo-booth/test`;
+		}
 
 		idleTimer.init(idleTimeout);
 		console.log('Set idleTimeout to', idleTimeout);
 
-		// Disable right click
-		// document.addEventListener('contextmenu', (event) => event.preventDefault());
+		if (process.env.BASE_URL !== 'http://localhost:5020') {
+			// Disable right click
+			console.log('contextmenu disabled');
+
+			document.addEventListener('contextmenu', (event) =>
+				event.preventDefault(),
+			);
+		}
 	}
 
 	componentDidUpdate(prevProps) {
-		const { stage } = this.props.url.query;
+		const { url, stage, position } = this.props.url.query;
 		const { stage: prevStage } = prevProps.url.query;
 
 		if (prevStage !== stage) {
@@ -58,7 +70,7 @@ class PhotoBoothPage extends Component {
 			if (stage !== 'start') {
 				idleTimer.start(() => {
 					// TODO: Make sure other URL params are added to route
-					Router.pushRoute('/photo-booth?stage=start');
+					Router.pushRoute(`${url.pathname}/${position}?stage=start`);
 				});
 			} else {
 				idleTimer.stop();
@@ -67,10 +79,14 @@ class PhotoBoothPage extends Component {
 	}
 
 	handleImageClick = (event, image) => {
+		const { url } = this.props;
+
 		// console.log(event.target.parentElement.getBoundingClientRect(), image);
 		// console.log(image);
 
-		Router.pushRoute(`/photo-booth/${image.type}/${image.id}`);
+		Router.pushRoute(
+			`${url.pathname}/${url.query.position}/${image.type}/${image.id}`,
+		);
 
 		this.setState({
 			enableAnimation: false,
@@ -82,7 +98,9 @@ class PhotoBoothPage extends Component {
 		const { url } = this.props;
 
 		Router.pushRoute(
-			`${url.pathname}${url.query.stage === 'search' ? '?stage=search' : ''}`,
+			`${url.pathname}/${url.query.position}${
+				url.query.stage === 'search' ? '?stage=search' : ''
+			}`,
 		);
 
 		this.setState({
@@ -94,6 +112,8 @@ class PhotoBoothPage extends Component {
 		const { url } = this.props;
 		const { sourceImageBoundingClientRect, enableAnimation } = this.state;
 		const showImageModal = url && url.query.imageType && url.query.id && true;
+
+		console.log(url);
 
 		return (
 			<ApolloProvider client={client}>

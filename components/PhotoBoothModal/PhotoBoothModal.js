@@ -80,7 +80,7 @@ class Home extends Component {
 	};
 
 	startSelfie = () => {
-		Router.pushRoute('/photo-booth?stage=take-selfie');
+		Router.pushRoute(`${this.buildPathname()}?stage=take-selfie`);
 
 		this.setState({
 			inputNode: null,
@@ -98,11 +98,11 @@ class Home extends Component {
 		this.blob = dataURItoBlob(dataURL);
 
 		// Router.pushRoute('/photo-booth?stage=confirm-selfie');
-		Router.pushRoute('/photo-booth?stage=send-selfie');
+		Router.pushRoute(`${this.buildPathname()}?stage=send-selfie`);
 	};
 
 	retakeSelfie = () => {
-		Router.pushRoute('/photo-booth?stage=take-selfie');
+		Router.pushRoute(`${this.buildPathname()}?stage=take-selfie`);
 
 		this.setState({
 			inputNode: null,
@@ -110,7 +110,7 @@ class Home extends Component {
 	};
 
 	sendSelfie = () => {
-		Router.pushRoute('/photo-booth?stage=send-selfie');
+		Router.pushRoute(`${this.buildPathname()}?stage=send-selfie`);
 	};
 
 	handleFormSubmitComplete = () => {
@@ -118,12 +118,18 @@ class Home extends Component {
 	};
 
 	goHome = () => {
-		Router.pushRoute('/photo-booth?stage=start');
+		Router.pushRoute(`${this.buildPathname()}?stage=start`);
 
 		// Reset keyboard
 		this.setState({
 			inputNode: null,
 		});
+	};
+
+	buildPathname = () => {
+		const { url } = this.props;
+
+		return `${url.pathname}/${url.query.position}`;
 	};
 
 	blinkIt = () => {
@@ -143,7 +149,7 @@ class Home extends Component {
 	};
 
 	showThanks = () => {
-		Router.pushRoute('/photo-booth?stage=show-thanks');
+		Router.pushRoute(`${this.buildPathname()}?stage=show-thanks`);
 
 		// also need to clear form fields!
 		this.thanksInterval = setInterval(this.clearThanks, 1500);
@@ -156,18 +162,18 @@ class Home extends Component {
 
 	handleHideButtonClick = () => {
 		if (this.props.stage === 'start') {
-			Router.pushRoute('/photo-booth?stage=hidden');
+			Router.pushRoute(`${this.buildPathname()}?stage=hidden`);
 		} else if (this.props.stage === 'hidden') {
-			Router.pushRoute('/photo-booth?stage=start');
+			Router.pushRoute(`${this.buildPathname()}?stage=start`);
 		}
 	};
 
 	handleSearchButton = () => {
-		Router.pushRoute('/photo-booth?stage=search');
+		Router.pushRoute(`${this.buildPathname()}?stage=search`);
 	};
 
 	handleAboutButton = () => {
-		Router.pushRoute('/photo-booth?stage=about');
+		Router.pushRoute(`${this.buildPathname()}?stage=about`);
 	};
 
 	handleInputTextFocus = (input) => {
