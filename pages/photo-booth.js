@@ -30,7 +30,7 @@ class PhotoBoothPage extends Component {
 
 	componentDidMount() {
 		const { url } = this.props;
-		const { idleTimeout = 5, stage, position } = url.query;
+		const { idleTimeout = 60, stage, position } = url.query;
 
 		// Redirect if no position param is found, otherwise things will break.
 		if (!position) {
