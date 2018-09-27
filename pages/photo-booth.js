@@ -24,14 +24,13 @@ class PhotoBoothPage extends Component {
 		url: {
 			query: {
 				stage: null,
-				location: 'local',
 			},
 		},
 	};
 
 	componentDidMount() {
 		const { url } = this.props;
-		const { idleTimeout = 60, stage, position } = url.query;
+		const { idleTimeout = 5, stage, position } = url.query;
 
 		// Redirect if no position param is found, otherwise things will break.
 		if (!position) {
@@ -43,9 +42,7 @@ class PhotoBoothPage extends Component {
 		idleTimer.init(idleTimeout);
 
 		if (stage !== 'start') {
-			idleTimer.start(() => {
-				Router.pushRoute(`${url.pathname}/${position}?stage=start`);
-			});
+			this.idleTimerStart(url.pathname, position);
 		}
 
 		if (process.env.BASE_URL !== 'http://localhost:5020') {
@@ -77,14 +74,18 @@ class PhotoBoothPage extends Component {
 			}
 
 			if (stage !== 'start') {
-				idleTimer.start(() => {
-					Router.pushRoute(`${url.pathname}/${position}?stage=start`);
-				});
+				this.idleTimerStart(url.pathname, position);
 			} else {
 				idleTimer.stop();
 			}
 		}
 	}
+
+	idleTimerStart = (pathname, position) => {
+		idleTimer.start(() => {
+			Router.pushRoute(`${pathname}/${position}?stage=start&timeout=true`);
+		});
+	};
 
 	handleImageClick = (event, image) => {
 		const { url } = this.props;
