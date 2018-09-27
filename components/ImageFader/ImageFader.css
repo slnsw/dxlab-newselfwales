@@ -21,5 +21,5 @@
 .image-fader__image--is-fading {
 	visibility: hidden;
 	opacity: 0;
-	transition: visibility 0s 3s, opacity 3s linear;
+	transition: visibility 0s 2.0s, opacity 2.0s linear;
 }

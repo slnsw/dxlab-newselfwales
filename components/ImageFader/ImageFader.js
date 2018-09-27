@@ -13,7 +13,7 @@ class ImageFader extends Component {
 
 	static defaultProps = {
 		timePerImage: 6000, // total time including fade
-		fadeTimePerImage: 3000, // length of fade (needs to match CSS)
+		fadeTimePerImage: 2500, // length of fade (needs to match CSS)
 	};
 
 	state = {
@@ -49,28 +49,46 @@ class ImageFader extends Component {
 	}
 
 	init = () => {
-		this.setState({
-			imageUrl: this.props.images[0].featuredMedia.sourceUrl,
-			imageTitle: this.props.images[0].title,
-			nextImageUrl: this.props.images[1].featuredMedia.sourceUrl,
-			nextImageTitle: this.props.images[1].title,
-		});
-		this.startTimeout();
+		this.setState(
+			{
+				imageUrl: this.props.images[0].featuredMedia.sourceUrl,
+				imageTitle: this.props.images[0].title,
+				nextImageUrl: this.props.images[1].featuredMedia.sourceUrl,
+				nextImageTitle: this.props.images[1].title,
+			},
+			() => {
+				this.startTimeout();
+			},
+		);
+		// this.startTimeout();
 	};
 
 	startFade = () => {
-		this.setState({
-			isFading: true,
-		});
-		this.lastStopFade = setTimeout(() => {
-			this.stopFade();
-		}, this.props.fadeTimePerImage);
+		this.setState(
+			{
+				isFading: true,
+			},
+			() => {
+				this.lastStopFade = setTimeout(() => {
+					this.stopFade();
+				}, this.props.fadeTimePerImage);
+			},
+		);
 	};
 
 	stopFade = () => {
-		this.setState({
-			isFading: false,
-		});
+		this.setState(
+			{
+				isFading: false,
+			},
+			() => {
+				const nextNum = this.state.imageNum;
+				this.setState({
+					nextImageUrl: this.props.images[nextNum + 1].featuredMedia.sourceUrl,
+					nextImageTitle: this.props.images[nextNum + 1].title,
+				});
+			},
+		);
 	};
 
 	startTimeout = () => {
@@ -80,14 +98,16 @@ class ImageFader extends Component {
 		setTimeout(() => {
 			if (this.state.imageNum < this.props.images.length - 2) {
 				const nextNum = this.state.imageNum + 1;
-				this.setState({
-					imageNum: nextNum,
-					imageUrl: this.props.images[nextNum].featuredMedia.sourceUrl,
-					imageTitle: this.props.images[nextNum].title,
-					nextImageUrl: this.props.images[nextNum + 1].featuredMedia.sourceUrl,
-					nextImageTitle: this.props.images[nextNum + 1].title,
-				});
-				this.startTimeout();
+				this.setState(
+					{
+						imageNum: nextNum,
+						imageUrl: this.props.images[nextNum].featuredMedia.sourceUrl,
+						imageTitle: this.props.images[nextNum].title,
+					},
+					() => {
+						this.startTimeout();
+					},
+				);
 			} else if (typeof this.props.onNoMoreImages === 'function') {
 				clearTimeout(this.lastStopFade);
 				this.props.onNoMoreImages();

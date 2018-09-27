@@ -31,14 +31,14 @@ class PhotoBoothPage extends Component {
 
 	componentDidMount() {
 		const { url } = this.props;
-		const { idleTimeout = 10, stage, position } = url.query;
+		const { idleTimeout = 60, stage, position } = url.query;
 
 		// Redirect if no position param is found, otherwise things will break.
 		if (!position) {
 			window.location = `/photo-booth/test`;
 		}
 
-		// Idle Timer
+		// Initialise Idle Timer
 		console.log('Set idleTimeout to', idleTimeout);
 		idleTimer.init(idleTimeout);
 
