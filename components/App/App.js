@@ -29,13 +29,18 @@ class App extends Component {
 			window.GA_INITIALIZED = true;
 		}
 
-		logPageView();
+		if (this.props.url.query.timeout !== 'true') {
+			logPageView();
+		}
 
 		log('version', packageJson.version);
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.url !== this.props.url) {
+		if (
+			prevProps.url !== this.props.url &&
+			this.props.url.query.timeout !== 'true'
+		) {
 			logPageView();
 		}
 	}
