@@ -1,7 +1,7 @@
 {
 	"name": "dxlab-newselfwales",
 	"author": "Kaho Cheung",
-	"version": "0.2.4",
+	"version": "0.2.5",
 	"scripts": {
 		"dev": "npm start",
 		"build": "next build",
