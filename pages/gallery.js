@@ -45,7 +45,7 @@ class GalleryPage extends Component {
 
 		return (
 			<ApolloProvider client={client}>
-				<App>
+				<App url={this.props.url}>
 					<ImageFeedContainer
 						name="gallery"
 						enableAnimation={enableAnimation === 'true'}
