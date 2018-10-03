@@ -42,7 +42,8 @@ export default (state = initialState, action) => {
 					.map((image, i) => ({
 						...image,
 						index: i,
-						imageSize: setSize(i),
+						// Prevent gallery selfies from being larger than md, one camera is a bit blurry
+						imageSize: image.type === 'gallery-selfie' ? 'md' : setSize(i),
 					})),
 				isLoading: false,
 			};
@@ -76,7 +77,8 @@ export default (state = initialState, action) => {
 					.map((image, i) => ({
 						...image,
 						index: i,
-						imageSize: setSize(i),
+						// Prevent gallery selfies from being larger than md, one camera is a bit blurry
+						imageSize: image.type === 'gallery-selfie' ? 'md' : setSize(i),
 					})),
 				status: 'UPCOMING_IMAGES_READY',
 			};

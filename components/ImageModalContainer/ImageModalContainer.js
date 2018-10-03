@@ -110,7 +110,7 @@ const GALLERY_SELFIE_QUERY = gql`
 	query getImage($id: Int) {
 		newSelfWales {
 			image: gallerySelfie(id: $id) {
-				title
+				title: galleryName
 				content
 				featuredMedia {
 					sourceUrl

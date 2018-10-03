@@ -396,12 +396,12 @@ class Home extends Component {
 							stage === 'start' ? 'photo-booth-modal__menu--is-active' : '',
 						].join(' ')}
 					>
-						<li
+						{/* <li
 							className="photo-booth-modal__menu-item"
 							onClick={this.handleSearchButton}
 						>
 							<i className="ion-md-search" /> Search
-						</li>
+						</li> */}
 						<li
 							className="photo-booth-modal__menu-item"
 							onClick={this.handleAboutButton}

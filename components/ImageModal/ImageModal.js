@@ -129,7 +129,9 @@ class ImageModal extends Component {
 							</div>
 
 							<div className="image-modal__info">
-								<div className="image-modal__type">{imageType}</div>
+								<div className="image-modal__type">
+									{imageType && imageType.replace('-', ' ')}
+								</div>
 
 								<h1
 									className="image-modal__title"
