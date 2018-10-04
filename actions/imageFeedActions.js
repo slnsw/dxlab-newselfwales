@@ -10,36 +10,47 @@ export const fetchImages = ({
 	dateStart,
 	portraitPercentage,
 	isUpcoming = false,
-}) => (dispatch) => {
+}) => async (dispatch) => {
 	dispatch({
 		type: isUpcoming ? 'FETCH_UPCOMING_IMAGES_REQUEST' : 'FETCH_IMAGES_REQUEST',
 	});
 
-	return client
-		.query({
+	try {
+		const data = await client.query({
 			query: FEED_QUERY,
 			variables: {
-				limit: limit > 100 ? 100 : limit,
+				/* eslint-disable no-nested-ternary */
+				limit: limit < 0 ? 0 : limit > 100 ? 100 : limit,
 				dateStart,
 				portraitPercentage,
 			},
-		})
-		.then((data) =>
-			dispatch({
-				type: isUpcoming
-					? 'FETCH_UPCOMING_IMAGES_SUCCESS'
-					: 'FETCH_IMAGES_SUCCESS',
-				payload: data,
-			}),
-		)
-		.catch((error) =>
-			dispatch({
-				type: isUpcoming
-					? 'FETCH_UPCOMING_IMAGES_FAILURE'
-					: 'FETCH_IMAGES_FAILURE',
-				payload: error,
-			}),
-		);
+		});
+
+		dispatch({
+			type: isUpcoming
+				? 'FETCH_UPCOMING_IMAGES_SUCCESS'
+				: 'FETCH_IMAGES_SUCCESS',
+			payload: data,
+		});
+	} catch (error) {
+		// console.log(error);
+
+		dispatch({
+			type: isUpcoming
+				? 'FETCH_UPCOMING_IMAGES_FAILURE'
+				: 'FETCH_IMAGES_FAILURE',
+			payload: error,
+		});
+
+		// Copy spare images to the feed incase there is an outage
+		// TODO: Needs more finessing, keeps on running
+		dispatch({
+			type: isUpcoming
+				? 'COPY_SPARE_IMAGES_TO_UPCOMING'
+				: 'COPY_SPARE_IMAGES_TO_CURRENT',
+			limit: limit < 0 ? 0 : limit > 100 ? 100 : limit,
+		});
+	}
 };
 
 const FEED_QUERY = gql`
