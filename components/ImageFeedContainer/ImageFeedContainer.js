@@ -54,6 +54,11 @@ class ImageFeedContainer extends Component {
 		this.props.dispatch({ type: 'SWITCH_UPCOMING_TO_CURRENT' });
 	};
 
+	handleFetchedImagesReady = () => {
+		console.log('handleFetchedImagesReady');
+		this.props.dispatch({ type: 'MOVE_FETCHED_TO_CURRENT_IMAGES' });
+	};
+
 	render() {
 		const { currentImages, status } = this.props;
 
@@ -65,6 +70,7 @@ class ImageFeedContainer extends Component {
 				onLoadMore={this.handleFetchImages}
 				onMaxImagesComplete={this.handleMaxImagesComplete}
 				onHideAllImagesComplete={this.handleHideAllImagesComplete}
+				onFetchedImagesReady={this.handleFetchedImagesReady}
 			/>
 		);
 	}

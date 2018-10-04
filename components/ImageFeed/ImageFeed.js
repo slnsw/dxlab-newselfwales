@@ -35,6 +35,7 @@ class ImageFeed extends Component {
 		onLayoutComplete: PropTypes.func,
 		onMaxImagesComplete: PropTypes.func,
 		onHideAllImagesComplete: PropTypes.func,
+		onFetchedImagesReady: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -57,6 +58,7 @@ class ImageFeed extends Component {
 		isLayingOut: false,
 		isImageFeedHidden: false,
 		shouldHideAllWhenReady: false,
+		shouldGetFetchedImagesWhenReady: false,
 		// Images to hide
 		hiddenImageIds: [],
 		// Images to remove (return null)
@@ -169,6 +171,15 @@ class ImageFeed extends Component {
 			});
 		}
 
+		if (
+			prevProps.status === 'CURRENT_IMAGES' &&
+			this.props.status === 'FETCHED_IMAGES_READY'
+		) {
+			this.setState({
+				shouldGetFetchedImagesWhenReady: true,
+			});
+		}
+
 		// Track changes in images
 		if (prevProps.images !== this.props.images) {
 			this.setState({
@@ -216,6 +227,14 @@ class ImageFeed extends Component {
 				// --------------------------------------------------------------------
 
 				log('Still loading, skip this interval.');
+			} else if (this.state.shouldGetFetchedImagesWhenReady) {
+				if (typeof this.props.onFetchedImagesReady === 'function') {
+					this.props.onFetchedImagesReady();
+				}
+
+				this.setState({
+					shouldGetFetchedImagesWhenReady: false,
+				});
 			} else if (
 				this.props.images.length >= this.props.maxImages &&
 				this.state.shouldHideAllWhenReady === false
