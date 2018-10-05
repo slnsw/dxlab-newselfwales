@@ -10,6 +10,7 @@ const MAX_SPARE_IMAGES = 1000;
 
 const initialState = {
 	isLoading: false,
+	isFirstFetch: true,
 	currentFetchedImages: [],
 	currentImages: [],
 	upcomingImage: [],
@@ -45,7 +46,10 @@ export default (state = initialState, action) => {
 
 			return {
 				...state,
-				currentFetchedImages: payload.data.feed,
+				currentFetchedImages: action.isFirstFetch ? [] : payload.data.feed,
+				currentImages: action.isFirstFetch
+					? mergeImages([], payload.data.feed)
+					: [],
 				// currentFetchedImages: mergeImages(state.currentImages, payload.data.feed),
 				// currentImages: dedupeByField(
 				// 	[...state.currentImages, ...processImages(payload.data.feed)],
@@ -63,6 +67,7 @@ export default (state = initialState, action) => {
 				// Add new images to spare in case there is a fetch failure
 				spareImages,
 				status: 'FETCHED_IMAGES_READY',
+				isFirstFetch: false,
 				isLoading: false,
 			};
 		}

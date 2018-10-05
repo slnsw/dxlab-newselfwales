@@ -10,10 +10,12 @@ export const fetchImages = ({
 	dateStart,
 	portraitPercentage,
 	isUpcoming = false,
-}) => async (dispatch) => {
+}) => async (dispatch, getState) => {
 	dispatch({
 		type: isUpcoming ? 'FETCH_UPCOMING_IMAGES_REQUEST' : 'FETCH_IMAGES_REQUEST',
 	});
+
+	console.log(getState());
 
 	try {
 		const data = await client.query({
@@ -31,6 +33,7 @@ export const fetchImages = ({
 				? 'FETCH_UPCOMING_IMAGES_SUCCESS'
 				: 'FETCH_IMAGES_SUCCESS',
 			payload: data,
+			isFirstFetch: getState().isFirstFetch,
 		});
 	} catch (error) {
 		// console.log(error);
