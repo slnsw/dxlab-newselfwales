@@ -44,7 +44,7 @@ class ImageFeed extends Component {
 		maxImages: 1000,
 		increment: 0.5,
 		intervalTime: 10000,
-		loadMoreGap: -400,
+		loadMoreGap: -600,
 		// status: 'CURRENT_IMAGES',
 		marginTop: '5px',
 		heightAdjust: '-10px',
@@ -186,6 +186,8 @@ class ImageFeed extends Component {
 			prevProps.status === 'CURRENT_IMAGES' &&
 			this.props.status === 'FETCHED_IMAGES_READY'
 		) {
+			log('FETCHED_IMAGES_READY');
+
 			this.setState({
 				shouldGetFetchedImagesWhenReady: true,
 			});

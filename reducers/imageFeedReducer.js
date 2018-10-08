@@ -10,7 +10,6 @@ const MAX_SPARE_IMAGES = 1000;
 
 const initialState = {
 	isLoading: false,
-	isFirstFetch: true,
 	currentFetchedImages: [],
 	currentImages: [],
 	upcomingImage: [],
@@ -22,59 +21,48 @@ const initialState = {
 export default (state = initialState, action) => {
 	const { payload } = action;
 
+	log(action.type);
+
 	switch (action.type) {
 		// ------------------------------------------------------------------------
-		// CURRENT IMAGES
+		// FIRST and CURRENT IMAGES
 		// ------------------------------------------------------------------------
 
-		case 'FETCH_IMAGES_REQUEST':
-			log('FETCH_IMAGES_REQUEST');
-
+		case 'FETCH_IMAGES_REQUEST': {
 			return { ...state, isLoading: true };
+		}
 
+		case 'FIRST_FETCH_IMAGES_SUCCESS':
 		case 'FETCH_IMAGES_SUCCESS': {
-			log('FETCH_IMAGES_SUCCESS');
+			const isFirstFetch = action.type === 'FIRST_FETCH_IMAGES_SUCCESS';
 
+			// Add new images to spare in case there is a fetch failure
 			const spareImages = dedupeByField(
 				[...state.spareImages, ...processImages(payload.data.feed)],
 				'id',
 			);
 
+			// Ensure we don't exceed MAX_SPARE_IMAGES, otherwise memory will run out
 			if (spareImages.length > MAX_SPARE_IMAGES) {
 				spareImages.splice(0, spareImages.length - MAX_SPARE_IMAGES);
 			}
 
 			return {
 				...state,
-				currentFetchedImages: action.isFirstFetch ? [] : payload.data.feed,
-				currentImages: action.isFirstFetch
+				// If isFirstFetch === true, put new images straight into 'currentImages',
+				// otherwise we have to wait around for the next interval for
+				// MOVE_FETCHED_TO_CURRENT_IMAGES
+				currentFetchedImages: isFirstFetch ? [] : payload.data.feed,
+				currentImages: isFirstFetch
 					? mergeImages([], payload.data.feed)
 					: state.currentImages,
-				// currentFetchedImages: mergeImages(state.currentImages, payload.data.feed),
-				// currentImages: dedupeByField(
-				// 	[...state.currentImages, ...processImages(payload.data.feed)],
-				// 	'id',
-				// )
-				// 	// Assign an index and imageSize
-				// 	// NOTE: these will change if currentImages has any images removed
-				// 	// so be careful.
-				// 	.map((image, i) => ({
-				// 		...image,
-				// 		index: i,
-				// 		// Prevent gallery selfies from being larger than md, one camera is a bit blurry
-				// 		imageSize: image.type === 'gallery-selfie' ? 'md' : setSize(i),
-				// 	})),
-				// Add new images to spare in case there is a fetch failure
 				spareImages,
 				status: 'FETCHED_IMAGES_READY',
-				isFirstFetch: false,
 				isLoading: false,
 			};
 		}
 
 		case 'MOVE_FETCHED_TO_CURRENT_IMAGES': {
-			log('MOVE_FETCHED_TO_CURRENT_IMAGES', state.currentFetchedImages);
-
 			return {
 				...state,
 				currentFetchedImages: [],
@@ -87,8 +75,6 @@ export default (state = initialState, action) => {
 		}
 
 		case 'FETCH_IMAGES_FAILURE':
-			log('FETCH_IMAGES_FAILURE');
-
 			return {
 				...state,
 				isLoading: false,
@@ -99,13 +85,9 @@ export default (state = initialState, action) => {
 		// ------------------------------------------------------------------------
 
 		case 'FETCH_UPCOMING_IMAGES_REQUEST':
-			log('FETCH_UPCOMING_IMAGES_REQUEST');
-
 			return { ...state };
 
 		case 'FETCH_UPCOMING_IMAGES_SUCCESS': {
-			log('FETCH_UPCOMING_IMAGES_SUCCESS');
-
 			const spareImages = dedupeByField(
 				[...state.spareImages, ...processImages(payload.data.feed)],
 				'id',
@@ -118,16 +100,6 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				upcomingImages: mergeImages([], payload.data.feed),
-				// upcomingImages: dedupeByField(processImages(payload.data.feed), 'id')
-				// 	// Assign an index and imageSize
-				// 	// NOTE: these will change if currentImages has any images removed
-				// 	// so be careful.
-				// 	.map((image, i) => ({
-				// 		...image,
-				// 		index: i,
-				// 		// Prevent gallery selfies from being larger than md, one camera is a bit blurry
-				// 		imageSize: image.type === 'gallery-selfie' ? 'md' : setSize(i),
-				// 	})),
 				// Add new images to spare in case there is a fetch failure
 				spareImages,
 				status: 'UPCOMING_IMAGES_READY',
@@ -135,23 +107,17 @@ export default (state = initialState, action) => {
 		}
 
 		case 'FETCH_UPCOMING_IMAGES_FAILURE':
-			log('FETCH_UPCOMING_IMAGES_FAILURE');
-
 			return {
 				...state,
 			};
 
 		case 'CLEAR_CURRENT_IMAGES':
-			log('CLEAR_CURRENT_IMAGES');
-
 			return {
 				...state,
 				currentImages: [],
 			};
 
 		case 'SWITCH_UPCOMING_TO_CURRENT':
-			log('SWITCH_UPCOMING_TO_CURRENT');
-
 			return {
 				...state,
 				upcomingImages: [],
@@ -160,8 +126,6 @@ export default (state = initialState, action) => {
 			};
 
 		case 'COPY_SPARE_IMAGES_TO_CURRENT': {
-			log('COPY_SPARE_IMAGES_TO_CURRENT', action.limit);
-
 			return {
 				...state,
 				currentImages: mergeImages(
@@ -172,8 +136,6 @@ export default (state = initialState, action) => {
 		}
 
 		case 'COPY_SPARE_IMAGES_TO_UPCOMING': {
-			log('COPY_SPARE_IMAGES_TO_UPCOMING', action.limit);
-
 			return {
 				...state,
 				upcomingImages: mergeImages(

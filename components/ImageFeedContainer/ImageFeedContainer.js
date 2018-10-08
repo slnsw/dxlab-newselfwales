@@ -4,8 +4,13 @@ import { connect } from 'react-redux';
 
 import ImageFeed from '../ImageFeed';
 import { fetchImages } from '../../actions/imageFeedActions';
+import logBase from '../../lib/log';
 import { getDate } from '../../lib/date';
 import './ImageFeedContainer.css';
+
+const log = (...args) => {
+	return logBase('<ImageFeedContainer />', ...args);
+};
 
 class ImageFeedContainer extends Component {
 	static propTypes = {
@@ -24,15 +29,22 @@ class ImageFeedContainer extends Component {
 			limit: this.props.startImages,
 			dateStart: getDate(-120),
 			portraitPercentage: 0.6,
+			isFirstFetch: true,
 		});
 	}
 
-	handleFetchImages = ({ limit, dateStart, portraitPercentage }) => {
+	handleFetchImages = ({
+		limit,
+		dateStart,
+		portraitPercentage,
+		isFirstFetch = false,
+	}) => {
 		this.props.dispatch(
 			fetchImages({
 				limit,
 				dateStart,
 				portraitPercentage,
+				isFirstFetch,
 			}),
 		);
 	};
@@ -49,13 +61,13 @@ class ImageFeedContainer extends Component {
 	};
 
 	handleHideAllImagesComplete = () => {
-		console.log('handleHideAllImagesComplete');
+		log('handleHideAllImagesComplete');
 		this.props.dispatch({ type: 'CLEAR_CURRENT_IMAGES' });
 		this.props.dispatch({ type: 'SWITCH_UPCOMING_TO_CURRENT' });
 	};
 
 	handleFetchedImagesReady = () => {
-		console.log('handleFetchedImagesReady');
+		log('handleFetchedImagesReady');
 		this.props.dispatch({ type: 'MOVE_FETCHED_TO_CURRENT_IMAGES' });
 	};
 
