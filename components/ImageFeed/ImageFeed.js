@@ -45,7 +45,7 @@ class ImageFeed extends Component {
 		increment: 0.5,
 		intervalTime: 10000,
 		loadMoreGap: -400,
-		status: 'CURRENT_IMAGES',
+		// status: 'CURRENT_IMAGES',
 		marginTop: '5px',
 		heightAdjust: '-10px',
 	};
@@ -101,6 +101,17 @@ class ImageFeed extends Component {
 		// ------------------------------------------------------------------------
 
 		if (
+			prevProps.status === 'FIRST_CURRENT_IMAGES' &&
+			this.props.status === 'FETCHED_IMAGES_READY'
+		) {
+			this.initLoop();
+
+			this.setState({
+				shouldGetFetchedImagesWhenReady: true,
+			});
+		}
+
+		if (
 			prevState.laidOutItems === undefined &&
 			(this.state.laidOutItems && this.state.laidOutItems.length > 0)
 		) {
@@ -121,7 +132,7 @@ class ImageFeed extends Component {
 				scroller.start();
 			}
 
-			this.initLoop();
+			// this.initLoop();
 		}
 
 		// Start or stop scroller

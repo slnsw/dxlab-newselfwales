@@ -15,7 +15,7 @@ const initialState = {
 	currentImages: [],
 	upcomingImage: [],
 	spareImages: [],
-	status: 'CURRENT_IMAGES',
+	status: 'FIRST_CURRENT_IMAGES',
 };
 
 // REDUCERS
@@ -49,7 +49,7 @@ export default (state = initialState, action) => {
 				currentFetchedImages: action.isFirstFetch ? [] : payload.data.feed,
 				currentImages: action.isFirstFetch
 					? mergeImages([], payload.data.feed)
-					: [],
+					: state.currentImages,
 				// currentFetchedImages: mergeImages(state.currentImages, payload.data.feed),
 				// currentImages: dedupeByField(
 				// 	[...state.currentImages, ...processImages(payload.data.feed)],
@@ -73,6 +73,8 @@ export default (state = initialState, action) => {
 		}
 
 		case 'MOVE_FETCHED_TO_CURRENT_IMAGES': {
+			log('MOVE_FETCHED_TO_CURRENT_IMAGES', state.currentFetchedImages);
+
 			return {
 				...state,
 				currentFetchedImages: [],

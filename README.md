@@ -30,7 +30,7 @@ Save a `.env.staging` and `.env.production` file for staging and production depl
 
 ### ImageFeed Loop
 
-The ImageFeed loop ticks every 10 seconds.
+The ImageFeed loop ticks every 10 seconds. It kicks off after the first `FETCH_IMAGES`.
 
 #### A. Initial Fetch
 
