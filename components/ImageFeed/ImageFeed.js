@@ -30,6 +30,7 @@ class ImageFeed extends Component {
 		marginBottom: PropTypes.string,
 		heightAdjust: PropTypes.string,
 		fps: PropTypes.number,
+		enableWindow: PropTypes.bool,
 		onLoadMore: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
@@ -48,6 +49,7 @@ class ImageFeed extends Component {
 		// status: 'CURRENT_IMAGES',
 		marginTop: '5px',
 		heightAdjust: '-10px',
+		enableWindow: true,
 	};
 
 	state = {
@@ -241,6 +243,10 @@ class ImageFeed extends Component {
 
 				log('Still loading, skip this interval.');
 			} else if (this.state.shouldGetFetchedImagesWhenReady) {
+				// --------------------------------------------------------------------
+				// Images have been fetched, we are ready to receive them.
+				// --------------------------------------------------------------------
+
 				if (typeof this.props.onFetchedImagesReady === 'function') {
 					this.props.onFetchedImagesReady();
 				}
@@ -301,9 +307,14 @@ class ImageFeed extends Component {
 					window.innerWidth - scroller.getBoundingClientRect().right;
 
 				if (emptyGap > this.props.loadMoreGap) {
+					// TODO: Perhaps this not should depend on loadMoreGap
 					if (this.state.shouldHideAllWhenReady) {
 						this.hideAllImages();
 					} else {
+						// --------------------------------------------------------------------
+						// Load more images
+						// --------------------------------------------------------------------
+
 						// TODO!!
 						// Check still loading previous fetch, otherwise it will keep on trying to fetch more
 
@@ -327,6 +338,104 @@ class ImageFeed extends Component {
 							portraitPercentage: 0.4,
 							dateStart: getDate(-120),
 						});
+					}
+				} else if (this.props.enableWindow) {
+					// --------------------------------------------------------------------
+					// Window (ie Occlusion Culling)
+					// --------------------------------------------------------------------
+					log('Start windowing check');
+
+					const imageHolderRefs = Array.from(this.imageHolderRefs);
+					const threshold = 0;
+					const leftOfScreenImageThreshold = 5;
+
+					// Work out images left of threshold
+					const leftOfScreenImageHolderRefs = Array.from(
+						imageHolderRefs,
+					).filter((image) => {
+						// Only count enabled images
+						if (image && image[1]) {
+							// console.log(image[1].disabled);
+
+							return (
+								image[1].getBoundingClientRect().x +
+									image[1].getBoundingClientRect().width <
+								threshold
+							);
+						}
+					});
+
+					// Remove images if enough are left of screen
+					if (leftOfScreenImageHolderRefs.length > leftOfScreenImageThreshold) {
+						log('Images to remove', leftOfScreenImageHolderRefs);
+
+						// Work out images right of threshold
+						const rightOfScreenImageHolderRefs = Array.from(
+							imageHolderRefs,
+						).filter((image) => {
+							if (image && image[1]) {
+								return (
+									image[1].getBoundingClientRect().x +
+										image[1].getBoundingClientRect().width >=
+									threshold
+								);
+							}
+						});
+
+						// Furtherst left image and position of onScreen images
+						const leftGapFurtherst = Math.min(
+							...Array.from(leftOfScreenImageHolderRefs).map(
+								(image) => image[1].getBoundingClientRect().x,
+							),
+						);
+
+						const leftGapClosest = Array.from(rightOfScreenImageHolderRefs)
+							.map((image) => image[1].getBoundingClientRect().x)
+							// .filter(
+							// 	(image) => image[1].getBoundingClientRect().x < threshold,
+							// )
+							.reduce((prev, curr) => {
+								return Math.abs(curr - threshold) < Math.abs(prev - threshold)
+									? curr
+									: prev;
+							});
+
+						// const leftGapFurtherst = Math.min(
+						// 	...Array.from(rightOfScreenImageHolderRefs).map(
+						// 		(image) => threshold - image[1].getBoundingClientRect().x,
+						// 	),
+						// );
+
+						const leftOfScroller = scroller.getBoundingClientRect().x;
+
+						console.log({ leftOfScroller, leftGapFurtherst, leftGapClosest });
+
+						const leftGap = leftGapFurtherst - leftGapClosest;
+						// const leftGap = leftGapFurtherst - leftOfScroller;
+
+						// Move all right of screen images to the left
+						rightOfScreenImageHolderRefs.forEach((image) => {
+							// console.log(image[1].style.left);
+							const left = parseFloat(
+								image[1].style.left.replace('px', ''),
+								10,
+							);
+							// console.log(left);
+							// Set new left
+							image[1].style.left = `${left + leftGap}px`;
+							// image[1].style.left = `0`;
+						});
+
+						this.setState({
+							removedImageIds: [
+								...this.state.removedImageIds,
+								...leftOfScreenImageHolderRefs.map((image) => image[0]),
+							],
+						});
+
+						scroller.adjustScrollCount(leftGap * -1);
+					} else {
+						this.randomlyAddToHiddenImageIds();
 					}
 				} else {
 					this.randomlyAddToHiddenImageIds();
