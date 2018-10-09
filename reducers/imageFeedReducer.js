@@ -126,22 +126,30 @@ export default (state = initialState, action) => {
 			};
 
 		case 'COPY_SPARE_IMAGES_TO_CURRENT': {
+			const currentImages = mergeImages(
+				state.currentImages,
+				getRandomArrayElements(state.spareImages, action.limit),
+			);
+
+			log(currentImages);
+
 			return {
 				...state,
-				currentImages: mergeImages(
-					state.currentImages,
-					getRandomArrayElements(state.spareImages, action.limit),
-				),
+				currentImages,
 			};
 		}
 
 		case 'COPY_SPARE_IMAGES_TO_UPCOMING': {
+			const upcomingImages = mergeImages(
+				[],
+				getRandomArrayElements(state.spareImages, action.limit),
+			);
+
+			log(upcomingImages);
+
 			return {
 				...state,
-				upcomingImages: mergeImages(
-					[],
-					getRandomArrayElements(state.spareImages, action.limit),
-				),
+				upcomingImages,
 				status: 'UPCOMING_IMAGES_READY',
 			};
 		}
@@ -169,7 +177,7 @@ function mergeImages(oldImages, newImages) {
 function setSize(i) {
 	if (i % 6 === 1) {
 		return 'lg';
-	} else if (i % 10 === 1) {
+	} else if (i % 9 === 1) {
 		return 'xlg';
 	}
 

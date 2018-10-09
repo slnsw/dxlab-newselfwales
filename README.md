@@ -34,15 +34,15 @@ The ImageFeed loop ticks every 10 seconds. It kicks off after the first `FETCH_I
 
 #### A. Initial Fetch
 
-1. ImageFeedContainer: On first mount, `FETCH_IMAGES` into `currentImages` and `spareImages`.
+1. ImageFeedContainer: On first mount, `FIRST_FETCH_IMAGES` into `currentImages` and `spareImages`.
 2. ImageFeed: Receive images and start loop interval.
 
 #### B. Fetch Loop
 
-1. ImageFeed: On loop interval, check `emptyGap`, working out if new images need to be fetched. If `emptyGap` is higher than `loadMoreGap` threshold, send `FETCH_UPCOMING_IMAGES` and specify how many. (If not, send `HIDE_IMAGE` and got back to `B1.`).
-2. ImageFeedContainer: When ready, store images in `upcomingImages` and `spareImages`, then send `UPCOMING_IMAGES_READY` to ImageFeed.
-3. ImageFeed: On loop interval, check `isLayingOut`. If `true`, skip. If `false`, send `GET_UPCOMING_IMAGES` and specify X amount.
-4. Reducer transfers X amount of images from `upcomingImages` to `currentImages`.
+1. ImageFeed: On loop interval, check `emptyGap`, working out if new images need to be fetched. If `emptyGap` is higher than `loadMoreGap` threshold, send `FETCH_IMAGES` and specify how many. (If not, send `HIDE_IMAGE` and got back to `B1.`).
+2. ImageFeedReducer: When ready, store images in `currentFetchedImages` and `spareImages`, then update status to `FETCHED_IMAGES_READY` for ImageFeed.
+3. ImageFeed: On loop interval, check `isLayingOut`. If `true`, skip. If `false`, send `MOVE_FETCHED_TO_CURRENT_IMAGES`.
+4. Reducer transfers X amount of images from `currentFetchedImages` to `currentImages`.
 5. ImageFeed: Receives images and animates them in.
 6. Back to `B1.`.
 
@@ -57,14 +57,13 @@ The ImageFeed loop ticks every 10 seconds. It kicks off after the first `FETCH_I
 
 #### D. Spare Images Loop
 
-1. ImageFeed: On loop interval, if `emptyGap` is larger than 50% of the viewport, we aren't getting images quickly enough, so we need to recycle spare images. Send `GET_SPARE_IMAGES` and specify how many.
+1. ImageFeed: On loop interval, if `emptyGap` is larger than 50% of the viewport, we aren't getting images quickly enough, so we need to recycle spare images. Send `GET_SPARE_IMAGES` and specify how many. (IN PROGRESS)
 2. Reducer transfers X amount of random `spareImages` into `currentImages`.
 3. Go to `B1.`.
 
 #### E. Network Error Loop
 
-1. ImageFeed: On loop interval, if there is a network error, send `GET_SPARE_IMAGES` and set `NETWORK_STATUS` to be `error`.
-2. ImageFeed: If network is back on, set `NETWORK_STATUS` to be `normal`.
+1. ImageFeed: On loop interval, if there is a network error, dispatch `COPY_SPARE_IMAGES_TO_CURRENT` or `COPY_SPARE_IMAGES_TO_UPCOMING`.
 
 ### Hardware Notes
 
