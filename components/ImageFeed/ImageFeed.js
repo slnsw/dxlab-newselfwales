@@ -435,7 +435,8 @@ class ImageFeed extends Component {
 
 						scroller.adjustScrollCount(leftGap * -1);
 					} else {
-						this.randomlyAddToHiddenImageIds();
+						// TODO: Will need to move these images to removed
+						// this.randomlyAddToHiddenImageIds();
 					}
 				} else {
 					this.randomlyAddToHiddenImageIds();
