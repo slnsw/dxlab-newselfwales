@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
 import Packery from '../Packery';
-// import NewSelfWalesLogo from '../NewSelfWalesLogo';
 import { scroller } from '../../lib/scroll';
 import logBase from '../../lib/log';
 import { getDate } from '../../lib/date';
@@ -106,6 +105,7 @@ class ImageFeed extends Component {
 			prevProps.status === 'FIRST_CURRENT_IMAGES' &&
 			this.props.status === 'FETCHED_IMAGES_READY'
 		) {
+			// Start up loop once first images are ready
 			this.initLoop();
 
 			this.setState({
@@ -133,8 +133,6 @@ class ImageFeed extends Component {
 				log('Start scrolling');
 				scroller.start();
 			}
-
-			// this.initLoop();
 		}
 
 		// Start or stop scroller
@@ -197,6 +195,12 @@ class ImageFeed extends Component {
 
 		// Track changes in images
 		if (prevProps.images !== this.props.images) {
+			log(
+				'change in images',
+				prevProps.images.length,
+				this.props.images.length,
+			);
+
 			this.setState({
 				isLayingOut: true,
 			});
@@ -307,8 +311,8 @@ class ImageFeed extends Component {
 					window.innerWidth - scroller.getBoundingClientRect().right;
 
 				if (emptyGap > this.props.loadMoreGap) {
-					// TODO: Perhaps this not should depend on loadMoreGap
 					if (this.state.shouldHideAllWhenReady) {
+						// TODO: Perhaps this not should depend on loadMoreGap
 						this.hideAllImages();
 					} else {
 						// --------------------------------------------------------------------
@@ -342,6 +346,7 @@ class ImageFeed extends Component {
 				} else if (this.props.enableWindow) {
 					// --------------------------------------------------------------------
 					// Window (ie Occlusion Culling)
+					// Try to remove images that are left of screen
 					// --------------------------------------------------------------------
 					log('Start windowing check');
 
@@ -349,14 +354,11 @@ class ImageFeed extends Component {
 					const threshold = 0;
 					const leftOfScreenImageThreshold = 5;
 
-					// Work out images left of threshold
+					// Work out images left of threshold by looping through imageHolderRefs
 					const leftOfScreenImageHolderRefs = Array.from(
 						imageHolderRefs,
 					).filter((image) => {
-						// Only count enabled images
 						if (image && image[1]) {
-							// console.log(image[1].disabled);
-
 							return (
 								image[1].getBoundingClientRect().x +
 									image[1].getBoundingClientRect().width <
@@ -382,7 +384,7 @@ class ImageFeed extends Component {
 							}
 						});
 
-						// Furtherst left image and position of onScreen images
+						// Work out furthest left image and position of onScreen images
 						const leftGapFurtherst = Math.min(
 							...Array.from(leftOfScreenImageHolderRefs).map(
 								(image) => image[1].getBoundingClientRect().x,
@@ -408,35 +410,35 @@ class ImageFeed extends Component {
 
 						const leftOfScroller = scroller.getBoundingClientRect().x;
 
-						console.log({ leftOfScroller, leftGapFurtherst, leftGapClosest });
+						log({ leftOfScroller, leftGapFurtherst, leftGapClosest });
 
+						// Work out gap to move on screen images to the left
 						const leftGap = leftGapFurtherst - leftGapClosest;
-						// const leftGap = leftGapFurtherst - leftOfScroller;
 
 						// Move all right of screen images to the left
 						rightOfScreenImageHolderRefs.forEach((image) => {
-							// console.log(image[1].style.left);
 							const left = parseFloat(
 								image[1].style.left.replace('px', ''),
 								10,
 							);
-							// console.log(left);
-							// Set new left
+
+							// Set new left position
+							/* eslint-disable no-param-reassign */
 							image[1].style.left = `${left + leftGap}px`;
-							// image[1].style.left = `0`;
 						});
 
+						// Remove images from DOM by adding them to removedImageIds
 						this.setState({
 							removedImageIds: [
 								...this.state.removedImageIds,
 								...leftOfScreenImageHolderRefs.map((image) => image[0]),
 							],
+							isLayingOut: true,
 						});
 
 						scroller.adjustScrollCount(leftGap * -1);
 					} else {
-						// TODO: Will need to move these images to removed
-						// this.randomlyAddToHiddenImageIds();
+						this.randomlyAddToHiddenImageIds();
 					}
 				} else {
 					this.randomlyAddToHiddenImageIds();
@@ -465,14 +467,23 @@ class ImageFeed extends Component {
 	// };
 
 	randomlyAddToHiddenImageIds = (onComplete, count = 0) => {
-		// Filter out hidden images, making sure to not run indexOf if
-		// hiddenImageIds is empty
-		const images =
+		// Filter out hiddenImages, making sure to not run indexOf if
+		// hiddenImageIdsis empty
+		let images =
 			this.state.hiddenImageIds.length > 0
 				? this.props.images.filter(
 						(image) => this.state.hiddenImageIds.indexOf(image.id) === -1,
 					)
 				: this.props.images;
+
+		// Filter out removedImages, making sure to not run indexOf if
+		// removedImageIdsis empty
+		images =
+			this.state.removedImageIds.length > 0
+				? images.filter(
+						(image) => this.state.removedImageIds.indexOf(image.id) === -1,
+					)
+				: images;
 
 		// Get random image
 		const randomIndex = Math.floor(Math.random() * images.length);
