@@ -41,8 +41,8 @@ export default (state = initialState, action) => {
 				isLoading: false,
 			};
 
-		case 'FETCH_IMAGES_FAILURE':
-			log('FETCH_IMAGES_FAILURE');
+		case 'FETCH_FADER_IMAGES_FAILURE':
+			log('FETCH_FADER_IMAGES_FAILURE');
 
 			return {
 				...state,

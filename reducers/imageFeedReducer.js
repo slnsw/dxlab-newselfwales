@@ -21,19 +21,21 @@ const initialState = {
 export default (state = initialState, action) => {
 	const { payload } = action;
 
-	log(action.type);
-
 	switch (action.type) {
 		// ------------------------------------------------------------------------
 		// FIRST and CURRENT IMAGES
 		// ------------------------------------------------------------------------
 
 		case 'FETCH_IMAGES_REQUEST': {
+			log(action.type);
+
 			return { ...state, isLoading: true };
 		}
 
 		case 'FIRST_FETCH_IMAGES_SUCCESS':
 		case 'FETCH_IMAGES_SUCCESS': {
+			log(action.type);
+
 			const isFirstFetch = action.type === 'FIRST_FETCH_IMAGES_SUCCESS';
 
 			// Add new images to spare in case there is a fetch failure
@@ -63,6 +65,8 @@ export default (state = initialState, action) => {
 		}
 
 		case 'MOVE_FETCHED_TO_CURRENT_IMAGES': {
+			log(action.type);
+
 			return {
 				...state,
 				currentFetchedImages: [],
@@ -75,6 +79,8 @@ export default (state = initialState, action) => {
 		}
 
 		case 'FETCH_IMAGES_FAILURE':
+			log(action.type);
+
 			return {
 				...state,
 				isLoading: false,
@@ -85,9 +91,13 @@ export default (state = initialState, action) => {
 		// ------------------------------------------------------------------------
 
 		case 'FETCH_UPCOMING_IMAGES_REQUEST':
+			log(action.type);
+
 			return { ...state };
 
 		case 'FETCH_UPCOMING_IMAGES_SUCCESS': {
+			log(action.type);
+
 			const spareImages = dedupeByField(
 				[...state.spareImages, ...processImages(payload.data.feed)],
 				'id',
@@ -107,17 +117,23 @@ export default (state = initialState, action) => {
 		}
 
 		case 'FETCH_UPCOMING_IMAGES_FAILURE':
+			log(action.type);
+
 			return {
 				...state,
 			};
 
 		case 'CLEAR_CURRENT_IMAGES':
+			log(action.type);
+
 			return {
 				...state,
 				currentImages: [],
 			};
 
 		case 'SWITCH_UPCOMING_TO_CURRENT':
+			log(action.type);
+
 			return {
 				...state,
 				upcomingImages: [],
@@ -126,6 +142,8 @@ export default (state = initialState, action) => {
 			};
 
 		case 'COPY_SPARE_IMAGES_TO_CURRENT': {
+			log(action.type);
+
 			const currentImages = mergeImages(
 				state.currentImages,
 				getRandomArrayElements(state.spareImages, action.limit),
@@ -140,6 +158,8 @@ export default (state = initialState, action) => {
 		}
 
 		case 'COPY_SPARE_IMAGES_TO_UPCOMING': {
+			log(action.type);
+
 			const upcomingImages = mergeImages(
 				[],
 				getRandomArrayElements(state.spareImages, action.limit),

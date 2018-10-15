@@ -42,7 +42,7 @@ class ImageFeed extends Component {
 		axis: 'x',
 		enableAnimation: true,
 		maxImages: 1000,
-		increment: 0.5,
+		increment: 0.4,
 		intervalTime: 10000,
 		loadMoreGap: -600,
 		// status: 'CURRENT_IMAGES',
@@ -326,7 +326,7 @@ class ImageFeed extends Component {
 						const gapConstant = Math.ceil(
 							Math.abs(this.props.loadMoreGap - emptyGap) / 50,
 						);
-						const fetchMoreImagesTemp = gapConstant * 4;
+						const fetchMoreImagesTemp = gapConstant * 5;
 
 						// Make sure we don't fetch more than maxImages
 						const fetchMoreImages =
