@@ -37,6 +37,7 @@
 	background-color: var(--colour-grey-darkest);
 	text-transform: none;
 	font-family: var(--font-secondary);
+	font-size: var(--font-size-lg);
 
 	&:active {
 		background-color: var(--colour-grey-darker);

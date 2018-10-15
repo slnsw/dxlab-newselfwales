@@ -59,7 +59,7 @@ class PhotoBoothModalForm extends Component {
 
 		let {
 			isNameValid,
-			isEmailValid,
+			// isEmailValid,
 			isTermsConditionsValid,
 			// isInterestsValid,
 		} = this.state;
@@ -72,16 +72,16 @@ class PhotoBoothModalForm extends Component {
 				break;
 			}
 
-			case 'email': {
-				if (value.length > 0) {
-					isEmailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-				} else {
-					// no email is a valid email
-					isEmailValid = false;
-				}
-				formErrors.email = isEmailValid ? '' : 'Please enter a valid email';
-				break;
-			}
+			// case 'email': {
+			// 	if (value.length > 0) {
+			// 		isEmailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+			// 	} else {
+			// 		// no email is a valid email
+			// 		isEmailValid = false;
+			// 	}
+			// 	formErrors.email = isEmailValid ? '' : 'Please enter a valid email';
+			// 	break;
+			// }
 			case 'terms-conditions': {
 				isTermsConditionsValid = value;
 				formErrors['terms-conditions'] = isTermsConditionsValid
@@ -112,7 +112,7 @@ class PhotoBoothModalForm extends Component {
 			{
 				formErrors,
 				isNameValid,
-				isEmailValid,
+				// isEmailValid,
 				isTermsConditionsValid,
 				// isInterestsValid,
 			},
@@ -124,7 +124,7 @@ class PhotoBoothModalForm extends Component {
 		this.setState({
 			isFormValid:
 				this.state.isNameValid &&
-				this.state.isEmailValid &&
+				// this.state.isEmailValid &&
 				this.state.isTermsConditionsValid,
 			// this.state.isInterestsValid &&
 		});
@@ -135,8 +135,8 @@ class PhotoBoothModalForm extends Component {
 			this.sendForm();
 		} else if (!this.state.name) {
 			this.validateField('name', this.state.name);
-		} else if (!this.state.email) {
-			this.validateField('email', this.state.email);
+			// } else if (!this.state.email) {
+			// 	this.validateField('email', this.state.email);
 		} else {
 			this.validateField('terms-conditions', this.state['terms-conditions']);
 		}
@@ -158,7 +158,7 @@ class PhotoBoothModalForm extends Component {
 				content: this.state.interests,
 				status: 'publish',
 				meta: {
-					email: this.state.email, // TODO: Hide email in API?
+					email: this.state.email,
 					name: this.state.name,
 				},
 			})
@@ -272,7 +272,10 @@ class PhotoBoothModalForm extends Component {
 
 				<p>
 					<label className="photo-booth-modal-form__label" htmlFor="name">
-						Name (required):
+						Name{' '}
+						<span className="photo-booth-modal-form__label-required">
+							(required)
+						</span>:
 					</label>
 					<input
 						type="text"
@@ -290,7 +293,7 @@ class PhotoBoothModalForm extends Component {
 					/>
 				</p>
 
-				<p>
+				{/* <p>
 					<label className="photo-booth-modal-form__label" htmlFor="email">
 						Email (required):
 					</label>
@@ -310,7 +313,7 @@ class PhotoBoothModalForm extends Component {
 					/>
 				</p>
 
-				{/* <p>
+				<p>
 					Please tell us a few things about yourself so we can match you to a
 					portrait from our collection.
 				</p>
@@ -347,7 +350,10 @@ class PhotoBoothModalForm extends Component {
 							<span className="checkbox__checkmark" />
 						</label>
 						<label htmlFor="terms-conditions">
-							I agree to the following terms and conditions:
+							I agree to the following terms and conditions{' '}
+							<span className="photo-booth-modal-form__label-required">
+								(Required)
+							</span>:
 						</label>
 					</div>
 
@@ -384,12 +390,12 @@ class PhotoBoothModalForm extends Component {
 						</span>
 					) : (
 						(formErrors.name ||
-							formErrors.email ||
+							// formErrors.email ||
 							formErrors.interests ||
 							formErrors['terms-conditions']) && (
 							<span className="photo-booth-modal-form__form-message">
 								{formErrors.name ||
-									formErrors.email ||
+									// formErrors.email ||
 									formErrors.interests ||
 									formErrors['terms-conditions']}
 							</span>

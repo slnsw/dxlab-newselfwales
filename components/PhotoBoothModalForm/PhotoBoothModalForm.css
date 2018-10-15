@@ -10,7 +10,7 @@
 	& input[type='text'],
 	& input[type='email'] {
 		width: 75%;
-		font-size: var(--font-size-sm);
+		font-size: var(--font-size-md);
 	}
 }
 
@@ -19,6 +19,10 @@
 	width: 25%;
 	font-size: var(--font-size-xs);
 	color: var(--colour-grey-lighter);
+}
+
+.photo-booth-modal-form__label-required {
+	color: var(--colour-primary);
 }
 
 .photo-booth-modal-form__checkbox {
