@@ -35,6 +35,8 @@ export default (state = initialState, action) => {
 						...payload.data.newSelfWales.randomSelfies,
 					],
 					'id',
+				).filter(
+					(image) => image.featuredMedia && image.featuredMedia.sourceUrl,
 				),
 				isLoading: false,
 			};
