@@ -70,6 +70,8 @@ class ImageFeed extends Component {
 		intervalCounter: 0,
 		layingOutCounter: 0,
 		refreshCounter: 0,
+		skipNextInterval: false,
+		maxImagesReached: false,
 	};
 
 	constructor() {
@@ -179,6 +181,7 @@ class ImageFeed extends Component {
 				intervalCounter: 0,
 				refreshCounter: this.state.refreshCounter + 1,
 				shouldHideAllWhenReady: false,
+				maxImagesReached: false,
 			});
 		}
 
@@ -246,6 +249,12 @@ class ImageFeed extends Component {
 				// --------------------------------------------------------------------
 
 				log('Still loading, skip this interval.');
+			} else if (this.state.skipNextInterval) {
+				log('Skip this interval');
+
+				this.setState({
+					skipNextInterval: false,
+				});
 			} else if (this.state.shouldGetFetchedImagesWhenReady) {
 				// --------------------------------------------------------------------
 				// Images have been fetched, we are ready to receive them.
@@ -257,19 +266,30 @@ class ImageFeed extends Component {
 
 				this.setState({
 					shouldGetFetchedImagesWhenReady: false,
+					// Give feed some time to lay out images.
+					// Not ideal, but Packery takes its sweet time which
+					// causes overlaps when interval runs again
+					skipNextInterval: true,
 				});
 			} else if (
 				this.props.images.length >= this.props.maxImages &&
-				this.state.shouldHideAllWhenReady === false
+				this.state.shouldHideAllWhenReady === false &&
+				this.state.maxImagesReached === false
 			) {
 				// --------------------------------------------------------------------
 				// maxImages is reached. Trigger loading of UPCOMING images.
+				// Update local maxImagesReached to ensure this only runs once
+				// per refresh
 				// --------------------------------------------------------------------
 
 				log('MaxImages reached');
 
 				// Trigger ImageFeedContainer to load more images for UPCOMING update
 				log('Load more images in the background', this.props.startImages);
+
+				this.setState({
+					maxImagesReached: true,
+				});
 
 				if (typeof this.props.onMaxImagesComplete !== 'undefined') {
 					this.props.onMaxImagesComplete();
@@ -284,7 +304,7 @@ class ImageFeed extends Component {
 				// Sometimes packery doesn't detect layout complete. :(
 				this.setState({
 					isLayingOut: false,
-					intervalCounter: this.state.intervalCounter + 1,
+					// intervalCounter: this.state.intervalCounter + 1,
 					layingOutCounter: this.state.layingOutCounter + 1,
 				});
 			} else {
@@ -314,7 +334,7 @@ class ImageFeed extends Component {
 					if (this.state.shouldHideAllWhenReady) {
 						// TODO: Perhaps this not should depend on loadMoreGap
 						this.hideAllImages();
-					} else {
+					} else if (this.state.maxImagesReached === false) {
 						// --------------------------------------------------------------------
 						// Load more images
 						// --------------------------------------------------------------------
@@ -342,6 +362,9 @@ class ImageFeed extends Component {
 							portraitPercentage: 0.4,
 							dateStart: getDate(-120),
 						});
+					} else {
+						log('Max images reached, do not load new images, hide one instead');
+						this.randomlyAddToHiddenImageIds();
 					}
 				} else if (this.props.enableWindow) {
 					// --------------------------------------------------------------------
@@ -443,12 +466,12 @@ class ImageFeed extends Component {
 				} else {
 					this.randomlyAddToHiddenImageIds();
 				}
-
-				// Increment the intervalCounter
-				this.setState({
-					intervalCounter: this.state.intervalCounter + 1,
-				});
 			}
+
+			// Increment the intervalCounter
+			this.setState({
+				intervalCounter: this.state.intervalCounter + 1,
+			});
 		}, this.props.intervalTime);
 	};
 

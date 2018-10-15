@@ -34,7 +34,7 @@ class GalleryPage extends Component {
 					startImages,
 					maxImages = 100,
 					increment = 0.5,
-					intervalTime,
+					intervalTime = 12000,
 					loadMoreGap,
 					marginTop,
 					heightAdjust,
