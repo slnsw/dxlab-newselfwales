@@ -128,7 +128,7 @@ class PhotoBoothPage extends Component {
 					<div className="photo-booth-page">
 						<ImageFeedContainer
 							name="photo-booth"
-							startImages={30}
+							startImages={50}
 							maxImages={100}
 							enableAnimation={enableAnimation}
 							onImageClick={(event, image) =>
