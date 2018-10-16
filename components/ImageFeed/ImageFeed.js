@@ -355,7 +355,12 @@ class ImageFeed extends Component {
 								? this.props.maxImages - this.props.images.length
 								: fetchMoreImagesTemp;
 
-						log('Load more images', { emptyGap }, { fetchMoreImages });
+						log('Load more images', {
+							loadMoreGap: this.props.loadMoreGap,
+							gapConstant,
+							emptyGap,
+							fetchMoreImages,
+						});
 
 						this.props.onLoadMore({
 							limit: fetchMoreImages,
