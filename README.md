@@ -20,6 +20,15 @@ WP_PASSWORD=XXXXXXXXXX
 
 FB_APP_ID=XXXXXXXXXX
 GOOGLE_ANALYTICS_ID=XXXXXXXXXX
+
+HC_DEV_URL=https://hc-ping.com/XXXXXXXXXXXXXXXX
+HC_DEV_INTERVAL=300000
+
+HC_LEFT_URL=https://hc-ping.com/XXXXXXXXXXXXXXXX
+HC_LEFT_INTERVAL=300000
+
+HC_RIGHT_URL=https://hc-ping.com/XXXXXXXXXXXXXXXX
+HC_RIGHT_INTERVAL=300000
 ```
 
 Save a `.env.staging` and `.env.production` file for staging and production deploys respectively.
