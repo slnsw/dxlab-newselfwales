@@ -13,6 +13,7 @@ import { client } from '../lib/initApollo';
 import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
 import { idleTimer } from '../lib/idleTimer';
+import { healthCheck } from '../lib/healthCheck';
 
 class PhotoBoothPage extends Component {
 	state = {
@@ -28,6 +29,8 @@ class PhotoBoothPage extends Component {
 		},
 	};
 
+	// https://hc-ping.com/af031661-4e3c-4a4c-9cf0-76f665144788
+
 	componentDidMount() {
 		const { url } = this.props;
 		const { idleTimeout = 60, stage, position } = url.query;
@@ -35,6 +38,18 @@ class PhotoBoothPage extends Component {
 		// Redirect if no position param is found, otherwise things will break.
 		if (!position) {
 			window.location = `/photo-booth/test`;
+		}
+
+		if (!position || position === 'test') {
+			// healthCheck(process.env.HC_DEV_URL, process.env.HC_DEV_INTERVAL);
+		}
+
+		if (!position || position === 'left') {
+			healthCheck(process.env.HC_LEFT_URL, process.env.HC_LEFT_INTERVAL);
+		}
+
+		if (!position || position === 'right') {
+			healthCheck(process.env.HC_RIGHT_URL, process.env.HC_RIGHT_INTERVAL);
 		}
 
 		// Initialise Idle Timer
