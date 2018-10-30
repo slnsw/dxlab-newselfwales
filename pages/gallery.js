@@ -7,10 +7,23 @@ import ImageFeedContainer from '../components/ImageFeedContainer';
 import TransceiverContainer from '../components/TransceiverContainer';
 import { client } from '../lib/initApollo';
 import { initStore } from '../lib/initRedux';
+import { createHealthCheck } from '../lib/healthCheck';
 
 import './gallery.css';
 
 class GalleryPage extends Component {
+	componentDidMount() {
+		// Set up healthCheck
+		if (process.env.HEALTHCHECK_GALLERY_URL) {
+			const healthCheck = createHealthCheck(
+				process.env.HEALTHCHECK_GALLERY_URL,
+				process.env.HEALTHCHECK_GALLERY_INTERVAL,
+			);
+
+			healthCheck.start();
+		}
+	}
+
 	handleImageClick = (event, image) => {
 		window.open(
 			`https://newselfwales.dxlab.sl.nsw.gov.au/selfie/wp-admin/post.php?post=${

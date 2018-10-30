@@ -2,6 +2,11 @@
 
 DX Lab Gallery and Photobooth experience for State Library of NSW's Selfie campaign.
 
+This repo contains other projects relating to #NewSelfWales
+
+* `scraper` - `dxlab-newselfwales-scraper`
+* `cronjob` - `dxlab-newselfwales-cronjob`
+
 ## ENV Variables
 
 Save a .env with the following:

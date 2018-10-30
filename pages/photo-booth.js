@@ -13,7 +13,7 @@ import { client } from '../lib/initApollo';
 import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
 import { idleTimer } from '../lib/idleTimer';
-import { healthCheck } from '../lib/healthCheck';
+import { createHealthCheck } from '../lib/healthCheck';
 
 class PhotoBoothPage extends Component {
 	state = {
@@ -34,22 +34,29 @@ class PhotoBoothPage extends Component {
 	componentDidMount() {
 		const { url } = this.props;
 		const { idleTimeout = 60, stage, position } = url.query;
+		let healthCheck;
 
-		// Redirect if no position param is found, otherwise things will break.
 		if (!position) {
+			// Redirect if no position param is found, otherwise things will break.
+
 			window.location = `/photo-booth/test`;
-		}
+		} else if (position === 'left' && process.env.HEALTHCHECK_LEFT_URL) {
+			// Set up healthCheck for left photo booth
+			healthCheck = createHealthCheck(
+				process.env.HEALTHCHECK_LEFT_URL,
+				process.env.HEALTHCHECK_LEFT_INTERVAL,
+			);
 
-		if (!position || position === 'test') {
-			// healthCheck(process.env.HC_DEV_URL, process.env.HC_DEV_INTERVAL);
-		}
+			healthCheck.start();
+		} else if (position === 'right' && process.env.HEALTHCHECK_RIGHT_URL) {
+			// Set up healthCheck for right photo booth
 
-		if (!position || position === 'left') {
-			healthCheck(process.env.HC_LEFT_URL, process.env.HC_LEFT_INTERVAL);
-		}
+			healthCheck = createHealthCheck(
+				process.env.HEALTHCHECK_RIGHT_URL,
+				process.env.HEALTHCHECK_RIGHT_INTERVAL,
+			);
 
-		if (!position || position === 'right') {
-			healthCheck(process.env.HC_RIGHT_URL, process.env.HC_RIGHT_INTERVAL);
+			healthCheck.start();
 		}
 
 		// Initialise Idle Timer

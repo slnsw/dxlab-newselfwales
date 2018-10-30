@@ -6,3 +6,4 @@ npm-debug.log
 __tests__/__snapshots__/
 .eslintcache
 scraper/.env
+build/
