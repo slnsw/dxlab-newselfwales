@@ -54,6 +54,31 @@ export const fetchImages = ({
 	}
 };
 
+export const subscribeToImages = () => (dispatch) => {
+	client
+		.subscribe({
+			query: SUBSCRIPTION_QUERY,
+		})
+		.subscribe({
+			next(data) {
+				dispatch({
+					type: 'IMAGE_FEED_SEND_SUBSCRIBED_IMAGES',
+					payload: data,
+				});
+			},
+		});
+};
+
+const SUBSCRIPTION_QUERY = gql`
+	subscription {
+		onSendControl(appId: "NEWSELFWALES", channel: "FEED") {
+			id
+			action
+			value
+		}
+	}
+`;
+
 const FEED_QUERY = gql`
 	query getFeed($limit: Int, $dateStart: String, $portraitPercentage: Float) {
 		feed: newSelfWalesFeed(

@@ -174,6 +174,18 @@ export default (state = initialState, action) => {
 			};
 		}
 
+		case 'IMAGE_FEED_SEND_SUBSCRIBED_IMAGES': {
+			console.log(JSON.parse(action.payload.data.onSendControl.value));
+
+			return {
+				...state,
+				currentImages: mergeImages(
+					state.currentImages,
+					JSON.parse(action.payload.data.onSendControl.value),
+				),
+			};
+		}
+
 		default:
 			return state;
 	}

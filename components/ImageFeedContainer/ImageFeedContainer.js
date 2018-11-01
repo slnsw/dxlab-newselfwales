@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import ImageFeed from '../ImageFeed';
-import { fetchImages } from '../../actions/imageFeedActions';
+import { fetchImages, subscribeToImages } from '../../actions/imageFeedActions';
 import logBase from '../../lib/log';
 import { getDate } from '../../lib/date';
 import './ImageFeedContainer.css';
@@ -31,6 +31,8 @@ class ImageFeedContainer extends Component {
 			portraitPercentage: 0.6,
 			isFirstFetch: true,
 		});
+
+		this.props.dispatch(subscribeToImages());
 	}
 
 	handleFetchImages = ({
@@ -79,7 +81,7 @@ class ImageFeedContainer extends Component {
 				{...this.props}
 				images={currentImages}
 				status={status}
-				onLoadMore={this.handleFetchImages}
+				// onLoadMore={this.handleFetchImages}
 				onMaxImagesComplete={this.handleMaxImagesComplete}
 				onHideAllImagesComplete={this.handleHideAllImagesComplete}
 				onFetchedImagesReady={this.handleFetchedImagesReady}

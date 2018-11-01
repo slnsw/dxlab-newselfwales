@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
 import client from './lib/client';
+import { getDate } from '../../lib/date';
 
 export async function hit() {
   const {
@@ -17,6 +18,8 @@ export const getFeed = async () => {
       query: FEED_QUERY,
       variables: {
         limit: 10,
+        dateStart: getDate(-120),
+        portraitPercentage: 0.6,
       },
     });
 
@@ -59,7 +62,6 @@ const FEED_QUERY = gql`
       ... on NewSelfWalesPortrait {
         id
         title
-        test: status
         date
         featuredMedia {
           sourceUrl
@@ -81,7 +83,6 @@ const FEED_QUERY = gql`
       ... on NewSelfWalesInstagramSelfie {
         id
         title
-        test: status
         date
         featuredMedia {
           sourceUrl
@@ -103,7 +104,6 @@ const FEED_QUERY = gql`
       ... on NewSelfWalesGallerySelfie {
         id
         title
-        test: status
         date
         featuredMedia {
           sourceUrl

@@ -4,13 +4,15 @@ describe('GraphQL Queries', () => {
   it('Get Image Feed from GraphQL', async () => {
     const { data } = await getFeed();
 
+    // console.log(data.feed);
+
     expect(data.feed.length).toBe(10);
   });
 
   it('Should Send Mutation to GraphQL', async () => {
     const { data } = await sendFeed([{ id: 1 }]);
 
-    console.log(data);
+    // console.log(data);
 
     expect(data.sendControl).toEqual({
       appId: 'NEWSELFWALES',
