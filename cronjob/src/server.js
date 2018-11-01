@@ -1,11 +1,13 @@
 import cron from 'node-cron';
 
+import { hit } from './hit';
+
 require('dotenv').config();
 
 console.log('Start cron job');
 
 cron.schedule('*/10 * * * * *', () => {
-  console.log('hi');
+  hit();
 });
 
 /* Setup Server for Now - otherwise it stays on the BUILDING state */
