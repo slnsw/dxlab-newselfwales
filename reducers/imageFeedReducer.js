@@ -12,7 +12,7 @@ const initialState = {
 	isLoading: false,
 	currentFetchedImages: [],
 	currentImages: [],
-	upcomingImage: [],
+	upcomingImages: [],
 	spareImages: [],
 	status: 'FIRST_CURRENT_IMAGES',
 };
@@ -26,17 +26,14 @@ export default (state = initialState, action) => {
 		// FIRST and CURRENT IMAGES
 		// ------------------------------------------------------------------------
 
-		case 'FETCH_IMAGES_REQUEST': {
+		case 'IMAGE_FEED_FETCH_INITIAL_IMAGES_REQUEST': {
 			log(action.type);
 
 			return { ...state, isLoading: true };
 		}
 
-		case 'FIRST_FETCH_IMAGES_SUCCESS':
-		case 'FETCH_IMAGES_SUCCESS': {
+		case 'IMAGE_FEED_FETCH_INITIAL_IMAGES_SUCCESS': {
 			log(action.type);
-
-			const isFirstFetch = action.type === 'FIRST_FETCH_IMAGES_SUCCESS';
 
 			// Add new images to spare in case there is a fetch failure
 			const spareImages = dedupeByField(
@@ -51,34 +48,28 @@ export default (state = initialState, action) => {
 
 			return {
 				...state,
-				// If isFirstFetch === true, put new images straight into 'currentImages',
-				// otherwise we have to wait around for the next interval for
-				// MOVE_FETCHED_TO_CURRENT_IMAGES
-				currentFetchedImages: isFirstFetch ? [] : payload.data.feed,
-				currentImages: isFirstFetch
-					? mergeImages([], payload.data.feed)
-					: state.currentImages,
+				currentImages: mergeImages(state.currentImages, payload.data.feed),
 				spareImages,
 				status: 'FETCHED_IMAGES_READY',
 				isLoading: false,
 			};
 		}
 
-		case 'MOVE_FETCHED_TO_CURRENT_IMAGES': {
-			log(action.type);
+		case 'IMAGE_FEED_MOVE_UPCOMING_TO_CURRENT_IMAGES': {
+			log(action.type, action.limit);
 
 			return {
 				...state,
-				currentFetchedImages: [],
+				upcomingImages: state.upcomingImages.slice(action.limit),
 				currentImages: mergeImages(
 					state.currentImages,
-					state.currentFetchedImages,
+					state.upcomingImages.slice(0, action.limit),
 				),
 				status: 'CURRENT_IMAGES',
 			};
 		}
 
-		case 'FETCH_IMAGES_FAILURE':
+		case 'IMAGE_FEED_FETCH_INITIAL_IMAGES_FAILURE':
 			log(action.type);
 
 			return {
@@ -90,40 +81,49 @@ export default (state = initialState, action) => {
 		// UPCOMING IMAGES
 		// ------------------------------------------------------------------------
 
-		case 'FETCH_UPCOMING_IMAGES_REQUEST':
+		case 'IMAGE_FEED_UPCOMING_IMAGES_READY': {
 			log(action.type);
-
-			return { ...state };
-
-		case 'FETCH_UPCOMING_IMAGES_SUCCESS': {
-			log(action.type);
-
-			const spareImages = dedupeByField(
-				[...state.spareImages, ...processImages(payload.data.feed)],
-				'id',
-			);
-
-			if (spareImages.length > MAX_SPARE_IMAGES) {
-				spareImages.splice(0, spareImages.length - MAX_SPARE_IMAGES);
-			}
 
 			return {
 				...state,
-				upcomingImages: mergeImages([], payload.data.feed),
-				// Add new images to spare in case there is a fetch failure
-				spareImages,
 				status: 'UPCOMING_IMAGES_READY',
 			};
 		}
 
-		case 'FETCH_UPCOMING_IMAGES_FAILURE':
-			log(action.type);
+		// case 'FETCH_UPCOMING_IMAGES_REQUEST':
+		// 	log(action.type);
 
-			return {
-				...state,
-			};
+		// 	return { ...state };
 
-		case 'CLEAR_CURRENT_IMAGES':
+		// case 'FETCH_UPCOMING_IMAGES_SUCCESS': {
+		// 	log(action.type);
+
+		// 	const spareImages = dedupeByField(
+		// 		[...state.spareImages, ...processImages(payload.data.feed)],
+		// 		'id',
+		// 	);
+
+		// 	if (spareImages.length > MAX_SPARE_IMAGES) {
+		// 		spareImages.splice(0, spareImages.length - MAX_SPARE_IMAGES);
+		// 	}
+
+		// 	return {
+		// 		...state,
+		// 		upcomingImages: mergeImages([], payload.data.feed),
+		// 		// Add new images to spare in case there is a fetch failure
+		// 		spareImages,
+		// 		status: 'UPCOMING_IMAGES_READY',
+		// 	};
+		// }
+
+		// case 'FETCH_UPCOMING_IMAGES_FAILURE':
+		// 	log(action.type);
+
+		// 	return {
+		// 		...state,
+		// 	};
+
+		case 'IMAGE_FEED_CLEAR_CURRENT_IMAGES':
 			log(action.type);
 
 			return {
@@ -131,17 +131,17 @@ export default (state = initialState, action) => {
 				currentImages: [],
 			};
 
-		case 'SWITCH_UPCOMING_TO_CURRENT':
-			log(action.type);
+		// case 'SWITCH_UPCOMING_TO_CURRENT':
+		// 	log(action.type);
 
-			return {
-				...state,
-				upcomingImages: [],
-				currentImages: state.upcomingImages,
-				status: 'CURRENT_IMAGES',
-			};
+		// 	return {
+		// 		...state,
+		// 		upcomingImages: [],
+		// 		currentImages: state.upcomingImages,
+		// 		status: 'CURRENT_IMAGES',
+		// 	};
 
-		case 'COPY_SPARE_IMAGES_TO_CURRENT': {
+		case 'IMAGE_FEED_COPY_SPARE_IMAGES_TO_CURRENT': {
 			log(action.type);
 
 			const currentImages = mergeImages(
@@ -157,30 +157,31 @@ export default (state = initialState, action) => {
 			};
 		}
 
-		case 'COPY_SPARE_IMAGES_TO_UPCOMING': {
-			log(action.type);
+		// case 'IMAGE_FEED_COPY_SPARE_IMAGES_TO_UPCOMING': {
+		// 	log(action.type);
 
-			const upcomingImages = mergeImages(
-				[],
-				getRandomArrayElements(state.spareImages, action.limit),
-			);
+		// 	const upcomingImages = mergeImages(
+		// 		[],
+		// 		getRandomArrayElements(state.spareImages, action.limit),
+		// 	);
 
-			log(upcomingImages);
+		// 	log(upcomingImages);
 
-			return {
-				...state,
-				upcomingImages,
-				status: 'UPCOMING_IMAGES_READY',
-			};
-		}
+		// 	return {
+		// 		...state,
+		// 		upcomingImages,
+		// 		status: 'UPCOMING_IMAGES_READY',
+		// 	};
+		// }
 
 		case 'IMAGE_FEED_SEND_SUBSCRIBED_IMAGES': {
-			console.log(JSON.parse(action.payload.data.onSendControl.value));
+			log(action.type);
+			// console.log(JSON.parse(action.payload.data.onSendControl.value));
 
 			return {
 				...state,
-				currentImages: mergeImages(
-					state.currentImages,
+				upcomingImages: mergeImages(
+					state.upcomingImages,
 					JSON.parse(action.payload.data.onSendControl.value),
 				),
 			};

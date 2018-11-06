@@ -60,19 +60,19 @@ The ImageFeed Redux store consists of three image containers:
 #### B. ImageFeed Subscription
 
 1. imageFeedReducer: Every 20 seconds, `IMAGE_FEED_SEND_SUBSCRIBED_IMAGES` is dispatched, new images are added to `upcomingImages` and `spareImages`.
-2. imageFeedReducer: Ensure `upcomingImages` doesn't exceed `MAX_UPCOMING_IMAGES`.
+2. imageFeedReducer: Ensure `upcomingImages` doesn't exceed `MAX_UPCOMING_IMAGES`. (TODO)
 
 #### C. Get Image Loop
 
-1. ImageFeed: On loop interval, check `emptyGap`, working out if new images need to be added. If `emptyGap` is higher than `loadMoreGap` threshold, send `IMAGE_FEED_GET_UPCOMING_IMAGES` with X amount of images. (If not, send `IMAGE_FEED_HIDE_IMAGE` and got back to `C1.`).
-2. ImageFeedReducer: Check if there are enough `upcomingImages`, if so, transfer X amount of images from `upcomingImages` to `currentImages`.
+1. ImageFeed: On loop interval, check `emptyGap`, working out if new images need to be added. If `emptyGap` is higher than `loadMoreGap` threshold, send `IMAGE_FEED_GET_UPCOMING_IMAGES` with X amount of images. (If not, internally hide image/s and go back to `C1.`).
+2. ImageFeedReducer: Check if there are enough `upcomingImages` (TODO), if enough, transfer X amount of images from `upcomingImages` to `currentImages`.
 3. ImageFeed: Receives images and animates them in.
 4. Back to `C1.`.
 
 #### D. Max Images Reached Loop
 
 1. ImageFeed: On loop interval, if `images` amount is greater than `maxImages`, send `IMAGE_FEED_MAX_IMAGES_REACHED`.
-2. ImageFeedReducer: Check if there are enough `upcomingImages`. If so, send `IMAGE_FEED_UPCOMING_IMAGES_READY`. If not, go back to D1. (May need to dip into `spareImages`).
+2. ImageFeedReducer: Check if there are enough `upcomingImages`. If so, send `IMAGE_FEED_UPCOMING_IMAGES_READY`. If not, go back to D1 (TODO). (May need to dip into `spareImages`).
 3. ImageFeed: On loop interval, check `emptyGap`. If it is greater than `loadMoreGap`, run `hideAllImages` internally and trigger hide images animation.
 4. ImageFeed: On animate out end, send `IMAGE_FEED_CLEAR_CURRENT_IMAGES` and then send `IMAGE_FEED_GET_UPCOMING_IMAGES` with `startImages` amount.
 5. Go to `C3.`.

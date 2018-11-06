@@ -9,11 +9,10 @@ export const fetchImages = ({
 	limit,
 	dateStart,
 	portraitPercentage,
-	isFirstFetch = false,
-	isUpcoming = false,
+	// isFirstFetch = false,
 }) => async (dispatch) => {
 	dispatch({
-		type: isUpcoming ? 'FETCH_UPCOMING_IMAGES_REQUEST' : 'FETCH_IMAGES_REQUEST',
+		type: 'IMAGE_FEED_FETCH_INITIAL_IMAGES_REQUEST',
 	});
 
 	try {
@@ -28,33 +27,29 @@ export const fetchImages = ({
 		});
 
 		dispatch({
-			type: isFirstFetch
-				? 'FIRST_FETCH_IMAGES_SUCCESS'
-				: isUpcoming ? 'FETCH_UPCOMING_IMAGES_SUCCESS' : 'FETCH_IMAGES_SUCCESS',
+			type: 'IMAGE_FEED_FETCH_INITIAL_IMAGES_SUCCESS',
 			payload: data,
 		});
 	} catch (error) {
 		// console.log(error);
 
 		dispatch({
-			type: isUpcoming
-				? 'FETCH_UPCOMING_IMAGES_FAILURE'
-				: 'FETCH_IMAGES_FAILURE',
+			type: 'IMAGE_FEED_FETCH_INITIAL_IMAGES_FAILURE',
 			payload: error,
 		});
 
 		// Copy spare images to the feed incase there is an outage
 		// TODO: Needs more finessing, keeps on running
 		dispatch({
-			type: isUpcoming
-				? 'COPY_SPARE_IMAGES_TO_UPCOMING'
-				: 'COPY_SPARE_IMAGES_TO_CURRENT',
+			type: 'IMAGE_FEED_COPY_SPARE_IMAGES_TO_CURRENT',
 			limit: limit < 0 ? 0 : limit > 100 ? 100 : limit,
 		});
 	}
 };
 
 export const subscribeToImages = () => (dispatch) => {
+	console.log('oi');
+
 	client
 		.subscribe({
 			query: SUBSCRIPTION_QUERY,

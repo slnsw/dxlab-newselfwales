@@ -41,6 +41,8 @@ class ImageFeedContainer extends Component {
 		portraitPercentage,
 		isFirstFetch = false,
 	}) => {
+		console.log('handleFetchImages');
+
 		this.props.dispatch(
 			fetchImages({
 				limit,
@@ -51,27 +53,45 @@ class ImageFeedContainer extends Component {
 		);
 	};
 
+	handleLoadMore = ({ limit }) => {
+		this.props.dispatch({
+			type: 'IMAGE_FEED_MOVE_UPCOMING_TO_CURRENT_IMAGES',
+			limit,
+		});
+	};
+
 	handleMaxImagesComplete = () => {
-		this.props.dispatch(
-			fetchImages({
-				limit: this.props.startImages,
-				dateStart: getDate(-120),
-				portraitPercentage: 0.6,
-				isUpcoming: true,
-			}),
-		);
+		log('handleMaxImagesComplete');
+
+		this.props.dispatch({
+			type: 'IMAGE_FEED_UPCOMING_IMAGES_READY',
+		});
+
+		// this.props.dispatch(
+		// 	fetchImages({
+		// 		limit: this.props.startImages,
+		// 		dateStart: getDate(-120),
+		// 		portraitPercentage: 0.6,
+		// 		isUpcoming: true,
+		// 	}),
+		// );
 	};
 
 	handleHideAllImagesComplete = () => {
 		log('handleHideAllImagesComplete');
-		this.props.dispatch({ type: 'CLEAR_CURRENT_IMAGES' });
-		this.props.dispatch({ type: 'SWITCH_UPCOMING_TO_CURRENT' });
+		this.props.dispatch({ type: 'IMAGE_FEED_CLEAR_CURRENT_IMAGES' });
+		// this.props.dispatch({ type: 'SWITCH_UPCOMING_TO_CURRENT' });
+
+		this.props.dispatch({
+			type: 'IMAGE_FEED_MOVE_UPCOMING_TO_CURRENT_IMAGES',
+			limit: this.props.startImages,
+		});
 	};
 
-	handleFetchedImagesReady = () => {
-		log('handleFetchedImagesReady');
-		this.props.dispatch({ type: 'MOVE_FETCHED_TO_CURRENT_IMAGES' });
-	};
+	// handleFetchedImagesReady = () => {
+	// 	log('handleFetchedImagesReady');
+	// 	this.props.dispatch({ type: 'MOVE_FETCHED_TO_CURRENT_IMAGES' });
+	// };
 
 	render() {
 		const { currentImages, status } = this.props;
@@ -82,6 +102,7 @@ class ImageFeedContainer extends Component {
 				images={currentImages}
 				status={status}
 				// onLoadMore={this.handleFetchImages}
+				onLoadMore={this.handleLoadMore}
 				onMaxImagesComplete={this.handleMaxImagesComplete}
 				onHideAllImagesComplete={this.handleHideAllImagesComplete}
 				onFetchedImagesReady={this.handleFetchedImagesReady}
