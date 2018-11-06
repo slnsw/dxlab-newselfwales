@@ -40,44 +40,52 @@ Save a `.env.staging` and `.env.production` file for staging and production depl
 
 ## Gallery Experience
 
-`/gallery`
+This can be accessed from this URL: `/gallery`
 
 ### ImageFeed Loop
 
-The ImageFeed loop ticks every 10 seconds. It kicks off after the first `FETCH_IMAGES`.
+The ImageFeed loop ticks every 10 seconds. It kicks off after `IMAGE_FEED_FETCH_INITIAL_IMAGES`.
+
+The ImageFeed Redux store consists of three image containers:
+
+* `upcomingImages`
+* `currentImages`
+* `spareImages`
 
 #### A. Initial Fetch
 
-1. ImageFeedContainer: On first mount, `FIRST_FETCH_IMAGES` into `currentImages` and `spareImages`.
+1. ImageFeedContainer: On first mount, `IMAGE_FEED_FETCH_INITIAL_IMAGES` into `currentImages` and `spareImages`.
 2. ImageFeed: Receive images and start loop interval.
 
-#### B. Fetch Loop
+#### B. ImageFeed Subscription
 
-1. ImageFeed: On loop interval, check `emptyGap`, working out if new images need to be fetched. If `emptyGap` is higher than `loadMoreGap` threshold, send `FETCH_IMAGES` and specify how many. (If not, send `HIDE_IMAGE` and got back to `B1.`).
-2. ImageFeedReducer: When ready, store images in `currentFetchedImages` and `spareImages`, then update status to `FETCHED_IMAGES_READY` for ImageFeed.
-3. ImageFeed: On loop interval, check `isLayingOut`. If `true`, skip. If `false`, send `MOVE_FETCHED_TO_CURRENT_IMAGES`.
-4. Reducer transfers X amount of images from `currentFetchedImages` to `currentImages`.
-5. ImageFeed: Receives images and animates them in.
-6. Back to `B1.`.
+1. imageFeedReducer: Every 20 seconds, `IMAGE_FEED_SEND_SUBSCRIBED_IMAGES` is dispatched, new images are added to `upcomingImages` and `spareImages`.
+2. imageFeedReducer: Ensure `upcomingImages` doesn't exceed `MAX_UPCOMING_IMAGES`.
 
-#### C. Max Images Reached Loop
+#### C. Get Image Loop
 
-1. ImageFeed: On loop interval, if `images` amount is greater than `maxImages`, send `MAX_IMAGES_REACHED`.
-2. ImageFeedContainer: This should trigger `FETCH_UPCOMING_IMAGES` using `startImages` amount into `upcomingImages`.
-3. ImageFeedContainer: When ready, send `UPCOMING_IMAGES_READY` to ImageFeed.
-4. ImageFeed: On loop interval, check `emptyGap`. If it is greater than `loadMoreGap`, run `hideAllImages` internally and trigger hide images animation.
-5. ImageFeed: On animate out end, send `CLEAR_CURRENT_IMAGES` and then `GET_UPCOMING_IMAGES`.
-6. Go to `B4.`.
+1. ImageFeed: On loop interval, check `emptyGap`, working out if new images need to be added. If `emptyGap` is higher than `loadMoreGap` threshold, send `IMAGE_FEED_GET_UPCOMING_IMAGES` with X amount of images. (If not, send `IMAGE_FEED_HIDE_IMAGE` and got back to `C1.`).
+2. ImageFeedReducer: Check if there are enough `upcomingImages`, if so, transfer X amount of images from `upcomingImages` to `currentImages`.
+3. ImageFeed: Receives images and animates them in.
+4. Back to `C1.`.
+
+#### D. Max Images Reached Loop
+
+1. ImageFeed: On loop interval, if `images` amount is greater than `maxImages`, send `IMAGE_FEED_MAX_IMAGES_REACHED`.
+2. ImageFeedReducer: Check if there are enough `upcomingImages`. If so, send `IMAGE_FEED_UPCOMING_IMAGES_READY`. If not, go back to D1. (May need to dip into `spareImages`).
+3. ImageFeed: On loop interval, check `emptyGap`. If it is greater than `loadMoreGap`, run `hideAllImages` internally and trigger hide images animation.
+4. ImageFeed: On animate out end, send `IMAGE_FEED_CLEAR_CURRENT_IMAGES` and then send `IMAGE_FEED_GET_UPCOMING_IMAGES` with `startImages` amount.
+5. Go to `C3.`.
 
 #### D. Spare Images Loop
 
-1. ImageFeed: On loop interval, if `emptyGap` is larger than 50% of the viewport, we aren't getting images quickly enough, so we need to recycle spare images. Send `GET_SPARE_IMAGES` and specify how many. (IN PROGRESS)
+1. ImageFeed: On loop interval, if `emptyGap` is larger than 50% of the viewport, we aren't getting images quickly enough, so we need to recycle spare images. Send `IMAGE_FEED_GET_SPARE_IMAGES` and specify how many. (IN PROGRESS)
 2. Reducer transfers X amount of random `spareImages` into `currentImages`.
-3. Go to `B1.`.
+3. Go to `C1.`.
 
 #### E. Network Error Loop
 
-1. ImageFeed: On loop interval, if there is a network error, dispatch `COPY_SPARE_IMAGES_TO_CURRENT` or `COPY_SPARE_IMAGES_TO_UPCOMING`.
+1. ImageFeed: On loop interval, if there is a network error, dispatch `IMAGE_FEED_COPY_SPARE_IMAGES_TO_CURRENT` or `IMAGE_FEED_COPY_SPARE_IMAGES_TO_UPCOMING`.
 
 ### Hardware Notes
 
