@@ -6,7 +6,10 @@ const log = (...args) => {
 	return logBase('imageFeedReducer', ...args);
 };
 
-const MAX_SPARE_IMAGES = 1000;
+// TODO: Work out best way to limit upcoming Images - from beginning or end?
+
+const MAX_SPARE_IMAGES = 100;
+const MAX_UPCOMING_IMAGES = 100;
 
 const initialState = {
 	isLoading: false,
@@ -23,16 +26,16 @@ export default (state = initialState, action) => {
 
 	switch (action.type) {
 		// ------------------------------------------------------------------------
-		// FIRST and CURRENT IMAGES
+		// FETCH IMAGES
 		// ------------------------------------------------------------------------
 
-		case 'IMAGE_FEED_FETCH_INITIAL_IMAGES_REQUEST': {
+		case 'IMAGE_FEED_FETCH_IMAGES_REQUEST': {
 			log(action.type);
 
 			return { ...state, isLoading: true };
 		}
 
-		case 'IMAGE_FEED_FETCH_INITIAL_IMAGES_SUCCESS': {
+		case 'IMAGE_FEED_FETCH_IMAGES_SUCCESS': {
 			log(action.type);
 
 			// Add new images to spare in case there is a fetch failure
@@ -41,19 +44,29 @@ export default (state = initialState, action) => {
 				'id',
 			);
 
-			// Ensure we don't exceed MAX_SPARE_IMAGES, otherwise memory will run out
-			if (spareImages.length > MAX_SPARE_IMAGES) {
-				spareImages.splice(0, spareImages.length - MAX_SPARE_IMAGES);
-			}
+			const currentImages = mergeImages(state.currentImages, payload.data.feed);
 
 			return {
 				...state,
-				currentImages: mergeImages(state.currentImages, payload.data.feed),
-				spareImages,
+				currentImages: limitImages(currentImages, MAX_UPCOMING_IMAGES),
+				spareImages: limitImages(spareImages, MAX_SPARE_IMAGES),
 				status: 'FETCHED_IMAGES_READY',
 				isLoading: false,
 			};
 		}
+
+		case 'IMAGE_FEED_FETCH_IMAGES_FAILURE': {
+			log(action.type);
+
+			return {
+				...state,
+				isLoading: false,
+			};
+		}
+
+		// ------------------------------------------------------------------------
+		// CURRENT/UPCOMING IMAGES
+		// ------------------------------------------------------------------------
 
 		case 'IMAGE_FEED_MOVE_UPCOMING_TO_CURRENT_IMAGES': {
 			log(action.type, action.limit);
@@ -69,18 +82,6 @@ export default (state = initialState, action) => {
 			};
 		}
 
-		case 'IMAGE_FEED_FETCH_INITIAL_IMAGES_FAILURE':
-			log(action.type);
-
-			return {
-				...state,
-				isLoading: false,
-			};
-
-		// ------------------------------------------------------------------------
-		// UPCOMING IMAGES
-		// ------------------------------------------------------------------------
-
 		case 'IMAGE_FEED_UPCOMING_IMAGES_READY': {
 			log(action.type);
 
@@ -90,39 +91,6 @@ export default (state = initialState, action) => {
 			};
 		}
 
-		// case 'FETCH_UPCOMING_IMAGES_REQUEST':
-		// 	log(action.type);
-
-		// 	return { ...state };
-
-		// case 'FETCH_UPCOMING_IMAGES_SUCCESS': {
-		// 	log(action.type);
-
-		// 	const spareImages = dedupeByField(
-		// 		[...state.spareImages, ...processImages(payload.data.feed)],
-		// 		'id',
-		// 	);
-
-		// 	if (spareImages.length > MAX_SPARE_IMAGES) {
-		// 		spareImages.splice(0, spareImages.length - MAX_SPARE_IMAGES);
-		// 	}
-
-		// 	return {
-		// 		...state,
-		// 		upcomingImages: mergeImages([], payload.data.feed),
-		// 		// Add new images to spare in case there is a fetch failure
-		// 		spareImages,
-		// 		status: 'UPCOMING_IMAGES_READY',
-		// 	};
-		// }
-
-		// case 'FETCH_UPCOMING_IMAGES_FAILURE':
-		// 	log(action.type);
-
-		// 	return {
-		// 		...state,
-		// 	};
-
 		case 'IMAGE_FEED_CLEAR_CURRENT_IMAGES':
 			log(action.type);
 
@@ -130,16 +98,6 @@ export default (state = initialState, action) => {
 				...state,
 				currentImages: [],
 			};
-
-		// case 'SWITCH_UPCOMING_TO_CURRENT':
-		// 	log(action.type);
-
-		// 	return {
-		// 		...state,
-		// 		upcomingImages: [],
-		// 		currentImages: state.upcomingImages,
-		// 		status: 'CURRENT_IMAGES',
-		// 	};
 
 		case 'IMAGE_FEED_COPY_SPARE_IMAGES_TO_CURRENT': {
 			log(action.type);
@@ -157,33 +115,23 @@ export default (state = initialState, action) => {
 			};
 		}
 
-		// case 'IMAGE_FEED_COPY_SPARE_IMAGES_TO_UPCOMING': {
-		// 	log(action.type);
+		// ------------------------------------------------------------------------
+		// SUBSCRIBED IMAGES
+		// ------------------------------------------------------------------------
 
-		// 	const upcomingImages = mergeImages(
-		// 		[],
-		// 		getRandomArrayElements(state.spareImages, action.limit),
-		// 	);
-
-		// 	log(upcomingImages);
-
-		// 	return {
-		// 		...state,
-		// 		upcomingImages,
-		// 		status: 'UPCOMING_IMAGES_READY',
-		// 	};
-		// }
-
-		case 'IMAGE_FEED_SEND_SUBSCRIBED_IMAGES': {
+		case 'IMAGE_FEED_GET_SUBSCRIBED_IMAGES': {
 			log(action.type);
 			// console.log(JSON.parse(action.payload.data.onSendControl.value));
 
+			const newImages = mergeImages(
+				state.upcomingImages,
+				JSON.parse(action.payload.data.onSendControl.value),
+			);
+
 			return {
 				...state,
-				upcomingImages: mergeImages(
-					state.upcomingImages,
-					JSON.parse(action.payload.data.onSendControl.value),
-				),
+				upcomingImages: limitImages(newImages, MAX_UPCOMING_IMAGES),
+				spareImages: limitImages(newImages, MAX_SPARE_IMAGES),
 			};
 		}
 
@@ -237,4 +185,12 @@ function processImages(images) {
 			type,
 		};
 	});
+}
+
+function limitImages(images = [], maxLimit = 1000) {
+	if (images.length > maxLimit) {
+		images.splice(0, images.length - maxLimit);
+	}
+
+	return images;
 }

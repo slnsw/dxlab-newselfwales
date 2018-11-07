@@ -41,8 +41,6 @@ class ImageFeedContainer extends Component {
 		portraitPercentage,
 		isFirstFetch = false,
 	}) => {
-		console.log('handleFetchImages');
-
 		this.props.dispatch(
 			fetchImages({
 				limit,
@@ -66,21 +64,11 @@ class ImageFeedContainer extends Component {
 		this.props.dispatch({
 			type: 'IMAGE_FEED_UPCOMING_IMAGES_READY',
 		});
-
-		// this.props.dispatch(
-		// 	fetchImages({
-		// 		limit: this.props.startImages,
-		// 		dateStart: getDate(-120),
-		// 		portraitPercentage: 0.6,
-		// 		isUpcoming: true,
-		// 	}),
-		// );
 	};
 
 	handleHideAllImagesComplete = () => {
 		log('handleHideAllImagesComplete');
 		this.props.dispatch({ type: 'IMAGE_FEED_CLEAR_CURRENT_IMAGES' });
-		// this.props.dispatch({ type: 'SWITCH_UPCOMING_TO_CURRENT' });
 
 		this.props.dispatch({
 			type: 'IMAGE_FEED_MOVE_UPCOMING_TO_CURRENT_IMAGES',

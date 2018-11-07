@@ -5,14 +5,11 @@ import { client } from '../lib/initApollo';
 // IMAGE FEED ACTIONS
 // ----------------------------------------------------------------------------
 
-export const fetchImages = ({
-	limit,
-	dateStart,
-	portraitPercentage,
-	// isFirstFetch = false,
-}) => async (dispatch) => {
+export const fetchImages = ({ limit, dateStart, portraitPercentage }) => async (
+	dispatch,
+) => {
 	dispatch({
-		type: 'IMAGE_FEED_FETCH_INITIAL_IMAGES_REQUEST',
+		type: 'IMAGE_FEED_FETCH_IMAGES_REQUEST',
 	});
 
 	try {
@@ -27,14 +24,14 @@ export const fetchImages = ({
 		});
 
 		dispatch({
-			type: 'IMAGE_FEED_FETCH_INITIAL_IMAGES_SUCCESS',
+			type: 'IMAGE_FEED_FETCH_IMAGES_SUCCESS',
 			payload: data,
 		});
 	} catch (error) {
-		// console.log(error);
+		console.log(error);
 
 		dispatch({
-			type: 'IMAGE_FEED_FETCH_INITIAL_IMAGES_FAILURE',
+			type: 'IMAGE_FEED_FETCH_IMAGES_FAILURE',
 			payload: error,
 		});
 
@@ -48,8 +45,6 @@ export const fetchImages = ({
 };
 
 export const subscribeToImages = () => (dispatch) => {
-	console.log('oi');
-
 	client
 		.subscribe({
 			query: SUBSCRIPTION_QUERY,
@@ -57,7 +52,7 @@ export const subscribeToImages = () => (dispatch) => {
 		.subscribe({
 			next(data) {
 				dispatch({
-					type: 'IMAGE_FEED_SEND_SUBSCRIBED_IMAGES',
+					type: 'IMAGE_FEED_GET_SUBSCRIBED_IMAGES',
 					payload: data,
 				});
 			},

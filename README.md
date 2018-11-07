@@ -60,7 +60,7 @@ The ImageFeed Redux store consists of three image containers:
 #### B. ImageFeed Subscription
 
 1. imageFeedReducer: Every 20 seconds, `IMAGE_FEED_SEND_SUBSCRIBED_IMAGES` is dispatched, new images are added to `upcomingImages` and `spareImages`.
-2. imageFeedReducer: Ensure `upcomingImages` doesn't exceed `MAX_UPCOMING_IMAGES`. (TODO)
+2. imageFeedReducer: Ensure `upcomingImages` doesn't exceed `MAX_UPCOMING_IMAGES`.
 
 #### C. Get Image Loop
 
