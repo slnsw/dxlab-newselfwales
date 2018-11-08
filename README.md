@@ -54,13 +54,13 @@ The ImageFeed Redux store consists of three image containers:
 
 #### A. Initial Fetch
 
-1. ImageFeedContainer: On first mount, `IMAGE_FEED_FETCH_INITIAL_IMAGES` into `currentImages` and `spareImages`.
+1. ImageFeedContainer: On first mount, `IMAGE_FEED_FETCH_IMAGES` into `currentImages` and `spareImages`.
 2. ImageFeed: Receive images and start loop interval.
 
 #### B. ImageFeed Subscription
 
-1. imageFeedReducer: Every 20 seconds, `IMAGE_FEED_SEND_SUBSCRIBED_IMAGES` is dispatched, new images are added to `upcomingImages` and `spareImages`.
-2. imageFeedReducer: Ensure `upcomingImages` doesn't exceed `MAX_UPCOMING_IMAGES`.
+1. imageFeedReducer: Every 20 seconds, `IMAGE_FEED_GET_SUBSCRIBED_IMAGES` is dispatched, new images are added to `upcomingImages` and `spareImages`.
+2. imageFeedReducer: Ensure `upcomingImages` doesn't exceed `MAX_UPCOMING_IMAGES` and `spareImages` doesn't exceed `MAX_SPARE_IMAGES`.
 
 #### C. Get Image Loop
 

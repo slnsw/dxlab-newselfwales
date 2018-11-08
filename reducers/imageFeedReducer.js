@@ -8,9 +8,6 @@ const log = (...args) => {
 
 // TODO: Work out best way to limit upcoming Images - from beginning or end?
 
-const MAX_SPARE_IMAGES = 100;
-const MAX_UPCOMING_IMAGES = 100;
-
 const initialState = {
 	isLoading: false,
 	currentFetchedImages: [],
@@ -18,6 +15,8 @@ const initialState = {
 	upcomingImages: [],
 	spareImages: [],
 	status: 'FIRST_CURRENT_IMAGES',
+	maxSpareImages: 100,
+	maxUpcomingImages: 100,
 };
 
 // REDUCERS
@@ -48,8 +47,8 @@ export default (state = initialState, action) => {
 
 			return {
 				...state,
-				currentImages: limitImages(currentImages, MAX_UPCOMING_IMAGES),
-				spareImages: limitImages(spareImages, MAX_SPARE_IMAGES),
+				currentImages: limitImages(currentImages, state.maxUpcomingImages),
+				spareImages: limitImages(spareImages, state.maxSpareImages),
 				status: 'FETCHED_IMAGES_READY',
 				isLoading: false,
 			};
@@ -130,8 +129,8 @@ export default (state = initialState, action) => {
 
 			return {
 				...state,
-				upcomingImages: limitImages(newImages, MAX_UPCOMING_IMAGES),
-				spareImages: limitImages(newImages, MAX_SPARE_IMAGES),
+				upcomingImages: limitImages(newImages, state.maxUpcomingImages),
+				spareImages: limitImages(newImages, state.maxSpareImages),
 			};
 		}
 
