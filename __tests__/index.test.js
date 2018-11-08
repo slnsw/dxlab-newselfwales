@@ -1,14 +1,11 @@
 import imageFeedReducer from '../reducers/imageFeedReducer';
 
 describe('Image Feed', () => {
-	it('', () => {
+	it('should add new subscribed images to upcomingImages and spareImages', () => {
 		const initialState = {
-			isLoading: false,
-			currentFetchedImages: [],
-			currentImages: initialData,
+			currentImages: [],
 			upcomingImages: initialData,
 			spareImages: [],
-			status: 'FIRST_CURRENT_IMAGES',
 			maxSpareImages: 15,
 			maxUpcomingImages: 15,
 		};
@@ -30,6 +27,46 @@ describe('Image Feed', () => {
 		expect(state.upcomingImages[0].id).toBe(initialData[5].id);
 		expect(state.spareImages.length).toBe(15);
 		expect(state.spareImages[0].id).toBe(initialData[5].id);
+	});
+
+	it('should move upcoming images to current', () => {
+		const initialState = {
+			currentImages: initialData,
+			upcomingImages: data,
+			spareImages: [],
+			maxSpareImages: 15,
+			maxUpcomingImages: 15,
+		};
+
+		const action = {
+			type: 'IMAGE_FEED_MOVE_UPCOMING_TO_CURRENT_IMAGES',
+			limit: 5,
+		};
+
+		const state = imageFeedReducer(initialState, action);
+
+		expect(state.currentImages.length).toBe(15);
+	});
+
+	it('should fail to move upcoming images to current because there are not enough upcoming', () => {
+		const initialState = {
+			currentImages: initialData,
+			upcomingImages: data,
+			spareImages: [],
+			maxSpareImages: 15,
+			maxUpcomingImages: 15,
+		};
+
+		const action = {
+			type: 'IMAGE_FEED_MOVE_UPCOMING_TO_CURRENT_IMAGES',
+			limit: 15,
+		};
+
+		// NOTE: is it okay to not move 15 as there are only 10?
+
+		const state = imageFeedReducer(initialState, action);
+
+		expect(state.currentImages.length).toBe(25);
 	});
 });
 

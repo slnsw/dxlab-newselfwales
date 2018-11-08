@@ -64,7 +64,7 @@ The ImageFeed Redux store consists of three image containers:
 
 #### C. Get Image Loop
 
-1. ImageFeed: On loop interval, check `emptyGap`, working out if new images need to be added. If `emptyGap` is higher than `loadMoreGap` threshold, send `IMAGE_FEED_GET_UPCOMING_IMAGES` with X amount of images. (If not, internally hide image/s and go back to `C1.`).
+1. ImageFeed: On loop interval, check `emptyGap`, working out if new images need to be added. If `emptyGap` is higher than `loadMoreGap` threshold, send `IMAGE_FEED_MOVE_UPCOMING_TO_CURRENT_IMAGES` with X amount of images. (If not, internally hide image/s and go back to `C1.`).
 2. ImageFeedReducer: Check if there are enough `upcomingImages` (TODO), if enough, transfer X amount of images from `upcomingImages` to `currentImages`.
 3. ImageFeed: Receives images and animates them in.
 4. Back to `C1.`.
