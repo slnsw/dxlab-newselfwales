@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { ApolloProvider, Query } from 'react-apollo';
+import withRedux from 'next-redux-wrapper';
 import gql from 'graphql-tag';
 
 import App from '../components/App';
@@ -10,21 +11,19 @@ import ImageModalContainer from '../components/ImageModalContainer';
 // import images from '../lib/imagesNew.json';
 // import shuffle from '../lib/shuffle';
 import { client } from '../lib/initApollo';
+import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
 
 import './index.css';
 
 class LandingPage extends Component {
-	constructor() {
-		super();
-
-		this.state = {
-			axis: 'x',
-			showModal: true,
-			enableAnimation: false,
-			sourceImageBoundingClientRect: null,
-		};
-	}
+	state = {
+		axis: 'x',
+		showModal: true,
+		enableAnimation: false,
+		sourceImageBoundingClientRect: null,
+		isInfoBoxFullSize: false,
+	};
 
 	componentDidMount() {
 		window.addEventListener('keyup', this.handleKey, true);
@@ -115,12 +114,27 @@ class LandingPage extends Component {
 		}
 	};
 
+	handleMoreButtonClick = () => {
+		this.setState({
+			isInfoBoxFullSize: true,
+			enableAnimation: false,
+		});
+	};
+
+	handleCloseButtonClick = () => {
+		this.setState({
+			isInfoBoxFullSize: false,
+			enableAnimation: true,
+		});
+	};
+
 	render() {
 		const { url } = this.props;
 		const {
 			showModal,
 			enableAnimation,
 			sourceImageBoundingClientRect,
+			isInfoBoxFullSize,
 		} = this.state;
 
 		const showImageModal = url && url.query.imageType && url.query.id && true;
@@ -148,6 +162,7 @@ class LandingPage extends Component {
 								}
 								metaImageUrl="https://dxlab.sl.nsw.gov.au/static/newselfwales/social-image.jpg"
 								metaImageAlt="#NewSelfWales image feed of collection images"
+								url={url}
 								pathname="/newselfwales"
 							>
 								<button
@@ -170,7 +185,14 @@ class LandingPage extends Component {
 								/>
 
 								{page && (
-									<InfoBox title={page.title} excerpt={page.excerpt}>
+									<InfoBox
+										className="newselfwales-page__info-box"
+										title={page.title}
+										excerpt={page.excerpt}
+										isFullSize={isInfoBoxFullSize}
+										onMoreButtonClick={this.handleMoreButtonClick}
+										onCloseButtonClick={this.handleCloseButtonClick}
+									>
 										{page.content}
 									</InfoBox>
 								)}
@@ -222,4 +244,4 @@ const PAGE_QUERY = gql`
 	}
 `;
 
-export default LandingPage;
+export default withRedux(initStore)(LandingPage);

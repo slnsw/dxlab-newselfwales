@@ -15,7 +15,7 @@ const log = (...args) => {
 class App extends Component {
 	static propTypes = {
 		title: PropTypes.string,
-		url: PropTypes.object,
+		url: PropTypes.object.isRequired,
 		children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 		pathname: PropTypes.string,
 		isLoading: PropTypes.bool,
