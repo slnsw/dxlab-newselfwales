@@ -5,15 +5,14 @@
 	top: var(--spacing-xxlg);
 	left: var(--spacing-md);
 	z-index: 2;
-	max-width: 7em;
 	border-radius: 0;
-	padding-top: var(--spacing-xxxs);
+	padding: var(--spacing-md) var(--spacing-lg) var(--spacing-md)
+		var(--spacing-xlg);
 
 	/* border: 1px solid var(--colour-grey-lightest); */
 
 	color: var(--colour-highlight);
 	background-color: var(--colour-black);
 	font-size: var(--font-size-xxs);
-
-	/* font-family: 'Lekton', Helvetica, Arial; */
+	font-weight: 700;
 }

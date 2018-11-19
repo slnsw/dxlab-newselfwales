@@ -6,13 +6,13 @@
 	bottom: 1em;
 	right: var(--spacing-xlg);
 	z-index: 5;
-	width: 70%;
+	width: calc(100% - 1em);
 	background-color: var(--colour-black);
 	padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
 
 	@media (--screen-sm) {
 		right: auto;
-		left: 0;
+		left: var(--spacing-xxs);
 		max-width: 40rem;
 		padding: var(--spacing-xxlg) var(--spacing-xxlg) var(--spacing-xxlg);
 	}
@@ -21,11 +21,36 @@
 		top: 1em;
 		width: calc(100% - 1em);
 		height: calc(100% - 2em);
+		padding-top: 2.9em;
+
+		& p:first-of-type {
+			position: relative;
+			font-size: var(--font-size-lg);
+			margin-bottom: var(--spacing-md);
+			padding-bottom: var(--spacing-xlg);
+
+			&::after {
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				content: '';
+				width: 1em;
+				height: 1px;
+				border-bottom: 1px solid var(--colour-white);
+			}
+		}
 
 		@media (--screen-sm) {
-			left: auto;
-			height: calc(100% - var(--spacing-xs) * 2);
+			/* left: auto; */
+			/* height: calc(100% - var(--spacing-xs) * 2); */
 		}
+	}
+
+	& h2 {
+		font-family: var(--font-primary);
+		font-size: var(--font-size-md);
+		/* font-weight: 500; */
+		@apply --font-uppercase;
 	}
 }
 
@@ -53,39 +78,55 @@
 }
 
 .info-box__title-image {
-	width: 100%;
+	width: calc(100% - 4em);
+	max-width: 29em;
 	height: auto;
 
 	/* margin-top: var(--spacing-md); */
 	margin-bottom: var(--spacing-xxxs);
 
-	@nest .info-box--full & {
+	@nest .info-box--is-full-size & {
 		width: calc(100% - 4em);
+		margin-bottom: var(--spacing-lg);
 	}
 }
 
 .info-box__excerpt {
 	margin-top: 0;
-	font-size: var(--spacing-sm);
+	margin-bottom: 0;
+	font-size: var(--spacing-md);
 }
 
 .info-box__toggle-button {
 	position: absolute;
 	top: 0;
-	right: var(--spacing-xxxs);
+	right: 0;
+	z-index: 1;
+	width: var(--spacing-xlg);
+	height: var(--spacing-xlg);
+	padding-top: 0.3em;
 	font-size: var(--font-size-xlg);
-	color: var(--colour-highlight);
+	/* color: var(--colour-highlight); */
+	background-color: var(--colour-black);
 }
 
 .info-box__more-button {
-	font-size: var(--font-size-xs);
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: var(--spacing-xlg);
+	height: var(--spacing-xlg);
 	max-width: 14em;
 	margin-bottom: auto;
+	padding: 0;
+	font-size: var(--font-size-xlg);
+	/* color: var(--colour-highlight); */
+	background-color: transparent;
 }
 
 .info-box__logo-holder {
 	margin-top: var(--spacing-xxlg);
-	margin-bottom: var(--spacing-xxxlg);
+	/* margin-bottom: var(--spacing-xxxlg); */
 }
 
 .info-box__logo {

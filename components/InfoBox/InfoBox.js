@@ -58,7 +58,8 @@ class InfoBox extends Component {
 					/>
 					{/* <h1 className="info-box__title">#NewSelfWales</h1> */}
 
-					{excerpt && <p className="info-box__excerpt">{excerpt}</p>}
+					{!isFullSize &&
+						excerpt && <p className="info-box__excerpt">{excerpt}</p>}
 
 					{isFullSize && (
 						<Fragment>
@@ -85,14 +86,16 @@ class InfoBox extends Component {
 							</div>
 						</Fragment>
 					)}
+				</div>
 
+				{!isFullSize && (
 					<button
 						className="button info-box__more-button"
 						onClick={this.handleMoreButton}
 					>
-						{isFullSize ? 'Hide' : 'Read More'}
+						<i className="ion-ios-arrow-up" />
 					</button>
-				</div>
+				)}
 			</div>
 		);
 	}
