@@ -5,13 +5,14 @@
 	flex-direction: column;
 	height: calc(100% - 2em);
 	/* overflow: auto; */
-	padding: var(--spacing-sm);
+	padding: 3.8em var(--spacing-sm) var(--spacing-sm);
 
 	@media (--screen-sm) {
 		flex-direction: row;
 		width: 80%;
 		height: 50vh;
 		max-width: 80em;
+		padding: var(--spacing-sm);
 	}
 
 	& .image-modal--entered {
@@ -64,13 +65,17 @@
 .image-modal__type {
 	margin-bottom: var(--spacing-md);
 	@apply --font-uppercase;
-	font-size: var(--font-size-xs);
+	font-size: var(--font-size-sm);
 	font-weight: 600;
 	color: var(--colour-grey-light);
+
+	@media (--screen-sm) {
+		font-size: var(--font-size-xs);
+	}
 }
 
 .modal h1.image-modal__title {
-	font-size: var(--font-size-lg);
+	font-size: var(--font-size-xlg);
 	font-family: var(--font-secondary);
 	line-height: 1.2;
 	letter-spacing: 0;

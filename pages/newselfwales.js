@@ -38,6 +38,10 @@ class LandingPage extends Component {
 
 	handleImageModalClose = () => {
 		Router.pushRoute('/newselfwales');
+
+		this.setState({
+			enableAnimation: true,
+		});
 	};
 
 	handleToggleAnimationButton = () => {
