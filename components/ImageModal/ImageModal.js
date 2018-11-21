@@ -17,6 +17,8 @@ class ImageModal extends Component {
 		onClose: PropTypes.func,
 		isActive: PropTypes.bool,
 		loading: PropTypes.bool,
+		date: PropTypes.string,
+		instagramUsername: PropTypes.string,
 	};
 
 	state = {
@@ -47,6 +49,8 @@ class ImageModal extends Component {
 			imageType,
 			sourceImageBoundingClientRect,
 			isActive,
+			date,
+			instagramUsername,
 			// loading,
 		} = this.props;
 
@@ -57,6 +61,13 @@ class ImageModal extends Component {
 		// }
 
 		const timeout = 500;
+
+		let dateString;
+
+		if (date) {
+			const d = new Date(date);
+			dateString = `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
+		}
 
 		return (
 			<Transition
@@ -95,7 +106,7 @@ class ImageModal extends Component {
 							top: screenHeight / 2,
 							left: screenWidth / 2,
 							height: screenWidth > SCREEN_SM ? '80%' : 'calc(100% - 2em)',
-							width: screenWidth > SCREEN_SM ? '80%' : '100%',
+							width: screenWidth > SCREEN_SM ? '80%' : 'calc(100% - 0.91em)',
 						},
 					};
 
@@ -142,6 +153,25 @@ class ImageModal extends Component {
 									dangerouslySetInnerHTML={{ __html: content }}
 								/>
 							</div>
+
+							<footer className="image-modal__footer">
+								{instagramUsername && (
+									<a
+										className="image-modal__instagram-username"
+										href={`https://www.instagram.com/${instagramUsername}`}
+									>
+										@{instagramUsername}
+									</a>
+								)}
+
+								{dateString && (
+									<div className="image-modal__date">{dateString}</div>
+								)}
+
+								{/* {flNumber && (
+									<a className="image-modal__primo-link" href="">Collection Image</a>
+								)} */}
+							</footer>
 						</Modal>
 					);
 				}}

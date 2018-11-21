@@ -53,7 +53,8 @@ class Modal extends Component {
 								>
 									<i className="ion-md-close" />
 								</button>
-								{this.props.children}
+
+								<div className="modal__inside">{this.props.children}</div>
 							</div>
 						</Fragment>
 					);

@@ -57,6 +57,8 @@ class ImageModalContainer extends Component {
 							content: image.content,
 							imageType,
 							imageUrl: image.featuredMedia && image.featuredMedia.sourceUrl,
+							date: image.date,
+							instagramUsername: image.instagramUsername,
 						};
 					}
 
@@ -101,6 +103,8 @@ const INSTAGRAM_SELFIE_QUERY = gql`
 				featuredMedia {
 					sourceUrl
 				}
+				instagramUsername
+				date
 			}
 		}
 	}
@@ -115,6 +119,7 @@ const GALLERY_SELFIE_QUERY = gql`
 				featuredMedia {
 					sourceUrl
 				}
+				date
 			}
 		}
 	}

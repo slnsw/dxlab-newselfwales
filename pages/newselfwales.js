@@ -210,15 +210,18 @@ class LandingPage extends Component {
 								/>
 
 								<Modal isActive={showModal} onClose={this.handleModalClose}>
-									<h1>SPECIAL CARE NOTICE</h1>
+									<h1 className="">Special Care Notice</h1>
 
 									<p>
 										This website may contain images or documentation relating to
 										Aboriginal and Torres Strait Islander people who are
-										deceased. The State Library of NSW acknowledges that its
-										historical collection items can be offensive and confronting
-										in today’s context. They are published with respect to the
-										descendants and communities of the individuals they depict.
+										deceased.
+									</p>
+									<p>
+										The State Library of NSW acknowledges that its historical
+										collection items can be offensive and confronting in today’s
+										context. They are published with respect to the descendants
+										and communities of the individuals they depict.
 									</p>
 								</Modal>
 							</App>
