@@ -19,6 +19,7 @@ class ImageModal extends Component {
 		loading: PropTypes.bool,
 		date: PropTypes.string,
 		instagramUsername: PropTypes.string,
+		flNumber: PropTypes.string,
 	};
 
 	state = {
@@ -51,10 +52,11 @@ class ImageModal extends Component {
 			isActive,
 			date,
 			instagramUsername,
+			flNumber,
 			// loading,
 		} = this.props;
 
-		const { screenWidth, screenHeight } = this.state;
+		const { screenWidth } = this.state;
 
 		// if (isActive !== true) {
 		// 	return null;
@@ -68,6 +70,8 @@ class ImageModal extends Component {
 			const d = new Date(date);
 			dateString = `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
 		}
+
+		console.log('ImageModal', isActive);
 
 		return (
 			<Transition
@@ -103,12 +107,16 @@ class ImageModal extends Component {
 					const transitionStyles = {
 						entering: {
 							opacity: 1,
-							top: screenHeight / 2,
-							left: screenWidth / 2,
+							// top: screenHeight / 2,
+							// left: screenWidth / 2,
+							top: '50%',
+							left: '50%',
 							height: screenWidth > SCREEN_SM ? '80%' : 'calc(100% - 2em)',
 							width: screenWidth > SCREEN_SM ? '80%' : 'calc(100% - 0.91em)',
 						},
 					};
+
+					console.log(screenWidth);
 
 					return (
 						<Modal
@@ -117,7 +125,7 @@ class ImageModal extends Component {
 							onClose={this.handleClose}
 							style={{
 								...defaultStyle,
-								...(state === 'entering' || state === 'entered'
+								...(screenWidth && (state === 'entering' || state === 'entered')
 									? transitionStyles.entering
 									: {}),
 							}}
@@ -152,26 +160,31 @@ class ImageModal extends Component {
 									className="image-modal__content"
 									dangerouslySetInnerHTML={{ __html: content }}
 								/>
+
+								<footer className="image-modal__footer">
+									{instagramUsername && (
+										<a
+											className="image-modal__instagram-username"
+											href={`https://www.instagram.com/${instagramUsername}`}
+										>
+											@{instagramUsername}
+										</a>
+									)}
+
+									{dateString && (
+										<div className="image-modal__date">{dateString}</div>
+									)}
+
+									{flNumber && (
+										<a
+											className="image-modal__collection-link button button--small"
+											href={`http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?embedded=true&toolbar=false&dps_pid=${flNumber.toUpperCase()}`}
+										>
+											Collection Image
+										</a>
+									)}
+								</footer>
 							</div>
-
-							<footer className="image-modal__footer">
-								{instagramUsername && (
-									<a
-										className="image-modal__instagram-username"
-										href={`https://www.instagram.com/${instagramUsername}`}
-									>
-										@{instagramUsername}
-									</a>
-								)}
-
-								{dateString && (
-									<div className="image-modal__date">{dateString}</div>
-								)}
-
-								{/* {flNumber && (
-									<a className="image-modal__primo-link" href="">Collection Image</a>
-								)} */}
-							</footer>
 						</Modal>
 					);
 				}}

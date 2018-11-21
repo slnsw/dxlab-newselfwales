@@ -24,6 +24,12 @@ class App extends Component {
 		metaImageAlt: PropTypes.string,
 	};
 
+	static defaultProps = {
+		url: {
+			query: {},
+		},
+	};
+
 	componentDidMount() {
 		if (!window.GA_INITIALIZED) {
 			initGA();

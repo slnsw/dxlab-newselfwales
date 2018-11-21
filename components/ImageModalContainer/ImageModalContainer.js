@@ -59,6 +59,7 @@ class ImageModalContainer extends Component {
 							imageUrl: image.featuredMedia && image.featuredMedia.sourceUrl,
 							date: image.date,
 							instagramUsername: image.instagramUsername,
+							flNumber: image.slug && image.slug.split('-')[1],
 						};
 					}
 
@@ -84,6 +85,7 @@ const PORTRAIT_QUERY = gql`
 		newSelfWales {
 			image: portrait(id: $id) {
 				title
+				slug
 				content
 				featuredMedia {
 					sourceUrl

@@ -16,3 +16,7 @@
 	font-size: var(--font-size-xxs);
 	font-weight: 700;
 }
+
+.modal .newselfwales-page__special-care-title {
+	color: var(--colour-primary);
+}

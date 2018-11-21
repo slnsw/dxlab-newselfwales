@@ -66,6 +66,11 @@
 		display: inline-block;
 		line-height: 1;
 	}
+
+	&:active,
+	&:hover {
+		color: var(--colour-highlight);
+	}
 }
 
 .modal__inside {

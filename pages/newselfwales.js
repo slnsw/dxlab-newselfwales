@@ -147,9 +147,13 @@ class LandingPage extends Component {
 			<ApolloProvider client={client}>
 				<Query query={PAGE_QUERY}>
 					{({ loading, error, data }) => {
+						console.log('before loading');
+
 						if (loading) {
 							return <div />;
 						}
+
+						console.log('after loading');
 
 						if (error) {
 							console.log(error);
@@ -166,7 +170,7 @@ class LandingPage extends Component {
 								}
 								metaImageUrl="https://dxlab.sl.nsw.gov.au/static/newselfwales/social-image.jpg"
 								metaImageAlt="#NewSelfWales image feed of collection images"
-								url={url}
+								// url={url}
 								pathname="/newselfwales"
 							>
 								<button
@@ -210,7 +214,9 @@ class LandingPage extends Component {
 								/>
 
 								<Modal isActive={showModal} onClose={this.handleModalClose}>
-									<h1 className="">Special Care Notice</h1>
+									<h1 className="newselfwales-page__special-care-title">
+										Special Care Notice
+									</h1>
 
 									<p>
 										This website may contain images or documentation relating to
@@ -234,19 +240,12 @@ class LandingPage extends Component {
 }
 
 const PAGE_QUERY = gql`
-	query getFeed($offset: Int, $limit: Int) {
+	query getFeed {
 		pages(slug: "newselfwales") {
 			id
 			title
 			excerpt
 			content
-		}
-		portraits: newSelfWalesPortraits(offset: $offset, limit: $limit) {
-			id
-			title
-			featuredMedia {
-				sourceUrl
-			}
 		}
 	}
 `;

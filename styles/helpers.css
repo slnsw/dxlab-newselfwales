@@ -69,6 +69,11 @@ input[type='text'] {
 	&:active {
 		background-color: var(--colour-primary-darkest);
 	}
+
+	&:link,
+	&:visited {
+		color: var(--colour-white);
+	}
 }
 
 .button--small {
