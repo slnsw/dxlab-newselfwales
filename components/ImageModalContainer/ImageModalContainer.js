@@ -43,6 +43,7 @@ class ImageModalContainer extends Component {
 				variables={{
 					id,
 				}}
+				ssr={true}
 			>
 				{({ data, loading, error }) => {
 					const { newSelfWales } = data;

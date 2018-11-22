@@ -71,7 +71,7 @@ class ImageModal extends Component {
 			dateString = `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
 		}
 
-		console.log('ImageModal', isActive);
+		// console.log('ImageModal', isActive);
 
 		return (
 			<Transition
