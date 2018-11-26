@@ -1,0 +1,39 @@
+@import '../../styles/variables.css';
+
+.search-box {
+	display: flex;
+}
+
+.search-box--is-active {
+	width: 100%;
+}
+
+.search-box__search-icon {
+	padding: 0;
+	background-color: var(--colour-black);
+}
+
+.search-box__form {
+	display: flex;
+	flex: 1;
+
+	@nest .search-box--is-active & {
+		/* border: 1px solid var(--colour-white); */
+	}
+}
+
+input.search-box__input {
+	z-index: 1;
+	width: calc(100% - (var(--spacing-xlg)));
+	height: var(--spacing-xxlg);
+	padding: var(--spacing-xs);
+	font-size: var(--font-size-sm);
+	background-color: var(--colour-grey-darkest);
+	border: none;
+
+	&:focus {
+		outline-style: solid;
+		outline-width: 1px;
+		outline-offset: 0;
+	}
+}

@@ -5,9 +5,10 @@ import gql from 'graphql-tag';
 
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
+import ImageModalContainer from '../components/ImageModalContainer';
 import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
-import ImageModalContainer from '../components/ImageModalContainer';
+import SearchBox from '../components/SearchBox';
 // import images from '../lib/imagesNew.json';
 // import shuffle from '../lib/shuffle';
 import withApollo from '../lib/withApollo';
@@ -24,6 +25,7 @@ class LandingPage extends Component {
 		enableAnimation: false,
 		sourceImageBoundingClientRect: null,
 		isInfoBoxFullSize: false,
+		isSearchBoxActive: false,
 	};
 
 	componentDidMount() {
@@ -133,6 +135,20 @@ class LandingPage extends Component {
 		});
 	};
 
+	handleSearchBoxClick = () => {
+		console.log('hi');
+
+		this.setState({
+			isSearchBoxActive: true,
+		});
+	};
+
+	handleSearchBoxBackClick = () => {
+		this.setState({
+			isSearchBoxActive: false,
+		});
+	};
+
 	render() {
 		const { loading, error, pages, url } = this.props;
 		const {
@@ -140,6 +156,7 @@ class LandingPage extends Component {
 			enableAnimation,
 			sourceImageBoundingClientRect,
 			isInfoBoxFullSize,
+			isSearchBoxActive,
 		} = this.state;
 
 		// console.log(this.props);
@@ -182,6 +199,13 @@ class LandingPage extends Component {
 				>
 					{enableAnimation ? 'Pause' : 'Play'}
 				</button>
+
+				<SearchBox
+					className="newselfwales-page__search-box"
+					isActive={isSearchBoxActive}
+					onSearchIconClick={this.handleSearchBoxClick}
+					onBackClick={this.handleSearchBoxBackClick}
+				/>
 
 				<ImageFeedContainer
 					startImages={20}

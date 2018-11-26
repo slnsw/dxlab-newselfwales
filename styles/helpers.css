@@ -85,6 +85,14 @@ input[type='text'] {
 	border: 1px solid var(--colour-primary);
 }
 
+.icon {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	width: var(--spacing-xlg);
+	height: var(--spacing-xlg);
+}
+
 .checkbox {
 	position: relative;
 	display: inline-block;

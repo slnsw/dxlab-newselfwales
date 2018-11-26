@@ -20,3 +20,14 @@
 .modal .newselfwales-page__special-care-title {
 	color: var(--colour-primary);
 }
+
+.newselfwales-page__search-box {
+	position: absolute;
+	top: var(--spacing-xs);
+	right: var(--spacing-xxxxs);
+	left: var(--spacing-xxxxs);
+	z-index: 2;
+	width: calc(100% - (var(--spacing-xxxxs) * 2));
+	max-width: 20em;
+	font-size: var(--font-size-xlg);
+}

@@ -101,6 +101,7 @@
 	--spacing-xs: calc(var(--spacing-sm) / var(--spacing-scale));
 	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale));
 	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale));
+	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale));
 
 	--spacing-lg: calc(var(--spacing-scale) * var(--spacing-md));
 	--spacing-xlg: calc(var(--spacing-scale) * var(--spacing-lg));
