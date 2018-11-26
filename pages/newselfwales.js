@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, Fragment } from 'react';
 import { graphql } from 'react-apollo';
 import withRedux from 'next-redux-wrapper';
 import gql from 'graphql-tag';
@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
 import ImageModalContainer from '../components/ImageModalContainer';
+import SearchResultsContainer from '../components/SearchResultsContainer';
 import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
 import SearchBox from '../components/SearchBox';
@@ -16,7 +17,7 @@ import withApollo from '../lib/withApollo';
 import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
 
-import './index.css';
+import './newselfwales.css';
 
 class LandingPage extends Component {
 	state = {
@@ -25,7 +26,6 @@ class LandingPage extends Component {
 		enableAnimation: false,
 		sourceImageBoundingClientRect: null,
 		isInfoBoxFullSize: false,
-		isSearchBoxActive: false,
 	};
 
 	componentDidMount() {
@@ -135,18 +135,12 @@ class LandingPage extends Component {
 		});
 	};
 
-	handleSearchBoxClick = () => {
-		console.log('hi');
-
-		this.setState({
-			isSearchBoxActive: true,
-		});
+	handleSearchBoxIconClick = () => {
+		Router.pushRoute('/newselfwales/search');
 	};
 
 	handleSearchBoxBackClick = () => {
-		this.setState({
-			isSearchBoxActive: false,
-		});
+		Router.pushRoute('/newselfwales');
 	};
 
 	render() {
@@ -156,24 +150,14 @@ class LandingPage extends Component {
 			enableAnimation,
 			sourceImageBoundingClientRect,
 			isInfoBoxFullSize,
-			isSearchBoxActive,
 		} = this.state;
 
-		// console.log(this.props);
-
-		const showImageModal = url && url.query.imageType && url.query.id && true;
-
-		// return (
-		// <ApolloProvider client={client}>
-		// <Query query={PAGE_QUERY}>
-		// 	{({ loading, error, data }) => {
-		// console.log('before loading');
+		const showImageModal = url && url.query.param && url.query.id && true;
+		const isSearch = url.query.param === 'search';
 
 		if (loading) {
 			return <div />;
 		}
-
-		// console.log('after loading');
 
 		if (error) {
 			console.log(error);
@@ -193,46 +177,58 @@ class LandingPage extends Component {
 				// url={url}
 				pathname="/newselfwales"
 			>
-				<button
-					className="button landing__toggle-animation-button"
-					onClick={this.handleToggleAnimationButton}
-				>
-					{enableAnimation ? 'Pause' : 'Play'}
-				</button>
-
 				<SearchBox
 					className="newselfwales-page__search-box"
-					isActive={isSearchBoxActive}
-					onSearchIconClick={this.handleSearchBoxClick}
+					isActive={isSearch}
+					onSearchIconClick={this.handleSearchBoxIconClick}
 					onBackClick={this.handleSearchBoxBackClick}
+					onSubmit={this.handleSearchSubmit}
 				/>
 
-				<ImageFeedContainer
-					startImages={20}
-					maxImages={50}
-					intervalTime={5000}
-					enableAnimation={enableAnimation}
-					onImagesUpdate={this.handleImagesUpdate}
-					onImageClick={(event, image) => this.handleImageClick(event, image)}
-					onLayoutComplete={this.handleLayoutComplete}
-				/>
+				<div className="newselfwales-page__search-results">
+					{<SearchResultsContainer isActive={isSearch} url={url} />}
+				</div>
 
-				{page && (
-					<InfoBox
-						className="newselfwales-page__info-box"
-						title={page.title}
-						excerpt={page.excerpt}
-						isFullSize={isInfoBoxFullSize}
-						onMoreButtonClick={this.handleMoreButtonClick}
-						onCloseButtonClick={this.handleCloseButtonClick}
-					>
-						{page.content}
-					</InfoBox>
+				{!isSearch && (
+					<Fragment>
+						<button
+							className="button newselfwales-page__toggle-animation-button"
+							onClick={this.handleToggleAnimationButton}
+						>
+							{enableAnimation ? 'Pause' : 'Play'}
+						</button>
+
+						<ImageFeedContainer
+							startImages={20}
+							maxImages={50}
+							intervalTime={5000}
+							enableAnimation={enableAnimation}
+							onImagesUpdate={this.handleImagesUpdate}
+							onImageClick={(event, image) =>
+								this.handleImageClick(event, image)
+							}
+							onLayoutComplete={this.handleLayoutComplete}
+						/>
+					</Fragment>
 				)}
+
+				{page &&
+					!isSearch && (
+						<InfoBox
+							className="newselfwales-page__info-box"
+							title={page.title}
+							excerpt={page.excerpt}
+							isFullSize={isInfoBoxFullSize}
+							onMoreButtonClick={this.handleMoreButtonClick}
+							onCloseButtonClick={this.handleCloseButtonClick}
+						>
+							{page.content}
+						</InfoBox>
+					)}
 
 				<ImageModalContainer
 					isActive={showImageModal}
-					imageType={url.query.imageType}
+					imageType={url.query.param}
 					id={parseInt(url.query.id, 10)}
 					sourceImageBoundingClientRect={sourceImageBoundingClientRect}
 					onClose={this.handleImageModalClose}
@@ -255,10 +251,6 @@ class LandingPage extends Component {
 					</p>
 				</Modal>
 			</App>
-			// );
-			// }}
-			// </Query>
-			// </ApolloProvider>
 		);
 	}
 }

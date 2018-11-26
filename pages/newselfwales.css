@@ -1,6 +1,6 @@
 @import '../styles/variables.css';
 
-.landing__toggle-animation-button {
+.newselfwales-page__toggle-animation-button {
 	position: absolute;
 	top: var(--spacing-xxlg);
 	left: var(--spacing-md);
@@ -30,4 +30,11 @@
 	width: calc(100% - (var(--spacing-xxxxs) * 2));
 	max-width: 20em;
 	font-size: var(--font-size-xlg);
+}
+
+.newselfwales-page__search-results {
+	position: absolute;
+	top: 5em;
+	left: 1em;
+	height: calc(100% - 5em);
 }

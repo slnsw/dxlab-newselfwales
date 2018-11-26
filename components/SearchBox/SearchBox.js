@@ -12,8 +12,6 @@ class SearchBox extends Component {
 	};
 
 	handleSearchIconClick = () => {
-		console.log('hi 2');
-
 		if (typeof this.props.onSearchIconClick === 'function') {
 			this.props.onSearchIconClick();
 		}
@@ -49,10 +47,10 @@ class SearchBox extends Component {
 					)}
 
 					<button
-						className="search-box__search-icon"
+						className="search-box__search-icon ion ion-ios-search icon"
 						onClick={this.handleSearchIconClick}
 					>
-						<i className="ion ion-ios-search icon" />
+						{/* <i className="ion ion-ios-search icon" /> */}
 					</button>
 				</div>
 			</div>
