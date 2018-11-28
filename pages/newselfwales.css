@@ -35,6 +35,7 @@
 .newselfwales-page__search-results {
 	position: absolute;
 	top: 5em;
-	left: 1em;
+	left: 0;
+	width: 100%;
 	height: calc(100% - 5em);
 }

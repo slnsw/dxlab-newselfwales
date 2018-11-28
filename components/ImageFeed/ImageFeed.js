@@ -16,7 +16,7 @@ const log = (...args) => {
 class ImageFeed extends Component {
 	static propTypes = {
 		isLoading: PropTypes.bool,
-		name: PropTypes.string.isRequired,
+		name: PropTypes.string,
 		enableAnimation: PropTypes.bool,
 		images: PropTypes.array,
 		maxImages: PropTypes.number,
@@ -26,7 +26,7 @@ class ImageFeed extends Component {
 		axis: PropTypes.string,
 		status: PropTypes.string,
 		loadMoreGap: PropTypes.number,
-		marginBottom: PropTypes.string,
+		marginTop: PropTypes.string,
 		heightAdjust: PropTypes.string,
 		fps: PropTypes.number,
 		enableWindow: PropTypes.bool,
@@ -39,6 +39,7 @@ class ImageFeed extends Component {
 	};
 
 	static defaultProps = {
+		images: [],
 		axis: 'x',
 		enableAnimation: true,
 		maxImages: 1000,
@@ -92,7 +93,7 @@ class ImageFeed extends Component {
 			intervalTime: this.props.intervalTime,
 			increment: this.props.increment,
 			loadMoreGap: this.props.loadMoreGap,
-			marginBottom: this.props.marginBottom,
+			marginTop: this.props.marginTop,
 			heightAdjust: this.props.heightAdjust,
 			fps: this.props.fps,
 		});

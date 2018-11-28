@@ -186,6 +186,7 @@ class LandingPage extends Component {
 				pathname="/newselfwales"
 			>
 				<SearchBox
+					defaultValue={url.query && url.query.q ? url.query.q : ''}
 					className="newselfwales-page__search-box"
 					isActive={isSearch}
 					onSearchIconClick={this.handleSearchBoxIconClick}

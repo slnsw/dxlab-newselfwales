@@ -5,6 +5,7 @@ import './SearchBox.css';
 
 class SearchBox extends Component {
 	static propTypes = {
+		defaultValue: PropTypes.string,
 		className: PropTypes.string,
 		isActive: PropTypes.bool,
 		onSearchIconClick: PropTypes.func,
@@ -14,6 +15,7 @@ class SearchBox extends Component {
 
 	state = {
 		value: '',
+		isChanged: false,
 	};
 
 	handleSearchIconClick = () => {
@@ -37,13 +39,20 @@ class SearchBox extends Component {
 	};
 
 	handleChange = (event) => {
+		if (this.state.isChanged === false) {
+			this.setState({
+				isChanged: true,
+			});
+		}
+
 		this.setState({
 			value: event.target.value,
 		});
 	};
 
 	render() {
-		const { className, value, isActive } = this.props;
+		const { className, isActive, defaultValue } = this.props;
+		const { value, isChanged } = this.state;
 
 		return (
 			<div
@@ -65,7 +74,7 @@ class SearchBox extends Component {
 						{isActive && (
 							<input
 								type="text"
-								value={value}
+								value={isChanged === false ? defaultValue : value}
 								className="search-box__input"
 								autoFocus
 								onChange={this.handleChange}

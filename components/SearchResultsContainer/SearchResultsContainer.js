@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 // import queryString from 'query-string';
 
 import SearchResults from '../SearchResults';
+import ImageFeed from '../ImageFeed';
 // import { Router } from '../../routes';
 
 class SearchResultsContainer extends Component {
@@ -58,6 +59,7 @@ class SearchResultsContainer extends Component {
 				query={SEARCH_QUERY}
 				variables={{
 					search: inputTextValue, // (this.state.inputTextValue ? this.state.inputTextValue : ''),
+					limit: 30,
 				}}
 			>
 				{({ loading, error, data }) => {
@@ -70,50 +72,81 @@ class SearchResultsContainer extends Component {
 						return null;
 					}
 
-					// console.log(data);
+					console.log(data);
+
+					const images = buildImages(data);
 
 					return (
-						<SearchResults
-							inputTextValue={inputTextValue}
-							portraits={data.newSelfWales && data.newSelfWales.portraits}
-							instagramSelfies={
-								data.newSelfWales && data.newSelfWales.instagramSelfies
-							}
-							gallerySelfies={
-								data.newSelfWales && data.newSelfWales.gallerySelfies
-							}
-							loading={loading}
-							// onSubmit={this.handleFormSubmit}
-							{...this.props}
+						<ImageFeed
+							images={images}
+							enableAnimation={false}
+							marginTop={'-5px'}
 						/>
 					);
+					// return (
+					// 	<SearchResults
+					// 		inputTextValue={inputTextValue}
+					// 		portraits={data.newSelfWales && data.newSelfWales.portraits}
+					// 		instagramSelfies={
+					// 			data.newSelfWales && data.newSelfWales.instagramSelfies
+					// 		}
+					// 		gallerySelfies={
+					// 			data.newSelfWales && data.newSelfWales.gallerySelfies
+					// 		}
+					// 		loading={loading}
+					// 		// onSubmit={this.handleFormSubmit}
+					// 		{...this.props}
+					// 	/>
+					// );
 				}}
 			</Query>
 		);
 	}
 }
 
+function buildImages(data) {
+	if (!data || !data.newSelfWales) {
+		return [];
+	}
+
+	const images = [
+		...(data.newSelfWales.portraits ? data.newSelfWales.portraits : []),
+	];
+
+	return images;
+}
+
 const SEARCH_QUERY = gql`
-	query search($search: String) {
+	query search($search: String, $limit: Int) {
 		newSelfWales {
-			instagramSelfies(search: $search) {
+			instagramSelfies(search: $search, limit: $limit) {
 				id
 				title
-
 				content
 				shortcode
 				instagramUsername
 				timestamp
 				location
-
 				locationSlug
 				userDescription
 				featuredMedia {
 					sourceUrl
+					sizes {
+						medium {
+							sourceUrl
+							width
+							height
+						}
+						full {
+							sourceUrl
+							width
+							height
+						}
+					}
 				}
+				__typename
 			}
-			__typename
-			portraits(search: $search) {
+			portraits(search: $search, limit: $limit) {
 				id
 				title
 				content
@@ -122,17 +155,42 @@ const SEARCH_QUERY = gql`
 				primoId
 				featuredMedia {
 					sourceUrl
+					sizes {
+						medium {
+							sourceUrl
+							width
+							height
+						}
+						full {
+							sourceUrl
+							width
+							height
+						}
+					}
 				}
+				__typename
 			}
-			__typename
-			gallerySelfies(search: $search) {
+			gallerySelfies(search: $search, limit: $limit) {
 				id
 				title
 				content
 				galleryName
 				featuredMedia {
 					sourceUrl
+					sizes {
+						medium {
+							sourceUrl
+							width
+							height
+						}
+						full {
+							sourceUrl
+							width
+							height
+						}
+					}
 				}
+				__typename
 			}
 			__typename
 		}
