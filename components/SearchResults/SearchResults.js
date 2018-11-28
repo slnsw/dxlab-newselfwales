@@ -127,7 +127,7 @@ class Search extends Component {
 										{typeTitle} <span> ({items.length})</span>
 									</h2>
 									<div className="search__results__row">
-										{items.map((item) => {
+										{items.filter(item => item.featuredMedia).map((item) => {
 											return (
 												<Link
 													href={`${url.pathname}?${queryString.stringify({
