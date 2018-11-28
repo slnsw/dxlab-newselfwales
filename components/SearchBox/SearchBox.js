@@ -9,6 +9,11 @@ class SearchBox extends Component {
 		isActive: PropTypes.bool,
 		onSearchIconClick: PropTypes.func,
 		onBackClick: PropTypes.func,
+		onSubmit: PropTypes.func,
+	};
+
+	state = {
+		value: '',
 	};
 
 	handleSearchIconClick = () => {
@@ -23,8 +28,22 @@ class SearchBox extends Component {
 		}
 	};
 
+	handleFormSubmit = (event) => {
+		event.preventDefault();
+
+		if (typeof this.props.onSubmit === 'function') {
+			this.props.onSubmit(this.state.value);
+		}
+	};
+
+	handleChange = (event) => {
+		this.setState({
+			value: event.target.value,
+		});
+	};
+
 	render() {
-		const { className, isActive } = this.props;
+		const { className, value, isActive } = this.props;
 
 		return (
 			<div
@@ -42,16 +61,24 @@ class SearchBox extends Component {
 				)}
 
 				<div className="search-box__form">
-					{isActive && (
-						<input type="text" className="search-box__input" autoFocus />
-					)}
+					<form onSubmit={this.handleFormSubmit}>
+						{isActive && (
+							<input
+								type="text"
+								value={value}
+								className="search-box__input"
+								autoFocus
+								onChange={this.handleChange}
+							/>
+						)}
 
-					<button
-						className="search-box__search-icon ion ion-ios-search icon"
-						onClick={this.handleSearchIconClick}
-					>
-						{/* <i className="ion ion-ios-search icon" /> */}
-					</button>
+						<button
+							className="search-box__search-icon ion ion-ios-search icon"
+							onClick={this.handleSearchIconClick}
+						>
+							{/* <i className="ion ion-ios-search icon" /> */}
+						</button>
+					</form>
 				</div>
 			</div>
 		);

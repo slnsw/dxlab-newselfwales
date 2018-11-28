@@ -2,10 +2,10 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import queryString from 'query-string';
+// import queryString from 'query-string';
 
 import SearchResults from '../SearchResults';
-import { Router } from '../../routes';
+// import { Router } from '../../routes';
 
 class SearchResultsContainer extends Component {
 	static propTypes = {
@@ -30,18 +30,24 @@ class SearchResultsContainer extends Component {
 		this.setState({ inputTextValue: this.props.url.query.q });
 	}
 
-	handleFormSubmit = (event, value) => {
-		// Build new route, base off existing pathname and query variables
-		const route = `${this.props.url.pathname}?${queryString.stringify({
-			...this.props.url.query,
-			q: value,
-		})}`;
+	componentDidUpdate(prevProps) {
+		if (prevProps.url.query.q !== this.props.url.query.q) {
+			this.setState({ inputTextValue: this.props.url.query.q });
+		}
+	}
 
-		Router.pushRoute(route);
-		this.setState({ inputTextValue: value });
+	// handleFormSubmit = (event, value) => {
+	// 	// Build new route, base off existing pathname and query variables
+	// 	const route = `${this.props.url.pathname}?${queryString.stringify({
+	// 		...this.props.url.query,
+	// 		q: value,
+	// 	})}`;
 
-		event.preventDefault();
-	};
+	// 	Router.pushRoute(route);
+	// 	this.setState({ inputTextValue: value });
+
+	// 	event.preventDefault();
+	// };
 
 	render() {
 		// const { url, className, isActive, onInputTextFocus } = this.props;
@@ -77,7 +83,7 @@ class SearchResultsContainer extends Component {
 								data.newSelfWales && data.newSelfWales.gallerySelfies
 							}
 							loading={loading}
-							onSubmit={this.handleFormSubmit}
+							// onSubmit={this.handleFormSubmit}
 							{...this.props}
 						/>
 					);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import queryString from 'query-string';
 
-import ImageModalContainer from '../ImageModalContainer';
+// import ImageModalContainer from '../ImageModalContainer';
 import Link from '../Link';
 import './SearchResults.css';
 
@@ -14,12 +14,12 @@ class Search extends Component {
 		portraits: PropTypes.array,
 		instagramSelfies: PropTypes.array,
 		gallerySelfies: PropTypes.array,
-		inputTextValue: PropTypes.string,
+		// inputTextValue: PropTypes.string,
 		loading: PropTypes.bool,
 		isActive: PropTypes.bool,
-		onSubmit: PropTypes.func,
-		onInputTextFocus: PropTypes.func,
-		onInputTextBlur: PropTypes.func,
+		// onSubmit: PropTypes.func,
+		// onInputTextFocus: PropTypes.func,
+		// onInputTextBlur: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -29,54 +29,58 @@ class Search extends Component {
 	};
 
 	state = {
-		inputTextValue: '',
-		hasInitialValue: false,
+		// inputTextValue: '',
+		// hasInitialValue: false,
 	};
 
-	componentDidUpdate(prevProps) {
-		if (
-			prevProps.inputTextValue !== this.props.inputTextValue &&
-			!this.state.hasInitialValue
-		) {
-			this.setState({
-				inputTextValue: this.props.inputTextValue,
-				hasInitialValue: true,
-			});
+	// componentDidUpdate(prevProps) {
+	// 	if (
+	// 		prevProps.inputTextValue !== this.props.inputTextValue &&
+	// 		!this.state.hasInitialValue
+	// 	) {
+	// 		this.setState({
+	// 			inputTextValue: this.props.inputTextValue,
+	// 			hasInitialValue: true,
+	// 		});
+	// 	}
+	// }
+
+	// handleInputTextChange = (event) => {
+	// 	this.setState({ inputTextValue: event.target.value });
+	// };
+
+	// handleInputTextFocus = (event) => {
+	// 	if (typeof this.props.onInputTextFocus === 'function') {
+	// 		this.props.onInputTextFocus(event);
+	// 	}
+	// };
+
+	// handleInputTextBlur = () => {
+	// 	if (typeof this.props.onInputTextBlur === 'function') {
+	// 		this.props.onInputTextFocus();
+	// 	}
+	// };
+
+	// handleFormSubmit = (event) => {
+	// 	if (typeof this.props.onSubmit === 'function') {
+	// 		this.props.onSubmit(event, this.state.inputTextValue);
+	// 	}
+
+	// 	// Stops page from refreshing
+	// 	event.preventDefault();
+	// };
+
+	handleItemClick = (event, image) => {
+		if (typeof this.props.onItemClick === 'function') {
+			this.props.onItemClick(event, image);
 		}
-	}
 
-	handleInputTextChange = (event) => {
-		this.setState({ inputTextValue: event.target.value });
+		// this.setState({ imageId: image.id, imageType: image.type });
 	};
 
-	handleInputTextFocus = (event) => {
-		if (typeof this.props.onInputTextFocus === 'function') {
-			this.props.onInputTextFocus(event);
-		}
-	};
-
-	handleInputTextBlur = () => {
-		if (typeof this.props.onInputTextBlur === 'function') {
-			this.props.onInputTextFocus();
-		}
-	};
-
-	handleFormSubmit = (event) => {
-		if (typeof this.props.onSubmit === 'function') {
-			this.props.onSubmit(event, this.state.inputTextValue);
-		}
-
-		// Stops page from refreshing
-		event.preventDefault();
-	};
-
-	handleImageClick = (event, image) => {
-		this.setState({ imageId: image.id, imageType: image.type });
-	};
-
-	handleImageModalClose = () => {
-		this.setState({ imageId: null });
-	};
+	// handleImageModalClose = () => {
+	// 	this.setState({ imageId: null });
+	// };
 
 	render() {
 		const {
@@ -137,7 +141,7 @@ class Search extends Component {
 														<article
 															className="search__results__item"
 															onClick={(event) =>
-																this.handleImageClick(event, {
+																this.handleItemClick(event, {
 																	...item,
 																	type,
 																})
@@ -165,12 +169,12 @@ class Search extends Component {
 						})}
 					</div>
 
-					<ImageModalContainer
+					{/* <ImageModalContainer
 						id={this.state.imageId}
 						imageType={this.state.imageType}
 						isActive={this.state.imageId === null}
 						onClose={this.handleImageModalClose}
-					/>
+					/> */}
 				</div>
 			</CSSTransition>
 		);

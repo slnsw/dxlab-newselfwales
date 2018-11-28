@@ -143,6 +143,14 @@ class LandingPage extends Component {
 		Router.pushRoute('/newselfwales');
 	};
 
+	handleSearchSubmit = (value) => {
+		console.log(value);
+
+		if (value) {
+			Router.pushRoute(`/newselfwales/search?q=${value}`);
+		}
+	};
+
 	render() {
 		const { loading, error, pages, url } = this.props;
 		const {
