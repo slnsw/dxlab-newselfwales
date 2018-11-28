@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 // import queryString from 'query-string';
 
-import SearchResults from '../SearchResults';
+// import SearchResults from '../SearchResults';
 import ImageFeed from '../ImageFeed';
 // import { Router } from '../../routes';
 
@@ -51,8 +51,11 @@ class SearchResultsContainer extends Component {
 	// };
 
 	render() {
+		const { className } = this.props;
 		// const { url, className, isActive, onInputTextFocus } = this.props;
 		const { inputTextValue } = this.state;
+
+		// console.log('SearchResultsContainer');
 
 		return (
 			<Query
@@ -63,9 +66,9 @@ class SearchResultsContainer extends Component {
 				}}
 			>
 				{({ loading, error, data }) => {
-					// if (loading) {
-					// 	return <div />;
-					// }
+					if (loading) {
+						return <div>Loading</div>;
+					}
 
 					if (error) {
 						console.log(error);
@@ -81,6 +84,9 @@ class SearchResultsContainer extends Component {
 							images={images}
 							enableAnimation={false}
 							marginTop={'-5px'}
+							heightAdjust={'0px'}
+							gridSize="sm"
+							className={className}
 						/>
 					);
 					// return (

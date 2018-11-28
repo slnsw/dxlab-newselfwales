@@ -30,6 +30,8 @@ class ImageFeed extends Component {
 		heightAdjust: PropTypes.string,
 		fps: PropTypes.number,
 		enableWindow: PropTypes.bool,
+		gridSize: PropTypes.string,
+		className: PropTypes.string,
 		onLoadMore: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
@@ -50,6 +52,7 @@ class ImageFeed extends Component {
 		marginTop: '5px',
 		heightAdjust: '-10px',
 		enableWindow: true,
+		gridSize: 'md',
 	};
 
 	state = {
@@ -583,16 +586,6 @@ class ImageFeed extends Component {
 			isImageFeedHidden: true,
 		});
 
-		// const intervalTime = 50;
-
-		// TODO: Stagger animation. Activate when better animate out is working
-		// const interval = setInterval(() => {
-		// 	// Stagger hiding images and run callback onComplete.
-		// 	this.randomlyAddToHiddenImageIds(() => {
-		// 		clearInterval(interval);
-		// 	});
-		// }, intervalTime);
-
 		if (typeof this.props.onHideAllImagesComplete === 'function') {
 			const timeout = setTimeout(() => {
 				this.props.onHideAllImagesComplete();
@@ -627,7 +620,15 @@ class ImageFeed extends Component {
 	};
 
 	render() {
-		const { isLoading, name, images, marginTop, heightAdjust } = this.props;
+		const {
+			isLoading,
+			name,
+			images,
+			marginTop,
+			heightAdjust,
+			gridSize,
+			className,
+		} = this.props;
 		const {
 			isImageFeedHidden,
 			isFirstLoad,
@@ -641,6 +642,7 @@ class ImageFeed extends Component {
 					'image-feed',
 					isImageFeedHidden ? 'image-feed--is-hidden' : '',
 					name ? `image-feed--${name}` : '',
+					className || '',
 				].join(' ')}
 			>
 				{isLoading &&
@@ -655,13 +657,16 @@ class ImageFeed extends Component {
 
 				<div className="image-feed__scroller">
 					<Packery
-						className="image-feed__images"
+						className={[
+							'image-feed__images',
+							gridSize === 'sm' ? 'image-feed__images--sm' : '',
+						].join(' ')}
 						ref={(element) => {
 							this.imagesRef[name] = element;
 						}}
 						style={{
 							marginTop,
-							height: `calc(100vh + ${heightAdjust})`,
+							height: `calc(100% + ${heightAdjust})`,
 						}}
 						options={{
 							itemSelector: '.image-feed__image-holder',
@@ -720,8 +725,12 @@ class ImageFeed extends Component {
 										<button
 											className={[
 												'image-feed__image-holder',
-												`image-feed__image-holder--${imageSize}`,
-												`image-feed__image-holder--${image.type}`,
+												imageSize
+													? `image-feed__image-holder--${imageSize}`
+													: '',
+												image.type
+													? `image-feed__image-holder--${image.type}`
+													: '',
 												image.isSilhouette
 													? 'image-feed__image-holder--is-person'
 													: '',

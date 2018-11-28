@@ -5,6 +5,7 @@
 	z-index: 0;
 	opacity: 1;
 	transition: opacity 1s var(--ease-in-out-quart);
+	height: 100%;
 }
 
 .image-feed--is-hidden {
@@ -20,6 +21,7 @@
 
 .image-feed__scroller {
 	overflow: auto;
+	height: 100%;
 }
 
 .image-feed__scroller::-webkit-scrollbar {
@@ -45,6 +47,10 @@
 	cursor: pointer;
 	opacity: 1;
 	transition: opacity 2s var(--ease-in-out-quart);
+
+	@nest .image-feed__images--sm & {
+		height: calc(33.333%);
+	}
 
 	@media (--screen-md) {
 		height: calc(20%);

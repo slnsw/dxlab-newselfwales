@@ -38,4 +38,8 @@
 	left: 0;
 	width: 100%;
 	height: calc(100% - 5em);
+
+	& .image-feed__images {
+		padding-left: 5px;
+	}
 }

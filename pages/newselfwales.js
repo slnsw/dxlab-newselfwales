@@ -209,9 +209,12 @@ class LandingPage extends Component {
 					onSubmit={this.handleSearchSubmit}
 				/>
 
-				<div className="newselfwales-page__search-results">
-					{<SearchResultsContainer isActive={isSearch} url={url} />}
-				</div>
+				{isSearch && (
+					<SearchResultsContainer
+						url={url}
+						className="newselfwales-page__search-results"
+					/>
+				)}
 
 				{!isSearch && (
 					<Fragment>
