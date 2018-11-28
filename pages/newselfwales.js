@@ -2,6 +2,7 @@ import { Component, Fragment } from 'react';
 import { graphql } from 'react-apollo';
 import withRedux from 'next-redux-wrapper';
 import gql from 'graphql-tag';
+import { withCookies } from 'react-cookie';
 
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
@@ -22,11 +23,19 @@ import './newselfwales.css';
 class LandingPage extends Component {
 	state = {
 		axis: 'x',
-		showModal: true,
 		enableAnimation: false,
 		sourceImageBoundingClientRect: null,
 		isInfoBoxFullSize: false,
 	};
+
+	constructor(props) {
+		super(props);
+
+		const { cookies } = props;
+		this.state = {
+			showModal: !cookies.get('specialcareacknowledged'),
+		};
+	}
 
 	componentDidMount() {
 		window.addEventListener('keyup', this.handleKey, true);
@@ -36,6 +45,12 @@ class LandingPage extends Component {
 		this.setState({
 			showModal: false,
 			enableAnimation: true,
+		});
+		const expDate = new Date();
+		expDate.setFullYear(expDate.getFullYear() + 10);
+		this.props.cookies.set('specialcareacknowledged', true, {
+			path: '/',
+			expires: expDate,
 		});
 	};
 
@@ -282,6 +297,6 @@ export default withRedux(initStore)(
 					...data,
 				};
 			},
-		})(LandingPage),
+		})(withCookies(LandingPage)),
 	),
 );
