@@ -16,6 +16,9 @@ class ImageFeedContainer extends Component {
 	static propTypes = {
 		startImages: PropTypes.number,
 		currentImages: PropTypes.array,
+		intervalTime: PropTypes.number,
+		enableAnimation: PropTypes.bool,
+		shouldFetchImagesOnMount: PropTypes.bool,
 	};
 
 	static defaultProps = {
@@ -24,13 +27,15 @@ class ImageFeedContainer extends Component {
 	};
 
 	componentDidMount() {
-		// Initial Fetch
-		this.handleFetchImages({
-			limit: this.props.startImages,
-			dateStart: getDate(-120),
-			portraitPercentage: 0.6,
-			isFirstFetch: true,
-		});
+		if (this.props.shouldFetchImagesOnMount) {
+			// Initial Fetch
+			this.handleFetchImages({
+				limit: this.props.startImages,
+				dateStart: getDate(-120),
+				portraitPercentage: 0.6,
+				isFirstFetch: true,
+			});
+		}
 
 		this.props.dispatch(subscribeToImages());
 	}

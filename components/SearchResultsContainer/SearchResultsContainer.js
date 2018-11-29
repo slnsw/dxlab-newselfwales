@@ -44,25 +44,9 @@ class SearchResultsContainer extends Component {
 		}
 	};
 
-	// handleFormSubmit = (event, value) => {
-	// 	// Build new route, base off existing pathname and query variables
-	// 	const route = `${this.props.url.pathname}?${queryString.stringify({
-	// 		...this.props.url.query,
-	// 		q: value,
-	// 	})}`;
-
-	// 	Router.pushRoute(route);
-	// 	this.setState({ inputTextValue: value });
-
-	// 	event.preventDefault();
-	// };
-
 	render() {
 		const { className } = this.props;
-		// const { url, className, isActive, onInputTextFocus } = this.props;
 		const { inputTextValue } = this.state;
-
-		// console.log('SearchResultsContainer');
 
 		if (!inputTextValue) {
 			return null;
@@ -74,9 +58,10 @@ class SearchResultsContainer extends Component {
 				variables={{
 					search: inputTextValue, // (this.state.inputTextValue ? this.state.inputTextValue : ''),
 					limit: 20,
+					offset: 0,
 				}}
 			>
-				{({ loading, error, data }) => {
+				{({ loading, error, data, fetchMore }) => {
 					if (loading) {
 						return <LoaderText className="search-results__notification" />;
 					}
@@ -87,8 +72,6 @@ class SearchResultsContainer extends Component {
 					}
 
 					const images = buildImages(data);
-
-					// console.log(images);
 
 					if (inputTextValue && (!images || images.length === 0)) {
 						return (
@@ -108,6 +91,21 @@ class SearchResultsContainer extends Component {
 							className={className}
 							isLoading={loading}
 							onImageClick={this.handleImageClick}
+							// WIP
+							onLoadMore={() =>
+								fetchMore({
+									variables: {
+										offset: images.length,
+									},
+									updateQuery: (prev, { fetchMoreResult }) => {
+										if (!fetchMoreResult) return prev;
+
+										return {
+											...prev,
+										};
+									},
+								})
+							}
 						/>
 					);
 				}}
@@ -135,9 +133,9 @@ function buildImages(data) {
 }
 
 const SEARCH_QUERY = gql`
-	query search($search: String, $limit: Int) {
+	query search($search: String, $limit: Int, $offset: Int) {
 		newSelfWales {
-			instagramSelfies(search: $search, limit: $limit) {
+			instagramSelfies(search: $search, limit: $limit, offset: $offset) {
 				id
 				title
 				content
