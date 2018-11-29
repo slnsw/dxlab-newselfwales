@@ -4,11 +4,9 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 // import queryString from 'query-string';
 
-// import SearchResults from '../SearchResults';
 import PackeryImages from '../PackeryImages';
 import { processImagesType } from '../../reducers/imageFeedReducer';
 import LoaderText from '../LoaderText';
-// import { Router } from '../../routes';
 
 class SearchResultsContainer extends Component {
 	static propTypes = {
@@ -112,21 +110,6 @@ class SearchResultsContainer extends Component {
 							onImageClick={this.handleImageClick}
 						/>
 					);
-					// return (
-					// 	<SearchResults
-					// 		inputTextValue={inputTextValue}
-					// 		portraits={data.newSelfWales && data.newSelfWales.portraits}
-					// 		instagramSelfies={
-					// 			data.newSelfWales && data.newSelfWales.instagramSelfies
-					// 		}
-					// 		gallerySelfies={
-					// 			data.newSelfWales && data.newSelfWales.gallerySelfies
-					// 		}
-					// 		loading={loading}
-					// 		// onSubmit={this.handleFormSubmit}
-					// 		{...this.props}
-					// 	/>
-					// );
 				}}
 			</Query>
 		);

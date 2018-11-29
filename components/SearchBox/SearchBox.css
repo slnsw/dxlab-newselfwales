@@ -18,13 +18,15 @@
 }
 
 .search-box__form {
+	display: flex;
+	flex: 1;
+
 	& form {
 		display: flex;
-		flex: 1;
+	}
 
-		@nest .search-box--is-active & {
-			/* border: 1px solid var(--colour-white); */
-		}
+	@nest .search-box--is-active & {
+		/* border: 1px solid var(--colour-white); */
 	}
 }
 

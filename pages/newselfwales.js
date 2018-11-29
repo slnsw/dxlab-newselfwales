@@ -90,7 +90,6 @@ class LandingPage extends Component {
 
 	handleImageClick = (event, image) => {
 		// console.log(event.target.parentElement.getBoundingClientRect(), image);
-		console.log(this.props.url.query.q);
 		const { q } = this.props.url.query;
 
 		Router.pushRoute(
@@ -204,11 +203,13 @@ class LandingPage extends Component {
 
 	handleSearchBoxBackClick = () => {
 		Router.pushRoute('/newselfwales');
+
+		this.setState({
+			enableAnimation: true,
+		});
 	};
 
 	handleSearchSubmit = (value) => {
-		console.log(value);
-
 		if (value) {
 			Router.pushRoute(`/newselfwales/search?q=${value}`);
 		}

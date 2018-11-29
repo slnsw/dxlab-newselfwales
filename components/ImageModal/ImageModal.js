@@ -6,6 +6,12 @@ import './ImageModal.css';
 import Modal from '../Modal';
 import { SCREEN_SM } from '../../styles/variables';
 
+const typeName = {
+	portrait: 'State Library of NSW Collection',
+	'instagram-selfie': 'Instagram Selfie',
+	'gallery-selfie': 'Gallery Selfie',
+};
+
 class ImageModal extends Component {
 	static propTypes = {
 		title: PropTypes.string,
@@ -116,7 +122,7 @@ class ImageModal extends Component {
 						},
 					};
 
-					console.log(screenWidth);
+					// console.log(screenWidth);
 
 					return (
 						<Modal
@@ -148,9 +154,7 @@ class ImageModal extends Component {
 							</div>
 
 							<div className="image-modal__info">
-								<div className="image-modal__type">
-									{imageType && imageType.replace('-', ' ')}
-								</div>
+								<div className="image-modal__type">{typeName[imageType]}</div>
 
 								<h1
 									className="image-modal__title"

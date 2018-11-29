@@ -18,6 +18,14 @@ class SearchBox extends Component {
 		isChanged: false,
 	};
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.isActive !== this.props.isActive) {
+			this.setState({
+				value: '',
+			});
+		}
+	}
+
 	handleSearchIconClick = () => {
 		if (typeof this.props.onSearchIconClick === 'function') {
 			this.props.onSearchIconClick();
@@ -70,8 +78,15 @@ class SearchBox extends Component {
 				)}
 
 				<div className="search-box__form">
-					<form onSubmit={this.handleFormSubmit}>
-						{isActive && (
+					{!isActive && (
+						<button
+							className="search-box__search-icon ion ion-ios-search icon"
+							onClick={this.handleSearchIconClick}
+						/>
+					)}
+
+					{isActive && (
+						<form onSubmit={this.handleFormSubmit}>
 							<input
 								type="text"
 								value={isChanged === false ? defaultValue : value}
@@ -79,15 +94,9 @@ class SearchBox extends Component {
 								autoFocus
 								onChange={this.handleChange}
 							/>
-						)}
-
-						<button
-							className="search-box__search-icon ion ion-ios-search icon"
-							onClick={this.handleSearchIconClick}
-						>
-							{/* <i className="ion ion-ios-search icon" /> */}
-						</button>
-					</form>
+							<button className="search-box__search-icon ion ion-ios-search icon" />
+						</form>
+					)}
 				</div>
 			</div>
 		);
