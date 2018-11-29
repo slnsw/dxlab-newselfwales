@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 
 // import SearchResults from '../SearchResults';
 import ImageFeed from '../ImageFeed';
+import { processImagesType } from '../../reducers/imageFeedReducer';
 // import { Router } from '../../routes';
 
 class SearchResultsContainer extends Component {
@@ -15,6 +16,7 @@ class SearchResultsContainer extends Component {
 		className: PropTypes.string,
 		onInputTextFocus: PropTypes.func,
 		onInputTextBlur: PropTypes.func,
+		onImageClick: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -36,6 +38,12 @@ class SearchResultsContainer extends Component {
 			this.setState({ inputTextValue: this.props.url.query.q });
 		}
 	}
+
+	handleImageClick = (event, image) => {
+		if (typeof this.props.onImageClick === 'function') {
+			this.props.onImageClick(event, image);
+		}
+	};
 
 	// handleFormSubmit = (event, value) => {
 	// 	// Build new route, base off existing pathname and query variables
@@ -62,20 +70,20 @@ class SearchResultsContainer extends Component {
 				query={SEARCH_QUERY}
 				variables={{
 					search: inputTextValue, // (this.state.inputTextValue ? this.state.inputTextValue : ''),
-					limit: 30,
+					limit: 20,
 				}}
 			>
 				{({ loading, error, data }) => {
-					if (loading) {
-						return <div>Loading</div>;
-					}
+					// if (loading) {
+					// 	return <div>Loading</div>;
+					// }
 
 					if (error) {
 						console.log(error);
 						return null;
 					}
 
-					console.log(data);
+					// console.log(data);
 
 					const images = buildImages(data);
 
@@ -85,8 +93,10 @@ class SearchResultsContainer extends Component {
 							enableAnimation={false}
 							marginTop={'-5px'}
 							heightAdjust={'0px'}
-							gridSize="sm"
+							gridSize="lg"
 							className={className}
+							isLoading={loading}
+							onImageClick={this.handleImageClick}
 						/>
 					);
 					// return (
@@ -117,9 +127,15 @@ function buildImages(data) {
 
 	const images = [
 		...(data.newSelfWales.portraits ? data.newSelfWales.portraits : []),
+		...(data.newSelfWales.gallerySelfies
+			? data.newSelfWales.gallerySelfies
+			: []),
+		...(data.newSelfWales.instagramSelfies
+			? data.newSelfWales.instagramSelfies
+			: []),
 	];
 
-	return images;
+	return processImagesType(images);
 }
 
 const SEARCH_QUERY = gql`

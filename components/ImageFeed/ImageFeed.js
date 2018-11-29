@@ -231,6 +231,14 @@ class ImageFeed extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		console.log(this.interval);
+
+		if (this.interval) {
+			clearInterval(this.interval);
+		}
+	}
+
 	initLoop = () => {
 		log('initLoop');
 
@@ -659,7 +667,7 @@ class ImageFeed extends Component {
 					<Packery
 						className={[
 							'image-feed__images',
-							gridSize === 'sm' ? 'image-feed__images--sm' : '',
+							gridSize === 'lg' ? 'image-feed__images--lg' : '',
 						].join(' ')}
 						ref={(element) => {
 							this.imagesRef[name] = element;

@@ -48,7 +48,7 @@
 	opacity: 1;
 	transition: opacity 2s var(--ease-in-out-quart);
 
-	@nest .image-feed__images--sm & {
+	@nest .image-feed__images--lg & {
 		height: calc(33.333%);
 	}
 

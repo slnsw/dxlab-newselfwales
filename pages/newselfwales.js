@@ -46,8 +46,10 @@ class LandingPage extends Component {
 			showModal: false,
 			enableAnimation: true,
 		});
+
 		const expDate = new Date();
 		expDate.setFullYear(expDate.getFullYear() + 10);
+
 		this.props.cookies.set('specialcareacknowledged', true, {
 			path: '/',
 			expires: expDate,
@@ -55,11 +57,15 @@ class LandingPage extends Component {
 	};
 
 	handleImageModalClose = () => {
-		Router.pushRoute('/newselfwales');
+		if (this.props.url.query.param === 'search') {
+			Router.pushRoute('/newselfwales/search');
+		} else {
+			Router.pushRoute('/newselfwales');
 
-		this.setState({
-			enableAnimation: true,
-		});
+			this.setState({
+				enableAnimation: true,
+			});
+		}
 	};
 
 	handleToggleAnimationButton = () => {
@@ -152,6 +158,10 @@ class LandingPage extends Component {
 
 	handleSearchBoxIconClick = () => {
 		Router.pushRoute('/newselfwales/search');
+
+		this.setState({
+			enableAnimation: false,
+		});
 	};
 
 	handleSearchBoxBackClick = () => {
@@ -210,34 +220,38 @@ class LandingPage extends Component {
 				/>
 
 				{isSearch && (
-					<SearchResultsContainer
-						url={url}
-						className="newselfwales-page__search-results"
-					/>
+					<Fragment>
+						<SearchResultsContainer
+							url={url}
+							className="newselfwales-page__search-results"
+							onImageClick={(event, image) =>
+								this.handleImageClick(event, image)
+							}
+						/>
+						<div className="newselfwales-page__overlay" />
+					</Fragment>
 				)}
 
-				{!isSearch && (
-					<Fragment>
-						<button
+				{/* {!isSearch && ( */}
+				<Fragment>
+					{/* <button
 							className="button newselfwales-page__toggle-animation-button"
 							onClick={this.handleToggleAnimationButton}
 						>
 							{enableAnimation ? 'Pause' : 'Play'}
-						</button>
+						</button> */}
 
-						<ImageFeedContainer
-							startImages={20}
-							maxImages={50}
-							intervalTime={5000}
-							enableAnimation={enableAnimation}
-							onImagesUpdate={this.handleImagesUpdate}
-							onImageClick={(event, image) =>
-								this.handleImageClick(event, image)
-							}
-							onLayoutComplete={this.handleLayoutComplete}
-						/>
-					</Fragment>
-				)}
+					<ImageFeedContainer
+						startImages={20}
+						maxImages={50}
+						intervalTime={5000}
+						enableAnimation={enableAnimation}
+						onImagesUpdate={this.handleImagesUpdate}
+						onImageClick={(event, image) => this.handleImageClick(event, image)}
+						onLayoutComplete={this.handleLayoutComplete}
+					/>
+				</Fragment>
+				{/* )} */}
 
 				{page &&
 					!isSearch && (

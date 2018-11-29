@@ -39,7 +39,7 @@ export default (state = initialState, action) => {
 
 			// Add new images to spare in case there is a fetch failure
 			const spareImages = dedupeByField(
-				[...state.spareImages, ...processImages(payload.data.feed)],
+				[...state.spareImages, ...processImagesType(payload.data.feed)],
 				'id',
 			);
 
@@ -141,7 +141,7 @@ export default (state = initialState, action) => {
 
 function mergeImages(oldImages, newImages) {
 	return (
-		dedupeByField([...oldImages, ...processImages(newImages)], 'id')
+		dedupeByField([...oldImages, ...processImagesType(newImages)], 'id')
 			// Assign an index and imageSize
 			// NOTE: these will change if currentImages has any images removed
 			// so be careful.
@@ -164,7 +164,7 @@ function setSize(i) {
 	return 'md';
 }
 
-function processImages(images) {
+export function processImagesType(images) {
 	return images.map((image) => {
 		// Set image type
 		let type;
