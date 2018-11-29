@@ -148,7 +148,7 @@ function mergeImages(oldImages, newImages) {
 			.map((image, i) => ({
 				...image,
 				index: i,
-				// Prevent gallery selfies from being larger than md, one camera is a bit blurry
+				// Prevent gallery selfies from being larger than md
 				imageSize: image.type === 'gallery-selfie' ? 'md' : setSize(i),
 			}))
 	);

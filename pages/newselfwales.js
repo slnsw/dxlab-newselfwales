@@ -22,6 +22,7 @@ import './newselfwales.css';
 
 class LandingPage extends Component {
 	state = {
+		isSearch: false,
 		axis: 'x',
 		enableAnimation: false,
 		sourceImageBoundingClientRect: null,
@@ -39,6 +40,37 @@ class LandingPage extends Component {
 
 	componentDidMount() {
 		window.addEventListener('keyup', this.handleKey, true);
+
+		this.setState({
+			isSearch: this.props.url.query.param === 'search',
+		});
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.url.query !== this.props.url.query) {
+			this.setState({
+				isSearch:
+					this.props.url.query.param === 'search' || this.props.url.query.q,
+			});
+		}
+
+		// if (
+		// 	prevProps.url.query.param !== 'search' &&
+		// 	this.props.url.query.param === 'search'
+		// ) {
+		// 	this.setState({
+		// 		isSearch: true,
+		// 	});
+		// }
+
+		// if (
+		// 	prevProps.url.query.param === 'search' &&
+		// 	this.props.url.query.param !== 'search'
+		// ) {
+		// 	this.setState({
+		// 		isSearch: false,
+		// 	});
+		// }
 	}
 
 	handleModalClose = () => {
@@ -56,9 +88,26 @@ class LandingPage extends Component {
 		});
 	};
 
+	handleImageClick = (event, image) => {
+		// console.log(event.target.parentElement.getBoundingClientRect(), image);
+		console.log(this.props.url.query.q);
+		const { q } = this.props.url.query;
+
+		Router.pushRoute(
+			`/newselfwales/${image.type}/${image.id}${q ? `?q=${q}` : ''}`,
+		);
+
+		this.setState({
+			enableAnimation: false,
+			sourceImageBoundingClientRect: event.target.parentElement.getBoundingClientRect(),
+		});
+	};
+
 	handleImageModalClose = () => {
 		if (this.props.url.query.param === 'search') {
 			Router.pushRoute('/newselfwales/search');
+		} else if (this.props.url.query.q) {
+			Router.pushRoute(`/newselfwales/search?q=${this.props.url.query.q}`);
 		} else {
 			Router.pushRoute('/newselfwales');
 
@@ -91,17 +140,6 @@ class LandingPage extends Component {
 		});
 
 		return images;
-	};
-
-	handleImageClick = (event, image) => {
-		// console.log(event.target.parentElement.getBoundingClientRect(), image);
-
-		Router.pushRoute(`/newselfwales/${image.type}/${image.id}`);
-
-		this.setState({
-			enableAnimation: false,
-			sourceImageBoundingClientRect: event.target.parentElement.getBoundingClientRect(),
-		});
 	};
 
 	handleLayoutComplete = () => {
@@ -183,10 +221,11 @@ class LandingPage extends Component {
 			enableAnimation,
 			sourceImageBoundingClientRect,
 			isInfoBoxFullSize,
+			isSearch,
 		} = this.state;
 
 		const showImageModal = url && url.query.param && url.query.id && true;
-		const isSearch = url.query.param === 'search';
+		// const isSearch = url.query.param === 'search';
 
 		if (loading) {
 			return <div />;
@@ -221,13 +260,14 @@ class LandingPage extends Component {
 
 				{isSearch && (
 					<Fragment>
-						<SearchResultsContainer
-							url={url}
-							className="newselfwales-page__search-results"
-							onImageClick={(event, image) =>
-								this.handleImageClick(event, image)
-							}
-						/>
+						<div className="newselfwales-page__search-results">
+							<SearchResultsContainer
+								url={url}
+								onImageClick={(event, image) =>
+									this.handleImageClick(event, image)
+								}
+							/>
+						</div>
 						<div className="newselfwales-page__overlay" />
 					</Fragment>
 				)}

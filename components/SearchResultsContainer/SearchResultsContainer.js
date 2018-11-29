@@ -5,8 +5,9 @@ import gql from 'graphql-tag';
 // import queryString from 'query-string';
 
 // import SearchResults from '../SearchResults';
-import ImageFeed from '../ImageFeed';
+import PackeryImages from '../PackeryImages';
 import { processImagesType } from '../../reducers/imageFeedReducer';
+import LoaderText from '../LoaderText';
 // import { Router } from '../../routes';
 
 class SearchResultsContainer extends Component {
@@ -65,6 +66,10 @@ class SearchResultsContainer extends Component {
 
 		// console.log('SearchResultsContainer');
 
+		if (!inputTextValue) {
+			return null;
+		}
+
 		return (
 			<Query
 				query={SEARCH_QUERY}
@@ -74,23 +79,31 @@ class SearchResultsContainer extends Component {
 				}}
 			>
 				{({ loading, error, data }) => {
-					// if (loading) {
-					// 	return <div>Loading</div>;
-					// }
+					if (loading) {
+						return <LoaderText className="search-results__notification" />;
+					}
 
 					if (error) {
 						console.log(error);
 						return null;
 					}
 
-					// console.log(data);
-
 					const images = buildImages(data);
 
+					// console.log(images);
+
+					if (inputTextValue && (!images || images.length === 0)) {
+						return (
+							<div className="search-results__notification">
+								Sorry, there are no results for{' '}
+								<strong>{inputTextValue}</strong>.
+							</div>
+						);
+					}
+
 					return (
-						<ImageFeed
+						<PackeryImages
 							images={images}
-							enableAnimation={false}
 							marginTop={'-5px'}
 							heightAdjust={'0px'}
 							gridSize="lg"
