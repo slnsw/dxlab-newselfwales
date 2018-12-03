@@ -39,7 +39,7 @@
 	left: 0;
 	width: 100%;
 	height: calc(100% - 5em);
-	overflow: auto;
+	/* overflow: auto; */
 
 	& .image-feed__images {
 		padding-left: 5px;

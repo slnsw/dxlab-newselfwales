@@ -61,6 +61,7 @@
 		"react-cookie": "^3.0.6",
 		"react-dom": "^16.4.1",
 		"react-ga": "^2.5.3",
+		"react-infinite-scroller": "^1.2.2",
 		"react-packery-component": "^1.0.2",
 		"react-redux": "^5.0.5",
 		"react-screen-keyboard": "^1.4.1",

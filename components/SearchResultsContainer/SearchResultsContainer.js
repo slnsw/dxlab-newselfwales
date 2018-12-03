@@ -4,7 +4,8 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 // import queryString from 'query-string';
 
-import PackeryImages from '../PackeryImages';
+// import PackeryImages from '../PackeryImages';
+import SearchResults from '../SearchResults';
 import { processImagesType } from '../../reducers/imageFeedReducer';
 import LoaderText from '../LoaderText';
 
@@ -26,7 +27,7 @@ class SearchResultsContainer extends Component {
 		},
 	};
 
-	state = { inputTextValue: '' };
+	state = { inputTextValue: '', offset: 20, hasMore: true };
 
 	componentDidMount() {
 		this.setState({ inputTextValue: this.props.url.query.q });
@@ -83,25 +84,46 @@ class SearchResultsContainer extends Component {
 					}
 
 					return (
-						<PackeryImages
+						<SearchResults
 							images={images}
 							marginTop={'-5px'}
 							heightAdjust={'0px'}
 							gridSize="lg"
 							className={className}
 							isLoading={loading}
+							hasMore={this.state.hasMore}
 							onImageClick={this.handleImageClick}
 							// WIP
 							onLoadMore={() =>
 								fetchMore({
 									variables: {
-										offset: images.length,
+										offset: this.state.offset,
 									},
 									updateQuery: (prev, { fetchMoreResult }) => {
 										if (!fetchMoreResult) return prev;
 
+										console.log(fetchMoreResult.newSelfWales.portraits.length);
+										console.log(this.state.offset);
+
+										if (fetchMoreResult.newSelfWales.portraits.length === 0) {
+											this.setState({
+												hasMore: false,
+											});
+										} else {
+											this.setState({
+												offset: this.state.offset + 20,
+											});
+										}
+
 										return {
 											...prev,
+											newSelfWales: {
+												...fetchMoreResult.newSelfWales,
+												portraits: [
+													...prev.newSelfWales.portraits,
+													...fetchMoreResult.newSelfWales.portraits,
+												],
+											},
 										};
 									},
 								})
@@ -162,7 +184,7 @@ const SEARCH_QUERY = gql`
 				}
 				__typename
 			}
-			portraits(search: $search, limit: $limit) {
+			portraits(search: $search, limit: $limit, offset: $offset) {
 				id
 				title
 				content
@@ -186,7 +208,7 @@ const SEARCH_QUERY = gql`
 				}
 				__typename
 			}
-			gallerySelfies(search: $search, limit: $limit) {
+			gallerySelfies(search: $search, limit: $limit, offset: $offset) {
 				id
 				title
 				content
