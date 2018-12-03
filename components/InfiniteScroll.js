@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-// TODO: Set up horizontal scroll detection properly
+// TODO: Test vertical scrolling
 
 export default class InfiniteScroll extends Component {
 	static propTypes = {
@@ -10,6 +10,7 @@ export default class InfiniteScroll extends Component {
 		hasMore: PropTypes.bool,
 		initialLoad: PropTypes.bool,
 		isReverse: PropTypes.bool,
+		isHorizontal: PropTypes.bool,
 		loader: PropTypes.node,
 		loadMore: PropTypes.func.isRequired,
 		pageStart: PropTypes.number,
@@ -29,6 +30,7 @@ export default class InfiniteScroll extends Component {
 		threshold: 250,
 		useWindow: true,
 		isReverse: false,
+		isHorizontal: false,
 		useCapture: false,
 		loader: null,
 		getScrollParent: null,
@@ -149,24 +151,31 @@ export default class InfiniteScroll extends Component {
 		const scrollEl = window;
 		const parentNode = this.getParentElement(el);
 
+		// Set up depending on vertical or horizontal scrolling
+		const scrollLength = this.props.isHorizontal ? 'scrollLeft' : 'scrollTop';
+		const scrollSize = this.props.isHorizontal ? 'scrollWidth' : 'scrollHeight';
+		const clientSize = this.props.isHorizontal ? 'clientWidth' : 'clientHeight';
+		const pageOffset = this.props.isHorizontal ? 'pageXOffset' : 'pageYOffset';
+
 		let offset;
+
 		if (this.props.useWindow) {
 			const doc =
 				document.documentElement || document.body.parentNode || document.body;
-			const scrollTop =
-				scrollEl.pageYOffset !== undefined
-					? scrollEl.pageYOffset
-					: doc.scrollTop;
+			const scrollStart =
+				scrollEl[pageOffset] !== undefined
+					? scrollEl[pageOffset]
+					: doc[scrollLength];
 			if (this.props.isReverse) {
-				offset = scrollTop;
+				offset = scrollStart;
 			} else {
-				offset = this.calculateOffset(el, scrollTop);
+				offset = this.calculateOffset(el, scrollStart);
 			}
 		} else if (this.props.isReverse) {
-			offset = parentNode.scrollTop;
+			offset = parentNode[scrollLength];
 		} else {
-			// offset = el.scrollHeight - parentNode.scrollTop - parentNode.clientHeight;
-			offset = el.scrollWidth - parentNode.scrollLeft - parentNode.clientWidth;
+			offset =
+				el[scrollSize] - parentNode[scrollLength] - parentNode[clientSize];
 		}
 
 		// Here we make sure the element is visible as well as checking the offset
@@ -182,14 +191,19 @@ export default class InfiniteScroll extends Component {
 		}
 	}
 
-	calculateOffset(el, scrollTop) {
+	calculateOffset(el, scrollStart) {
+		const offsetSize = this.props.isHorizontal ? 'offsetWidth' : 'offsetHeight';
+		const windowInnerSize = this.props.isHorizontal
+			? 'innerWidth'
+			: 'innerHeight';
+
 		if (!el) {
 			return 0;
 		}
 
 		return (
 			this.calculateTopPosition(el) +
-			(el.offsetHeight - scrollTop - window.innerHeight)
+			(el[offsetSize] - scrollStart - window[windowInnerSize])
 		);
 	}
 
@@ -217,6 +231,7 @@ export default class InfiniteScroll extends Component {
 			useCapture,
 			useWindow,
 			getScrollParent,
+			isHorizontal,
 			/* eslint-enable no-unused-vars */
 			...props
 		} = renderProps;

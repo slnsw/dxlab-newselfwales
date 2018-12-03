@@ -39,6 +39,7 @@ class SearchResults extends Component {
 					pageStart={0}
 					loadMore={this.handleLoadMore}
 					hasMore={hasMore}
+					isHorizontal={true}
 					// loader={<div className="search-results__loader">Loading ...</div>}
 					useWindow={false}
 				>

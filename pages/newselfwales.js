@@ -50,7 +50,8 @@ class LandingPage extends Component {
 		if (prevProps.url.query !== this.props.url.query) {
 			this.setState({
 				isSearch:
-					this.props.url.query.param === 'search' || this.props.url.query.q,
+					this.props.url.query.param === 'search' ||
+					Boolean(this.props.url.query.q),
 			});
 		}
 
