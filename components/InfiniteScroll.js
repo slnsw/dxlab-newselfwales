@@ -206,16 +206,18 @@ export default class InfiniteScroll extends Component {
 			children,
 			element,
 			hasMore,
-			// initialLoad,
+			/* eslint-disable no-unused-vars */
+			initialLoad,
 			isReverse,
 			loader,
-			// loadMore,
-			// pageStart,
+			loadMore,
+			pageStart,
 			ref,
-			// threshold,
-			// useCapture,
-			// useWindow,
-			// getScrollParent,
+			threshold,
+			useCapture,
+			useWindow,
+			getScrollParent,
+			/* eslint-enable no-unused-vars */
 			...props
 		} = renderProps;
 

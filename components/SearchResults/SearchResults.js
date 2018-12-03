@@ -9,6 +9,8 @@ import './SearchResults.css';
 class SearchResults extends Component {
 	static propTypes = {
 		images: PropTypes.array,
+		isLoading: PropTypes.bool,
+		isLoadingMore: PropTypes.bool,
 		hasMore: PropTypes.bool,
 		onImageClick: PropTypes.func,
 		onLoadMore: PropTypes.func,
@@ -27,7 +29,9 @@ class SearchResults extends Component {
 	};
 
 	render() {
-		const { images, className, hasMore, loading } = this.props;
+		const { images, className, hasMore, isLoading, isLoadingMore } = this.props;
+
+		console.log(isLoading, isLoadingMore);
 
 		return (
 			<div className="search-results">
@@ -35,8 +39,7 @@ class SearchResults extends Component {
 					pageStart={0}
 					loadMore={this.handleLoadMore}
 					hasMore={hasMore}
-					// hasMore={posts.length < 46}
-					// loader={<div>Loading ...</div>}
+					// loader={<div className="search-results__loader">Loading ...</div>}
 					useWindow={false}
 				>
 					<PackeryImages
@@ -45,7 +48,7 @@ class SearchResults extends Component {
 						heightAdjust={'0px'}
 						gridSize="lg"
 						className={className}
-						isLoading={loading}
+						isLoading={isLoadingMore}
 						onImageClick={this.handleImageClick}
 					/>
 				</InfiniteScroll>

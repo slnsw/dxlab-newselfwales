@@ -1,13 +1,12 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-// import queryString from 'query-string';
 
-// import PackeryImages from '../PackeryImages';
 import SearchResults from '../SearchResults';
 import { processImagesType } from '../../reducers/imageFeedReducer';
 import LoaderText from '../LoaderText';
+import { dedupeByField } from '../../lib/dedupe';
 
 class SearchResultsContainer extends Component {
 	static propTypes = {
@@ -27,7 +26,12 @@ class SearchResultsContainer extends Component {
 		},
 	};
 
-	state = { inputTextValue: '', offset: 20, hasMore: true };
+	state = {
+		inputTextValue: '',
+		offset: 20,
+		hasMore: true,
+		isFirstLoad: true,
+	};
 
 	componentDidMount() {
 		this.setState({ inputTextValue: this.props.url.query.q });
@@ -35,7 +39,10 @@ class SearchResultsContainer extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.url.query.q !== this.props.url.query.q) {
-			this.setState({ inputTextValue: this.props.url.query.q });
+			this.setState({
+				inputTextValue: this.props.url.query.q,
+				isFirstLoad: true,
+			});
 		}
 	}
 
@@ -46,93 +53,105 @@ class SearchResultsContainer extends Component {
 	};
 
 	render() {
-		const { className } = this.props;
-		const { inputTextValue } = this.state;
+		const { className, data } = this.props;
+		const { inputTextValue, isFirstLoad } = this.state;
+		const { loading, fetchMore, error } = data;
 
 		if (!inputTextValue) {
 			return null;
 		}
 
+		// return (
+		// <Query
+		// 	query={SEARCH_QUERY}
+		// 	variables={{
+		// 		search: inputTextValue, // (this.state.inputTextValue ? this.state.inputTextValue : ''),
+		// 		limit: 20,
+		// 		offset: 0,
+		// 	}}
+		// 	notifyOnNetworkStatusChange={true}
+		// >
+		// 	{({ loading, error, data, fetchMore }) => {
+
+		if (loading && isFirstLoad) {
+			return <LoaderText className="search-results__notification" />;
+		}
+
+		if (error) {
+			console.log(data.error);
+			return null;
+		}
+
+		const images = dedupeByField(buildImages(data), 'id');
+
+		if (inputTextValue && (!images || images.length === 0)) {
+			return (
+				<div className="search-results__notification">
+					Sorry, there are no results for <strong>{inputTextValue}</strong>.
+				</div>
+			);
+		}
+
+		if (images.length > 0 && isFirstLoad) {
+			this.setState({
+				isFirstLoad: false,
+			});
+		}
+
 		return (
-			<Query
-				query={SEARCH_QUERY}
-				variables={{
-					search: inputTextValue, // (this.state.inputTextValue ? this.state.inputTextValue : ''),
-					limit: 20,
-					offset: 0,
-				}}
-			>
-				{({ loading, error, data, fetchMore }) => {
-					if (loading) {
-						return <LoaderText className="search-results__notification" />;
-					}
+			<SearchResults
+				images={images}
+				className={className}
+				isLoading={isFirstLoad === true && loading}
+				isLoadingMore={isFirstLoad === false && loading}
+				hasMore={this.state.hasMore}
+				onImageClick={this.handleImageClick}
+				onLoadMore={() =>
+					fetchMore({
+						variables: {
+							offset: this.state.offset,
+						},
+						updateQuery: (prev, { fetchMoreResult }) => {
+							if (!fetchMoreResult) return prev;
 
-					if (error) {
-						console.log(error);
-						return null;
-					}
-
-					const images = buildImages(data);
-
-					if (inputTextValue && (!images || images.length === 0)) {
-						return (
-							<div className="search-results__notification">
-								Sorry, there are no results for{' '}
-								<strong>{inputTextValue}</strong>.
-							</div>
-						);
-					}
-
-					return (
-						<SearchResults
-							images={images}
-							marginTop={'-5px'}
-							heightAdjust={'0px'}
-							gridSize="lg"
-							className={className}
-							isLoading={loading}
-							hasMore={this.state.hasMore}
-							onImageClick={this.handleImageClick}
-							// WIP
-							onLoadMore={() =>
-								fetchMore({
-									variables: {
-										offset: this.state.offset,
-									},
-									updateQuery: (prev, { fetchMoreResult }) => {
-										if (!fetchMoreResult) return prev;
-
-										console.log(fetchMoreResult.newSelfWales.portraits.length);
-										console.log(this.state.offset);
-
-										if (fetchMoreResult.newSelfWales.portraits.length === 0) {
-											this.setState({
-												hasMore: false,
-											});
-										} else {
-											this.setState({
-												offset: this.state.offset + 20,
-											});
-										}
-
-										return {
-											...prev,
-											newSelfWales: {
-												...fetchMoreResult.newSelfWales,
-												portraits: [
-													...prev.newSelfWales.portraits,
-													...fetchMoreResult.newSelfWales.portraits,
-												],
-											},
-										};
-									},
-								})
+							if (fetchMoreResult.newSelfWales.portraits.length === 0) {
+								// Stop onLoadMore from running again
+								this.setState({
+									hasMore: false,
+								});
+							} else {
+								// Increment offset
+								this.setState({
+									offset: this.state.offset + 20,
+								});
 							}
-						/>
-					);
-				}}
-			</Query>
+
+							return {
+								...prev,
+								newSelfWales: {
+									...fetchMoreResult.newSelfWales,
+									portraits: [
+										...prev.newSelfWales.portraits,
+										...fetchMoreResult.newSelfWales.portraits,
+									],
+									instagramSelfies: [
+										...prev.newSelfWales.instagramSelfies,
+										...fetchMoreResult.newSelfWales.instagramSelfies,
+									],
+									gallerySelfies: [
+										...prev.newSelfWales.gallerySelfies,
+										...fetchMoreResult.newSelfWales.gallerySelfies,
+									],
+								},
+							};
+						},
+					})
+				}
+			/>
 		);
+		// }}
+		// </Query>
+		// );
 	}
 }
 
@@ -235,4 +254,17 @@ const SEARCH_QUERY = gql`
 	}
 `;
 
-export default SearchResultsContainer;
+export default graphql(SEARCH_QUERY, {
+	options: ({ url }) => {
+		// console.log(url.query.q);
+
+		return {
+			variables: {
+				search: url.query.q,
+				limit: 20,
+				offset: 0,
+			},
+			notifyOnNetworkStatusChange: true,
+		};
+	},
+})(SearchResultsContainer);

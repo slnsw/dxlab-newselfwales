@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
 import Packery from '../Packery';
+import LoaderText from '../LoaderText';
 
 import './PackeryImages.css';
 
@@ -173,6 +174,10 @@ class PackeryImages extends Component {
 							</Fragment>
 						);
 					})}
+
+				{this.props.isLoading && (
+					<LoaderText className="packery-images__loading" />
+				)}
 			</Packery>
 		);
 	}
