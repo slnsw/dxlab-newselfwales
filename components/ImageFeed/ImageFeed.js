@@ -32,6 +32,7 @@ class ImageFeed extends Component {
 		enableWindow: PropTypes.bool,
 		gridSize: PropTypes.string,
 		className: PropTypes.string,
+		shouldFetchImagesOnMount: PropTypes.bool,
 		onLoadMore: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
@@ -53,6 +54,7 @@ class ImageFeed extends Component {
 		heightAdjust: '-10px',
 		enableWindow: true,
 		gridSize: 'md',
+		shouldFetchImagesOnMount: false,
 	};
 
 	state = {
@@ -78,8 +80,8 @@ class ImageFeed extends Component {
 		maxImagesReached: false,
 	};
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.imagesRef = {};
 		this.imageHolderRefs = new Map();
@@ -99,6 +101,7 @@ class ImageFeed extends Component {
 			marginTop: this.props.marginTop,
 			heightAdjust: this.props.heightAdjust,
 			fps: this.props.fps,
+			shouldFetchImagesOnMount: this.props.shouldFetchImagesOnMount,
 		});
 	}
 
@@ -107,16 +110,28 @@ class ImageFeed extends Component {
 		// SCROLLER AND LOOP
 		// ------------------------------------------------------------------------
 
+		console.log(this.props.status, this.props.shouldFetchImagesOnMount);
+
 		if (
 			prevProps.status === 'FIRST_CURRENT_IMAGES' &&
 			this.props.status === 'FETCHED_IMAGES_READY'
 		) {
-			// Start up loop once first images are ready
+			// Start up loop once first fetched images are ready
 			this.initLoop();
 
 			this.setState({
 				shouldGetFetchedImagesWhenReady: true,
 			});
+			// } else if (
+			// 	prevProps.status === 'FIRST_CURRENT_IMAGES' &&
+			// 	this.props.shouldFetchImagesOnMount === false &&
+			// 	this.props.status === 'CURRENT_IMAGES'
+			// ) {
+			// 	this.initLoop();
+
+			// 	this.setState({
+			// 		shouldGetFetchedImagesWhenReady: true,
+			// 	});
 		}
 
 		if (
@@ -232,7 +247,8 @@ class ImageFeed extends Component {
 	}
 
 	componentWillUnmount() {
-		console.log(this.interval);
+		log('componentWillUnmount');
+		log(this.interval);
 
 		if (this.interval) {
 			clearInterval(this.interval);
@@ -271,6 +287,8 @@ class ImageFeed extends Component {
 				// --------------------------------------------------------------------
 				// Images have been fetched, we are ready to receive them.
 				// --------------------------------------------------------------------
+
+				console.log('hi');
 
 				if (typeof this.props.onFetchedImagesReady === 'function') {
 					this.props.onFetchedImagesReady();

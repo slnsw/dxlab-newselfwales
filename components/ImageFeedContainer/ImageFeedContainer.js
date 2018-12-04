@@ -81,10 +81,11 @@ class ImageFeedContainer extends Component {
 		});
 	};
 
-	// handleFetchedImagesReady = () => {
-	// 	log('handleFetchedImagesReady');
-	// 	this.props.dispatch({ type: 'MOVE_FETCHED_TO_CURRENT_IMAGES' });
-	// };
+	handleFetchedImagesReady = () => {
+		log('handleFetchedImagesReady');
+
+		this.props.dispatch({ type: 'IMAGE_FEED_MOVE_UPCOMING_TO_CURRENT_IMAGES' });
+	};
 
 	render() {
 		const { currentImages, status } = this.props;

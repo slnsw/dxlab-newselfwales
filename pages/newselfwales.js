@@ -288,7 +288,7 @@ class LandingPage extends Component {
 						maxImages={50}
 						intervalTime={5000}
 						enableAnimation={enableAnimation}
-						shouldFetchImagesOnMount={true}
+						shouldFetchImagesOnMount={false}
 						onImagesUpdate={this.handleImagesUpdate}
 						onImageClick={(event, image) => this.handleImageClick(event, image)}
 						onLayoutComplete={this.handleLayoutComplete}

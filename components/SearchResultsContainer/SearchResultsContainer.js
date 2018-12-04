@@ -13,7 +13,6 @@ const MININUM_LETTERS = 3;
 
 class SearchResultsContainer extends Component {
 	static propTypes = {
-		// url: PropTypes.object.isRequired,
 		q: PropTypes.string.isRequired,
 		isActive: PropTypes.bool,
 		className: PropTypes.string,
@@ -23,11 +22,6 @@ class SearchResultsContainer extends Component {
 	};
 
 	static defaultProps = {
-		// url: {
-		// 	query: {
-		// 		q: '',
-		// 	},
-		// },
 		q: '',
 	};
 
