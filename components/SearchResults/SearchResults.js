@@ -50,6 +50,7 @@ class SearchResults extends Component {
 						className={className}
 						isLoading={isLoadingMore}
 						transitionDuration={'1s'}
+						stagger={50}
 						onImageClick={this.handleImageClick}
 					/>
 				</InfiniteScroll>
