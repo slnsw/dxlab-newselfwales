@@ -51,9 +51,7 @@ class SearchResultsContainer extends Component {
 		}
 	}
 
-	handleLoadMore = (page) => {
-		console.log(page);
-
+	handleLoadMore = () => {
 		this.props.data.fetchMore({
 			variables: {
 				offset: this.state.offset,
@@ -61,7 +59,11 @@ class SearchResultsContainer extends Component {
 			updateQuery: (prev, { fetchMoreResult }) => {
 				if (!fetchMoreResult) return prev;
 
-				if (fetchMoreResult.newSelfWales.portraits.length === 0) {
+				if (
+					fetchMoreResult.newSelfWales.portraits.length === 0 &&
+					fetchMoreResult.newSelfWales.instagramSelfies.length === 0 &&
+					fetchMoreResult.newSelfWales.gallerySelfies.length === 0
+				) {
 					// Stop onLoadMore from running again
 					this.setState({
 						hasMore: false,

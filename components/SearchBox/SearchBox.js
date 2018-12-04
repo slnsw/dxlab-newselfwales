@@ -92,6 +92,7 @@ class SearchBox extends Component {
 								value={isChanged === false ? defaultValue : value}
 								className="search-box__input"
 								autoFocus
+								placeHolder="Search here"
 								onChange={this.handleChange}
 							/>
 							<button className="search-box__search-icon ion ion-ios-search icon" />
