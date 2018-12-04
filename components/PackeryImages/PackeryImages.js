@@ -17,6 +17,8 @@ class PackeryImages extends Component {
 		gridSize: PropTypes.string,
 		marginTop: PropTypes.string,
 		heightAdjust: PropTypes.string,
+		transitionDuration: PropTypes.string,
+		stagger: PropTypes.number,
 		onLayoutComplete: PropTypes.func,
 	};
 
@@ -24,6 +26,8 @@ class PackeryImages extends Component {
 		images: [],
 		hiddenImageIds: [],
 		removedImageIds: [],
+		transitionDuration: '2s',
+		stagger: 100,
 	};
 
 	handleLayoutComplete = (laidOutItems) => {
@@ -48,6 +52,8 @@ class PackeryImages extends Component {
 			gridSize,
 			marginTop,
 			heightAdjust,
+			transitionDuration,
+			stagger,
 		} = this.props;
 
 		if (!images || images.length === 0) {
@@ -73,8 +79,8 @@ class PackeryImages extends Component {
 					gutter: 0,
 					horizontalOrder: true,
 					fitWidth: true,
-					transitionDuration: '2s',
-					stagger: 100,
+					transitionDuration,
+					stagger,
 					isHorizontal: true,
 				}}
 				onLayoutComplete={(laidOutItems) => {

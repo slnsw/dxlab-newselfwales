@@ -13,7 +13,8 @@ const MININUM_LETTERS = 3;
 
 class SearchResultsContainer extends Component {
 	static propTypes = {
-		url: PropTypes.object.isRequired,
+		// url: PropTypes.object.isRequired,
+		q: PropTypes.string.isRequired,
 		isActive: PropTypes.bool,
 		className: PropTypes.string,
 		onInputTextFocus: PropTypes.func,
@@ -22,11 +23,12 @@ class SearchResultsContainer extends Component {
 	};
 
 	static defaultProps = {
-		url: {
-			query: {
-				q: '',
-			},
-		},
+		// url: {
+		// 	query: {
+		// 		q: '',
+		// 	},
+		// },
+		q: '',
 	};
 
 	state = {
@@ -37,17 +39,61 @@ class SearchResultsContainer extends Component {
 	};
 
 	componentDidMount() {
-		this.setState({ inputTextValue: this.props.url.query.q });
+		this.setState({ inputTextValue: this.props.q });
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.url.query.q !== this.props.url.query.q) {
+		if (prevProps.q !== this.props.q) {
 			this.setState({
-				inputTextValue: this.props.url.query.q,
+				inputTextValue: this.props.q,
 				isFirstLoad: true,
 			});
 		}
 	}
+
+	handleLoadMore = (page) => {
+		console.log(page);
+
+		this.props.data.fetchMore({
+			variables: {
+				offset: this.state.offset,
+			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!fetchMoreResult) return prev;
+
+				if (fetchMoreResult.newSelfWales.portraits.length === 0) {
+					// Stop onLoadMore from running again
+					this.setState({
+						hasMore: false,
+					});
+				} else {
+					// Increment offset
+					this.setState({
+						offset: this.state.offset + 20,
+					});
+				}
+
+				return {
+					...prev,
+					newSelfWales: {
+						...fetchMoreResult.newSelfWales,
+						portraits: [
+							...prev.newSelfWales.portraits,
+							...fetchMoreResult.newSelfWales.portraits,
+						],
+						instagramSelfies: [
+							...prev.newSelfWales.instagramSelfies,
+							...fetchMoreResult.newSelfWales.instagramSelfies,
+						],
+						gallerySelfies: [
+							...prev.newSelfWales.gallerySelfies,
+							...fetchMoreResult.newSelfWales.gallerySelfies,
+						],
+					},
+				};
+			},
+		});
+	};
 
 	handleImageClick = (event, image) => {
 		if (typeof this.props.onImageClick === 'function') {
@@ -58,23 +104,11 @@ class SearchResultsContainer extends Component {
 	render() {
 		const { className, data } = this.props;
 		const { inputTextValue, isFirstLoad } = this.state;
-		const { loading, fetchMore, error } = data;
+		const { loading, error } = data;
 
 		if (!inputTextValue) {
 			return null;
 		}
-
-		// return (
-		// <Query
-		// 	query={SEARCH_QUERY}
-		// 	variables={{
-		// 		search: inputTextValue, // (this.state.inputTextValue ? this.state.inputTextValue : ''),
-		// 		limit: 20,
-		// 		offset: 0,
-		// 	}}
-		// 	notifyOnNetworkStatusChange={true}
-		// >
-		// 	{({ loading, error, data, fetchMore }) => {
 
 		if (loading && isFirstLoad) {
 			return <LoaderText className="search-results__notification" />;
@@ -117,52 +151,9 @@ class SearchResultsContainer extends Component {
 				isLoadingMore={isFirstLoad === false && loading}
 				hasMore={this.state.hasMore}
 				onImageClick={this.handleImageClick}
-				onLoadMore={() =>
-					fetchMore({
-						variables: {
-							offset: this.state.offset,
-						},
-						updateQuery: (prev, { fetchMoreResult }) => {
-							if (!fetchMoreResult) return prev;
-
-							if (fetchMoreResult.newSelfWales.portraits.length === 0) {
-								// Stop onLoadMore from running again
-								this.setState({
-									hasMore: false,
-								});
-							} else {
-								// Increment offset
-								this.setState({
-									offset: this.state.offset + 20,
-								});
-							}
-
-							return {
-								...prev,
-								newSelfWales: {
-									...fetchMoreResult.newSelfWales,
-									portraits: [
-										...prev.newSelfWales.portraits,
-										...fetchMoreResult.newSelfWales.portraits,
-									],
-									instagramSelfies: [
-										...prev.newSelfWales.instagramSelfies,
-										...fetchMoreResult.newSelfWales.instagramSelfies,
-									],
-									gallerySelfies: [
-										...prev.newSelfWales.gallerySelfies,
-										...fetchMoreResult.newSelfWales.gallerySelfies,
-									],
-								},
-							};
-						},
-					})
-				}
+				onLoadMore={(page) => this.handleLoadMore(page)}
 			/>
 		);
-		// }}
-		// </Query>
-		// );
 	}
 }
 
@@ -266,13 +257,13 @@ const SEARCH_QUERY = gql`
 `;
 
 export default graphql(SEARCH_QUERY, {
-	options: ({ url }) => {
+	options: ({ q = '' }) => {
 		return {
 			variables: {
-				search: url.query.q,
+				search: q,
 				limit: 20,
 				offset: 0,
-				skip: url.query.q.length < MININUM_LETTERS,
+				skip: q.length < MININUM_LETTERS,
 			},
 			notifyOnNetworkStatusChange: true,
 		};

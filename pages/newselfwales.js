@@ -264,7 +264,7 @@ class LandingPage extends Component {
 					<Fragment>
 						<div className="newselfwales-page__search-results">
 							<SearchResultsContainer
-								url={url}
+								q={url.query.q}
 								onImageClick={(event, image) =>
 									this.handleImageClick(event, image)
 								}

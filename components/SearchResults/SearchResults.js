@@ -40,6 +40,7 @@ class SearchResults extends Component {
 					isHorizontal={true}
 					// loader={<div className="search-results__loader">Loading ...</div>}
 					useWindow={false}
+					threshold={100}
 				>
 					<PackeryImages
 						images={images}
@@ -48,6 +49,7 @@ class SearchResults extends Component {
 						gridSize="lg"
 						className={className}
 						isLoading={isLoadingMore}
+						transitionDuration={'1s'}
 						onImageClick={this.handleImageClick}
 					/>
 				</InfiniteScroll>
