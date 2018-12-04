@@ -161,18 +161,38 @@ function buildImages(data) {
 	if (!data || !data.newSelfWales) {
 		return [];
 	}
-
-	const images = [
-		...(data.newSelfWales.portraits ? data.newSelfWales.portraits : []),
-		...(data.newSelfWales.gallerySelfies
-			? data.newSelfWales.gallerySelfies
-			: []),
-		...(data.newSelfWales.instagramSelfies
-			? data.newSelfWales.instagramSelfies
-			: []),
-	];
-
-	return processImagesType(images);
+	const longest = Math.max(
+		data.newSelfWales.portraits.length,
+		data.newSelfWales.gallerySelfies.length,
+		data.newSelfWales.instagramSelfies.length,
+	);
+	if (longest > 0) {
+		const matrix = [
+			[...(data.newSelfWales.portraits ? data.newSelfWales.portraits : [])],
+			[
+				...(data.newSelfWales.gallerySelfies
+					? data.newSelfWales.gallerySelfies
+					: []),
+			],
+			[
+				...(data.newSelfWales.instagramSelfies
+					? data.newSelfWales.instagramSelfies
+					: []),
+			],
+		];
+		const images = [];
+		for (let i = 0; i < longest; i++) {
+			for (let o = 0; o < 3; o++) {
+				if (
+					typeof matrix[o] !== 'undefined' &&
+					typeof matrix[o][i] !== 'undefined'
+				) {
+					images.push(matrix[o][i]);
+				}
+			}
+		}
+		return processImagesType(images);
+	}
 }
 
 const SEARCH_QUERY = gql`
