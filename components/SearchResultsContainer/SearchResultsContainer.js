@@ -8,6 +8,9 @@ import { processImagesType } from '../../reducers/imageFeedReducer';
 import LoaderText from '../LoaderText';
 import { dedupeByField } from '../../lib/dedupe';
 
+// Minimum letters requred to start search query
+const MININUM_LETTERS = 3;
+
 class SearchResultsContainer extends Component {
 	static propTypes = {
 		url: PropTypes.object.isRequired,
@@ -80,6 +83,14 @@ class SearchResultsContainer extends Component {
 		if (error) {
 			console.log(data.error);
 			return null;
+		}
+
+		if (inputTextValue.length < MININUM_LETTERS) {
+			return (
+				<div className="search-results__notification">
+					Please type more than two letters.
+				</div>
+			);
 		}
 
 		const images = dedupeByField(buildImages(data), 'id');
@@ -174,8 +185,8 @@ function buildImages(data) {
 }
 
 const SEARCH_QUERY = gql`
-	query search($search: String, $limit: Int, $offset: Int) {
-		newSelfWales {
+	query search($search: String, $limit: Int, $offset: Int, $skip: Boolean!) {
+		newSelfWales @skip(if: $skip) {
 			instagramSelfies(search: $search, limit: $limit, offset: $offset) {
 				id
 				title
@@ -256,13 +267,12 @@ const SEARCH_QUERY = gql`
 
 export default graphql(SEARCH_QUERY, {
 	options: ({ url }) => {
-		// console.log(url.query.q);
-
 		return {
 			variables: {
 				search: url.query.q,
 				limit: 20,
 				offset: 0,
+				skip: url.query.q.length < MININUM_LETTERS,
 			},
 			notifyOnNetworkStatusChange: true,
 		};

@@ -29,9 +29,7 @@ class SearchResults extends Component {
 	};
 
 	render() {
-		const { images, className, hasMore, isLoading, isLoadingMore } = this.props;
-
-		console.log(isLoading, isLoadingMore);
+		const { images, className, hasMore, isLoadingMore } = this.props;
 
 		return (
 			<div className="search-results">
