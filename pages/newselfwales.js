@@ -56,24 +56,6 @@ class LandingPage extends Component {
 					Boolean(this.props.url.query.q),
 			});
 		}
-
-		// if (
-		// 	prevProps.url.query.param !== 'search' &&
-		// 	this.props.url.query.param === 'search'
-		// ) {
-		// 	this.setState({
-		// 		isSearch: true,
-		// 	});
-		// }
-
-		// if (
-		// 	prevProps.url.query.param === 'search' &&
-		// 	this.props.url.query.param !== 'search'
-		// ) {
-		// 	this.setState({
-		// 		isSearch: false,
-		// 	});
-		// }
 	}
 
 	handleModalClose = () => {
@@ -171,10 +153,14 @@ class LandingPage extends Component {
 			//  Effectively close ImageModal
 			if (
 				this.props.url.query &&
-				this.props.url.query.imageType &&
+				this.props.url.query.param &&
 				this.props.url.query.id
 			) {
 				Router.pushRoute(`/newselfwales`);
+
+				this.setState({
+					enableAnimation: true,
+				});
 			}
 
 			// Close modal and start animation

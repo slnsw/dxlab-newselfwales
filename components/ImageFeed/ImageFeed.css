@@ -42,6 +42,8 @@
 
 .image-feed__image-holder {
 	position: relative;
+	display: block;
+	width: auto;
 	height: calc(20%);
 	padding: 5px;
 	cursor: pointer;
@@ -64,6 +66,11 @@
 	& img {
 		height: 100%;
 		width: auto;
+	}
+
+	&:focus {
+		outline-width: 2px;
+		outline-color: var(--colour-highlight);
 	}
 }
 

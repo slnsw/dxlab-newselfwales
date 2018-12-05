@@ -7,6 +7,7 @@ export async function hit() {
   const {
     data: { feed },
   } = await getFeed();
+
   const result = await sendFeed(feed);
 
   console.log(result);
@@ -17,7 +18,7 @@ export const getFeed = async () => {
     const result = await client.query({
       query: FEED_QUERY,
       variables: {
-        limit: 10,
+        limit: 20,
         dateStart: getDate(-120),
         portraitPercentage: 0.6,
       },

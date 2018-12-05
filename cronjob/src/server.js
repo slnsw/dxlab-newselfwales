@@ -6,7 +6,7 @@ require('dotenv').config();
 
 console.log('Start cron job');
 
-cron.schedule('*/10 * * * * *', () => {
+cron.schedule('*/20 * * * * *', () => {
   hit();
 });
 

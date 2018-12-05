@@ -742,7 +742,7 @@ class ImageFeed extends Component {
 										timeout={2000}
 										classNames="image-feed__image-holder-"
 									>
-										<button
+										<div
 											className={[
 												'image-feed__image-holder',
 												imageSize
@@ -767,6 +767,7 @@ class ImageFeed extends Component {
 											}
 											ref={(c) => this.imageHolderRefs.set(image.id, c)}
 											data-id={image.id}
+											tabindex="0"
 										>
 											{image.isSilhouette && (
 												<div className="image-feed__image-holder__content">
@@ -792,7 +793,7 @@ class ImageFeed extends Component {
 												key={`${imageUrl}-${i}`}
 												alt={imageAlt}
 											/>
-										</button>
+										</div>
 									</CSSTransition>
 								</Fragment>
 							);
