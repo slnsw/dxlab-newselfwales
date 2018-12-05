@@ -131,7 +131,7 @@ export default (state = initialState, action) => {
 				...state,
 				upcomingImages: limitImages(newImages, state.maxUpcomingImages),
 				spareImages: limitImages(newImages, state.maxSpareImages),
-				status: 'FETCHED_IMAGES_READY',
+				status: 'SUBSCRIBED_IMAGES_READY',
 			};
 		}
 

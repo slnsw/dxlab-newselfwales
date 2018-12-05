@@ -113,7 +113,8 @@ class ImageFeed extends Component {
 
 		if (
 			prevProps.status === 'WAITING_ON_FIRST_IMAGES' &&
-			this.props.status === 'FETCHED_IMAGES_READY'
+			(this.props.status === 'FETCHED_IMAGES_READY' ||
+				this.props.status === 'SUBSCRIBED_IMAGES_READY')
 		) {
 			// Start up loop once first fetched images are ready
 			this.initLoop();
@@ -127,7 +128,7 @@ class ImageFeed extends Component {
 			prevState.laidOutItems === undefined &&
 			(this.state.laidOutItems && this.state.laidOutItems.length > 0)
 		) {
-			log('Init scroller');
+			log('Init Scroller');
 
 			scroller.init(
 				this.imagesRef[this.props.name].refs.packeryContainer,

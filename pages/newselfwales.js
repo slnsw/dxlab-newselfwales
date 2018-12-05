@@ -312,7 +312,7 @@ class LandingPage extends Component {
 
 					<ImageFeedContainer
 						startImages={20}
-						maxImages={50}
+						maxImages={100}
 						intervalTime={5000}
 						enableAnimation={enableAnimation}
 						shouldFetchImagesOnMount={false}
