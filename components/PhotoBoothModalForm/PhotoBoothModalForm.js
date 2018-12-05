@@ -155,7 +155,7 @@ class PhotoBoothModalForm extends Component {
 			.gallerySelfies()
 			.create({
 				title: `New post ${selfieTitle}`,
-				content: this.state.interests,
+				content: this.state.name, // this.state.interests,
 				status: 'publish',
 				meta: {
 					email: this.state.email,
