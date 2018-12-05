@@ -181,6 +181,7 @@ class PackeryImages extends Component {
 						);
 					})}
 
+				{/* TODO: Move this out? */}
 				{this.props.isLoading && (
 					<LoaderText className="packery-images__loading" />
 				)}

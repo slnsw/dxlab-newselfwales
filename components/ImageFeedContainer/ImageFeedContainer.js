@@ -19,6 +19,11 @@ class ImageFeedContainer extends Component {
 		intervalTime: PropTypes.number,
 		enableAnimation: PropTypes.bool,
 		shouldFetchImagesOnMount: PropTypes.bool,
+		onImagesUpdate: PropTypes.func,
+		onImageClick: PropTypes.func,
+		onLayoutComplete: PropTypes.func,
+		onScrollerWait: PropTypes.func,
+		onScrollerResume: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -95,7 +100,6 @@ class ImageFeedContainer extends Component {
 				{...this.props}
 				images={currentImages}
 				status={status}
-				// onLoadMore={this.handleFetchImages}
 				onLoadMore={this.handleLoadMore}
 				onMaxImagesComplete={this.handleMaxImagesComplete}
 				onHideAllImagesComplete={this.handleHideAllImagesComplete}

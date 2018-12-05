@@ -34,11 +34,14 @@ class ImageFeed extends Component {
 		className: PropTypes.string,
 		shouldFetchImagesOnMount: PropTypes.bool,
 		onLoadMore: PropTypes.func,
+		onImagesUpdate: PropTypes.func,
 		onImageClick: PropTypes.func,
 		onLayoutComplete: PropTypes.func,
 		onMaxImagesComplete: PropTypes.func,
 		onHideAllImagesComplete: PropTypes.func,
 		onFetchedImagesReady: PropTypes.func,
+		onScrollerWait: PropTypes.func,
+		onScrollerResume: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -49,7 +52,6 @@ class ImageFeed extends Component {
 		increment: 0.4,
 		intervalTime: 10000,
 		loadMoreGap: -600,
-		// status: 'CURRENT_IMAGES',
 		marginTop: '5px',
 		heightAdjust: '-10px',
 		enableWindow: true,
@@ -85,7 +87,6 @@ class ImageFeed extends Component {
 
 		this.imagesRef = {};
 		this.imageHolderRefs = new Map();
-		// this.imageStampRefs = new Map();
 	}
 
 	componentDidMount() {
@@ -110,10 +111,8 @@ class ImageFeed extends Component {
 		// SCROLLER AND LOOP
 		// ------------------------------------------------------------------------
 
-		console.log(this.props.status, this.props.shouldFetchImagesOnMount);
-
 		if (
-			prevProps.status === 'FIRST_CURRENT_IMAGES' &&
+			prevProps.status === 'WAITING_ON_FIRST_IMAGES' &&
 			this.props.status === 'FETCHED_IMAGES_READY'
 		) {
 			// Start up loop once first fetched images are ready
@@ -122,16 +121,6 @@ class ImageFeed extends Component {
 			this.setState({
 				shouldGetFetchedImagesWhenReady: true,
 			});
-			// } else if (
-			// 	prevProps.status === 'FIRST_CURRENT_IMAGES' &&
-			// 	this.props.shouldFetchImagesOnMount === false &&
-			// 	this.props.status === 'CURRENT_IMAGES'
-			// ) {
-			// 	this.initLoop();
-
-			// 	this.setState({
-			// 		shouldGetFetchedImagesWhenReady: true,
-			// 	});
 		}
 
 		if (
@@ -147,6 +136,8 @@ class ImageFeed extends Component {
 					axis: this.props.axis,
 					increment: this.props.increment,
 					fps: this.props.fps,
+					onWait: this.props.onScrollerWait,
+					onResume: this.props.onScrollerResume,
 				},
 			);
 
@@ -218,7 +209,7 @@ class ImageFeed extends Component {
 		// Track changes in images
 		if (prevProps.images !== this.props.images) {
 			log(
-				'change in images',
+				'Change in images',
 				prevProps.images.length,
 				this.props.images.length,
 			);
@@ -226,6 +217,10 @@ class ImageFeed extends Component {
 			this.setState({
 				isLayingOut: true,
 			});
+
+			if (typeof this.props.onImagesUpdate === 'function') {
+				this.props.onImagesUpdate(this.props.images);
+			}
 		}
 
 		// Track whether images are being layout out or not
@@ -287,8 +282,6 @@ class ImageFeed extends Component {
 				// --------------------------------------------------------------------
 				// Images have been fetched, we are ready to receive them.
 				// --------------------------------------------------------------------
-
-				console.log('hi');
 
 				if (typeof this.props.onFetchedImagesReady === 'function') {
 					this.props.onFetchedImagesReady();

@@ -14,7 +14,7 @@ const initialState = {
 	currentImages: [],
 	upcomingImages: [],
 	spareImages: [],
-	status: 'FIRST_CURRENT_IMAGES',
+	status: 'WAITING_ON_FIRST_IMAGES',
 	maxSpareImages: 100,
 	maxUpcomingImages: 100,
 };

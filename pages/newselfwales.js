@@ -19,21 +19,23 @@ import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
 
 import './newselfwales.css';
+import LoaderText from '../components/LoaderText';
 
 class LandingPage extends Component {
-	state = {
-		isSearch: false,
-		axis: 'x',
-		enableAnimation: false,
-		sourceImageBoundingClientRect: null,
-		isInfoBoxFullSize: false,
-	};
-
 	constructor(props) {
 		super(props);
 
 		const { cookies } = props;
+
 		this.state = {
+			isSearch: false,
+			axis: 'x',
+			enableAnimation: true,
+			sourceImageBoundingClientRect: null,
+			isInfoBoxFullSize: false,
+			isImageFeedLoading: false,
+			isImageFeedInitiallyLoading: true,
+			hasInitiallyScrolled: false,
 			showModal: !cookies.get('specialcareacknowledged'),
 		};
 	}
@@ -123,23 +125,28 @@ class LandingPage extends Component {
 		});
 	};
 
-	// Intercept image feed and splice in silhouettes
 	handleImagesUpdate = (images) => {
-		const silhouetteInterval = 11;
-		const silhouette = {
-			isSilhouette: true,
-			imageUrl: '/static/newselfwales/images/silhouettes/silhouette.png',
-		};
+		if (images.length > 0 && this.state.isImageFeedInitiallyLoading) {
+			this.setState({
+				isImageFeedInitiallyLoading: false,
+			});
+		}
 
-		// Build images for wall
-		const totalSilhouettes = Math.ceil(images.length / silhouetteInterval);
+		// const silhouetteInterval = 11;
+		// const silhouette = {
+		// 	isSilhouette: true,
+		// 	imageUrl: '/static/newselfwales/images/silhouettes/silhouette.png',
+		// };
 
-		// Loop through and slice in silhoutte
-		[...Array(totalSilhouettes)].forEach((item, i) => {
-			images.splice(i * silhouetteInterval + 1, 0, silhouette);
-		});
+		// // Build images for wall
+		// const totalSilhouettes = Math.ceil(images.length / silhouetteInterval);
 
-		return images;
+		// // Loop through and slice in silhoutte
+		// [...Array(totalSilhouettes)].forEach((item, i) => {
+		// 	images.splice(i * silhouetteInterval + 1, 0, silhouette);
+		// });
+
+		// return images;
 	};
 
 	handleLayoutComplete = () => {
@@ -216,6 +223,24 @@ class LandingPage extends Component {
 		}
 	};
 
+	handleScrollerWait = () => {
+		this.setState({
+			isImageFeedLoading: true,
+		});
+	};
+
+	handleScrollerResume = () => {
+		this.setState({
+			isImageFeedLoading: false,
+		});
+
+		if (this.state.hasInitiallyScrolled === false) {
+			this.setState({
+				hasInitiallyScrolled: true,
+			});
+		}
+	};
+
 	render() {
 		const { loading, error, pages, url } = this.props;
 		const {
@@ -224,10 +249,12 @@ class LandingPage extends Component {
 			sourceImageBoundingClientRect,
 			isInfoBoxFullSize,
 			isSearch,
+			isImageFeedLoading,
+			isImageFeedInitiallyLoading,
+			hasInitiallyScrolled,
 		} = this.state;
 
 		const showImageModal = url && url.query.param && url.query.id && true;
-		// const isSearch = url.query.param === 'search';
 
 		if (loading) {
 			return <div />;
@@ -292,7 +319,15 @@ class LandingPage extends Component {
 						onImagesUpdate={this.handleImagesUpdate}
 						onImageClick={(event, image) => this.handleImageClick(event, image)}
 						onLayoutComplete={this.handleLayoutComplete}
+						onScrollerWait={this.handleScrollerWait}
+						onScrollerResume={this.handleScrollerResume}
 					/>
+
+					{(isImageFeedLoading ||
+						isImageFeedInitiallyLoading ||
+						hasInitiallyScrolled === false) && (
+						<LoaderText className="newselfwales-page__image-feed-loader" />
+					)}
 				</Fragment>
 				{/* )} */}
 
