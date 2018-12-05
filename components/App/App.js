@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
-import { initGA, logPageView } from '../../lib/analytics';
+import { initGA } from '../../lib/analytics';
 import logBase from '../../lib/log';
 import packageJson from '../../package.json';
 
@@ -30,20 +30,20 @@ class App extends Component {
 			window.GA_INITIALIZED = true;
 		}
 
-		if (this.props.url.query.timeout !== 'true') {
-			logPageView();
-		}
+		//	if (this.props.url.query.timeout !== 'true') {
+		//		logPageView();
+		//	}
 
 		log('version', packageJson.version);
 	}
 
 	componentDidUpdate(prevProps) {
-		if (
-			prevProps.url !== this.props.url &&
-			this.props.url.query.timeout !== 'true'
-		) {
-			logPageView();
-		}
+		//	if (
+		//		prevProps.url !== this.props.url &&
+		//		this.props.url.query.timeout !== 'true'
+		//	) {
+		//		logPageView();
+		//	}
 	}
 
 	render() {

@@ -59,6 +59,7 @@
 		"react-apollo": "^2.1.5",
 		"react-dom": "^16.4.1",
 		"react-ga": "^2.5.3",
+		"react-gtm-module": "^2.0.2",
 		"react-packery-component": "^1.0.2",
 		"react-redux": "^5.0.5",
 		"react-screen-keyboard": "^1.4.1",
