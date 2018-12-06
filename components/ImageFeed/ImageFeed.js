@@ -33,6 +33,7 @@ class ImageFeed extends Component {
 		gridSize: PropTypes.string,
 		className: PropTypes.string,
 		shouldFetchImagesOnMount: PropTypes.bool,
+		pauseInterval: PropTypes.bool,
 		onLoadMore: PropTypes.func,
 		onImagesUpdate: PropTypes.func,
 		onImageClick: PropTypes.func,
@@ -57,6 +58,7 @@ class ImageFeed extends Component {
 		enableWindow: true,
 		gridSize: 'md',
 		shouldFetchImagesOnMount: false,
+		pauseInterval: false,
 	};
 
 	state = {
@@ -122,6 +124,16 @@ class ImageFeed extends Component {
 			this.setState({
 				shouldGetFetchedImagesWhenReady: true,
 			});
+		}
+
+		if (prevProps.pauseInterval !== this.props.pauseInterval) {
+			if (this.props.pauseInterval) {
+				log('Pause Interval', this.interval);
+				clearInterval(this.interval);
+			} else {
+				log('Init Interval');
+				this.initLoop();
+			}
 		}
 
 		if (

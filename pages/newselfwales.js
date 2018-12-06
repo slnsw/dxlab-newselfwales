@@ -37,6 +37,7 @@ class LandingPage extends Component {
 			isImageFeedInitiallyLoading: true,
 			hasInitiallyScrolled: false,
 			showModal: !cookies.get('specialcareacknowledged'),
+			pauseInterval: false,
 		};
 	}
 
@@ -50,10 +51,13 @@ class LandingPage extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.url.query !== this.props.url.query) {
+			const isSearch =
+				this.props.url.query.param === 'search' ||
+				Boolean(this.props.url.query.q);
+
 			this.setState({
-				isSearch:
-					this.props.url.query.param === 'search' ||
-					Boolean(this.props.url.query.q),
+				isSearch,
+				pauseInterval: isSearch,
 			});
 		}
 	}
@@ -298,8 +302,9 @@ class LandingPage extends Component {
 
 					<ImageFeedContainer
 						startImages={20}
-						maxImages={100}
+						maxImages={50}
 						intervalTime={5000}
+						pauseInterval={this.state.pauseInterval}
 						enableAnimation={enableAnimation}
 						shouldFetchImagesOnMount={false}
 						onImagesUpdate={this.handleImagesUpdate}

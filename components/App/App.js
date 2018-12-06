@@ -43,7 +43,7 @@ class App extends Component {
 		log('version', packageJson.version);
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate() {
 		//	if (
 		//		prevProps.url !== this.props.url &&
 		//		this.props.url.query.timeout !== 'true'

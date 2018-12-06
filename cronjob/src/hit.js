@@ -4,9 +4,13 @@ import client from './lib/client';
 import { getDate } from '../../lib/date';
 
 export async function hit() {
+  console.log('hit');
+
   const {
     data: { feed },
   } = await getFeed();
+
+  console.log(feed);
 
   const result = await sendFeed(feed);
 
@@ -14,6 +18,8 @@ export async function hit() {
 }
 
 export const getFeed = async () => {
+  console.log('getFeed');
+
   try {
     const result = await client.query({
       query: FEED_QUERY,
@@ -24,7 +30,7 @@ export const getFeed = async () => {
       },
     });
 
-    // console.log(result);
+    console.log(result);
 
     return result;
   } catch (e) {

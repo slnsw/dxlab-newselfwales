@@ -165,7 +165,11 @@ function setSize(i) {
 	return 'md';
 }
 
-export function processImagesType(images) {
+export function processImagesType(images = []) {
+	if (!images) {
+		return [];
+	}
+
 	return images.map((image) => {
 		// Set image type
 		let type;
