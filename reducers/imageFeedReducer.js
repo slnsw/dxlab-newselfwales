@@ -15,6 +15,7 @@ const initialState = {
 	upcomingImages: [],
 	spareImages: [],
 	status: 'WAITING_ON_FIRST_IMAGES',
+	subscribedStatus: null,
 	maxSpareImages: 100,
 	maxUpcomingImages: 100,
 };
@@ -49,7 +50,10 @@ export default (state = initialState, action) => {
 				...state,
 				currentImages: limitImages(currentImages, state.maxUpcomingImages),
 				spareImages: limitImages(spareImages, state.maxSpareImages),
-				status: 'FETCHED_IMAGES_READY',
+				status:
+					state.status === 'WAITING_ON_FIRST_IMAGES'
+						? 'FIRST_IMAGES_READY'
+						: 'FETCHED_IMAGES_READY',
 				isLoading: false,
 			};
 		}
@@ -131,7 +135,10 @@ export default (state = initialState, action) => {
 				...state,
 				upcomingImages: limitImages(newImages, state.maxUpcomingImages),
 				spareImages: limitImages(newImages, state.maxSpareImages),
-				status: 'SUBSCRIBED_IMAGES_READY',
+				status:
+					state.status === 'WAITING_ON_FIRST_IMAGES'
+						? 'FIRST_IMAGES_READY'
+						: state.status,
 			};
 		}
 

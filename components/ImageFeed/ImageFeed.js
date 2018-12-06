@@ -115,8 +115,7 @@ class ImageFeed extends Component {
 
 		if (
 			prevProps.status === 'WAITING_ON_FIRST_IMAGES' &&
-			(this.props.status === 'FETCHED_IMAGES_READY' ||
-				this.props.status === 'SUBSCRIBED_IMAGES_READY')
+			this.props.status === 'FIRST_IMAGES_READY'
 		) {
 			// Start up loop once first fetched images are ready
 			this.initLoop();
@@ -140,24 +139,7 @@ class ImageFeed extends Component {
 			prevState.laidOutItems === undefined &&
 			(this.state.laidOutItems && this.state.laidOutItems.length > 0)
 		) {
-			log('Init Scroller');
-
-			scroller.init(
-				this.imagesRef[this.props.name].refs.packeryContainer,
-				this.state.laidOutItems,
-				{
-					axis: this.props.axis,
-					increment: this.props.increment,
-					fps: this.props.fps,
-					onWait: this.props.onScrollerWait,
-					onResume: this.props.onScrollerResume,
-				},
-			);
-
-			if (this.props.enableAnimation) {
-				log('Start scrolling');
-				scroller.start();
-			}
+			this.initScroller();
 		}
 
 		// Start or stop scroller
@@ -263,6 +245,27 @@ class ImageFeed extends Component {
 		}
 	}
 
+	initScroller() {
+		log('Init Scroller');
+
+		scroller.init(
+			this.imagesRef[this.props.name].refs.packeryContainer,
+			this.state.laidOutItems,
+			{
+				axis: this.props.axis,
+				increment: this.props.increment,
+				fps: this.props.fps,
+				onWait: this.props.onScrollerWait,
+				onResume: this.props.onScrollerResume,
+			},
+		);
+
+		if (this.props.enableAnimation) {
+			log('Start scrolling');
+			scroller.start();
+		}
+	}
+
 	initLoop = () => {
 		log('initLoop');
 
@@ -274,6 +277,8 @@ class ImageFeed extends Component {
 				})`,
 				'color: #e6007e',
 			);
+
+			log(this.props.status);
 
 			if (this.state.shouldHideAllWhenReady) {
 				log('shouldHideAllWhenReady');
