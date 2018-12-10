@@ -29,6 +29,8 @@ class LandingPage extends Component {
 
 		this.state = {
 			isSearch: false,
+			// Need to store this in local state even though we mainly use url.query.q in props. We rely on state.q to switch back to correct search query after opening image modal.
+			q: '',
 			axis: 'x',
 			enableAnimation: true,
 			sourceImageBoundingClientRect: null,
@@ -49,20 +51,20 @@ class LandingPage extends Component {
 		});
 	}
 
-	componentDidUpdate(prevProps) {
-		if (prevProps.url.query !== this.props.url.query) {
-			const isSearch =
-				this.props.url.query.param === 'search' ||
-				Boolean(this.props.url.query.q);
+	// componentDidUpdate(prevProps) {
+	// 	if (prevProps.url.query !== this.props.url.query) {
+	// 		const isSearch =
+	// 			this.props.url.query.param === 'search' ||
+	// 			Boolean(this.props.url.query.q);
 
-			this.setState({
-				isSearch,
-				pauseInterval: isSearch,
-			});
-		}
-	}
+	// 		this.setState({
+	// 			isSearch,
+	// 			pauseInterval: isSearch,
+	// 		});
+	// 	}
+	// }
 
-	handleModalClose = () => {
+	handleSpecialCareModalClose = () => {
 		this.setState({
 			showModal: false,
 			enableAnimation: true,
@@ -77,25 +79,23 @@ class LandingPage extends Component {
 		});
 	};
 
-	handleImageClick = (event, image) => {
-		// console.log(event.target.parentElement.getBoundingClientRect(), image);
+	handleImageModalClick = (event, image) => {
 		const { q } = this.props.url.query;
 
-		Router.pushRoute(
-			`/newselfwales/${image.type}/${image.id}${q ? `?q=${q}` : ''}`,
-		);
+		Router.pushRoute(`/newselfwales/${image.type}/${image.id}`);
 
 		this.setState({
 			enableAnimation: false,
+			q: this.state.isSearch ? q : '',
 			sourceImageBoundingClientRect: event.target.parentElement.getBoundingClientRect(),
 		});
 	};
 
 	handleImageModalClose = () => {
-		if (this.props.url.query.param === 'search') {
-			Router.pushRoute('/newselfwales/search');
-		} else if (this.props.url.query.q) {
-			Router.pushRoute(`/newselfwales/search?q=${this.props.url.query.q}`);
+		const { q } = this.state;
+
+		if (this.state.isSearch) {
+			Router.pushRoute(`/newselfwales/search${q ? `?q=${q}` : ''}`);
 		} else {
 			Router.pushRoute('/newselfwales');
 
@@ -184,7 +184,7 @@ class LandingPage extends Component {
 		});
 	};
 
-	handleCloseButtonClick = () => {
+	handleInfoBoxCloseButtonClick = () => {
 		this.setState({
 			isInfoBoxFullSize: false,
 			enableAnimation: true,
@@ -195,7 +195,9 @@ class LandingPage extends Component {
 		Router.pushRoute('/newselfwales/search');
 
 		this.setState({
+			isSearch: true,
 			enableAnimation: false,
+			pauseInterval: true,
 		});
 	};
 
@@ -203,7 +205,10 @@ class LandingPage extends Component {
 		Router.pushRoute('/newselfwales');
 
 		this.setState({
+			isSearch: false,
+			q: '',
 			enableAnimation: true,
+			pauseInterval: false,
 		});
 	};
 
@@ -245,6 +250,7 @@ class LandingPage extends Component {
 		} = this.state;
 
 		const showImageModal = url && url.query.param && url.query.id && true;
+		const q = url.query.q || this.state.q;
 
 		if (loading) {
 			return <div />;
@@ -281,9 +287,9 @@ class LandingPage extends Component {
 					<Fragment>
 						<div className="newselfwales-page__search-results">
 							<SearchResultsContainer
-								q={url.query.q}
+								q={q}
 								onImageClick={(event, image) =>
-									this.handleImageClick(event, image)
+									this.handleImageModalClick(event, image)
 								}
 							/>
 						</div>
@@ -308,7 +314,9 @@ class LandingPage extends Component {
 						enableAnimation={enableAnimation}
 						shouldFetchImagesOnMount={false}
 						onImagesUpdate={this.handleImagesUpdate}
-						onImageClick={(event, image) => this.handleImageClick(event, image)}
+						onImageClick={(event, image) =>
+							this.handleImageModalClick(event, image)
+						}
 						onLayoutComplete={this.handleLayoutComplete}
 						onScrollerWait={this.handleScrollerWait}
 						onScrollerResume={this.handleScrollerResume}
@@ -330,7 +338,7 @@ class LandingPage extends Component {
 							excerpt={page.excerpt}
 							isFullSize={isInfoBoxFullSize}
 							onMoreButtonClick={this.handleMoreButtonClick}
-							onCloseButtonClick={this.handleCloseButtonClick}
+							onCloseButtonClick={this.handleInfoBoxCloseButtonClick}
 						>
 							{page.content}
 						</InfoBox>
@@ -344,7 +352,7 @@ class LandingPage extends Component {
 					onClose={this.handleImageModalClose}
 				/>
 
-				<Modal isActive={showModal} onClose={this.handleModalClose}>
+				<Modal isActive={showModal} onClose={this.handleSpecialCareModalClose}>
 					<h1 className="newselfwales-page__special-care-title">
 						Special Care Notice
 					</h1>
