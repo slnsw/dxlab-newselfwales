@@ -164,31 +164,30 @@ class ImageModal extends Component {
 									className="image-modal__content"
 									dangerouslySetInnerHTML={{ __html: content }}
 								/>
-
-								<footer className="image-modal__footer">
-									{instagramUsername && (
-										<a
-											className="image-modal__instagram-username"
-											href={`https://www.instagram.com/${instagramUsername}`}
-										>
-											@{instagramUsername}
-										</a>
-									)}
-
-									{dateString && (
-										<div className="image-modal__date">{dateString}</div>
-									)}
-
-									{flNumber && (
-										<a
-											className="image-modal__collection-link button button--small"
-											href={`http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?embedded=true&toolbar=false&dps_pid=${flNumber.toUpperCase()}`}
-										>
-											Collection Image
-										</a>
-									)}
-								</footer>
 							</div>
+							<footer className="image-modal__footer">
+								{instagramUsername && (
+									<a
+										className="image-modal__instagram-username"
+										href={`https://www.instagram.com/${instagramUsername}`}
+									>
+										@{instagramUsername}
+									</a>
+								)}
+
+								{dateString && (
+									<div className="image-modal__date">{dateString}</div>
+								)}
+
+								{flNumber && (
+									<a
+										className="image-modal__collection-link button button--small"
+										href={`http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?embedded=true&toolbar=false&dps_pid=${flNumber.toUpperCase()}`}
+									>
+										Collection Image
+									</a>
+								)}
+							</footer>
 						</Modal>
 					);
 				}}

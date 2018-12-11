@@ -19,7 +19,9 @@ class Modal extends Component {
 	};
 
 	handleClose = () => {
-		this.props.onClose();
+		if (typeof this.props.onClose === 'function') {
+			this.props.onClose();
+		}
 	};
 
 	render() {

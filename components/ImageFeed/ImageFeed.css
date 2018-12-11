@@ -69,7 +69,9 @@
 	}
 
 	&:focus {
-		outline-width: 2px;
+		outline-style: solid;
+		outline-offset: 0;
+		outline-width: 1px;
 		outline-color: var(--colour-highlight);
 	}
 }

@@ -11,6 +11,7 @@ import SearchResultsContainer from '../components/SearchResultsContainer';
 import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
 import SearchBox from '../components/SearchBox';
+import Overlay from '../components/Overlay';
 // import images from '../lib/imagesNew.json';
 // import shuffle from '../lib/shuffle';
 import withApollo from '../lib/withApollo';
@@ -293,9 +294,10 @@ class LandingPage extends Component {
 								}
 							/>
 						</div>
-						<div className="newselfwales-page__overlay" />
 					</Fragment>
 				)}
+
+				<Overlay isActive={isSearch} />
 
 				{/* {!isSearch && ( */}
 				<Fragment>

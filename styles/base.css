@@ -185,7 +185,9 @@ input[type='submit'] {
 	border-radius: 0;
 
 	&:focus {
-		outline: 1;
+		outline-style: solid;
+		outline-offset: 0;
+		outline-width: 1px;
 		outline-color: var(--colour-highlight);
 	}
 }
