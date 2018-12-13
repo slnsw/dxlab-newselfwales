@@ -12,6 +12,7 @@
     "dev": "webpack --watch & node-dev --no-notify --no-deps -r dotenv/config build/server.js",
     "server": "babel-node ./src/server.js",
     "deploy-staging": "now --dotenv=.env.staging",
+    "deploy-dev": "now --dotenv=.env.dev",
     "deploy-production": "now --dotenv=.env.production",
     "build": "webpack --progress",
     "test": "node -r dotenv/config ./node_modules/.bin/jest --forceExit --runInBand",

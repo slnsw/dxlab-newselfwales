@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
 
 import App from '../components/App';
-import SearchContainer from '../components/SearchContainer';
+import SearchResultsContainer from '../components/SearchResultsContainer';
 import { client } from '../lib/initApollo';
 
 import './gallery.css';
@@ -22,7 +22,7 @@ class SearchPage extends Component {
 		return (
 			<ApolloProvider client={client}>
 				<App>
-					<SearchContainer url={url} />
+					<SearchResultsContainer url={url} />
 				</App>
 			</ApolloProvider>
 		);

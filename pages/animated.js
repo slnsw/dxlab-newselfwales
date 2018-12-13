@@ -9,7 +9,7 @@ import selfiesRaw from '../lib/selfieSelected.json';
 import shuffle from '../lib/shuffle';
 // import scroll from '../lib/scroll';
 
-import './index.css';
+// import './index.css';
 
 class Home extends Component {
 	constructor() {

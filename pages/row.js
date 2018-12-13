@@ -8,7 +8,7 @@ import images from '../lib/images.json';
 import selfiesRaw from '../lib/selfieSelected.json';
 import shuffle from '../lib/shuffle';
 
-import './index.css';
+// import './index.css';
 
 class Home extends Component {
 	render() {

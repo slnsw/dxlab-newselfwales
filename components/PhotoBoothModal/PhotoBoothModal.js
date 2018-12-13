@@ -6,7 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 import './PhotoBoothModal.css';
 import './Keyboard.css';
 import PhotoBoothModalForm from '../PhotoBoothModalForm';
-import SearchContainer from '../SearchContainer';
+import SearchResultsContainer from '../SearchResultsContainer';
 import PageContainer from '../PageContainer';
 import ImageFaderContainer from '../ImageFaderContainer';
 import { Router } from '../../routes';
@@ -367,7 +367,7 @@ class Home extends Component {
 						stage === 'search' ? 'photo-booth-modal__search--is-active' : '',
 					].join(' ')}
 				>
-					<SearchContainer
+					<SearchResultsContainer
 						url={url}
 						isActive={stage === 'search'}
 						onInputTextFocus={this.handleInputTextFocus}
