@@ -60,6 +60,7 @@ class ImageModalContainer extends Component {
 							imageUrl: image.featuredMedia && image.featuredMedia.sourceUrl,
 							date: image.date,
 							instagramUsername: image.instagramUsername,
+							shortcode: image.shortcode,
 							flNumber: image.slug && image.slug.split('-')[1],
 						};
 					}
@@ -107,6 +108,7 @@ const INSTAGRAM_SELFIE_QUERY = gql`
 					sourceUrl
 				}
 				instagramUsername
+				shortcode
 				date
 			}
 		}
