@@ -21,6 +21,10 @@
 	color: var(--colour-primary);
 }
 
+/* 
+ * SEARCH 
+ * ------------------------------------------------------------------------- */
+
 .newselfwales-page__search-box {
 	position: absolute;
 	top: var(--spacing-xs);
@@ -32,14 +36,31 @@
 	font-size: var(--font-size-xlg);
 }
 
+.newselfwales-page__search-filters {
+	position: absolute;
+	top: 4.55rem;
+	right: 0;
+
+	@media (--screen-sm) {
+		width: auto;
+		top: 1.2em;
+		left: 22em;
+		right: auto;
+	}
+}
+
 .newselfwales-page__search-results {
 	position: absolute;
 	z-index: 3;
-	top: 5em;
+	top: 7em;
 	left: 0;
 	width: 100%;
-	height: calc(100% - 5em);
-	/* overflow: auto; */
+	height: calc(100% - 7em);
+
+	@media (--screen-sm) {
+		top: 5em;
+		height: calc(100% - 5em);
+	}
 
 	& .image-feed__images {
 		padding-left: 5px;
@@ -55,6 +76,10 @@
 	}
 }
 
+/* 
+ * OVERLAY
+ * ------------------------------------------------------------------------- */
+
 .newselfwales-page__overlay {
 	position: absolute;
 	z-index: 1;
@@ -65,6 +90,10 @@
 	width: 100%;
 	background-color: var(--colour-black);
 }
+
+/* 
+ * IMAGE FEED
+ * ------------------------------------------------------------------------- */
 
 .newselfwales-page__image-feed-loader {
 	position: absolute;

@@ -11,6 +11,7 @@ import SearchResultsContainer from '../components/SearchResultsContainer';
 import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
 import SearchBox from '../components/SearchBox';
+import SearchFilters from '../components/SearchFilters';
 import Overlay from '../components/Overlay';
 // import images from '../lib/imagesNew.json';
 // import shuffle from '../lib/shuffle';
@@ -65,6 +66,10 @@ class LandingPage extends Component {
 	// 		});
 	// 	}
 	// }
+
+	// --------------------------------------------------------------------------
+	// Modals
+	// --------------------------------------------------------------------------
 
 	handleSpecialCareModalClose = () => {
 		this.setState({
@@ -193,6 +198,10 @@ class LandingPage extends Component {
 		});
 	};
 
+	// --------------------------------------------------------------------------
+	// Search
+	// --------------------------------------------------------------------------
+
 	handleSearchBoxFocus = () => {
 		// Check if already on search page
 		if (this.props.url.query.param !== 'search') {
@@ -222,6 +231,14 @@ class LandingPage extends Component {
 			Router.pushRoute(`/newselfwales/search?q=${value}`);
 		}
 	};
+
+	handleSearchFilterClick = (event, value) => {
+		console.log(value);
+	};
+
+	// --------------------------------------------------------------------------
+	// Scroller
+	// --------------------------------------------------------------------------
 
 	handleScrollerWait = () => {
 		this.setState({
@@ -257,6 +274,8 @@ class LandingPage extends Component {
 		const showImageModal = url && url.query.param && url.query.id && true;
 		const q = url.query.q || this.state.q;
 
+		console.log(isSearch, 'search');
+
 		if (loading) {
 			return <div />;
 		}
@@ -290,6 +309,12 @@ class LandingPage extends Component {
 
 				{isSearch && (
 					<Fragment>
+						<SearchFilters
+							className="newselfwales-page__search-filters"
+							filters={['all', 'gallery', 'instagram', 'collection']}
+							value={'all'}
+							onClick={this.handleSearchFilterClick}
+						/>
 						<div className="newselfwales-page__search-results">
 							<SearchResultsContainer
 								q={q}
@@ -303,36 +328,38 @@ class LandingPage extends Component {
 
 				<Overlay isActive={isSearch} />
 
-				{/* {!isSearch && ( */}
-				<Fragment>
-					{/* <button
+				{!isSearch && (
+					<Fragment>
+						{/* <button
 							className="button newselfwales-page__toggle-animation-button"
 							onClick={this.handleToggleAnimationButton}
 						>
 							{enableAnimation ? 'Pause' : 'Play'}
 						</button> */}
 
-					<ImageFeedContainer
-						startImages={20}
-						maxImages={50}
-						intervalTime={5000}
-						pauseInterval={this.state.pauseInterval}
-						enableAnimation={enableAnimation}
-						shouldFetchImagesOnMount={false}
-						onImagesUpdate={this.handleImagesUpdate}
-						onImageClick={(event, image) =>
-							this.handleImageModalClick(event, image)
-						}
-						onLayoutComplete={this.handleLayoutComplete}
-						onScrollerWait={this.handleScrollerWait}
-						onScrollerResume={this.handleScrollerResume}
-					/>
+						<ImageFeedContainer
+							startImages={20}
+							maxImages={50}
+							intervalTime={5000}
+							pauseInterval={this.state.pauseInterval}
+							enableAnimation={enableAnimation}
+							shouldFetchImagesOnMount={false}
+							onImagesUpdate={this.handleImagesUpdate}
+							onImageClick={(event, image) =>
+								this.handleImageModalClick(event, image)
+							}
+							onLayoutComplete={this.handleLayoutComplete}
+							onScrollerWait={this.handleScrollerWait}
+							onScrollerResume={this.handleScrollerResume}
+						/>
 
-					{(isImageFeedLoading ||
-						isImageFeedInitiallyLoading ||
-						hasInitiallyScrolled === false) && (
-						<Fragment>
+						{(isImageFeedLoading ||
+							isImageFeedInitiallyLoading ||
+							hasInitiallyScrolled === false) && (
 							<LoaderText className="newselfwales-page__image-feed-loader" />
+						)}
+
+						{isImageFeedInitiallyLoading && (
 							<div className="newselfwales-page__image-feed-loader-text">
 								<p>This live image feed updates every 10 seconds.</p>
 								<p>
@@ -340,10 +367,9 @@ class LandingPage extends Component {
 									appear soon.
 								</p>
 							</div>
-						</Fragment>
-					)}
-				</Fragment>
-				{/* )} */}
+						)}
+					</Fragment>
+				)}
 
 				{page &&
 					!isSearch && (

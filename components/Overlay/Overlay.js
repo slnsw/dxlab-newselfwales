@@ -20,6 +20,8 @@ class Overlay extends Component {
 	render() {
 		const { isActive, className } = this.props;
 
+		console.log('overlay', isActive);
+
 		return (
 			<CSSTransition
 				in={isActive}

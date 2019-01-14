@@ -16,6 +16,10 @@ class SearchResults extends Component {
 		onLoadMore: PropTypes.func,
 	};
 
+	static defaultProps = {
+		images: [],
+	};
+
 	handleImageClick = (event, image) => {
 		if (typeof this.props.onImageClick === 'function') {
 			this.props.onImageClick(event, image);

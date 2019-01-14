@@ -1,5 +1,5 @@
 import { Component, Fragment } from 'react';
-import { Query, Subscription, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 // import PropTypes from 'prop-types';
 
@@ -10,7 +10,7 @@ class TestFeed extends Component {
 
 	render() {
 		// const {} = this.props;
-		// console.log(this.props);
+		console.log(this.props);
 
 		return (
 			<Fragment>
@@ -59,7 +59,7 @@ class TestFeed extends Component {
 
 export default graphql(
 	gql`
-		{
+		query {
 			posts {
 				title
 			}
@@ -67,8 +67,6 @@ export default graphql(
 	`,
 	{
 		props: ({ data }) => {
-			console.log(data);
-
 			return {
 				...data,
 			};
