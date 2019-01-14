@@ -8,7 +8,7 @@ class SearchBox extends Component {
 		defaultValue: PropTypes.string,
 		className: PropTypes.string,
 		isActive: PropTypes.bool,
-		onSearchIconClick: PropTypes.func,
+		onFocus: PropTypes.func,
 		onBackClick: PropTypes.func,
 		onSubmit: PropTypes.func,
 	};
@@ -26,9 +26,9 @@ class SearchBox extends Component {
 		}
 	}
 
-	handleSearchIconClick = () => {
-		if (typeof this.props.onSearchIconClick === 'function') {
-			this.props.onSearchIconClick();
+	handleFocus = () => {
+		if (typeof this.props.onFocus === 'function') {
+			this.props.onFocus();
 		}
 	};
 
@@ -77,27 +77,30 @@ class SearchBox extends Component {
 					/>
 				)}
 
-				<div className="search-box__form">
-					{!isActive && (
-						<button
-							className="search-box__search-icon ion ion-ios-search icon"
-							onClick={this.handleSearchIconClick}
-						/>
-					)}
+				{/* {!isActive && (
+					<button
+						onClick={this.handleSearchIconClick}
+						className="search-box__search-text-holder"
+					>
+						<i className="search-box__search-icon ion ion-ios-search icon" />
+						<span className="search-box__search-text">Search</span>
+					</button>
+				)} */}
 
-					{isActive && (
-						<form onSubmit={this.handleFormSubmit}>
-							<input
-								type="text"
-								value={isChanged === false ? defaultValue : value}
-								className="search-box__input"
-								autoFocus
-								placeholder="Search here"
-								onChange={this.handleChange}
-							/>
-							<button className="search-box__search-icon ion ion-ios-search icon" />
-						</form>
-					)}
+				<div className="search-box__form">
+					{/* {isActive && ( */}
+					<form onSubmit={this.handleFormSubmit} onFocus={this.handleFocus}>
+						<input
+							type="text"
+							value={isChanged === false ? defaultValue : value}
+							className="search-box__input"
+							// autoFocus
+							placeholder="Search"
+							onChange={this.handleChange}
+						/>
+						<button className="search-box__search-icon ion ion-ios-search icon" />
+					</form>
+					{/* )} */}
 				</div>
 			</div>
 		);

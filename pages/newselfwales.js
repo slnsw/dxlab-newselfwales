@@ -192,14 +192,17 @@ class LandingPage extends Component {
 		});
 	};
 
-	handleSearchBoxIconClick = () => {
-		Router.pushRoute('/newselfwales/search');
+	handleSearchBoxFocus = () => {
+		// Check if already on search page
+		if (this.props.url.query.param !== 'search') {
+			Router.pushRoute('/newselfwales/search');
 
-		this.setState({
-			isSearch: true,
-			enableAnimation: false,
-			pauseInterval: true,
-		});
+			this.setState({
+				isSearch: true,
+				enableAnimation: false,
+				pauseInterval: true,
+			});
+		}
 	};
 
 	handleSearchBoxBackClick = () => {
@@ -279,7 +282,7 @@ class LandingPage extends Component {
 					defaultValue={url.query && url.query.q ? url.query.q : ''}
 					className="newselfwales-page__search-box"
 					isActive={isSearch}
-					onSearchIconClick={this.handleSearchBoxIconClick}
+					onFocus={this.handleSearchBoxFocus}
 					onBackClick={this.handleSearchBoxBackClick}
 					onSubmit={this.handleSearchSubmit}
 				/>

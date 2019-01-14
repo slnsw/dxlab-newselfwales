@@ -368,8 +368,8 @@ class ImageFeed extends Component {
 
 				// Amount of black space on right hand side. Can be negative if scroller is
 				// larger than viewport.
-				const emptyGap =
-					window.innerWidth - scroller.getBoundingClientRect().right;
+				const clientRect = scroller.getBoundingClientRect();
+				const emptyGap = clientRect ? window.innerWidth - clientRect.right : 0;
 
 				if (emptyGap > this.props.loadMoreGap) {
 					if (this.state.shouldHideAllWhenReady) {

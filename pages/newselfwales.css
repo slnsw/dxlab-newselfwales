@@ -68,8 +68,9 @@
 
 .newselfwales-page__image-feed-loader {
 	position: absolute;
-	top: 1em;
-	right: 1em;
+	top: var(--spacing-lg);
+	right: var(--spacing-lg);
 	padding: var(--spacing-sm);
 	background-color: var(--colour-black);
+	font-size: var(--font-size-sm);
 }
