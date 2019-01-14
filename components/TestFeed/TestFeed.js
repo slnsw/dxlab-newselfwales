@@ -1,5 +1,5 @@
 import { Component, Fragment } from 'react';
-import { Query, Subscription } from 'react-apollo';
+import { Query, Subscription, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 // import PropTypes from 'prop-types';
 
@@ -10,10 +10,13 @@ class TestFeed extends Component {
 
 	render() {
 		// const {} = this.props;
+		// console.log(this.props);
 
 		return (
 			<Fragment>
-				<Query
+				<p>test</p>
+				{/* <Query
+					ssr={true}
 					query={gql`
 						{
 							posts {
@@ -27,7 +30,7 @@ class TestFeed extends Component {
 						console.log(loading, error, data);
 						return (
 							<div className="test-feed">
-								<span />
+								<span />Hi
 							</div>
 						);
 					}}
@@ -48,10 +51,27 @@ class TestFeed extends Component {
 						console.log(data, error, loading);
 						return <p />;
 					}}
-				</Subscription>
+				</Subscription> */}
 			</Fragment>
 		);
 	}
 }
 
-export default TestFeed;
+export default graphql(
+	gql`
+		{
+			posts {
+				title
+			}
+		}
+	`,
+	{
+		props: ({ data }) => {
+			console.log(data);
+
+			return {
+				...data,
+			};
+		},
+	},
+)(TestFeed);

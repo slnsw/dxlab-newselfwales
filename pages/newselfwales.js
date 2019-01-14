@@ -30,7 +30,8 @@ class LandingPage extends Component {
 
 		this.state = {
 			isSearch: false,
-			// Need to store this in local state even though we mainly use url.query.q in props. We rely on state.q to switch back to correct search query after opening image modal.
+			// Need to store this in local state even though we mainly use url.query.q in props.
+			// We rely on state.q to switch back to correct search query after opening image modal.
 			q: '',
 			axis: 'x',
 			enableAnimation: true,
@@ -330,7 +331,16 @@ class LandingPage extends Component {
 					{(isImageFeedLoading ||
 						isImageFeedInitiallyLoading ||
 						hasInitiallyScrolled === false) && (
-						<LoaderText className="newselfwales-page__image-feed-loader" />
+						<Fragment>
+							<LoaderText className="newselfwales-page__image-feed-loader" />
+							<div className="newselfwales-page__image-feed-loader-text">
+								<p>This live image feed updates every 10 seconds.</p>
+								<p>
+									Images from our collection, exhibition and Instagram should
+									appear soon.
+								</p>
+							</div>
+						</Fragment>
 					)}
 				</Fragment>
 				{/* )} */}

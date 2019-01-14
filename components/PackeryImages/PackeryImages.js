@@ -86,7 +86,6 @@ class PackeryImages extends Component {
 				onLayoutComplete={(laidOutItems) => {
 					this.handleLayoutComplete(laidOutItems);
 				}}
-				// stamps={[...this.imageStampRefs].map((stamp) => stamp[1])}
 			>
 				{images &&
 					images.length > 0 &&
