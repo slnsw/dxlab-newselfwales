@@ -6,7 +6,8 @@ import {
 import { HttpLink } from 'apollo-link-http';
 import fetch from 'node-fetch';
 
-import introspectionQueryResultData from '../../../lib/fragmentTypes.json';
+// NOTE: Copied from main project. Keep this in sync.
+import introspectionQueryResultData from './fragmentTypes.json';
 
 require('dotenv').config();
 

@@ -1,7 +1,8 @@
 import gql from 'graphql-tag';
 
 import client from './lib/client';
-import { getDate } from '../../lib/date';
+// NOTE: Copied from main project. Keep this in sync.
+import { getDate } from './lib/date';
 
 export async function hit() {
   console.log('hit');

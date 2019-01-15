@@ -1,1 +1,27 @@
-{"__schema":{"types":[{"kind":"INTERFACE","name":"WordpressPostType","possibleTypes":[{"name":"Page"},{"name":"Post"},{"name":"Experiment"},{"name":"NewSelfWalesPortrait"},{"name":"NewSelfWalesInstagramSelfie"},{"name":"NewSelfWalesGallerySelfie"}]},{"kind":"UNION","name":"NewSelfWalesFeedType","possibleTypes":[{"name":"NewSelfWalesPortrait"},{"name":"NewSelfWalesInstagramSelfie"},{"name":"NewSelfWalesGallerySelfie"}]}]}}
+{
+	"__schema": {
+		"types": [
+			{
+				"kind": "INTERFACE",
+				"name": "WordpressPostType",
+				"possibleTypes": [
+					{ "name": "Page" },
+					{ "name": "Post" },
+					{ "name": "Experiment" },
+					{ "name": "NewSelfWalesPortrait" },
+					{ "name": "NewSelfWalesInstagramSelfie" },
+					{ "name": "NewSelfWalesGallerySelfie" }
+				]
+			},
+			{
+				"kind": "UNION",
+				"name": "NewSelfWalesFeedType",
+				"possibleTypes": [
+					{ "name": "NewSelfWalesPortrait" },
+					{ "name": "NewSelfWalesInstagramSelfie" },
+					{ "name": "NewSelfWalesGallerySelfie" }
+				]
+			}
+		]
+	}
+}
