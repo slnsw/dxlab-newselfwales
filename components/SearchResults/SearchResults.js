@@ -27,6 +27,8 @@ class SearchResults extends Component {
 	};
 
 	handleLoadMore = () => {
+		// console.log('load more');
+
 		if (typeof this.props.onLoadMore === 'function') {
 			this.props.onLoadMore();
 		}
@@ -53,7 +55,7 @@ class SearchResults extends Component {
 						gridSize="lg"
 						className={className}
 						isLoading={isLoadingMore}
-						transitionDuration={'1s'}
+						transitionDuration={'0.6s'}
 						stagger={50}
 						onImageClick={this.handleImageClick}
 					/>

@@ -11,6 +11,10 @@ class SearchFilters extends Component {
 		onClick: PropTypes.func,
 	};
 
+	static defaultProps = {
+		filters: [],
+	};
+
 	handleClick = (event, filter) => {
 		if (typeof this.props.onClick === 'function') {
 			this.props.onClick(event, filter);
@@ -27,14 +31,17 @@ class SearchFilters extends Component {
 						return (
 							<li
 								className={
-									filter === value ? 'search-filters__filter--is-selected' : ''
+									filter.value === value
+										? 'search-filters__filter--is-selected'
+										: ''
 								}
+								key={filter.value}
 							>
 								<button
 									className="search-filters__filter-button"
 									onClick={(event) => this.handleClick(event, filter)}
 								>
-									{filter}
+									{filter.name}
 								</button>
 							</li>
 						);

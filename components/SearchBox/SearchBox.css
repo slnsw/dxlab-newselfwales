@@ -17,25 +17,7 @@
 	}
 }
 
-/* .search-box__search-text-holder {
-	display: flex;
-} */
-
-/* .search-box__search-text {
-	display: none;
-	height: var(--spacing-xxlg);
-	margin-left: 1px;
-	padding: var(--spacing-xxxs) var(--spacing-xs);
-	background-color: var(--colour-black);
-	text-transform: none;
-	font-family: var(--font-secondary);
-	font-size: var(--font-size-sm);
-	line-height: 1.4;
-	color: var(--colour-primary);
-} */
-
 .search-box__form {
-	display: flex;
 	flex: 1;
 
 	& form {

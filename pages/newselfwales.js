@@ -3,6 +3,7 @@ import { graphql } from 'react-apollo';
 import withRedux from 'next-redux-wrapper';
 import gql from 'graphql-tag';
 import { withCookies } from 'react-cookie';
+import queryString from 'query-string';
 
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
@@ -13,10 +14,7 @@ import Modal from '../components/Modal';
 import SearchBox from '../components/SearchBox';
 import SearchFilters from '../components/SearchFilters';
 import Overlay from '../components/Overlay';
-// import images from '../lib/imagesNew.json';
-// import shuffle from '../lib/shuffle';
 import withApollo from '../lib/withApollo';
-// import { client } from '../lib/initApollo';
 import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
 
@@ -43,14 +41,35 @@ class LandingPage extends Component {
 			hasInitiallyScrolled: false,
 			showModal: !cookies.get('specialcareacknowledged'),
 			pauseInterval: false,
+			searchFilters: [
+				{
+					name: 'All',
+					value: 'all',
+				},
+				{
+					name: 'Collection',
+					value: 'portrait',
+				},
+				{
+					name: 'Instagram',
+					value: 'instagram-selfie',
+				},
+				{
+					name: 'Gallery',
+					value: 'gallery-selfie',
+				},
+			],
 		};
 	}
 
 	componentDidMount() {
 		window.addEventListener('keyup', this.handleKey, true);
 
+		const isSearch = this.props.url.query.param === 'search';
+
 		this.setState({
-			isSearch: this.props.url.query.param === 'search',
+			isSearch,
+			enableAnimation: !isSearch,
 		});
 	}
 
@@ -124,22 +143,6 @@ class LandingPage extends Component {
 				isImageFeedInitiallyLoading: false,
 			});
 		}
-
-		// const silhouetteInterval = 11;
-		// const silhouette = {
-		// 	isSilhouette: true,
-		// 	imageUrl: '/static/newselfwales/images/silhouettes/silhouette.png',
-		// };
-
-		// // Build images for wall
-		// const totalSilhouettes = Math.ceil(images.length / silhouetteInterval);
-
-		// // Loop through and slice in silhoutte
-		// [...Array(totalSilhouettes)].forEach((item, i) => {
-		// 	images.splice(i * silhouetteInterval + 1, 0, silhouette);
-		// });
-
-		// return images;
 	};
 
 	handleLayoutComplete = () => {
@@ -227,13 +230,39 @@ class LandingPage extends Component {
 	};
 
 	handleSearchSubmit = (value) => {
+		const { filters } = this.props.url.query;
+
+		const query = {
+			q: value,
+			...(filters
+				? {
+						filters,
+					}
+				: {}),
+		};
+
+		const url = `/newselfwales/search?${queryString.stringify(query)}`;
+
 		if (value) {
-			Router.pushRoute(`/newselfwales/search?q=${value}`);
+			Router.pushRoute(url);
 		}
 	};
 
-	handleSearchFilterClick = (event, value) => {
-		console.log(value);
+	handleSearchFilterClick = (event, filter) => {
+		const query = {
+			...this.props.url.query,
+			filters: filter.value,
+		};
+
+		delete query.param;
+
+		if (filter.value === 'all') {
+			delete query.filters;
+		}
+
+		const url = `/newselfwales/search?${queryString.stringify(query)}`;
+
+		Router.pushRoute(url);
 	};
 
 	// --------------------------------------------------------------------------
@@ -260,12 +289,14 @@ class LandingPage extends Component {
 
 	render() {
 		const { loading, error, pages, url } = this.props;
+		const { query } = url;
 		const {
 			showModal,
 			enableAnimation,
 			sourceImageBoundingClientRect,
 			isInfoBoxFullSize,
 			isSearch,
+			searchFilters,
 			isImageFeedLoading,
 			isImageFeedInitiallyLoading,
 			hasInitiallyScrolled,
@@ -273,8 +304,6 @@ class LandingPage extends Component {
 
 		const showImageModal = url && url.query.param && url.query.id && true;
 		const q = url.query.q || this.state.q;
-
-		console.log(isSearch, 'search');
 
 		if (loading) {
 			return <div />;
@@ -286,6 +315,14 @@ class LandingPage extends Component {
 		}
 
 		const page = pages && pages[0];
+		const filterValue = query.filters || 'all';
+
+		// console.log({
+		// 	isSearch,
+		// 	isImageFeedInitiallyLoading,
+		// 	isImageFeedLoading,
+		// 	hasInitiallyScrolled,
+		// });
 
 		return (
 			<App
@@ -311,13 +348,14 @@ class LandingPage extends Component {
 					<Fragment>
 						<SearchFilters
 							className="newselfwales-page__search-filters"
-							filters={['all', 'gallery', 'instagram', 'collection']}
-							value={'all'}
+							filters={searchFilters}
+							value={filterValue}
 							onClick={this.handleSearchFilterClick}
 						/>
 						<div className="newselfwales-page__search-results">
 							<SearchResultsContainer
 								q={q}
+								filters={query.filters ? [query.filters] : null}
 								onImageClick={(event, image) =>
 									this.handleImageModalClick(event, image)
 								}
@@ -328,48 +366,48 @@ class LandingPage extends Component {
 
 				<Overlay isActive={isSearch} />
 
-				{!isSearch && (
-					<Fragment>
-						{/* <button
+				{/* {!isSearch && ( */}
+				<Fragment>
+					{/* <button
 							className="button newselfwales-page__toggle-animation-button"
 							onClick={this.handleToggleAnimationButton}
 						>
 							{enableAnimation ? 'Pause' : 'Play'}
 						</button> */}
 
-						<ImageFeedContainer
-							startImages={20}
-							maxImages={50}
-							intervalTime={5000}
-							pauseInterval={this.state.pauseInterval}
-							enableAnimation={enableAnimation}
-							shouldFetchImagesOnMount={false}
-							onImagesUpdate={this.handleImagesUpdate}
-							onImageClick={(event, image) =>
-								this.handleImageModalClick(event, image)
-							}
-							onLayoutComplete={this.handleLayoutComplete}
-							onScrollerWait={this.handleScrollerWait}
-							onScrollerResume={this.handleScrollerResume}
-						/>
+					<ImageFeedContainer
+						startImages={20}
+						maxImages={50}
+						intervalTime={5000}
+						pauseInterval={this.state.pauseInterval}
+						enableAnimation={enableAnimation}
+						shouldFetchImagesOnMount={false}
+						onImagesUpdate={this.handleImagesUpdate}
+						onImageClick={(event, image) =>
+							this.handleImageModalClick(event, image)
+						}
+						onLayoutComplete={this.handleLayoutComplete}
+						onScrollerWait={this.handleScrollerWait}
+						onScrollerResume={this.handleScrollerResume}
+					/>
 
-						{(isImageFeedLoading ||
-							isImageFeedInitiallyLoading ||
-							hasInitiallyScrolled === false) && (
-							<LoaderText className="newselfwales-page__image-feed-loader" />
-						)}
+					{(isImageFeedLoading ||
+						isImageFeedInitiallyLoading ||
+						hasInitiallyScrolled === false) && (
+						<LoaderText className="newselfwales-page__image-feed-loader" />
+					)}
 
-						{isImageFeedInitiallyLoading && (
-							<div className="newselfwales-page__image-feed-loader-text">
-								<p>This live image feed updates every 10 seconds.</p>
-								<p>
-									Images from our collection, exhibition and Instagram should
-									appear soon.
-								</p>
-							</div>
-						)}
-					</Fragment>
-				)}
+					{isImageFeedInitiallyLoading && (
+						<div className="newselfwales-page__image-feed-loader-text">
+							<p>This live image feed updates every 10 seconds.</p>
+							<p>
+								Images from our collection, exhibition and Instagram should
+								appear soon.
+							</p>
+						</div>
+					)}
+				</Fragment>
+				{/* )} */}
 
 				{page &&
 					!isSearch && (

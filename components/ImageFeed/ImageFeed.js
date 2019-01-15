@@ -784,7 +784,7 @@ class ImageFeed extends Component {
 											}
 											ref={(c) => this.imageHolderRefs.set(image.id, c)}
 											data-id={image.id}
-											tabindex="0"
+											tabIndex="0"
 										>
 											{image.isSilhouette && (
 												<div className="image-feed__image-holder__content">

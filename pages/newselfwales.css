@@ -31,17 +31,20 @@
 	right: var(--spacing-xxxxs);
 	left: var(--spacing-xxxxs);
 	z-index: 2;
-	width: calc(100% - (var(--spacing-xxxxs) * 2));
-	max-width: 20em;
+	width: calc(100% - (var(--spacing-xxxs) * 2));
 	font-size: var(--font-size-xlg);
+
+	@media (--screen-md) {
+		max-width: 12em;
+	}
 }
 
 .newselfwales-page__search-filters {
 	position: absolute;
 	top: 4.55rem;
-	right: 0;
+	right: 0.1rem;
 
-	@media (--screen-sm) {
+	@media (--screen-md) {
 		width: auto;
 		top: 1.2em;
 		left: 22em;
@@ -57,7 +60,7 @@
 	width: 100%;
 	height: calc(100% - 7em);
 
-	@media (--screen-sm) {
+	@media (--screen-md) {
 		top: 5em;
 		height: calc(100% - 5em);
 	}

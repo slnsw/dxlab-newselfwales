@@ -14,6 +14,7 @@ const MININUM_LETTERS = 3;
 class SearchResultsContainer extends Component {
 	static propTypes = {
 		q: PropTypes.string.isRequired,
+		filters: PropTypes.array,
 		isActive: PropTypes.bool,
 		className: PropTypes.string,
 		onInputTextFocus: PropTypes.func,
@@ -23,6 +24,7 @@ class SearchResultsContainer extends Component {
 
 	static defaultProps = {
 		q: '',
+		filters: [],
 	};
 
 	state = {
@@ -53,10 +55,28 @@ class SearchResultsContainer extends Component {
 			updateQuery: (prev, { fetchMoreResult }) => {
 				if (!fetchMoreResult) return prev;
 
+				// console.log(fetchMoreResult);
+
+				// NOTE: Need to do complex data merging because some field may be skipped
+				// and therefore not show up in results.
+				const newSelfWales = {
+					...fetchMoreResult.newSelfWales,
+					portraits: fetchMoreResult.newSelfWales.portraits || [],
+					instagramSelfies: fetchMoreResult.newSelfWales.instagramSelfies || [],
+					gallerySelfies: fetchMoreResult.newSelfWales.gallerySelfies || [],
+				};
+
+				const prevNewSelfWales = {
+					...prev.newSelfWales,
+					portraits: prev.newSelfWales.portraits || [],
+					instagramSelfies: prev.newSelfWales.instagramSelfies || [],
+					gallerySelfies: prev.newSelfWales.gallerySelfies || [],
+				};
+
 				if (
-					fetchMoreResult.newSelfWales.portraits.length === 0 &&
-					fetchMoreResult.newSelfWales.instagramSelfies.length === 0 &&
-					fetchMoreResult.newSelfWales.gallerySelfies.length === 0
+					newSelfWales.portraits.length === 0 &&
+					newSelfWales.instagramSelfies.length === 0 &&
+					newSelfWales.gallerySelfies.length === 0
 				) {
 					// Stop onLoadMore from running again
 					this.setState({
@@ -72,18 +92,18 @@ class SearchResultsContainer extends Component {
 				return {
 					...prev,
 					newSelfWales: {
-						...fetchMoreResult.newSelfWales,
+						...newSelfWales,
 						portraits: [
-							...prev.newSelfWales.portraits,
-							...fetchMoreResult.newSelfWales.portraits,
+							...prevNewSelfWales.portraits,
+							...newSelfWales.portraits,
 						],
 						instagramSelfies: [
-							...prev.newSelfWales.instagramSelfies,
-							...fetchMoreResult.newSelfWales.instagramSelfies,
+							...prevNewSelfWales.instagramSelfies,
+							...newSelfWales.instagramSelfies,
 						],
 						gallerySelfies: [
-							...prev.newSelfWales.gallerySelfies,
-							...fetchMoreResult.newSelfWales.gallerySelfies,
+							...prevNewSelfWales.gallerySelfies,
+							...newSelfWales.gallerySelfies,
 						],
 					},
 				};
@@ -157,26 +177,26 @@ function buildImages(data) {
 	if (!data || !data.newSelfWales) {
 		return [];
 	}
+
+	const portraits = data.newSelfWales.portraits || [];
+	const gallerySelfies = data.newSelfWales.gallerySelfies || [];
+	const instagramSelfies = data.newSelfWales.instagramSelfies || [];
+
 	const longest = Math.max(
-		data.newSelfWales.portraits.length,
-		data.newSelfWales.gallerySelfies.length,
-		data.newSelfWales.instagramSelfies.length,
+		portraits.length,
+		gallerySelfies.length,
+		instagramSelfies.length,
 	);
+
 	if (longest > 0) {
 		const matrix = [
-			[...(data.newSelfWales.portraits ? data.newSelfWales.portraits : [])],
-			[
-				...(data.newSelfWales.gallerySelfies
-					? data.newSelfWales.gallerySelfies
-					: []),
-			],
-			[
-				...(data.newSelfWales.instagramSelfies
-					? data.newSelfWales.instagramSelfies
-					: []),
-			],
+			[...(portraits || [])],
+			[...(gallerySelfies || [])],
+			[...(instagramSelfies || [])],
 		];
+
 		const images = [];
+
 		for (let i = 0; i < longest; i++) {
 			for (let o = 0; o < 3; o++) {
 				if (
@@ -187,14 +207,24 @@ function buildImages(data) {
 				}
 			}
 		}
+
 		return processImagesType(images);
 	}
 }
 
 const SEARCH_QUERY = gql`
-	query search($search: String, $limit: Int, $offset: Int, $skip: Boolean!) {
-		newSelfWales @skip(if: $skip) {
-			instagramSelfies(search: $search, limit: $limit, offset: $offset) {
+	query search(
+		$search: String
+		$limit: Int
+		$offset: Int
+		$skipAll: Boolean!
+		$skipInstagramSelfies: Boolean!
+		$skipPortraits: Boolean!
+		$skipGallerySelfies: Boolean!
+	) {
+		newSelfWales @skip(if: $skipAll) {
+			instagramSelfies(search: $search, limit: $limit, offset: $offset)
+				@skip(if: $skipInstagramSelfies) {
 				id
 				title
 				content
@@ -221,7 +251,8 @@ const SEARCH_QUERY = gql`
 				}
 				__typename
 			}
-			portraits(search: $search, limit: $limit, offset: $offset) {
+			portraits(search: $search, limit: $limit, offset: $offset)
+				@skip(if: $skipPortraits) {
 				id
 				title
 				content
@@ -245,7 +276,8 @@ const SEARCH_QUERY = gql`
 				}
 				__typename
 			}
-			gallerySelfies(search: $search, limit: $limit, offset: $offset) {
+			gallerySelfies(search: $search, limit: $limit, offset: $offset)
+				@skip(if: $skipGallerySelfies) {
 				id
 				title
 				content
@@ -273,15 +305,54 @@ const SEARCH_QUERY = gql`
 `;
 
 export default graphql(SEARCH_QUERY, {
-	options: ({ q = '' }) => {
+	options: ({ q = '', filters }) => {
+		// console.log(filters);
+
+		const filter = filters && filters[0];
+
+		let skipInstagramSelfies = false;
+		let skipPortraits = false;
+		let skipGallerySelfies = false;
+
+		if (filter === 'portrait') {
+			skipInstagramSelfies = true;
+			skipGallerySelfies = true;
+		} else if (filter === 'instagram-selfie') {
+			skipPortraits = true;
+			skipGallerySelfies = true;
+		} else if (filter === 'gallery-selfie') {
+			skipInstagramSelfies = true;
+			skipPortraits = true;
+		}
+
 		return {
 			variables: {
 				search: q,
 				limit: 20,
 				offset: 0,
-				skip: q.length < MININUM_LETTERS,
+				skipAll: q.length < MININUM_LETTERS,
+				skipInstagramSelfies,
+				skipPortraits,
+				skipGallerySelfies,
 			},
 			notifyOnNetworkStatusChange: true,
+		};
+	},
+	props: ({ data }) => {
+		// console.log(data);
+
+		const newSelfWales = data.newSelfWales || {};
+
+		return {
+			data: {
+				...data,
+				newSelfWales: {
+					...newSelfWales,
+					portraits: newSelfWales.portraits || [],
+					instagramSelfies: newSelfWales.instagramSelfies || [],
+					gallerySelfies: newSelfWales.gallerySelfies || [],
+				},
+			},
 		};
 	},
 })(SearchResultsContainer);
