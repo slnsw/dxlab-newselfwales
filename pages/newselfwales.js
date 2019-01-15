@@ -66,25 +66,14 @@ class LandingPage extends Component {
 		window.addEventListener('keyup', this.handleKey, true);
 
 		const isSearch = this.props.url.query.param === 'search';
+		const isHome = typeof this.props.url.query.param === 'undefined';
 
 		this.setState({
 			isSearch,
-			enableAnimation: !isSearch,
+			enableAnimation: isHome,
+			pauseInterval: !isHome,
 		});
 	}
-
-	// componentDidUpdate(prevProps) {
-	// 	if (prevProps.url.query !== this.props.url.query) {
-	// 		const isSearch =
-	// 			this.props.url.query.param === 'search' ||
-	// 			Boolean(this.props.url.query.q);
-
-	// 		this.setState({
-	// 			isSearch,
-	// 			pauseInterval: isSearch,
-	// 		});
-	// 	}
-	// }
 
 	// --------------------------------------------------------------------------
 	// Modals

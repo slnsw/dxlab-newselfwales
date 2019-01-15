@@ -104,6 +104,7 @@ class ImageFeed extends Component {
 			marginTop: this.props.marginTop,
 			heightAdjust: this.props.heightAdjust,
 			fps: this.props.fps,
+			pauseInterval: this.props.pauseInterval,
 			shouldFetchImagesOnMount: this.props.shouldFetchImagesOnMount,
 		});
 	}
@@ -279,6 +280,11 @@ class ImageFeed extends Component {
 			);
 
 			log(this.props.status);
+
+			if (this.props.pauseInterval) {
+				log('Pause Interval', this.interval);
+				clearInterval(this.interval);
+			}
 
 			if (this.state.shouldHideAllWhenReady) {
 				log('shouldHideAllWhenReady');
@@ -565,12 +571,6 @@ class ImageFeed extends Component {
 		const randomImageBox = ReactDOM.findDOMNode(
 			randomImageRef,
 		).getBoundingClientRect();
-
-		// Work out if visible within viewport
-		// NOTE: Use this once image fade is more solid
-		// const isVisible =
-		// 	randomImageBox.x > 0 &&
-		// 	randomImageBox.x + randomImageBox.width < window.innerWidth;
 
 		// Work out if leftOfViewport
 		const isLeftOfViewport = randomImageBox.x + randomImageBox.width < 0;
