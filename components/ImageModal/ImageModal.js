@@ -258,7 +258,7 @@ class ImageModal extends Component {
 									<div
 										className="image-modal__image"
 										style={{
-											backgroundImage: `url(${imageUrl}`,
+											backgroundImage: `url(${imageUrl})`,
 										}}
 									>
 										{/* <img
