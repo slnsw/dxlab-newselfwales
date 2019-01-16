@@ -18,8 +18,15 @@ html {
 	box-sizing: inherit;
 }
 
+/* https://www.bram.us/2016/05/02/prevent-overscroll-bounce-in-ios-mobilesafari-pure-css/ */
+html,
 body {
-	/* Different to dxlab-website */
+	position: fixed;
+	overflow: hidden;
+}
+
+body {
+	width: 100%;
 	margin: 0;
 	background-color: var(--colour-black);
 	color: var(--colour-white);

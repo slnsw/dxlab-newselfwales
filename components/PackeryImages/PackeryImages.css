@@ -1,10 +1,1 @@
 @import '../../styles/variables.css';
-
-.packery-images__loading {
-	position: absolute;
-	top: 0;
-	right: 0;
-	z-index: 2;
-	padding: var(--spacing-sm);
-	background-color: var(--colour-black);
-}

@@ -4,8 +4,19 @@
 	height: 100%;
 	width: 100%;
 	overflow: auto;
+	-webkit-overflow-scrolling: touch;
 
 	& > div {
 		height: 100%;
 	}
+}
+
+.search-results__loading-more {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 2;
+	height: auto !important;
+	padding: var(--spacing-sm);
+	background-color: var(--colour-black);
 }

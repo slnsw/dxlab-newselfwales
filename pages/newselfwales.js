@@ -103,6 +103,7 @@ class LandingPage extends Component {
 			enableAnimation: false,
 			q: this.state.isSearch ? q : '',
 			sourceImageBoundingClientRect: event.target.parentElement.getBoundingClientRect(),
+			pauseInterval: true,
 		});
 	};
 
@@ -116,6 +117,7 @@ class LandingPage extends Component {
 
 			this.setState({
 				enableAnimation: true,
+				pauseInterval: false,
 			});
 		}
 	};

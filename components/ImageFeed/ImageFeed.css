@@ -21,6 +21,7 @@
 
 .image-feed__scroller {
 	overflow: auto;
+	-webkit-overflow-scrolling: touch;
 	height: 100%;
 }
 
