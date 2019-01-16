@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import PackeryImages from '../PackeryImages';
 import InfiniteScroll from '../InfiniteScroll';
+import LoaderText from '../LoaderText';
 import './SearchResults.css';
 
 class SearchResults extends Component {
@@ -60,6 +61,10 @@ class SearchResults extends Component {
 						onImageClick={this.handleImageClick}
 					/>
 				</InfiniteScroll>
+
+				{isLoadingMore && (
+					<LoaderText className="search-results__loading-more" />
+				)}
 			</div>
 		);
 	}
