@@ -59,7 +59,12 @@ class InfoBox extends Component {
 					{/* <h1 className="info-box__title">#NewSelfWales</h1> */}
 
 					{!isFullSize &&
-						excerpt && <p className="info-box__excerpt">{excerpt}</p>}
+						excerpt && (
+							<p
+								className="info-box__excerpt"
+								dangerouslySetInnerHTML={{ __html: excerpt }}
+							/>
+						)}
 
 					{isFullSize && (
 						<Fragment>

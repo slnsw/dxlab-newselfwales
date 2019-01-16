@@ -38,6 +38,24 @@ HC_RIGHT_INTERVAL=300000
 
 Save a `.env.staging` and `.env.production` file for staging and production deploys respectively.
 
+## Website
+
+Promo website is here: `/newselfwales`.
+
+## Cronjob
+
+This runs a server that hits GraphQL, receives the NewSelfWales feed, and sends it back as a mutation every 20 seconds. The mutation updates all clients that are subscribed to the subscription query. In our case, the ImageFeedContainer component will receive new images every 20 seconds. This means that don't have to poll the server.
+
+```
+# Run the server. Make sure GraphQL is running and .env is set up.
+$ cd cronjob
+$ npm start
+```
+
+## Scraper
+
+## Photobooth
+
 ## Gallery Experience
 
 This can be accessed from this URL: `/gallery`

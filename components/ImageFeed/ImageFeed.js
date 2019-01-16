@@ -6,7 +6,8 @@ import { CSSTransition } from 'react-transition-group';
 import Packery from '../Packery';
 import { scroller } from '../../lib/scroll';
 import logBase from '../../lib/log';
-import { getDate } from '../../lib/date';
+// TODO: Can take out of this location and keep the one in ./cronjob as source of truth.
+// import { getDate } from '../../lib/date';
 import './ImageFeed.css';
 
 const log = (...args) => {
@@ -411,8 +412,9 @@ class ImageFeed extends Component {
 
 						this.props.onLoadMore({
 							limit: fetchMoreImages,
-							portraitPercentage: 0.4,
-							dateStart: getDate(-120),
+							// No longer in use, cronjob takes care of this.
+							// portraitPercentage: 0.4,
+							// dateStart: getDate(-120),
 						});
 					} else {
 						log('Max images reached, do not load new images, hide one instead');

@@ -176,6 +176,10 @@ class LandingPage extends Component {
 		}
 	};
 
+	// --------------------------------------------------------------------------
+	// Info Box
+	// --------------------------------------------------------------------------
+
 	handleMoreButtonClick = () => {
 		this.setState({
 			isInfoBoxFullSize: true,
@@ -366,7 +370,7 @@ class LandingPage extends Component {
 
 					<ImageFeedContainer
 						startImages={20}
-						maxImages={50}
+						maxImages={150}
 						intervalTime={5000}
 						pauseInterval={this.state.pauseInterval}
 						enableAnimation={enableAnimation}
@@ -388,11 +392,7 @@ class LandingPage extends Component {
 
 					{isImageFeedInitiallyLoading && (
 						<div className="newselfwales-page__image-feed-loader-text">
-							<p>This live image feed updates every 10 seconds.</p>
-							<p>
-								Images from our collection, exhibition and Instagram should
-								appear soon.
-							</p>
+							<p>Our global live image feed updates every 20 seconds.</p>
 						</div>
 					)}
 				</Fragment>

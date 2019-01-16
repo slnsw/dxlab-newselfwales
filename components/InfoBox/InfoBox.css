@@ -109,7 +109,11 @@
 .info-box__excerpt {
 	margin-top: 0;
 	margin-bottom: 0;
-	font-size: var(--spacing-md);
+	font-size: var(--spacing-sm);
+
+	@media (--screen-sm) {
+		font-size: var(--spacing-md);
+	}
 }
 
 .info-box__toggle-button {
