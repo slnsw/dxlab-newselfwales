@@ -14,6 +14,7 @@ import Modal from '../components/Modal';
 import SearchBox from '../components/SearchBox';
 import SearchFilters from '../components/SearchFilters';
 import Overlay from '../components/Overlay';
+import MessageWidget from '../components/MessageWidget';
 import withApollo from '../lib/withApollo';
 import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
@@ -410,6 +411,14 @@ class LandingPage extends Component {
 					{isImageFeedInitiallyLoading && (
 						<div className="newselfwales-page__image-feed-loader-text">
 							<p>Our global live image feed updates every 20 seconds.</p>
+							<MessageWidget
+								messages={[
+									"Around 5,500 portrairts from the Library's collection appear in the feed.",
+									'The public have contributed around one thousand images via Instagram using the hashtag #NewSelfWales',
+									'Using the in-gallery photo-booths visitors have added nearly 6,000 pictures to the feed.',
+								]}
+								timePerMessage={5000}
+							/>
 						</div>
 					)}
 				</Fragment>
