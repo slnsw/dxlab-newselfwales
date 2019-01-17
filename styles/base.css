@@ -22,7 +22,7 @@ html {
 html,
 body {
 	position: fixed;
-	overflow: hidden;
+	overflow: hidden; 
 }
 
 body {
