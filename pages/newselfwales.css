@@ -17,6 +17,10 @@
 	font-weight: 700;
 }
 
+.newselfwales-page__special-care {
+	border: 1px solid var(--colour-grey-darkest);
+}
+
 .modal .newselfwales-page__special-care-title {
 	color: var(--colour-primary);
 }
@@ -111,20 +115,20 @@
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	width: 250px;
-	margin-left: -125px;
-	margin-top: -125px;
+	width: 80%;
+	transform: translate(-50%, -50%);
 	padding: var(--spacing-sm);
 	/* background-color: var(--colour-black); */
 	color: var(--colour-grey-lightest);
 	font-size: var(--font-size-sm);
 	text-align: center;
-	
 
 	@media (--screen-md) {
 		font-size: var(--font-size-md);
+		width: 40%;
+		max-width: 30em;
 	}
-	
+
 	& p {
 		animation: fadeIn 1s infinite alternate;
 	}

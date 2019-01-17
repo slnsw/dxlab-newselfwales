@@ -66,6 +66,7 @@
 	@media (--screen-sm) {
 		position: relative;
 		overflow: auto;
+		-webkit-overflow-scrolling: touch;
 		width: 30%;
 		height: calc(100% - 1em);
 		padding-top: 4em;
@@ -141,6 +142,10 @@
 }
 
 .image-modal__collection-link {
-	padding-top: var(--spacing-xxs);
+	padding: 0 1em;
+	/* padding-top: var(--spacing-xxs); */
+	border: 1px solid var(--colour-primary);
+	@apply --font-uppercase;
 	font-size: var(--font-size-xs);
+	line-height: 2;
 }
