@@ -72,7 +72,7 @@ class SearchBox extends Component {
 			>
 				{isActive && (
 					<button
-						className="ion ion-ios-arrow-back icon"
+						className="search-box__back-button ion ion-ios-arrow-back icon"
 						onClick={this.handleBackClick}
 					/>
 				)}
