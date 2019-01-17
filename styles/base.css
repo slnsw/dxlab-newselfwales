@@ -18,11 +18,14 @@ html {
 	box-sizing: inherit;
 }
 
-/* https://www.bram.us/2016/05/02/prevent-overscroll-bounce-in-ios-mobilesafari-pure-css/ */
-html,
-body {
-	position: fixed;
-	overflow: hidden;
+/* Skip IE 11 */
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+	/* https://www.bram.us/2016/05/02/prevent-overscroll-bounce-in-ios-mobilesafari-pure-css/ */
+	html,
+	body {
+		position: fixed;
+		overflow: hidden;
+	}
 }
 
 body {

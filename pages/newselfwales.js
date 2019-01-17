@@ -30,8 +30,9 @@ class LandingPage extends Component {
 		this.state = {
 			isSearch: false,
 			// Need to store this in local state even though we mainly use url.query.q in props.
-			// We rely on state.q to switch back to correct search query after opening image modal.
+			// We rely on state.q and state.filters to switch back to correct search query after opening image modal.
 			q: '',
+			filters: null,
 			axis: 'x',
 			enableAnimation: true,
 			sourceImageBoundingClientRect: null,
@@ -95,23 +96,37 @@ class LandingPage extends Component {
 	};
 
 	handleImageModalClick = (event, image) => {
-		const { q } = this.props.url.query;
+		// Store query and filters in state so when ImageModal closes,
+		// we can return back to correct search.
+		const { q, filters } = this.props.url.query;
 
 		Router.pushRoute(`/newselfwales/${image.type}/${image.id}`);
 
 		this.setState({
 			enableAnimation: false,
 			q: this.state.isSearch ? q : '',
+			filters: this.state.isSearch ? filters : null,
 			sourceImageBoundingClientRect: event.target.parentElement.getBoundingClientRect(),
 			pauseInterval: true,
 		});
 	};
 
 	handleImageModalClose = () => {
-		const { q } = this.state;
+		const { q, filters } = this.state;
 
 		if (this.state.isSearch) {
-			Router.pushRoute(`/newselfwales/search${q ? `?q=${q}` : ''}`);
+			const query = {
+				q,
+				...(filters
+					? {
+							filters,
+						}
+					: {}),
+			};
+
+			const url = `/newselfwales/search?${queryString.stringify(query)}`;
+
+			Router.pushRoute(url);
 		} else {
 			Router.pushRoute('/newselfwales');
 

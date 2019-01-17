@@ -4,6 +4,7 @@ import { Transition } from 'react-transition-group';
 
 import './ImageModal.css';
 import Modal from '../Modal';
+import LoaderText from '../LoaderText';
 import { SCREEN_SM } from '../../styles/variables';
 
 const typeName = {
@@ -23,7 +24,7 @@ class ImageModal extends Component {
 		sourceImageBoundingClientRect: PropTypes.object,
 		onClose: PropTypes.func,
 		isActive: PropTypes.bool,
-		loading: PropTypes.bool,
+		isLoading: PropTypes.bool,
 		date: PropTypes.string,
 		instagramUsername: PropTypes.string,
 		flNumber: PropTypes.string,
@@ -167,7 +168,7 @@ class ImageModal extends Component {
 			date,
 			instagramUsername,
 			flNumber,
-			// loading,
+			isLoading,
 		} = this.props;
 
 		const { screenWidth } = this.state;
@@ -195,7 +196,7 @@ class ImageModal extends Component {
 				// unmountOnExit={true}
 			>
 				{(state) => {
-					// if (loading) {
+					// if (isLoading) {
 					// 	return null;
 					// }
 
@@ -273,6 +274,8 @@ class ImageModal extends Component {
 							</div>
 
 							<div className="image-modal__info">
+								{isLoading && <LoaderText />}
+
 								<div className="image-modal__type">{typeName[imageType]}</div>
 
 								<h1

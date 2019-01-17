@@ -72,7 +72,7 @@ class ImageModalContainer extends Component {
 							type={imageType}
 							onClose={onClose}
 							isActive={isActive}
-							loading={loading}
+							isLoading={loading}
 							error={error}
 						/>
 					);
