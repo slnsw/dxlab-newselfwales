@@ -9,12 +9,6 @@ class MessageWidget extends Component {
 		timePerMessage: PropTypes.number, // in milliseconds
 	};
 
-/*
-	static defaultProps = {
-		messages: ['.'],
-		timePerMessage: 3000,
-	};
-*/
 	state = {
 		message: '',
 		messageIndex: 0,
@@ -60,8 +54,6 @@ class MessageWidget extends Component {
 	};
 
 	render() {
-		const { messages } = this.props;
-
 		return (
 			<div className="message-widget">
 				<span dangerouslySetInnerHTML={{ __html: this.state.message }} />

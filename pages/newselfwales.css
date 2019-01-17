@@ -79,6 +79,20 @@
 	}
 }
 
+.newselfwales-page__search-suggestions {
+	position: absolute;
+	z-index: 4;
+	top: 10em;
+	left: var(--spacing-lg);
+	width: 100%;
+	height: calc(100% - 10em);
+/*
+	@media (--screen-md) {
+		top: 5em;
+		height: calc(100% - 5em);
+	}
+	*/
+}
 /* 
  * OVERLAY
  * ------------------------------------------------------------------------- */
@@ -124,7 +138,7 @@
 	@media (--screen-md) {
 		font-size: var(--font-size-md);
 	}
-	
+
 	& p {
 		animation: fadeIn 1s infinite alternate;
 	}
