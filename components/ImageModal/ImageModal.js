@@ -4,6 +4,7 @@ import { Transition } from 'react-transition-group';
 
 import './ImageModal.css';
 import Modal from '../Modal';
+import LoaderText from '../LoaderText';
 import { SCREEN_SM } from '../../styles/variables';
 
 const typeName = {
@@ -23,7 +24,7 @@ class ImageModal extends Component {
 		sourceImageBoundingClientRect: PropTypes.object,
 		onClose: PropTypes.func,
 		isActive: PropTypes.bool,
-		loading: PropTypes.bool,
+		isLoading: PropTypes.bool,
 		date: PropTypes.string,
 		instagramUsername: PropTypes.string,
 		flNumber: PropTypes.string,
@@ -167,14 +168,10 @@ class ImageModal extends Component {
 			date,
 			instagramUsername,
 			flNumber,
-			// loading,
+			isLoading,
 		} = this.props;
 
 		const { screenWidth } = this.state;
-
-		// if (isActive !== true) {
-		// 	return null;
-		// }
 
 		const timeout = 500;
 
@@ -185,7 +182,10 @@ class ImageModal extends Component {
 			dateString = `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
 		}
 
-		// console.log('ImageModal', isActive);
+		const collectionLink = flNumber
+			? `http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?embedded=true&toolbar=false&dps_pid=${flNumber.toUpperCase()}`
+			: primoId &&
+				`https://search.sl.nsw.gov.au/primo-explore/fulldisplay?vid=SLNSW&search_scope=EEA&adaptor=Local%20Search%20Engine&docid=${primoId.toUpperCase()}`;
 
 		return (
 			<Transition
@@ -195,7 +195,7 @@ class ImageModal extends Component {
 				// unmountOnExit={true}
 			>
 				{(state) => {
-					// if (loading) {
+					// if (isLoading) {
 					// 	return null;
 					// }
 
@@ -273,6 +273,8 @@ class ImageModal extends Component {
 							</div>
 
 							<div className="image-modal__info">
+								{isLoading && <LoaderText />}
+
 								<div className="image-modal__type">{typeName[imageType]}</div>
 
 								<h1
@@ -301,24 +303,14 @@ class ImageModal extends Component {
 									<div className="image-modal__date">{dateString}</div>
 								)}
 
-								{flNumber ? (
+								{collectionLink && (
 									<a
-										className="image-modal__collection-link button button--small"
+										className="image-modal__collection-link"
 										target="_blank"
-										href={`http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?embedded=true&toolbar=false&dps_pid=${flNumber.toUpperCase()}`}
+										href={collectionLink}
 									>
 										Collection Image
 									</a>
-								) : (
-									primoId && (
-										<a
-											className="image-modal__collection-link button button--small"
-											target="_blank"
-											href={`https://search.sl.nsw.gov.au/primo-explore/fulldisplay?vid=SLNSW&search_scope=EEA&adaptor=Local%20Search%20Engine&docid=${primoId.toUpperCase()}`}
-										>
-											Collection Image
-										</a>
-									)
 								)}
 							</footer>
 						</Modal>

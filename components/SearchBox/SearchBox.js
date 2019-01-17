@@ -72,23 +72,12 @@ class SearchBox extends Component {
 			>
 				{isActive && (
 					<button
-						className="ion ion-ios-arrow-back icon"
+						className="search-box__back-button ion ion-ios-arrow-back icon"
 						onClick={this.handleBackClick}
 					/>
 				)}
 
-				{/* {!isActive && (
-					<button
-						onClick={this.handleSearchIconClick}
-						className="search-box__search-text-holder"
-					>
-						<i className="search-box__search-icon ion ion-ios-search icon" />
-						<span className="search-box__search-text">Search</span>
-					</button>
-				)} */}
-
 				<div className="search-box__form">
-					{/* {isActive && ( */}
 					<form onSubmit={this.handleFormSubmit} onFocus={this.handleFocus}>
 						<input
 							type="text"
@@ -100,7 +89,6 @@ class SearchBox extends Component {
 						/>
 						<button className="search-box__search-icon ion ion-ios-search icon" />
 					</form>
-					{/* )} */}
 				</div>
 			</div>
 		);

@@ -32,8 +32,9 @@ class LandingPage extends Component {
 		this.state = {
 			isSearch: false,
 			// Need to store this in local state even though we mainly use url.query.q in props.
-			// We rely on state.q to switch back to correct search query after opening image modal.
+			// We rely on state.q and state.filters to switch back to correct search query after opening image modal.
 			q: '',
+			filters: null,
 			axis: 'x',
 			enableAnimation: true,
 			sourceImageBoundingClientRect: null,
@@ -78,7 +79,7 @@ class LandingPage extends Component {
 	}
 
 	// --------------------------------------------------------------------------
-	// Modals
+	// Special Care Modal
 	// --------------------------------------------------------------------------
 
 	handleSpecialCareModalClose = () => {
@@ -96,24 +97,47 @@ class LandingPage extends Component {
 		});
 	};
 
+	// --------------------------------------------------------------------------
+	// Image Modal
+	// --------------------------------------------------------------------------
+
 	handleImageModalClick = (event, image) => {
-		const { q } = this.props.url.query;
+		// Store query and filters in state so when ImageModal closes,
+		// we can return back to correct search.
+		const { q, filters } = this.props.url.query;
 
 		Router.pushRoute(`/newselfwales/${image.type}/${image.id}`);
 
 		this.setState({
 			enableAnimation: false,
 			q: this.state.isSearch ? q : '',
+			filters: this.state.isSearch ? filters : null,
 			sourceImageBoundingClientRect: event.target.parentElement.getBoundingClientRect(),
 			pauseInterval: true,
 		});
 	};
 
 	handleImageModalClose = () => {
-		const { q } = this.state;
+		const { q, filters } = this.state;
 
 		if (this.state.isSearch) {
-			Router.pushRoute(`/newselfwales/search${q ? `?q=${q}` : ''}`);
+			const query = {
+				q,
+				...(filters
+					? {
+							filters,
+						}
+					: {}),
+			};
+
+			const url = `/newselfwales/search?${queryString.stringify(query)}`;
+
+			Router.pushRoute(url);
+
+			this.setState({
+				q: '',
+				filters: null,
+			});
 		} else {
 			Router.pushRoute('/newselfwales');
 
@@ -123,6 +147,36 @@ class LandingPage extends Component {
 			});
 		}
 	};
+
+	handleKey = (event) => {
+		// For accessibility and super-users
+		if (event.code === 'Escape') {
+			//  Effectively close ImageModal
+			if (
+				this.props.url.query &&
+				this.props.url.query.param &&
+				this.props.url.query.id
+			) {
+				Router.pushRoute(`/newselfwales`);
+
+				this.setState({
+					enableAnimation: true,
+				});
+			}
+
+			// Close modal and start animation
+			if (this.state.showModal) {
+				this.setState({
+					showModal: false,
+					enableAnimation: true,
+				});
+			}
+		}
+	};
+
+	// --------------------------------------------------------------------------
+	// Image Feed
+	// --------------------------------------------------------------------------
 
 	handleToggleAnimationButton = () => {
 		this.setState({
@@ -151,32 +205,6 @@ class LandingPage extends Component {
 			this.setState({
 				enableAnimation: true,
 			});
-		}
-	};
-
-	handleKey = (event) => {
-		// For accessibility and super-users
-		if (event.code === 'Escape') {
-			//  Effectively close ImageModal
-			if (
-				this.props.url.query &&
-				this.props.url.query.param &&
-				this.props.url.query.id
-			) {
-				Router.pushRoute(`/newselfwales`);
-
-				this.setState({
-					enableAnimation: true,
-				});
-			}
-
-			// Close modal and start animation
-			if (this.state.showModal) {
-				this.setState({
-					showModal: false,
-					enableAnimation: true,
-				});
-			}
 		}
 	};
 
@@ -285,7 +313,7 @@ class LandingPage extends Component {
 	};
 
 	render() {
-		const { loading, error, pages, url } = this.props;
+		const { error, pages, url } = this.props;
 		const { query } = url;
 		const {
 			showModal,
@@ -300,11 +328,13 @@ class LandingPage extends Component {
 		} = this.state;
 
 		const showImageModal = url && url.query.param && url.query.id && true;
-		const q = url.query.q || this.state.q;
+		const q = query.q || this.state.q;
+		const filters = query.filters || this.state.filters;
+		const filterValue = filters || 'all';
 
-		if (loading) {
-			return <div />;
-		}
+		// if (loading) {
+		// 	return <div />;
+		// }
 
 		if (error) {
 			console.log(error);
@@ -312,7 +342,6 @@ class LandingPage extends Component {
 		}
 
 		const page = pages && pages[0];
-		const filterValue = query.filters || 'all';
 
 		// console.log({
 		// 	isSearch,
@@ -417,7 +446,7 @@ class LandingPage extends Component {
 						<div className="newselfwales-page__search-results">
 							<SearchResultsContainer
 								q={q}
-								filters={query.filters ? [query.filters] : null}
+								filters={filters ? [filters] : null}
 								onImageClick={(event, image) =>
 									this.handleImageModalClick(event, image)
 								}
@@ -428,7 +457,6 @@ class LandingPage extends Component {
 
 				<Overlay isActive={isSearch} />
 
-				{/* {!isSearch && ( */}
 				<Fragment>
 					{/* <button
 							className="button newselfwales-page__toggle-animation-button"
@@ -461,7 +489,7 @@ class LandingPage extends Component {
 
 					{isImageFeedInitiallyLoading && (
 						<div className="newselfwales-page__image-feed-loader-text">
-							<p>Our global live image feed updates every 20 seconds.</p>
+							<p>Our live image feed updates every 20 seconds.</p>
 							<MessageWidget
 								messages={[
 									"Around 5,500 portrairts from the Library's collection appear in the feed.",
@@ -473,7 +501,6 @@ class LandingPage extends Component {
 						</div>
 					)}
 				</Fragment>
-				{/* )} */}
 
 				{page &&
 					!isSearch && (
@@ -497,7 +524,11 @@ class LandingPage extends Component {
 					onClose={this.handleImageModalClose}
 				/>
 
-				<Modal isActive={showModal} onClose={this.handleSpecialCareModalClose}>
+				<Modal
+					className="newselfwales-page__special-care"
+					isActive={showModal}
+					onClose={this.handleSpecialCareModalClose}
+				>
 					<h1 className="newselfwales-page__special-care-title">
 						Special Care Notice
 					</h1>
