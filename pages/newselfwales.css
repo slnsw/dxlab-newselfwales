@@ -25,6 +25,10 @@
 	color: var(--colour-primary);
 }
 
+.newselfwales-page__message-widget {
+	min-height: 5em;
+}
+
 /* 
  * SEARCH 
  * ------------------------------------------------------------------------- */
@@ -90,7 +94,7 @@
 	left: var(--spacing-lg);
 	width: 100%;
 	height: calc(100% - 10em);
-/*
+	/*
 	@media (--screen-md) {
 		top: 5em;
 		height: calc(100% - 5em);

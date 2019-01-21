@@ -13,9 +13,9 @@ import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
 import SearchBox from '../components/SearchBox';
 import SearchFilters from '../components/SearchFilters';
+import SearchSuggestions from '../components/SearchSuggestions';
 import Overlay from '../components/Overlay';
 import MessageWidget from '../components/MessageWidget';
-import Link from '../components/Link';
 import withApollo from '../lib/withApollo';
 import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
@@ -378,71 +378,27 @@ class LandingPage extends Component {
 							value={filterValue}
 							onClick={this.handleSearchFilterClick}
 						/>
+
 						{!q && (
-							<div className="newselfwales-page__search-suggestions">
-								<h2>
-									Enter a search term above, or try some of these suggested
-									searches:
-								</h2>
-								<p>
-									<Link to="/newselfwales/search?q=ball">
-										<a>Ball</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=dupain">
-										<a>Max Dupain</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=grace">
-										<a>Grace</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=spring">
-										<a>Spring</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=mott">
-										<a>Tony Mott</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=architect">
-										<a>Architects</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=cricket">
-										<a>Cricket</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=Mitchell">
-										<a>David Scott Mitchell</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=newtown">
-										<a>Newtown</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=Aboriginal">
-										<a>Aboriginal</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=holterman">
-										<a>B. O. Holtermann</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=hood">
-										<a>Hood</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=waterloo">
-										<a>Waterloo</a>
-									</Link>
-									<br />
-									<Link to="/newselfwales/search?q=tribune">
-										<a>Tribune</a>
-									</Link>
-								</p>
-							</div>
+							<SearchSuggestions
+								className="newselfwales-page__search-suggestions"
+								suggestions={[
+									{
+										name: 'Ball',
+										url: '/newselfwales/search?q=ball',
+									},
+									{
+										name: 'Max Dupain',
+										url: '/newselfwales/search?q=max',
+									},
+									{
+										name: 'Grace',
+										url: '/newselfwales/search?q=grace',
+									},
+								]}
+							/>
 						)}
+
 						<div className="newselfwales-page__search-results">
 							<SearchResultsContainer
 								q={q}
@@ -489,10 +445,12 @@ class LandingPage extends Component {
 
 					{isImageFeedInitiallyLoading && (
 						<div className="newselfwales-page__image-feed-loader-text">
-							<p>Our live image feed updates every 20 seconds.</p>
+							<p>Please wait for our live image feed...</p>
 							<MessageWidget
+								className="newselfwales-page__message-widget"
 								messages={[
-									"Around 5,500 portrairts from the Library's collection appear in the feed.",
+									'The feed broadcasts every 20 seconds from a central server',
+									"Around 5,500 portraits from the Library's collection appear in the feed.",
 									'The public have contributed around one thousand images via Instagram using the hashtag #NewSelfWales',
 									'Using the in-gallery photo-booths visitors have added nearly 6,000 pictures to the feed.',
 								]}

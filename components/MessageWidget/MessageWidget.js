@@ -5,19 +5,11 @@ import './MessageWidget.css';
 
 class MessageWidget extends Component {
 	static propTypes = {
+		className: PropTypes.string,
 		messages: PropTypes.array,
 		timePerMessage: PropTypes.number, // in milliseconds
 	};
 
-<<<<<<< HEAD
-	/*
-	static defaultProps = {
-		messages: ['.'],
-		timePerMessage: 3000,
-	};
-*/
-=======
->>>>>>> b476adb24ecdba1f67b55b8fa999b8e40365480a
 	state = {
 		message: '',
 		messageIndex: 0,
@@ -63,8 +55,10 @@ class MessageWidget extends Component {
 	};
 
 	render() {
+		const { className } = this.props;
+
 		return (
-			<div className="message-widget">
+			<div className={['message-widget', className || ''].join(' ')}>
 				<span dangerouslySetInnerHTML={{ __html: this.state.message }} />
 			</div>
 		);

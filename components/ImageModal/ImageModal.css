@@ -142,10 +142,24 @@
 }
 
 .image-modal__collection-link {
-	padding: 0 1em;
-	/* padding-top: var(--spacing-xxs); */
-	border: 1px solid var(--colour-primary);
+	padding: 0 1em 0.1em;
+	border: 1px solid var(--colour-white);
 	@apply --font-uppercase;
+	font-weight: 700;
 	font-size: var(--font-size-xs);
 	line-height: 2;
+
+	&:link,
+	&:visited {
+		color: var(--colour-white);
+	}
+
+	&:hover {
+		border: 1px solid var(--colour-primary);
+		color: var(--colour-primary);
+	}
+
+	@media (--screen-sm) {
+		padding-bottom: 0;
+	}
 }
