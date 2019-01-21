@@ -127,7 +127,7 @@ class PackeryImages extends Component {
 									timeout={2000}
 									classNames="image-feed__image-holder-"
 								>
-									<button
+									<div
 										className={[
 											'image-feed__image-holder',
 											imageSize ? `image-feed__image-holder--${imageSize}` : '',
@@ -148,6 +148,7 @@ class PackeryImages extends Component {
 										}
 										// ref={(c) => this.imageHolderRefs.set(image.id, c)}
 										data-id={image.id}
+										tabIndex="0"
 									>
 										{image.isSilhouette && (
 											<div className="image-feed__image-holder__content">
@@ -173,7 +174,7 @@ class PackeryImages extends Component {
 											key={`${imageUrl}-${i}`}
 											alt={imageAlt}
 										/>
-									</button>
+									</div>
 								</CSSTransition>
 							</Fragment>
 						);
