@@ -571,7 +571,7 @@ class ImageFeed extends Component {
 			return randomImage.id === image[0];
 		})[0][1];
 
-		console.log(randomImageRef);
+		// console.log(randomImageRef);
 
 		// Work out x/y of randomly selected image
 		const randomImageBox = ReactDOM.findDOMNode(
