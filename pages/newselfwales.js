@@ -395,6 +395,14 @@ class LandingPage extends Component {
 										name: 'Grace',
 										url: '/newselfwales/search?q=grace',
 									},
+									{
+										name: 'Tony Mott',
+										url: '/newselfwales/search?q=mott',
+									},
+									{
+										name: 'Architects',
+										url: '/newselfwales/search?q=architect',
+									},
 								]}
 							/>
 						)}

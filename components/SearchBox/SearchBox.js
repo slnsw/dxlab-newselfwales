@@ -83,7 +83,7 @@ class SearchBox extends Component {
 							type="text"
 							value={isChanged === false ? defaultValue : value}
 							className="search-box__input"
-							// autoFocus
+							autoFocus={true}
 							placeholder="Search"
 							onChange={this.handleChange}
 						/>

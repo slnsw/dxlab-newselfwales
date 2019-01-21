@@ -6,6 +6,7 @@ import './SearchSuggestions.css';
 
 class SearchSuggestions extends Component {
 	static propTypes = {
+		className: PropTypes.string,
 		suggestions: PropTypes.array,
 	};
 
@@ -14,13 +15,13 @@ class SearchSuggestions extends Component {
 	};
 
 	render() {
-		const { suggestions } = this.props;
+		const { className, suggestions } = this.props;
 
 		return (
-			<div className="search-suggestions">
-				<div className="newselfwales-page__search-suggestions">
-					<h2>Suggestions</h2>
+			<div className={['search-suggestions', className || ''].join(' ')}>
+				<h2>Suggestions</h2>
 
+				<ul>
 					{suggestions.map((suggestion) => {
 						return (
 							<li>
@@ -30,8 +31,9 @@ class SearchSuggestions extends Component {
 							</li>
 						);
 					})}
+				</ul>
 
-					{/* <p>
+				{/* <p>
 						<Link to="/newselfwales/search?q=ball">
 							<a>Ball</a>
 						</Link>
@@ -88,7 +90,6 @@ class SearchSuggestions extends Component {
 							<a>Tribune</a>
 						</Link>
 					</p> */}
-				</div>
 			</div>
 		);
 	}

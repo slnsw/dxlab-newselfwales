@@ -12,7 +12,7 @@
 		padding: 0;
 		margin: 0;
 		list-style-type: none;
-		color: var(--colour-grey);
+		color: var(--colour-grey-light);
 		font-family: var(--font-secondary);
 	}
 
@@ -28,8 +28,14 @@
 }
 
 .search-filters__filter-button {
-	text-transform: inherit;
-	color: inherit;
-	font-family: inherit;
 	padding: var(--spacing-xs);
+	color: inherit;
+	text-transform: inherit;
+	font-family: inherit;
+	font-weight: 500;
+
+	&:hover {
+		/* color: var(--colour-primary); */
+		text-decoration: underline;
+	}
 }

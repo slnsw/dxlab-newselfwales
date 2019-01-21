@@ -1,4 +1,13 @@
 @import '../../styles/variables.css';
 
-/* .search-suggestions {
-} */
+.search-suggestions {
+	& ul {
+		list-style: none;
+		padding: 0;
+	}
+
+	& li {
+		font-size: var(--font-size-lg);
+		line-height: 2;
+	}
+}
