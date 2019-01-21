@@ -140,7 +140,7 @@
 	padding: 0;
 	font-size: var(--font-size-xlg);
 	/* color: var(--colour-highlight); */
-	background-color: transparent;
+	background-color: var(--colour-black);
 }
 
 .info-box__logo-holder {
@@ -155,4 +155,8 @@
 
 .info-box__logo--dxlab {
 	max-width: 6em;
+}
+
+.info-box__logo--slnsw {
+	max-width: 8.5em;
 }

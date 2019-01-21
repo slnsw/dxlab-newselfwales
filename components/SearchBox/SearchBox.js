@@ -8,6 +8,7 @@ class SearchBox extends Component {
 		defaultValue: PropTypes.string,
 		className: PropTypes.string,
 		isActive: PropTypes.bool,
+		autoFocus: PropTypes.bool,
 		onFocus: PropTypes.func,
 		onBackClick: PropTypes.func,
 		onSubmit: PropTypes.func,
@@ -59,7 +60,7 @@ class SearchBox extends Component {
 	};
 
 	render() {
-		const { className, isActive, defaultValue } = this.props;
+		const { className, isActive, defaultValue, autoFocus } = this.props;
 		const { value, isChanged } = this.state;
 
 		return (
@@ -83,7 +84,7 @@ class SearchBox extends Component {
 							type="text"
 							value={isChanged === false ? defaultValue : value}
 							className="search-box__input"
-							autoFocus={true}
+							autoFocus={autoFocus}
 							placeholder="Search"
 							onChange={this.handleChange}
 						/>

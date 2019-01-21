@@ -95,7 +95,7 @@ class InfoBox extends Component {
 
 				{!isFullSize && (
 					<button
-						className="button info-box__more-button"
+						className="info-box__more-button"
 						onClick={this.handleMoreButton}
 					>
 						<i className="ion-ios-arrow-up" />

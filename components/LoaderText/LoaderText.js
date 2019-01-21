@@ -11,7 +11,6 @@ class LoaderText extends Component {
 
 	static defaultProps = {
 		text: 'Loading',
-		className: undefined,
 	};
 
 	render() {
