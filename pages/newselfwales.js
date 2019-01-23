@@ -78,6 +78,17 @@ class LandingPage extends Component {
 		});
 	}
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.url.query !== this.props.url.query) {
+			// const { prevQuery = {} } = prevProps.url;
+			const { query } = this.props.url;
+
+			this.setState({
+				isSearch: query.param === 'search',
+			});
+		}
+	}
+
 	// --------------------------------------------------------------------------
 	// Special Care Modal
 	// --------------------------------------------------------------------------
@@ -236,7 +247,6 @@ class LandingPage extends Component {
 			Router.pushRoute('/newselfwales/search');
 
 			this.setState({
-				isSearch: true,
 				enableAnimation: false,
 				pauseInterval: true,
 			});
@@ -247,7 +257,6 @@ class LandingPage extends Component {
 		Router.pushRoute('/newselfwales');
 
 		this.setState({
-			isSearch: false,
 			q: '',
 			enableAnimation: true,
 			pauseInterval: false,
