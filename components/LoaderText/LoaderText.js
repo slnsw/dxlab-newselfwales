@@ -20,12 +20,18 @@ class LoaderText extends Component {
 		const { className, text, isActive } = this.props;
 
 		return (
-			<Transition in={isActive} timeout={500}>
+			<Transition in={isActive} timeout={500} unmountOnExit={true}>
 				{(state) => {
-					console.log(state);
+					// console.log(state);
 
 					return (
-						<div className={['loader-text', className].join(' ')}>
+						<div
+							className={[
+								'loader-text',
+								`loader-text--${state}`,
+								className || '',
+							].join(' ')}
+						>
 							{text} <span>.</span>
 							<span>.</span>
 							<span>.</span>

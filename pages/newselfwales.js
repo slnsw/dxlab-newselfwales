@@ -445,20 +445,20 @@ class LandingPage extends Component {
 						onScrollerResume={this.handleScrollerResume}
 					/>
 
-					{/* <LoaderText
+					<LoaderText
 						className="newselfwales-page__image-feed-loader"
 						isActive={
 							isImageFeedLoading ||
 							isImageFeedInitiallyLoading ||
 							hasInitiallyScrolled === false
 						}
-					/> */}
+					/>
 
-					{(isImageFeedLoading ||
+					{/* {(isImageFeedLoading ||
 						isImageFeedInitiallyLoading ||
 						hasInitiallyScrolled === false) && (
 						<LoaderText className="newselfwales-page__image-feed-loader" />
-					)}
+					)} */}
 
 					{isImageFeedInitiallyLoading && (
 						<div className="newselfwales-page__image-feed-loader-text">

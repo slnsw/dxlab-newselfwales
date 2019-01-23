@@ -2,6 +2,8 @@
 
 .loader-text {
 	color: var(--colour-grey-lightest);
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
 
 	& span {
 		/**
@@ -43,6 +45,14 @@
 	     */
 		animation-delay: 0.4s;
 	}
+}
+
+.loader-text--entered {
+	opacity: 1;
+}
+
+.loader-text--exited {
+	opacity: 0;
 }
 
 @keyframes blink {
