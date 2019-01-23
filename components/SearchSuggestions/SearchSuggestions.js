@@ -7,89 +7,57 @@ import './SearchSuggestions.css';
 class SearchSuggestions extends Component {
 	static propTypes = {
 		className: PropTypes.string,
+		limit: PropTypes.number,
 		suggestions: PropTypes.array,
 	};
 
 	static defaultProps = {
 		suggestions: [],
+		limit: 0,
+	};
+
+	knuthShuffle = (array) => {
+		// This does an in-place shuffle of an array and is order O(n)
+		// Also known as the Fisher-Yates shuffle.
+		let currentIndex = array.length;
+		// copy input array to a variable to stop ESlint having a cry when we change it
+		const out = array;
+		let temporaryValue;
+		let randomIndex;
+		// While there remain elements to shuffle...
+		while (currentIndex !== 0) {
+			// Pick a remaining element...
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex -= 1;
+			// And swap it with the current element.
+			temporaryValue = out[currentIndex];
+			out[currentIndex] = out[randomIndex];
+			out[randomIndex] = temporaryValue;
+		}
+		return out;
 	};
 
 	render() {
-		const { className, suggestions } = this.props;
-
+		const { className, limit, suggestions } = this.props;
+		let selection = [];
+		if (limit > 0 && limit <= suggestions.length) {
+			selection = this.knuthShuffle(suggestions).slice(0, limit);
+		}
 		return (
 			<div className={['search-suggestions', className || ''].join(' ')}>
 				<h2>Suggestions</h2>
 
 				<ul>
-					{suggestions.map((suggestion) => {
+					{selection.map((item) => {
 						return (
 							<li>
-								<Link to={suggestion.url}>
-									<a>{suggestion.name}</a>
+								<Link to={item.url}>
+									<a>{item.name}</a>
 								</Link>
 							</li>
 						);
 					})}
 				</ul>
-
-				{/* <p>
-						<Link to="/newselfwales/search?q=ball">
-							<a>Ball</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=dupain">
-							<a>Max Dupain</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=grace">
-							<a>Grace</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=spring">
-							<a>Spring</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=mott">
-							<a>Tony Mott</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=architect">
-							<a>Architects</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=cricket">
-							<a>Cricket</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=Mitchell">
-							<a>David Scott Mitchell</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=newtown">
-							<a>Newtown</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=Aboriginal">
-							<a>Aboriginal</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=holterman">
-							<a>B. O. Holtermann</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=hood">
-							<a>Hood</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=waterloo">
-							<a>Waterloo</a>
-						</Link>
-						<br />
-						<Link to="/newselfwales/search?q=tribune">
-							<a>Tribune</a>
-						</Link>
-					</p> */}
 			</div>
 		);
 	}

@@ -1,7 +1,8 @@
-import { Component } from 'react';
+import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 
+import Link from '../Link';
 import './ImageModal.css';
 import Modal from '../Modal';
 import LoaderText from '../LoaderText';
@@ -120,36 +121,44 @@ class ImageModal extends Component {
 				// The desc for protraits is a comma sep list of subjetcts.
 				// split them up by commas, but avoid commas inside parentheses.
 				const bits = this.splitNotBetween(desc, ',', '(', ')');
-				let o = '';
+				const out = [];
 				if (bits.length > 1) {
 					for (let i = 0; i < bits.length; i++) {
 						if (bits[i].trim()) {
-							o += `<a href="../search?q=${bits[i].trim()}">${bits[
-								i
-							].trim()}</a>, `;
+							out[i] = {
+								url: `/newselfwales/search?q=${bits[i].trim()}`,
+								linkText: `#${bits[i].trim()}`,
+								postText: `, `,
+							};
 						}
 					}
-					o = `<p>${o.substring(0, o.length - 2)}</p>`;
+					out[bits.length - 1].postText = '';
 				} else {
-					o = `<p><a href="../search?q=${bits[0].trim()}">${bits[0].trim()}</a></p>`;
+					out[0] = {
+						url: `/newselfwales/search?q=${bits[0].trim()}`,
+						linkText: `#${bits[0].trim()}`,
+						postText: ``,
+					};
 				}
-				return o;
+				return out;
 			}
 			// deal with Instagram
 			if (type === 'instagram-selfie') {
 				// split up by Hashtag symbol, but avoid ones in &#160; and its friends
 				const bits = this.splitNotBetween(desc, '#', '&', ';');
-				let o = '';
+				const out = [];
+				out[0] = { url: null, linkText: null, postText: bits[0] };
 				if (bits.length > 1) {
 					for (let i = 1; i < bits.length; i++) {
 						const t = this.findEndOfHashtag(bits[i]);
-						o += `<a href="../search?q=${t[0]}">#${t[0]}</a> ${t[1]}`;
+						out[i] = {
+							url: `/newselfwales/search?q=${t[0]}`,
+							linkText: `#${t[0]}`,
+							postText: ` ${t[1]}`,
+						};
 					}
-					o = bits[0] + o;
-				} else {
-					[o] = bits;
 				}
-				return `<p>${o}</p>`;
+				return out;
 			}
 		}
 		return desc;
@@ -231,6 +240,7 @@ class ImageModal extends Component {
 					};
 
 					// console.log(screenWidth);
+					console.log(this.parseContent(content, imageType));
 
 					return (
 						<Modal
@@ -281,12 +291,31 @@ class ImageModal extends Component {
 									className="image-modal__title"
 									dangerouslySetInnerHTML={{ __html: title }}
 								/>
-								<div
-									className="image-modal__content"
-									dangerouslySetInnerHTML={{
-										__html: this.parseContent(content, imageType),
-									}}
-								/>
+								<div className="image-modal__content">
+									<p>
+										{content &&
+											this.parseContent(content, imageType).map((item) => {
+												return (
+													<Fragment>
+														{item.url && (
+															<Link to={item.url}>
+																<a
+																	dangerouslySetInnerHTML={{
+																		__html: item.linkText,
+																	}}
+																/>
+															</Link>
+														)}
+														<span
+															dangerouslySetInnerHTML={{
+																__html: item.postText,
+															}}
+														/>
+													</Fragment>
+												);
+											})}
+									</p>
+								</div>
 							</div>
 							<footer className="image-modal__footer">
 								{instagramUsername && (
