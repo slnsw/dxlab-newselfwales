@@ -40,7 +40,7 @@ class ImageFader extends Component {
 			this.startTimeout();
 		}
 		if (this.state.isFirstImages === false && this.props.images.length > 0) {
-			console.log(this.state);
+			// console.log(this.state);
 			this.init();
 			this.setState({
 				isFirstImages: true,

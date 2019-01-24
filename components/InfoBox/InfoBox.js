@@ -12,6 +12,7 @@ class InfoBox extends Component {
 		isFullSize: PropTypes.bool,
 		onMoreButtonClick: PropTypes.func,
 		onCloseButtonClick: PropTypes.func,
+		onHideButtonClick: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -27,6 +28,12 @@ class InfoBox extends Component {
 	handleCloseButton = () => {
 		if (typeof this.props.onCloseButtonClick === 'function') {
 			this.props.onCloseButtonClick();
+		}
+	};
+
+	handleHideButton = () => {
+		if (typeof this.props.onHideButtonClick === 'function') {
+			this.props.onHideButtonClick();
 		}
 	};
 
@@ -88,6 +95,12 @@ class InfoBox extends Component {
 										alt="State Library of NSW Home"
 									/>
 								</a>
+								<button
+									onClick={this.handleHideButton}
+									className="secondary-button info-box__hide-button"
+								>
+									hide interface
+								</button>
 							</div>
 						</Fragment>
 					)}

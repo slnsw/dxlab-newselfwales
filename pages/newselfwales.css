@@ -29,6 +29,10 @@
 	min-height: 5em;
 }
 
+.newselfwales-page__info-box--is-hidden {
+	visibility: hidden;
+}
+
 /* 
  * SEARCH 
  * ------------------------------------------------------------------------- */
@@ -45,6 +49,10 @@
 	@media (--screen-md) {
 		max-width: 12em;
 	}
+}
+
+.newselfwales-page__search-box--is-hidden {
+	visibility: hidden;
 }
 
 .newselfwales-page__search-filters {

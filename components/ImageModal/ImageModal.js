@@ -127,7 +127,7 @@ class ImageModal extends Component {
 						if (bits[i].trim()) {
 							out[i] = {
 								url: `/newselfwales/search?q=${bits[i].trim()}`,
-								linkText: `#${bits[i].trim()}`,
+								linkText: bits[i].trim(),
 								postText: `, `,
 							};
 						}
@@ -163,6 +163,17 @@ class ImageModal extends Component {
 		}
 		return [{ url: null, linkText: null, postText: desc }];
 	};
+
+	/*
+	convertUnicode = (input) => {
+		if (input) {
+			return input.replace(/\\u(\w\w\w\w)/g,function(a,b) {
+    		let charcode = parseInt(b,16);
+    		return String.fromCharCode(charcode);
+  		});
+		}
+	};
+	*/
 
 	render() {
 		const {
@@ -240,7 +251,6 @@ class ImageModal extends Component {
 					};
 
 					// console.log(screenWidth);
-					console.log(this.parseContent(content, imageType));
 
 					return (
 						<Modal
@@ -334,7 +344,7 @@ class ImageModal extends Component {
 
 								{collectionLink && (
 									<a
-										className="image-modal__collection-link"
+										className="secondary-button"
 										target="_blank"
 										href={collectionLink}
 									>

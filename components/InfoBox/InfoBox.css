@@ -143,7 +143,12 @@
 	background-color: var(--colour-black);
 }
 
+.info-box__hide-button {
+	margin-left: auto;
+}
+
 .info-box__logo-holder {
+	display: flex;
 	margin-top: var(--spacing-xxlg);
 	/* margin-bottom: var(--spacing-xxxlg); */
 }

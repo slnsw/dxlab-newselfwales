@@ -237,6 +237,14 @@ class LandingPage extends Component {
 		});
 	};
 
+	handleInfoBoxHideButtonClick = () => {
+		this.setState({
+			isInfoBoxFullSize: false,
+			enableAnimation: true,
+		});
+		Router.pushRoute('/newselfwales?hide=1');
+	};
+
 	// --------------------------------------------------------------------------
 	// Search
 	// --------------------------------------------------------------------------
@@ -337,6 +345,7 @@ class LandingPage extends Component {
 		} = this.state;
 
 		const showImageModal = url && url.query.param && url.query.id && true;
+		const hideUI = url && url.query.hide === '1';
 		const q = query.q || this.state.q;
 		const filters = query.filters || this.state.filters;
 		const filterValue = filters || 'all';
@@ -372,7 +381,10 @@ class LandingPage extends Component {
 			>
 				<SearchBox
 					defaultValue={url.query && url.query.q ? url.query.q : ''}
-					className="newselfwales-page__search-box"
+					className={[
+						'newselfwales-page__search-box',
+						hideUI ? 'newselfwales-page__search-box--is-hidden' : '',
+					].join(' ')}
 					isActive={isSearch}
 					onFocus={this.handleSearchBoxFocus}
 					onBackClick={this.handleSearchBoxBackClick}
@@ -526,12 +538,16 @@ class LandingPage extends Component {
 				{page &&
 					!isSearch && (
 						<InfoBox
-							className="newselfwales-page__info-box"
+							className={[
+								'newselfwales-page__info-box',
+								hideUI ? 'newselfwales-page__info-box--is-hidden' : '',
+							].join(' ')}
 							title={page.title}
 							excerpt={page.excerpt}
 							isFullSize={isInfoBoxFullSize}
 							onMoreButtonClick={this.handleMoreButtonClick}
 							onCloseButtonClick={this.handleInfoBoxCloseButtonClick}
+							onHideButtonClick={this.handleInfoBoxHideButtonClick}
 						>
 							{page.content}
 						</InfoBox>
