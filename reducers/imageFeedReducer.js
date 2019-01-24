@@ -2,6 +2,8 @@ import { dedupeByField } from '../lib/dedupe';
 import logBase from '../lib/log';
 import { getRandomArrayElements } from '../lib';
 
+import initialSpareImages from '../data/spareImages.json';
+
 const log = (...args) => {
 	return logBase('imageFeedReducer', ...args);
 };
@@ -13,7 +15,7 @@ const initialState = {
 	currentFetchedImages: [],
 	currentImages: [],
 	upcomingImages: [],
-	spareImages: [],
+	spareImages: initialSpareImages, // Load initial spare images from JSON file.
 	status: 'WAITING_ON_FIRST_IMAGES',
 	subscribedStatus: null,
 	maxSpareImages: 100,

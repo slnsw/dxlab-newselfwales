@@ -42,7 +42,14 @@ class ImageFeedContainer extends Component {
 			});
 		}
 
+		// Subscribe to image feed
 		this.props.dispatch(subscribeToImages());
+
+		// Load some spare images if available
+		this.props.dispatch({
+			type: 'IMAGE_FEED_COPY_SPARE_IMAGES_TO_CURRENT',
+			limit: 40,
+		});
 	}
 
 	handleFetchImages = ({

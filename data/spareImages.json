@@ -1,0 +1,2266 @@
+[
+	{
+		"id": 46621,
+		"title": "[Fancy self portrait, ca. 1840]",
+		"date": "2018-05-09T09:01:50",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525856510056-e1537838604420.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525856510056-e1537838604420-236x300.jpg",
+					"width": 236,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525856510056-e1537838604420.jpg",
+					"width": 792,
+					"height": 1008,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 68119,
+		"title": "Padzaralli",
+		"date": "2018-09-03T08:31:51",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1535880740890-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1535880740890--300x300.jpg",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1535880740890-.jpg",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 44119,
+		"title":
+			"Series 03: Ballet performances in Sydney / photographed by Brian Bird",
+		"date": "2018-05-09T05:56:33",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525845393577.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525845393577-201x300.jpg",
+					"width": 201,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525845393577.jpg",
+					"width": 401,
+					"height": 600,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 81399,
+		"title": "New post selfie 1540269838290",
+		"date": "2018-10-23T15:43:58",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540269838290.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540269838290-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540269838290.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 23311,
+		"title": "Mr Peter (?) Mantova",
+		"date": "2018-04-30T06:58:49",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525071530235.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525071530235-225x300.jpg",
+					"width": 225,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525071530235.jpg",
+					"width": 788,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 8877,
+		"title": "NSW servicemen portraits, 1918-19 &#8211; John Evans Haworth",
+		"date": "2018-04-16T15:57:45",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1523894265128-e1536718660543.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1523894265128-e1536718660543-172x300.jpg",
+					"width": 172,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1523894265128-e1536718660543.jpg",
+					"width": 538,
+					"height": 939,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 69129,
+		"title": "Cristina J Doyle",
+		"date": "2018-09-07T11:06:02",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1536279609653-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1536279609653--300x300.jpg",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1536279609653-.jpg",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 86147,
+		"title": "New post selfie 1541815094239",
+		"date": "2018-11-10T12:58:14",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1541815094239.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1541815094239-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1541815094239.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 53930,
+		"title": "Portrait of Ron Barassi, AFL footballer",
+		"date": "2018-05-15T01:02:59",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/d7_15030.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/d7_15030-235x300.jpg",
+					"width": 235,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/d7_15030.jpg",
+					"width": 1504,
+					"height": 1920,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 29610,
+		"title": "Mr [Michael ?] Moriarty",
+		"date": "2018-05-03T06:38:44",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525329525107.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525329525107-225x300.jpg",
+					"width": 225,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525329525107.jpg",
+					"width": 787,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 76380,
+		"title": "New post selfie 1538961264544",
+		"date": "2018-10-08T11:14:24",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538961264544.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538961264544-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538961264544.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 65831,
+		"title": "Australian personalities, 1970-1997 / photographed by Peter Luck",
+		"date": "2018-09-04T09:32:07",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535620279558-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535620279558--242x300.jpg",
+					"width": 242,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535620279558-.jpg",
+					"width": 484,
+					"height": 600,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 66845,
+		"title":
+			"Photograph album of the Scott expedition to Antarctica, 1910-1913 / annotated by T. Griffith Taylor",
+		"date": "2018-09-03T15:27:28",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681266033--e1535952435801.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681266033--e1535952435801-300x211.jpg",
+					"width": 300,
+					"height": 211,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681266033--e1535952435801.jpg",
+					"width": 728,
+					"height": 511,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 90829,
+		"title": "New post selfie 1543368456545",
+		"date": "2018-11-28T12:27:36",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1543368456545.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1543368456545-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1543368456545.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 66316,
+		"title":
+			"Water ballet, January 1940 / photographed by S. Farnell and Ivan Ives",
+		"date": "2018-09-03T15:46:13",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535621061659-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535621061659--230x300.jpg",
+					"width": 230,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535621061659-.jpg",
+					"width": 805,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 35462,
+		"title":
+			"Agnes Cochrane Young, ca. 1870 / photographer Stuart, 120 Buchanan Street, Glasgow",
+		"date": "2018-05-07T05:06:21",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525669580849-e1537839147447.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525669580849-e1537839147447-189x300.jpg",
+					"width": 189,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525669580849-e1537839147447.jpg",
+					"width": 561,
+					"height": 889,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 66881,
+		"title": "Album of photographs / photographed by Max Dupain",
+		"date": "2018-09-03T15:14:41",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681297527--e1535951664863.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681297527--e1535951664863-240x300.jpg",
+					"width": 240,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681297527--e1535951664863.jpg",
+					"width": 603,
+					"height": 753,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 73853,
+		"title": "POLLY ?",
+		"date": "2018-10-02T11:25:38",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1538268177047-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1538268177047--241x300.jpg",
+					"width": 241,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1538268177047-.jpg",
+					"width": 1080,
+					"height": 1346,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 63072,
+		"title": "Y. Celina 诗婵",
+		"date": "2018-09-03T09:18:46",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1534637508745-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1534637508745--300x255.jpg",
+					"width": 300,
+					"height": 255,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1534637508745-.jpg",
+					"width": 1080,
+					"height": 917,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 66098,
+		"title":
+			"Nos. 821-918: Photographic prints of missionaries and Indigenous people in the Northern Territory, ca. 1885-1938",
+		"date": "2018-09-03T15:49:11",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535620686318-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535620686318--227x300.jpg",
+					"width": 227,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535620686318-.jpg",
+					"width": 794,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 35456,
+		"title":
+			"Robert Kennerley Rumford, English concert baritone and husband of Dame Clara Butt, 1921 / Berniece Agar",
+		"date": "2018-05-07T05:06:03",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525669562991-e1537839208422.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525669562991-e1537839208422-177x300.jpg",
+					"width": 177,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525669562991-e1537839208422.jpg",
+					"width": 561,
+					"height": 950,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 28978,
+		"title": "Portrait of unidentified man, 1829",
+		"date": "2018-05-03T05:28:09",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525325289828-e1534917685128.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525325289828-e1534917685128-242x300.jpg",
+					"width": 242,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525325289828-e1534917685128.jpg",
+					"width": 800,
+					"height": 992,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 36202,
+		"title": "Mr J. Guy",
+		"date": "2018-05-07T05:50:45",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525672244854.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525672244854-227x300.jpg",
+					"width": 227,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525672244854.jpg",
+					"width": 795,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 74311,
+		"title": "Yi",
+		"date": "2018-10-02T14:04:32",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538452803575-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538452803575--300x169.jpg",
+					"width": 300,
+					"height": 169,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538452803575-.jpg",
+					"width": 1080,
+					"height": 609,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 12503,
+		"title": "Portrait of Charles Parbury, 1890 / William Carter",
+		"date": "2018-04-18T04:00:43",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1524024043295-e1537336283661.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1524024043295-e1537336283661-239x300.jpg",
+					"width": 239,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1524024043295-e1537336283661.jpg",
+					"width": 808,
+					"height": 1013,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 77890,
+		"title": "New post selfie 1539305287859",
+		"date": "2018-10-12T10:48:07",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539305287859.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539305287859-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539305287859.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 49729,
+		"title":
+			"Louis P. Verande, opera director, 1912 / George Rizard, 526 Seventh Ave., bet. 38 &amp; 39 Sts. New York",
+		"date": "2018-05-10T04:34:14",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525926854753-e1534720179294.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525926854753-e1534720179294-194x300.jpg",
+					"width": 194,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525926854753-e1534720179294.jpg",
+					"width": 370,
+					"height": 572,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 23109,
+		"title": "Miss M. [Cox, Crab ?]",
+		"date": "2018-04-30T06:42:45",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525070566277.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525070566277-210x300.jpg",
+					"width": 210,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525070566277.jpg",
+					"width": 736,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 82126,
+		"title": "New post selfie 1540529574954",
+		"date": "2018-10-26T15:52:55",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540529574954.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540529574954-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540529574954.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 29826,
+		"title": "Miss &amp; Masters Butz",
+		"date": "2018-05-03T07:01:53",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525330914217.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525330914217-229x300.jpg",
+					"width": 229,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525330914217.jpg",
+					"width": 803,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 23227,
+		"title": "Miss Grant",
+		"date": "2018-04-30T06:53:47",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525071228048.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525071228048-227x300.jpg",
+					"width": 227,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525071228048.jpg",
+					"width": 794,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 43047,
+		"title":
+			"Lina de Benedetto, singer, 1901 / Guigoni &amp; Bossi, Corso Vitt. Em. 13, Milano",
+		"date": "2018-05-09T02:58:12",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525834691859-e1534743489402.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525834691859-e1534743489402-190x300.jpg",
+					"width": 190,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525834691859-e1534743489402.jpg",
+					"width": 538,
+					"height": 850,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 48057,
+		"title": "[General MacArthur in Eastern Australia and New Guinea]",
+		"date": "2018-05-10T02:45:13",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525920313010-e1537944360214.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525920313010-e1537944360214-300x218.jpg",
+					"width": 300,
+					"height": 218,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525920313010-e1537944360214.jpg",
+					"width": 1330,
+					"height": 966,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 79946,
+		"title": "New post selfie 1539835970756",
+		"date": "2018-10-18T15:12:50",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539835970756.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539835970756-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539835970756.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 22391,
+		"title": "William Archer, ca. 1862 / unknown photographer",
+		"date": "2018-04-30T05:33:14",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525066395510.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525066395510-199x300.jpg",
+					"width": 199,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525066395510.jpg",
+					"width": 695,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 89615,
+		"title": "New post selfie 1542941340874",
+		"date": "2018-11-23T13:49:00",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1542941340874.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1542941340874-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1542941340874.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 68604,
+		"title": "Jemini Pankhania",
+		"date": "2018-09-07T09:38:00",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1536055864854-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1536055864854--240x300.jpg",
+					"width": 240,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1536055864854-.jpg",
+					"width": 1080,
+					"height": 1350,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 68788,
+		"title": "Kate Curr",
+		"date": "2018-09-05T15:44:24",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1536124203707-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1536124203707--300x300.jpg",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1536124203707-.jpg",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 29390,
+		"title":
+			"Portrait of unidentified man with moustache. Full-length, with hat on, wearing open-neck shirt and summer suit",
+		"date": "2018-05-03T06:14:53",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525328093771.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525328093771-227x300.jpg",
+					"width": 227,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525328093771.jpg",
+					"width": 796,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 83013,
+		"title": "K E R R Y  B R U C E  A R T",
+		"date": "2018-10-30T11:48:21",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540808517447-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540808517447--300x300.jpg",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540808517447-.jpg",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 66442,
+		"title":
+			"Item 2: Photograph of Lachlan Tekema-Cutts portrait, 16 June 2017 / by Louise Darmody",
+		"date": "2018-09-03T15:44:14",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535621268683-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535621268683--300x228.jpg",
+					"width": 300,
+					"height": 228,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535621268683-.jpg",
+					"width": 1024,
+					"height": 779,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 35720,
+		"title":
+			"Bessie Smalley, between 1869-1871 / photographer Mr &amp; Mrs Oswald Allen",
+		"date": "2018-05-07T05:21:29",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525670489514.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525670489514-182x300.jpg",
+					"width": 182,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525670489514.jpg",
+					"width": 638,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 51774,
+		"title":
+			"Sir Charles FitzRoy, 1854 / bronze portrait medallion cast by T. Woolner",
+		"date": "2018-05-10T07:13:04",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525936384041.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525936384041-300x293.jpg",
+					"width": 300,
+					"height": 293,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525936384041.jpg",
+					"width": 1400,
+					"height": 1365,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 7857,
+		"title": "Woman",
+		"date": "2018-04-16T14:30:06",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1523889006377.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1523889006377-207x300.jpg",
+					"width": 207,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1523889006377.jpg",
+					"width": 726,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 66991,
+		"title":
+			"Architects&#8217; portraits and their projects, 2007 / photographed by Neil Fenelon",
+		"date": "2018-09-03T14:14:43",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681422233--e1535947615603.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681422233--e1535947615603-221x300.jpg",
+					"width": 221,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681422233--e1535947615603.jpg",
+					"width": 396,
+					"height": 537,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 76373,
+		"title": "New post selfie 1538959424286",
+		"date": "2018-10-08T10:43:44",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538959424286.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538959424286-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538959424286.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 68594,
+		"title": "Joanne Yoonjung",
+		"date": "2018-09-07T09:38:14",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1536053489176-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1536053489176--300x300.jpg",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1536053489176-.jpg",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 13109,
+		"title": "[Copy portrait of] Rev. Henry T. Stiles",
+		"date": "2018-04-18T04:46:58",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1524026818455.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1524026818455-221x300.jpg",
+					"width": 221,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1524026818455.jpg",
+					"width": 774,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 66823,
+		"title":
+			"[Sketches of Aborigines of New South Wales, ca. 1836 / attributed to W.H. Fernyhough]",
+		"date": "2018-09-03T15:30:48",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681236152-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681236152--189x300.jpg",
+					"width": 189,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681236152-.jpg",
+					"width": 662,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 68119,
+		"title": "Padzaralli",
+		"date": "2018-09-03T08:31:51",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1535880740890-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1535880740890--300x300.jpg",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1535880740890-.jpg",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 65861,
+		"title":
+			"Snaps of Sydney women in city streets, 10 October 1945 / photographed by N. Herfort",
+		"date": "2018-09-04T09:31:55",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535620297160-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535620297160--226x300.jpg",
+					"width": 226,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535620297160-.jpg",
+					"width": 790,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 46921,
+		"title": "Mr &amp; Mrs Myers",
+		"date": "2018-05-09T09:21:14",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525857674018.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525857674018-224x300.jpg",
+					"width": 224,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525857674018.jpg",
+					"width": 784,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 55072,
+		"title": "Nancy Bird-Walton, Mascot",
+		"date": "2018-05-15T06:43:11",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/d7_11153.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/d7_11153-227x300.jpg",
+					"width": 227,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/d7_11153.jpg",
+					"width": 1450,
+					"height": 1920,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 80820,
+		"title": "New post selfie 1540090449445",
+		"date": "2018-10-21T13:54:09",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540090449445.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540090449445-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540090449445.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 89370,
+		"title": "New post selfie 1542871842082",
+		"date": "2018-11-22T18:30:42",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1542871842082.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1542871842082-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1542871842082.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 56300,
+		"title":
+			"Mr Thomas Roberts, gold miner and his wife Lucy Ellen, nee Barlow",
+		"date": "2018-05-15T09:37:01",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1526377021825.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1526377021825-223x300.jpg",
+					"width": 223,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1526377021825.jpg",
+					"width": 782,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 74078,
+		"title": "Asrida Halim",
+		"date": "2018-10-02T11:15:22",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538359969897-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538359969897--300x300.jpg",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538359969897-.jpg",
+					"width": 451,
+					"height": 451,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 78346,
+		"title": "New post selfie 1539402210354",
+		"date": "2018-10-13T13:43:30",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539402210354.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539402210354-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539402210354.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 67137,
+		"title":
+			"[Maori and Pacific Islander portraits, ca. 1879-1900] / album owned by David Scott Mitchell",
+		"date": "2018-09-03T14:14:57",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681512928--e1535946607847.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681512928--e1535946607847-204x300.jpg",
+					"width": 204,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681512928--e1535946607847.jpg",
+					"width": 590,
+					"height": 866,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 72271,
+		"title": "FRAMEWORK§",
+		"date": "2018-09-21T09:06:52",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1537429325515-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1537429325515--240x300.jpg",
+					"width": 240,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/09/selfie-1537429325515-.jpg",
+					"width": 1080,
+					"height": 1350,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 63703,
+		"title": "shona cunningham",
+		"date": "2018-08-31T15:43:50",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1534933937328-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1534933937328--300x209.jpg",
+					"width": 300,
+					"height": 209,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1534933937328-.jpg",
+					"width": 1080,
+					"height": 753,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 65901,
+		"title":
+			"Item 21: Paul standing on footpath outside Abbotts Hotel, Raglan Street, Waterloo, 17 May 2017 / photograph by Fiona Wolf-Symeonides",
+		"date": "2018-09-04T09:31:25",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535620331451-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535620331451--200x300.jpg",
+					"width": 200,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535620331451-.jpg",
+					"width": 683,
+					"height": 1024,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 44811,
+		"title":
+			"Captain George Caret Mitchell, captain of the ship Warwickshire, ca. 1868-1869 / photographer B. C. Boake",
+		"date": "2018-05-09T06:55:10",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525848910530.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525848910530-188x300.jpg",
+					"width": 188,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525848910530.jpg",
+					"width": 658,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 36514,
+		"title": "Hon. George Allen, Father of Speaker Sir G.W. Allen",
+		"date": "2018-05-07T06:09:22",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525673362206.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525673362206-249x300.jpg",
+					"width": 249,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525673362206.jpg",
+					"width": 871,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 23145,
+		"title": "Master Rapp",
+		"date": "2018-04-30T06:44:59",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525070700952.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525070700952-220x300.jpg",
+					"width": 220,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1525070700952.jpg",
+					"width": 769,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 36380,
+		"title": "[Thomas, Edward, or, Alfred ?] Chappell",
+		"date": "2018-05-07T06:01:50",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525672909905.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525672909905-229x300.jpg",
+					"width": 229,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525672909905.jpg",
+					"width": 801,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 13299,
+		"title": "Mrs Alexander&#8217;s baby",
+		"date": "2018-04-18T05:01:34",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1524027694047.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1524027694047-226x300.jpg",
+					"width": 226,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1524027694047.jpg",
+					"width": 791,
+					"height": 1050,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 67264,
+		"title":
+			"Sydney Town street portraits, March 2014-August 2015 / photographs by Jon Lewis",
+		"date": "2018-09-03T14:15:54",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681584725-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681584725--300x200.jpg",
+					"width": 300,
+					"height": 200,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681584725-.jpg",
+					"width": 500,
+					"height": 333,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 80021,
+		"title": "Two Doubles",
+		"date": "2018-10-22T14:46:00",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539853203960-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539853203960--300x300.jpg",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539853203960-.jpg",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 48769,
+		"title":
+			"Henry Ernest Boote, labor journalist, poet and writer, ca. 1920 / Melba Studios, 65 Market St, Sydney",
+		"date": "2018-05-10T03:29:52",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525922991978-e1534726917916.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525922991978-e1534726917916-197x300.jpg",
+					"width": 197,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525922991978-e1534726917916.jpg",
+					"width": 364,
+					"height": 553,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 74141,
+		"title": "Princesskaril Lirio?",
+		"date": "2018-10-02T11:16:01",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538385603103-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538385603103--300x300.jpg",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538385603103-.jpg",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 67089,
+		"title":
+			"Photographic scenes &amp; portraits of Fijian natives, Aborigines of Queensland and Clarence River NSW, British Royalty and the Exhibition Building at Prince Alfred Park, 1870 &#8211; 1875",
+		"date": "2018-09-03T15:08:22",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681483400--e1536035993154.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681483400--e1536035993154-182x300.jpg",
+					"width": 182,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535681483400--e1536035993154.jpg",
+					"width": 561,
+					"height": 924,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 48821,
+		"title": "Lily Iris, ca. 1909 / photographer Burlington Studios, Melbourne",
+		"date": "2018-05-10T03:33:10",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525923190040-e1534726723255.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525923190040-e1534726723255-204x300.jpg",
+					"width": 204,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525923190040-e1534726723255.jpg",
+					"width": 504,
+					"height": 740,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 9243,
+		"title":
+			"NSW servicemen portraits, 1918-19 &#8211; Lachlan McGilvray Sutherland",
+		"date": "2018-04-16T16:31:16",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1523896276479-e1536713655774.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1523896276479-e1536713655774-179x300.jpg",
+					"width": 179,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/04/selfie1523896276479-e1536713655774.jpg",
+					"width": 548,
+					"height": 916,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 89659,
+		"title": "New post selfie 1542948622114",
+		"date": "2018-11-23T15:50:22",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1542948622114.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1542948622114-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/11/selfie-1542948622114.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 45707,
+		"title":
+			"William Francis Tothill, captain of the ship William Cole, ca. 1863-1864 / photographer unknown",
+		"date": "2018-05-09T08:05:22",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525853122136-e1537420350796.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525853122136-e1537420350796-187x300.jpg",
+					"width": 187,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/05/selfie1525853122136-e1537420350796.jpg",
+					"width": 611,
+					"height": 979,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesPortrait"
+	},
+	{
+		"id": 67750,
+		"title": "Simon Leong",
+		"date": "2018-09-03T08:39:03",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535701028256-.jpg",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535701028256--300x300.jpg",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/08/selfie-1535701028256-.jpg",
+					"width": 640,
+					"height": 640,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesInstagramSelfie"
+	},
+	{
+		"id": 82620,
+		"title": "New post selfie 1540689798619",
+		"date": "2018-10-28T12:23:18",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540689798619.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540689798619-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1540689798619.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 77197,
+		"title": "New post selfie 1539140678487",
+		"date": "2018-10-10T13:04:38",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539140678487.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539140678487-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1539140678487.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	},
+	{
+		"id": 75011,
+		"title": "New post selfie 1538718876910",
+		"date": "2018-10-05T15:54:37",
+		"featuredMedia": {
+			"sourceUrl":
+				"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538718876910-e1538973104638.png",
+			"sizes": {
+				"medium": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538718876910-e1538973104638-300x300.png",
+					"width": 300,
+					"height": 300,
+					"__typename": "MediaSize"
+				},
+				"full": {
+					"sourceUrl":
+						"https://staging-newselfwales.dxlab.sl.nsw.gov.au/app/uploads/sites/2/2018/10/selfie-1538718876910-e1538973104638.png",
+					"width": 1080,
+					"height": 1080,
+					"__typename": "MediaSize"
+				},
+				"__typename": "MediaSizes"
+			},
+			"__typename": "Media"
+		},
+		"__typename": "NewSelfWalesGallerySelfie"
+	}
+]

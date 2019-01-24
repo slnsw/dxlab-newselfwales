@@ -16,25 +16,30 @@ const log = (...args) => {
 
 class ImageFeed extends Component {
 	static propTypes = {
+		className: PropTypes.string,
 		isLoading: PropTypes.bool,
 		name: PropTypes.string,
+		// Scroller
 		enableAnimation: PropTypes.bool,
+		increment: PropTypes.number,
+		axis: PropTypes.string,
+		loadMoreGap: PropTypes.number,
+		fps: PropTypes.number,
+		// Images
 		images: PropTypes.array,
 		maxImages: PropTypes.number,
 		startImages: PropTypes.number,
 		intervalTime: PropTypes.number,
-		increment: PropTypes.number,
-		axis: PropTypes.string,
 		status: PropTypes.string,
-		loadMoreGap: PropTypes.number,
+		// Styling
 		marginTop: PropTypes.string,
 		heightAdjust: PropTypes.string,
-		fps: PropTypes.number,
-		enableWindow: PropTypes.bool,
 		gridSize: PropTypes.string,
-		className: PropTypes.string,
+		// Options
+		enableWindow: PropTypes.bool,
 		shouldFetchImagesOnMount: PropTypes.bool,
 		pauseInterval: PropTypes.bool,
+		// Callbacks
 		onLoadMore: PropTypes.func,
 		onImagesUpdate: PropTypes.func,
 		onImageClick: PropTypes.func,
