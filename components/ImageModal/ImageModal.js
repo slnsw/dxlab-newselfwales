@@ -161,7 +161,7 @@ class ImageModal extends Component {
 				return out;
 			}
 		}
-		return desc;
+		return [{ url: null, linkText: null, postText: desc }];
 	};
 
 	render() {
