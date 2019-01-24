@@ -44,6 +44,7 @@ class LandingPage extends Component {
 			hasInitiallyScrolled: false,
 			showModal: !cookies.get('specialcareacknowledged'),
 			pauseInterval: false,
+			isSearchState: false,
 			searchFilters: [
 				{
 					name: 'All',
@@ -80,11 +81,19 @@ class LandingPage extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.url.query !== this.props.url.query) {
-			// const { prevQuery = {} } = prevProps.url;
 			const { query } = this.props.url;
 
+			let isSearch;
+
+			if (query.param === 'search') {
+				isSearch = true;
+			} else {
+				isSearch = this.state.isSearchState;
+			}
+
 			this.setState({
-				isSearch: query.param === 'search',
+				// Use query.param but also check internal flag for search
+				isSearch,
 			});
 		}
 	}
@@ -122,6 +131,8 @@ class LandingPage extends Component {
 		this.setState({
 			enableAnimation: false,
 			q: this.state.isSearch ? q : '',
+			// Keep internal search state flag
+			isSearchState: this.state.isSearch,
 			filters: this.state.isSearch ? filters : null,
 			sourceImageBoundingClientRect: event.target.parentElement.getBoundingClientRect(),
 			pauseInterval: true,
@@ -252,23 +263,32 @@ class LandingPage extends Component {
 	handleSearchBoxFocus = () => {
 		// Check if already on search page
 		if (this.props.url.query.param !== 'search') {
-			Router.pushRoute('/newselfwales/search');
-
-			this.setState({
-				enableAnimation: false,
-				pauseInterval: true,
-			});
+			this.setState(
+				{
+					// isSearchState: false,
+					enableAnimation: false,
+					pauseInterval: true,
+				},
+				() => {
+					Router.pushRoute('/newselfwales/search');
+				},
+			);
 		}
 	};
 
 	handleSearchBoxBackClick = () => {
-		Router.pushRoute('/newselfwales');
-
-		this.setState({
-			q: '',
-			enableAnimation: true,
-			pauseInterval: false,
-		});
+		this.setState(
+			{
+				q: '',
+				// Clear internal flag for search
+				isSearchState: false,
+				enableAnimation: true,
+				pauseInterval: false,
+			},
+			() => {
+				Router.pushRoute('/newselfwales');
+			},
+		);
 	};
 
 	handleSearchSubmit = (value) => {
@@ -363,9 +383,11 @@ class LandingPage extends Component {
 
 		// console.log({
 		// 	isSearch,
-		// 	isImageFeedInitiallyLoading,
-		// 	isImageFeedLoading,
-		// 	hasInitiallyScrolled,
+		// 	q,
+		// 	filterValue,
+		// isImageFeedInitiallyLoading,
+		// isImageFeedLoading,
+		// hasInitiallyScrolled,
 		// });
 
 		return (

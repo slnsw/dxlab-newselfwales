@@ -250,8 +250,6 @@ class ImageModal extends Component {
 						},
 					};
 
-					// console.log(screenWidth);
-
 					return (
 						<Modal
 							className={`image-modal image-modal--${state}`}

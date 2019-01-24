@@ -187,11 +187,11 @@ PackeryComponent = createReactClass({
 						this.props.onImagesLoaded(instance);
 					}
 
-					const itemsToLayout = Array.from(this.refs[refName].children).filter(
-						(element) => {
-							return element.getBoundingClientRect().right > 0;
-						},
-					);
+					// const itemsToLayout = Array.from(this.refs[refName].children).filter(
+					// 	(element) => {
+					// 		return element.getBoundingClientRect().right > 0;
+					// 	},
+					// );
 
 					// console.log(itemsToLayout);
 
