@@ -39,6 +39,11 @@
 		text-decoration: underline;
 	}
 
+	&:disabled {
+		opacity: 0.5;
+		text-decoration: none;
+	}
+	
 	@media (--screen-sm) {
 		font-weight: 500;
 	}

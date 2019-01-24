@@ -39,6 +39,7 @@ class SearchFilters extends Component {
 							>
 								<button
 									className="search-filters__filter-button"
+									disabled={filter.isDisabled}
 									onClick={(event) => this.handleClick(event, filter)}
 								>
 									{filter.name}

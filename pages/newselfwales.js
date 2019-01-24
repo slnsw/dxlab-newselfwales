@@ -417,7 +417,12 @@ class LandingPage extends Component {
 					<Fragment>
 						<SearchFilters
 							className="newselfwales-page__search-filters"
-							filters={searchFilters}
+							filters={searchFilters.map((searchFilter) => {
+								return {
+									...searchFilter,
+									isDisabled: searchFilter.value === 'all' ? false : !q,
+								};
+							})}
 							value={filterValue}
 							onClick={this.handleSearchFilterClick}
 						/>
