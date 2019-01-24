@@ -240,7 +240,7 @@ class ImageModal extends Component {
 					};
 
 					// console.log(screenWidth);
-					console.log(this.parseContent(content, imageType));
+					// console.log(this.parseContent(content, imageType));
 
 					return (
 						<Modal
