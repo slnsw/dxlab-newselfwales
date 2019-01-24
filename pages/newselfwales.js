@@ -391,6 +391,7 @@ class LandingPage extends Component {
 						{!q && (
 							<SearchSuggestions
 								className="newselfwales-page__search-suggestions"
+								limit={5}
 								suggestions={[
 									{
 										name: 'Ball',
@@ -411,6 +412,42 @@ class LandingPage extends Component {
 									{
 										name: 'Architects',
 										url: '/newselfwales/search?q=architect',
+									},
+									{
+										name: 'Spring',
+										url: '/newselfwales/search?q=spring',
+									},
+									{
+										name: 'Cricket',
+										url: '/newselfwales/search?q=cricket',
+									},
+									{
+										name: 'David Scott Mitchell',
+										url: '/newselfwales/search?q=Mitchell',
+									},
+									{
+										name: 'Newtown',
+										url: '/newselfwales/search?q=newtown',
+									},
+									{
+										name: 'Aboriginal',
+										url: '/newselfwales/search?q=Aboriginal',
+									},
+									{
+										name: 'B. O. Holtermann',
+										url: '/newselfwales/search?q=holterman',
+									},
+									{
+										name: 'Hood',
+										url: '/newselfwales/search?q=hood',
+									},
+									{
+										name: 'Waterloo',
+										url: '/newselfwales/search?q=waterloo',
+									},
+									{
+										name: 'Tribune',
+										url: '/newselfwales/search?q=tribune',
 									},
 								]}
 							/>
