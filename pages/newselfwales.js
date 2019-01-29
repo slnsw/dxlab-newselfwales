@@ -27,8 +27,6 @@ class LandingPage extends Component {
 	constructor(props) {
 		super(props);
 
-		const { cookies } = props;
-
 		this.state = {
 			isSearch: false,
 			// Need to store this in local state even though we mainly use url.query.q in props.
@@ -42,7 +40,7 @@ class LandingPage extends Component {
 			isImageFeedLoading: false,
 			isImageFeedInitiallyLoading: true,
 			hasInitiallyScrolled: false,
-			showModal: !cookies.get('specialcareacknowledged'),
+			showModal: false,
 			pauseInterval: false,
 			isSearchState: false,
 			searchFilters: [
@@ -67,6 +65,8 @@ class LandingPage extends Component {
 	}
 
 	componentDidMount() {
+		const { cookies } = this.props;
+
 		window.addEventListener('keyup', this.handleKey, true);
 
 		const isSearch = this.props.url.query.param === 'search';
@@ -76,6 +76,7 @@ class LandingPage extends Component {
 			isSearch,
 			enableAnimation: isHome,
 			pauseInterval: !isHome,
+			showModal: !cookies.get('specialcareacknowledged'),
 		});
 	}
 
