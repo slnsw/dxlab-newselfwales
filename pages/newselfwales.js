@@ -1,6 +1,6 @@
 import { Component, Fragment } from 'react';
 import { graphql } from 'react-apollo';
-import withRedux from 'next-redux-wrapper';
+// import withRedux from 'next-redux-wrapper';
 import gql from 'graphql-tag';
 import { withCookies } from 'react-cookie';
 import queryString from 'query-string';
@@ -16,8 +16,8 @@ import SearchFilters from '../components/SearchFilters';
 import SearchSuggestions from '../components/SearchSuggestions';
 import Overlay from '../components/Overlay';
 import MessageWidget from '../components/MessageWidget';
-import withApollo from '../lib/withApollo';
-import { initStore } from '../lib/initRedux';
+// import withApollo from '../lib/withApollo';
+// import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
 
 import './newselfwales.css';
@@ -69,8 +69,8 @@ class LandingPage extends Component {
 
 		window.addEventListener('keyup', this.handleKey, true);
 
-		const isSearch = this.props.url.query.param === 'search';
-		const isHome = typeof this.props.url.query.param === 'undefined';
+		const isSearch = this.props.router.query.param === 'search';
+		const isHome = typeof this.props.router.query.param === 'undefined';
 
 		this.setState({
 			isSearch,
@@ -81,8 +81,8 @@ class LandingPage extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.url.query !== this.props.url.query) {
-			const { query } = this.props.url;
+		if (prevProps.router.query !== this.props.router.query) {
+			const { query } = this.props.router;
 
 			let isSearch;
 
@@ -125,7 +125,7 @@ class LandingPage extends Component {
 	handleImageModalClick = (event, image) => {
 		// Store query and filters in state so when ImageModal closes,
 		// we can return back to correct search.
-		const { q, filters } = this.props.url.query;
+		const { q, filters } = this.props.router.query;
 
 		Router.pushRoute(`/newselfwales/${image.type}/${image.id}`);
 
@@ -176,9 +176,9 @@ class LandingPage extends Component {
 		if (event.code === 'Escape') {
 			//  Effectively close ImageModal
 			if (
-				this.props.url.query &&
-				this.props.url.query.param &&
-				this.props.url.query.id
+				this.props.router.query &&
+				this.props.router.query.param &&
+				this.props.router.query.id
 			) {
 				Router.pushRoute(`/newselfwales`);
 
@@ -263,7 +263,7 @@ class LandingPage extends Component {
 
 	handleSearchBoxFocus = () => {
 		// Check if already on search page
-		if (this.props.url.query.param !== 'search') {
+		if (this.props.router.query.param !== 'search') {
 			this.setState(
 				{
 					// isSearchState: false,
@@ -293,7 +293,7 @@ class LandingPage extends Component {
 	};
 
 	handleSearchSubmit = (value) => {
-		const { filters } = this.props.url.query;
+		const { filters } = this.props.router.query;
 
 		const query = {
 			q: value,
@@ -313,7 +313,7 @@ class LandingPage extends Component {
 
 	handleSearchFilterClick = (event, filter) => {
 		const query = {
-			...this.props.url.query,
+			...this.props.router.query,
 			filters: filter.value,
 		};
 
@@ -351,8 +351,8 @@ class LandingPage extends Component {
 	};
 
 	render() {
-		const { error, pages, url } = this.props;
-		const { query } = url;
+		const { error, pages, router } = this.props;
+		const { query } = router;
 		const {
 			showModal,
 			enableAnimation,
@@ -365,8 +365,9 @@ class LandingPage extends Component {
 			hasInitiallyScrolled,
 		} = this.state;
 
-		const showImageModal = url && url.query.param && url.query.id && true;
-		const hideUI = url && url.query.hide === '1';
+		const showImageModal =
+			router && router.query.param && router.query.id && true;
+		const hideUI = router && router.query.hide === '1';
 		const q = query.q || this.state.q;
 		const filters = query.filters || this.state.filters;
 		const filterValue = filters || 'all';
@@ -403,7 +404,7 @@ class LandingPage extends Component {
 				pathname="/newselfwales"
 			>
 				<SearchBox
-					defaultValue={url.query && url.query.q ? url.query.q : ''}
+					defaultValue={router.query && router.query.q ? router.query.q : ''}
 					className={[
 						'newselfwales-page__search-box',
 						hideUI ? 'newselfwales-page__search-box--is-hidden' : '',
@@ -583,8 +584,8 @@ class LandingPage extends Component {
 
 				<ImageModalContainer
 					isActive={showImageModal}
-					imageType={url.query.param}
-					id={parseInt(url.query.id, 10)}
+					imageType={router.query.param}
+					id={parseInt(router.query.id, 10)}
 					sourceImageBoundingClientRect={sourceImageBoundingClientRect}
 					onClose={this.handleImageModalClose}
 				/>
@@ -625,14 +626,22 @@ const PAGE_QUERY = gql`
 	}
 `;
 
-export default withRedux(initStore)(
-	withApollo(
-		graphql(PAGE_QUERY, {
-			props: ({ data }) => {
-				return {
-					...data,
-				};
-			},
-		})(withCookies(LandingPage)),
-	),
-);
+// export default withRedux(initStore)(
+// 	withApollo(
+// 		graphql(PAGE_QUERY, {
+// 			props: ({ data }) => {
+// 				return {
+// 					...data,
+// 				};
+// 			},
+// 		})(withCookies(LandingPage)),
+// 	),
+// );
+
+export default graphql(PAGE_QUERY, {
+	props: ({ data }) => {
+		return {
+			...data,
+		};
+	},
+})(withCookies(LandingPage));

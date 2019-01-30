@@ -1,6 +1,7 @@
 import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
+import Head from 'next/head';
 
 import Link from '../Link';
 import './ImageModal.css';
@@ -208,152 +209,159 @@ class ImageModal extends Component {
 				`https://search.sl.nsw.gov.au/primo-explore/fulldisplay?vid=SLNSW&search_scope=EEA&adaptor=Local%20Search%20Engine&docid=${primoId.toUpperCase()}`;
 
 		return (
-			<Transition
-				in={isActive}
-				timeout={timeout}
-				appear={true}
-				// unmountOnExit={true}
-			>
-				{(state) => {
-					// if (isLoading) {
-					// 	return null;
-					// }
+			<Fragment>
+				<Head>
+					<title>{title}</title>
+				</Head>
 
-					const defaultStyle = {
-						transition: `all ${timeout}ms cubic-bezier(0.86, 0, 0.07, 1)`,
-						opacity: 1,
-						top:
-							sourceImageBoundingClientRect &&
-							sourceImageBoundingClientRect.y +
-								sourceImageBoundingClientRect.height / 2,
-						left:
-							sourceImageBoundingClientRect &&
-							sourceImageBoundingClientRect.x +
-								sourceImageBoundingClientRect.width / 2,
-						width:
-							sourceImageBoundingClientRect &&
-							sourceImageBoundingClientRect.width,
-						height:
-							sourceImageBoundingClientRect &&
-							sourceImageBoundingClientRect.height,
-					};
+				<Transition
+					in={isActive}
+					timeout={timeout}
+					appear={true}
+					// unmountOnExit={true}
+				>
+					{(state) => {
+						// if (isLoading) {
+						// 	return null;
+						// }
 
-					const transitionStyles = {
-						entering: {
+						const defaultStyle = {
+							transition: `all ${timeout}ms cubic-bezier(0.86, 0, 0.07, 1)`,
 							opacity: 1,
-							// top: screenHeight / 2,
-							// left: screenWidth / 2,
-							top: '50%',
-							left: '50%',
-							height: screenWidth > SCREEN_SM ? '80%' : 'calc(100% - 2em)',
-							width: screenWidth > SCREEN_SM ? '80%' : 'calc(100% - 0.91em)',
-						},
-					};
+							top:
+								sourceImageBoundingClientRect &&
+								sourceImageBoundingClientRect.y +
+									sourceImageBoundingClientRect.height / 2,
+							left:
+								sourceImageBoundingClientRect &&
+								sourceImageBoundingClientRect.x +
+									sourceImageBoundingClientRect.width / 2,
+							width:
+								sourceImageBoundingClientRect &&
+								sourceImageBoundingClientRect.width,
+							height:
+								sourceImageBoundingClientRect &&
+								sourceImageBoundingClientRect.height,
+						};
 
-					return (
-						<Modal
-							className={`image-modal image-modal--${state}`}
-							isActive={isActive}
-							onClose={this.handleClose}
-							style={{
-								...defaultStyle,
-								...(screenWidth && (state === 'entering' || state === 'entered')
-									? transitionStyles.entering
-									: {}),
-							}}
-						>
-							<div className="image-modal__image-holder">
-								{shortcode ? (
-									<a href={`https://www.instagram.com/p/${shortcode}`}>
+						const transitionStyles = {
+							entering: {
+								opacity: 1,
+								// top: screenHeight / 2,
+								// left: screenWidth / 2,
+								top: '50%',
+								left: '50%',
+								height: screenWidth > SCREEN_SM ? '80%' : 'calc(100% - 2em)',
+								width: screenWidth > SCREEN_SM ? '80%' : 'calc(100% - 0.91em)',
+							},
+						};
+
+						return (
+							<Modal
+								className={`image-modal image-modal--${state}`}
+								isActive={isActive}
+								onClose={this.handleClose}
+								style={{
+									...defaultStyle,
+									...(screenWidth &&
+									(state === 'entering' || state === 'entered')
+										? transitionStyles.entering
+										: {}),
+								}}
+							>
+								<div className="image-modal__image-holder">
+									{shortcode ? (
+										<a href={`https://www.instagram.com/p/${shortcode}`}>
+											<div
+												className="image-modal__image"
+												style={{
+													backgroundImage: `url(${imageUrl})`,
+												}}
+											/>
+										</a>
+									) : (
 										<div
 											className="image-modal__image"
 											style={{
 												backgroundImage: `url(${imageUrl})`,
 											}}
-										/>
-									</a>
-								) : (
-									<div
-										className="image-modal__image"
-										style={{
-											backgroundImage: `url(${imageUrl})`,
-										}}
-									>
-										{/* <img
+										>
+											{/* <img
 										className="image-modal__image"
 										src={imageUrl}
 										alt={title}
 										width="100%"
 										height="auto"
 									/> */}
-									</div>
-								)}
-							</div>
-
-							<div className="image-modal__info">
-								{isLoading && <LoaderText />}
-
-								<div className="image-modal__type">{typeName[imageType]}</div>
-
-								<h1
-									className="image-modal__title"
-									dangerouslySetInnerHTML={{ __html: title }}
-								/>
-								<div className="image-modal__content">
-									<p>
-										{content &&
-											this.parseContent(content, imageType).map((item) => {
-												return (
-													<Fragment>
-														{item.url && (
-															<Link to={item.url}>
-																<a
-																	dangerouslySetInnerHTML={{
-																		__html: item.linkText,
-																	}}
-																/>
-															</Link>
-														)}
-														<span
-															dangerouslySetInnerHTML={{
-																__html: item.postText,
-															}}
-														/>
-													</Fragment>
-												);
-											})}
-									</p>
+										</div>
+									)}
 								</div>
-							</div>
-							<footer className="image-modal__footer">
-								{instagramUsername && (
-									<a
-										className="image-modal__instagram-username"
-										target="_blank"
-										href={`https://www.instagram.com/${instagramUsername}`}
-									>
-										@{instagramUsername}
-									</a>
-								)}
 
-								{dateString && (
-									<div className="image-modal__date">{dateString}</div>
-								)}
+								<div className="image-modal__info">
+									{isLoading && <LoaderText />}
 
-								{collectionLink && (
-									<a
-										className="secondary-button"
-										target="_blank"
-										href={collectionLink}
-									>
-										Collection Image
-									</a>
-								)}
-							</footer>
-						</Modal>
-					);
-				}}
-			</Transition>
+									<div className="image-modal__type">{typeName[imageType]}</div>
+
+									<h1
+										className="image-modal__title"
+										dangerouslySetInnerHTML={{ __html: title }}
+									/>
+									<div className="image-modal__content">
+										<p>
+											{content &&
+												this.parseContent(content, imageType).map((item) => {
+													return (
+														<Fragment>
+															{item.url && (
+																<Link to={item.url}>
+																	<a
+																		dangerouslySetInnerHTML={{
+																			__html: item.linkText,
+																		}}
+																	/>
+																</Link>
+															)}
+															<span
+																dangerouslySetInnerHTML={{
+																	__html: item.postText,
+																}}
+															/>
+														</Fragment>
+													);
+												})}
+										</p>
+									</div>
+								</div>
+								<footer className="image-modal__footer">
+									{instagramUsername && (
+										<a
+											className="image-modal__instagram-username"
+											target="_blank"
+											href={`https://www.instagram.com/${instagramUsername}`}
+										>
+											@{instagramUsername}
+										</a>
+									)}
+
+									{dateString && (
+										<div className="image-modal__date">{dateString}</div>
+									)}
+
+									{collectionLink && (
+										<a
+											className="secondary-button"
+											target="_blank"
+											href={collectionLink}
+										>
+											Collection Image
+										</a>
+									)}
+								</footer>
+							</Modal>
+						);
+					}}
+				</Transition>
+			</Fragment>
 		);
 	}
 }
