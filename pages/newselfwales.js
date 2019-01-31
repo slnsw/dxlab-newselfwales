@@ -4,6 +4,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withCookies } from 'react-cookie';
 import queryString from 'query-string';
+// import { withRouter } from 'next/router';
 
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
@@ -64,6 +65,14 @@ class LandingPage extends Component {
 		};
 	}
 
+	static getInitialProps(props) {
+		return {
+			// Wierd annoying hack to get componentDidUpdate to recognise route changes.
+			// Seems to be a bug in Next 7, or I haven't configured it properly.
+			path: props.asPath,
+		};
+	}
+
 	componentDidMount() {
 		const { cookies } = this.props;
 
@@ -81,10 +90,12 @@ class LandingPage extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.router.query !== this.props.router.query) {
+		if (prevProps.path !== this.props.path) {
 			const { query } = this.props.router;
 
 			let isSearch;
+
+			console.log(query);
 
 			if (query.param === 'search') {
 				isSearch = true;
@@ -271,7 +282,9 @@ class LandingPage extends Component {
 					pauseInterval: true,
 				},
 				() => {
-					Router.pushRoute('/newselfwales/search');
+					Router.pushRoute('/newselfwales/search', '/newselfwales/search', {
+						shallow: true,
+					});
 				},
 			);
 		}
@@ -382,6 +395,8 @@ class LandingPage extends Component {
 		}
 
 		const page = pages && pages[0];
+
+		console.log(this.props.path);
 
 		// console.log({
 		// 	isSearch,

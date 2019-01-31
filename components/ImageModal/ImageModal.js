@@ -325,7 +325,7 @@ class ImageModal extends Component {
 											{content &&
 												this.parseContent(content, imageType).map((item) => {
 													return (
-														<Fragment>
+														<Fragment key={item.url}>
 															{item.url && (
 																<Link to={item.url}>
 																	<a
