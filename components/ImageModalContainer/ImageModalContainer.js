@@ -53,6 +53,7 @@ class ImageModalContainer extends Component {
 						const { image } = newSelfWales;
 
 						imageModalProps = {
+							id,
 							primoId: image.primoId,
 							title: image.title,
 							content: image.content,

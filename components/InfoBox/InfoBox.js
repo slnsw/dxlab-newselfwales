@@ -102,6 +102,16 @@ class InfoBox extends Component {
 									hide interface
 								</button>
 							</div>
+
+							<div className="info-box__footer">
+								<ul className="footer-menu">
+									{footerItems.map((item, i) => (
+										<li key={`footer-menu-${i}`}>
+											<a href={item.url}>{item.name}</a>
+										</li>
+									))}
+								</ul>
+							</div>
 						</Fragment>
 					)}
 				</div>
@@ -118,5 +128,18 @@ class InfoBox extends Component {
 		);
 	}
 }
+
+const footerItems = [
+	{ name: 'Disclaimer', url: 'https://www.sl.nsw.gov.au/disclaimer' },
+	{
+		name: 'Privacy',
+		url: 'https://www.sl.nsw.gov.au/privacy/web-privacy-statement',
+	},
+	{ name: 'Copyright', url: 'https://www.sl.nsw.gov.au/copyright' },
+	{
+		name: 'Right to information',
+		url: 'https://www.sl.nsw.gov.au/right-to-information',
+	},
+];
 
 export default InfoBox;

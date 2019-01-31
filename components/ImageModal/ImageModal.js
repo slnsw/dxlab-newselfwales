@@ -4,6 +4,7 @@ import { Transition } from 'react-transition-group';
 import Head from 'next/head';
 
 import Link from '../Link';
+import ShareBox from '../../components/ShareBox';
 import './ImageModal.css';
 import Modal from '../Modal';
 import LoaderText from '../LoaderText';
@@ -17,6 +18,7 @@ const typeName = {
 
 class ImageModal extends Component {
 	static propTypes = {
+		id: PropTypes.number,
 		title: PropTypes.string,
 		primoId: PropTypes.string,
 		shortcode: PropTypes.string,
@@ -165,19 +167,9 @@ class ImageModal extends Component {
 		return [{ url: null, linkText: null, postText: desc }];
 	};
 
-	/*
-	convertUnicode = (input) => {
-		if (input) {
-			return input.replace(/\\u(\w\w\w\w)/g,function(a,b) {
-    		let charcode = parseInt(b,16);
-    		return String.fromCharCode(charcode);
-  		});
-		}
-	};
-	*/
-
 	render() {
 		const {
+			id,
 			title,
 			primoId,
 			shortcode,
@@ -196,6 +188,10 @@ class ImageModal extends Component {
 
 		const timeout = 500;
 
+		const pathname = `/newselfwales/${imageType}/${id}`;
+		const baseUrl = process.env.BASE_URL || 'https://dxlab.sl.nsw.gov.au';
+		const metaUrl = `${baseUrl}${pathname}`;
+
 		let dateString;
 
 		if (date) {
@@ -212,6 +208,24 @@ class ImageModal extends Component {
 			<Fragment>
 				<Head>
 					<title>{title}</title>
+					{title && <meta property="og:title" content={title} />}
+					{title && <meta property="og:description" content={title} />}
+
+					{title && <meta name="description" content={title} />}
+
+					{imageUrl && <meta property="og:image" content={`${imageUrl}`} />}
+
+					{metaUrl && <meta property="og:url" content={metaUrl} />}
+
+					{title && <meta name="twitter:image:alt" content={title} />}
+
+					<meta name="twitter:card" content="summary_large_image" />
+					<meta
+						property="og:site_name"
+						content="#NewSelfWales - DX Lab | State Library of NSW"
+					/>
+					<meta property="fb:app_id" content={process.env.FB_APP_ID} />
+					<meta name="twitter:site" content="@statelibrarynsw" />
 				</Head>
 
 				<Transition
@@ -342,7 +356,7 @@ class ImageModal extends Component {
 											@{instagramUsername}
 										</a>
 									)}
-
+									<ShareBox pathname={pathname} title={title} />
 									{dateString && (
 										<div className="image-modal__date">{dateString}</div>
 									)}

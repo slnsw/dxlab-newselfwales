@@ -1,0 +1,52 @@
+@import '../../styles/variables.css';
+
+.share-box {
+	position: absolute;
+	right: 32%;
+	display: flex;
+	/*
+  margin-top: 3em;
+	margin-bottom: 4em;
+  padding-left: var(--spacing-md);
+  
+
+	&::before {
+		position: absolute;
+		left: -0.5em;
+		content: '';
+		height: 1em;
+		border-left: 1px solid var(--colour-white);
+  }
+  */
+}
+
+.share-box__title {
+	position: absolute;
+	top: 0.4em;
+	left: -4em;
+
+	font-size: var(--font-size-sm);
+	line-height: 1;
+	@apply --font-uppercase;
+}
+
+.share-box__icons {
+	line-height: 1;
+	font-size: var(--font-size-xxlg);
+	margin-top: -0.2em;
+
+	& a:link,
+	& a:visited {
+		color: var(--colour-white);
+	}
+
+	& a:hover,
+	& a:active {
+		color: var(--colour-highlight);
+		text-decoration: none;
+	}
+}
+
+.share-box__icon {
+	margin-left: var(--font-size-xxxs);
+}
