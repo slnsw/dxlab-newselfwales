@@ -4,11 +4,12 @@ import { Transition } from 'react-transition-group';
 import Head from 'next/head';
 
 import Link from '../Link';
-import ShareBox from '../../components/ShareBox';
-import './ImageModal.css';
+import Image from '../Image';
+import ShareBox from '../ShareBox';
 import Modal from '../Modal';
 import LoaderText from '../LoaderText';
 import { SCREEN_SM } from '../../styles/variables';
+import './ImageModal.css';
 
 const typeName = {
 	portrait: 'State Library of NSW Collection',
@@ -41,6 +42,7 @@ class ImageModal extends Component {
 	state = {
 		screenWidth: null,
 		screenHeight: null,
+		isImageLoaded: false,
 	};
 
 	componentDidMount() {
@@ -64,6 +66,12 @@ class ImageModal extends Component {
 
 	handleClose = () => {
 		this.props.onClose();
+	};
+
+	handleImageLoad = () => {
+		this.setState({
+			isImageLoaded: true,
+		});
 	};
 
 	splitNotBetween = (s, d, ll, rl) => {
@@ -197,7 +205,7 @@ class ImageModal extends Component {
 			isLoading,
 		} = this.props;
 
-		const { screenWidth } = this.state;
+		const { screenWidth, isImageLoaded } = this.state;
 
 		const timeout = 500;
 
@@ -304,7 +312,10 @@ class ImageModal extends Component {
 									{shortcode ? (
 										<a href={`https://www.instagram.com/p/${shortcode}`}>
 											<div
-												className="image-modal__image"
+												className={[
+													'image-modal__image',
+													isImageLoaded ? 'image-modal__image--is-loaded' : '',
+												].join(' ')}
 												style={{
 													backgroundImage: `url(${imageUrl})`,
 												}}
@@ -312,7 +323,10 @@ class ImageModal extends Component {
 										</a>
 									) : (
 										<div
-											className="image-modal__image"
+											className={[
+												'image-modal__image',
+												isImageLoaded ? 'image-modal__image--is-loaded' : '',
+											].join(' ')}
 											style={{
 												backgroundImage: `url(${imageUrl})`,
 											}}
@@ -327,6 +341,13 @@ class ImageModal extends Component {
 										</div>
 									)}
 								</div>
+
+								{/* Need this to get onLoad event to fire off state change and animate .image-modal__image */}
+								<Image
+									className="image-modal__hidden-image"
+									src={imageUrl}
+									onLoad={this.handleImageLoad}
+								/>
 
 								<div className="image-modal__info">
 									{isLoading && <LoaderText />}

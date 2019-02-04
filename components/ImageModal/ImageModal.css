@@ -56,6 +56,16 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	margin-bottom: 1em;
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+}
+
+.image-modal__image--is-loaded {
+	opacity: 1;
+}
+
+.image-modal__hidden-image {
+	display: none;
 }
 
 .image-modal__info {

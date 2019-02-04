@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
 import Packery from '../Packery';
+import Image from '../Image';
 
 import './PackeryImages.css';
 
@@ -157,7 +158,7 @@ class PackeryImages extends Component {
 											</div>
 										)}
 
-										<img
+										<Image
 											className={[
 												`image-feed__image`,
 												image.isSilhouette
@@ -165,25 +166,29 @@ class PackeryImages extends Component {
 													: '',
 											].join(' ')}
 											src={imageUrl}
-											// src={`/static/newselfwales/${
-											// 	image.isSelfie ? 'selfies' : 'images'
-											// }/${image.imageUrl}`}
+											key={`${imageUrl}-${i}`}
+											alt={imageAlt}
+										/>
+
+										{/* <img
+											className={[
+												`image-feed__image`,
+												image.isSilhouette
+													? 'image-feed__image--is-person'
+													: '',
+											].join(' ')}
+											src={imageUrl}
 											style={{
 												marginBottom: '-4px',
 											}}
 											key={`${imageUrl}-${i}`}
 											alt={imageAlt}
-										/>
+										/> */}
 									</div>
 								</CSSTransition>
 							</Fragment>
 						);
 					})}
-
-				{/* TODO: Move this out? */}
-				{/* {this.props.isLoading && (
-					<LoaderText className="packery-images__loading" />
-				)} */}
 			</Packery>
 		);
 	}

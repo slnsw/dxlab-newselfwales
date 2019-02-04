@@ -1,6 +1,7 @@
 @import '../../styles/variables.css';
 
 .share-box {
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
@@ -21,12 +22,13 @@
 }
 
 .share-box__title {
-	/* position: absolute;
-	top: 0.4em;
-	left: -4em; */
-
+	/* transform: rotate(-90deg);
+	transform-origin: top left; */
+	border-left: 1px solid var(--colour-white);
+	padding-left: 1em;
 	font-size: var(--font-size-xs);
 	line-height: 1;
+	font-weight: 700;
 	@apply --font-uppercase;
 }
 

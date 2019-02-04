@@ -1,0 +1,10 @@
+@import '../../styles/variables.css';
+
+.image {
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+}
+
+.image--is-loaded {
+	opacity: 1;
+}
