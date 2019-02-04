@@ -62,6 +62,8 @@
 	/* margin-right: var(--spacing-xlg); */
 	opacity: 0;
 	transition: 0.6s;
+	/* Ensure share-box gets shown */
+	padding-bottom: 3em;
 
 	@media (--screen-sm) {
 		position: relative;

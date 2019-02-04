@@ -44,14 +44,23 @@ class ImageModal extends Component {
 	};
 
 	componentDidMount() {
-		// TODO: Update on resize
+		this.handleResize();
+
+		window.addEventListener('resize', this.handleResize);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.handleResize);
+	}
+
+	handleResize = () => {
 		this.setState({
 			// screenWidth: window.innerWidth,
 			// screenHeight: window.innerHeight,
 			screenWidth: document.documentElement.clientWidth,
 			screenHeight: document.documentElement.clientHeight,
 		});
-	}
+	};
 
 	handleClose = () => {
 		this.props.onClose();
