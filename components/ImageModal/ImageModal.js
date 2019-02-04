@@ -189,7 +189,7 @@ class ImageModal extends Component {
 		} = this.props;
 
 		const { screenWidth } = this.state;
-
+		console.log(date);
 		const timeout = 500;
 
 		const pathname = `/newselfwales/${imageType}/${id}`;
