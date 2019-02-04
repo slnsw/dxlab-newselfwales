@@ -68,7 +68,7 @@ class App extends Component {
 		return (
 			<main>
 				<Head>
-					<title>#NewSelfWales | DX Lab - State Library of NSW</title>
+					<title>{title} - #NewSelfWales | DX Lab - State Library of NSW</title>
 					<meta
 						name="viewport"
 						content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"

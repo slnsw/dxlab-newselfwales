@@ -1,9 +1,9 @@
 @import '../../styles/variables.css';
 
 .share-box {
-	position: absolute;
-	right: 32%;
 	display: flex;
+	align-items: center;
+	justify-content: flex-start;
 	/*
   margin-top: 3em;
 	margin-bottom: 4em;
@@ -21,19 +21,19 @@
 }
 
 .share-box__title {
-	position: absolute;
+	/* position: absolute;
 	top: 0.4em;
-	left: -4em;
+	left: -4em; */
 
-	font-size: var(--font-size-sm);
+	font-size: var(--font-size-xs);
 	line-height: 1;
 	@apply --font-uppercase;
 }
 
 .share-box__icons {
+	margin-left: var(--spacing-xxxs);
 	line-height: 1;
-	font-size: var(--font-size-xxlg);
-	margin-top: -0.2em;
+	font-size: var(--font-size-xlg);
 
 	& a:link,
 	& a:visited {
@@ -47,6 +47,6 @@
 	}
 }
 
-.share-box__icon {
+/* .share-box__icon {
 	margin-left: var(--font-size-xxxs);
-}
+} */

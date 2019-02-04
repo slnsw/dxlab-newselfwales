@@ -207,11 +207,11 @@ class ImageModal extends Component {
 		return (
 			<Fragment>
 				<Head>
-					<title>{title}</title>
+					<title>{title} - #NewSelfWales | DX Lab - State Library of NSW</title>
 					{title && <meta property="og:title" content={title} />}
-					{title && <meta property="og:description" content={title} />}
+					{content && <meta property="og:description" content={content} />}
 
-					{title && <meta name="description" content={title} />}
+					{content && <meta name="description" content={content} />}
 
 					{imageUrl && <meta property="og:image" content={`${imageUrl}`} />}
 
@@ -220,12 +220,6 @@ class ImageModal extends Component {
 					{title && <meta name="twitter:image:alt" content={title} />}
 
 					<meta name="twitter:card" content="summary_large_image" />
-					<meta
-						property="og:site_name"
-						content="#NewSelfWales - DX Lab | State Library of NSW"
-					/>
-					<meta property="fb:app_id" content={process.env.FB_APP_ID} />
-					<meta name="twitter:site" content="@statelibrarynsw" />
 				</Head>
 
 				<Transition
@@ -345,7 +339,10 @@ class ImageModal extends Component {
 												})}
 										</p>
 									</div>
+
+									<ShareBox pathname={pathname} title={title} />
 								</div>
+
 								<footer className="image-modal__footer">
 									{instagramUsername && (
 										<a
@@ -356,7 +353,7 @@ class ImageModal extends Component {
 											@{instagramUsername}
 										</a>
 									)}
-									<ShareBox pathname={pathname} title={title} />
+
 									{dateString && (
 										<div className="image-modal__date">{dateString}</div>
 									)}

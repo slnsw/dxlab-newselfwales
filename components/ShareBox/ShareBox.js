@@ -37,7 +37,7 @@ class ShareBox extends Component {
 						target="_blank"
 					>
 						<span
-							className="share-box__icon slnsw-icon-facebook"
+							className="share-box__icon icon ion-logo-facebook"
 							aria-hidden="true"
 						/>
 					</a>
@@ -48,7 +48,7 @@ class ShareBox extends Component {
 						target="_blank"
 					>
 						<span
-							className="share-box__icon slnsw-icon-twitter"
+							className="share-box__icon icon ion-logo-twitter"
 							aria-hidden="true"
 						/>
 					</a>
