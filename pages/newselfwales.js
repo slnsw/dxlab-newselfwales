@@ -389,19 +389,28 @@ class LandingPage extends Component {
 		}
 
 		const page = pages && pages[0];
-		// const headTitle = `${
-		// 	isSearch ? 'Search' : 'Home'
-		// } - #NewSelfWales | DX Lab - State Library of NSW`;
+
+		// console.log(showImageModal);
 
 		return (
 			<App
 				title={isSearch ? 'Search' : 'Home'}
 				metaDescription={
-					'Share your portrait and become part of our opening exhibitions'
+					// If image is being show, let ImageModal control contents of meta tags
+					showImageModal
+						? null
+						: 'Share your portrait and become part of our opening exhibitions'
 				}
-				metaImageUrl="https://dxlab.sl.nsw.gov.au/static/newselfwales/social-image.jpg"
-				metaImageAlt="#NewSelfWales image feed of collection, Instagram and photo booth images"
-				// url={url}
+				metaImageUrl={
+					showImageModal
+						? null
+						: 'https://dxlab.sl.nsw.gov.au/static/newselfwales/social-image.jpg'
+				}
+				metaImageAlt={
+					showImageModal
+						? null
+						: '#NewSelfWales image feed of collection, Instagram and photo booth images'
+				}
 				pathname="/newselfwales"
 			>
 				<SearchBox

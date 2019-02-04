@@ -34,6 +34,10 @@ class ImageModal extends Component {
 		flNumber: PropTypes.string,
 	};
 
+	static defaultProps = {
+		content: '',
+	};
+
 	state = {
 		screenWidth: null,
 		screenHeight: null,
@@ -204,22 +208,32 @@ class ImageModal extends Component {
 			: primoId &&
 				`https://search.sl.nsw.gov.au/primo-explore/fulldisplay?vid=SLNSW&search_scope=EEA&adaptor=Local%20Search%20Engine&docid=${primoId.toUpperCase()}`;
 
+		const metaDescription = content.replace(/<p>/g, '').replace(/<\/p>/g, '');
+
 		return (
 			<Fragment>
 				<Head>
-					<title>{title} - #NewSelfWales | DX Lab - State Library of NSW</title>
+					{title && (
+						<title>
+							{title} - #NewSelfWales | DX Lab - State Library of NSW
+						</title>
+					)}
 					{title && <meta property="og:title" content={title} />}
-					{content && <meta property="og:description" content={content} />}
 
-					{content && <meta name="description" content={content} />}
+					{metaDescription && (
+						<meta property="og:description" content={metaDescription} />
+					)}
+					{metaDescription && (
+						<meta name="description" content={metaDescription} />
+					)}
 
-					{imageUrl && <meta property="og:image" content={`${imageUrl}`} />}
+					{imageUrl && (
+						<meta property="og:image" content={imageUrl} key="meta-image" />
+					)}
 
 					{metaUrl && <meta property="og:url" content={metaUrl} />}
 
 					{title && <meta name="twitter:image:alt" content={title} />}
-
-					<meta name="twitter:card" content="summary_large_image" />
 				</Head>
 
 				<Transition

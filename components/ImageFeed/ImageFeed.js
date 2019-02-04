@@ -576,15 +576,20 @@ class ImageFeed extends Component {
 			return randomImage.id === image[0];
 		})[0][1];
 
-		// console.log(randomImageRef);
+		const randomImageDOMNode = ReactDOM.findDOMNode(randomImageRef);
 
-		// Work out x/y of randomly selected image
-		const randomImageBox = ReactDOM.findDOMNode(
-			randomImageRef,
-		).getBoundingClientRect();
+		let isLeftOfViewport;
 
-		// Work out if leftOfViewport
-		const isLeftOfViewport = randomImageBox.x + randomImageBox.width < 0;
+		if (randomImageDOMNode) {
+			// Work out x/y of randomly selected image
+			const randomImageBox = randomImageDOMNode.getBoundingClientRect();
+
+			// Work out if leftOfViewport
+			isLeftOfViewport = randomImageBox.x + randomImageBox.width < 0;
+		} else {
+			// No image, so can't be left of viewport
+			isLeftOfViewport = false;
+		}
 
 		if (this.state.hiddenImageIds.length >= this.props.images.length) {
 			log('All images are hidden');

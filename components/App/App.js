@@ -74,7 +74,9 @@ class App extends Component {
 						content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
 					/>
 					<meta property="og:type" content="website" />
-					{title && <meta property="og:title" content={title} />}
+					{title && (
+						<meta property="og:title" content={title} key="meta-image" />
+					)}
 					{metaDescription && (
 						<meta property="og:description" content={metaDescription} />
 					)}
@@ -101,11 +103,11 @@ class App extends Component {
 						type="image/vnd.microsoft.icon"
 					/>
 					<link
-						href="https://fonts.googleapis.com/css?family=Lekton:400,400i,700"
+						href="https://fonts.googleapis.com/css?family=Lekton:400,700"
 						rel="stylesheet"
 					/>
 					<link
-						href="https://fonts.googleapis.com/css?family=Barlow:400,400i,500,500i,700"
+						href="https://fonts.googleapis.com/css?family=Barlow:400,500,500i,700"
 						rel="stylesheet"
 					/>
 					<link
