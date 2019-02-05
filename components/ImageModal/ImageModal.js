@@ -31,6 +31,8 @@ class ImageModal extends Component {
 		isActive: PropTypes.bool,
 		isLoading: PropTypes.bool,
 		date: PropTypes.string,
+		dateText: PropTypes.string,
+		timestamp: PropTypes.number,
 		instagramUsername: PropTypes.string,
 		flNumber: PropTypes.string,
 	};
@@ -200,6 +202,8 @@ class ImageModal extends Component {
 			sourceImageBoundingClientRect,
 			isActive,
 			date,
+			dateText,
+			timestamp,
 			instagramUsername,
 			flNumber,
 			isLoading,
@@ -215,8 +219,15 @@ class ImageModal extends Component {
 
 		let dateString;
 
-		if (date) {
+		if (dateText && imageType === 'portrait') {
+			dateString = dateText;
+		}
+		if (date && imageType === 'gallery-selfie') {
 			const d = new Date(date);
+			dateString = `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
+		}
+		if (timestamp && imageType === 'instagram-selfie') {
+			const d = new Date(timestamp * 1000);
 			dateString = `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
 		}
 
@@ -398,10 +409,6 @@ class ImageModal extends Component {
 										</a>
 									)}
 
-									{dateString && (
-										<div className="image-modal__date">{dateString}</div>
-									)}
-
 									{collectionLink && (
 										<a
 											className="secondary-button"
@@ -410,6 +417,10 @@ class ImageModal extends Component {
 										>
 											Collection Image
 										</a>
+									)}
+
+									{dateString && (
+										<div className="image-modal__date">{dateString}</div>
 									)}
 								</footer>
 							</Modal>

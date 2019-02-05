@@ -60,6 +60,8 @@ class ImageModalContainer extends Component {
 							imageType,
 							imageUrl: image.featuredMedia && image.featuredMedia.sourceUrl,
 							date: image.date,
+							dateText: image.dateText,
+							timestamp: image.timestamp,
 							instagramUsername: image.instagramUsername,
 							shortcode: image.shortcode,
 							flNumber: image.slug && image.slug.split('-')[1],
@@ -90,6 +92,7 @@ const PORTRAIT_QUERY = gql`
 				title
 				slug
 				content
+				dateText
 				featuredMedia {
 					sourceUrl
 				}
@@ -105,6 +108,7 @@ const INSTAGRAM_SELFIE_QUERY = gql`
 			image: instagramSelfie(id: $id) {
 				title
 				content
+				timestamp
 				featuredMedia {
 					sourceUrl
 				}
