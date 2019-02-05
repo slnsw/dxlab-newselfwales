@@ -66,6 +66,7 @@ input[type='text'] {
 	padding: var(--spacing-xs) var(--spacing-xxlg) var(--spacing-sm);
 	border-radius: 2em;
 	background-color: var(--colour-primary);
+	font-family: var(--font-secondary);
 	@apply --font-uppercase;
 	font-weight: 700;
 	line-height: 1;
@@ -153,9 +154,11 @@ input[type='text'] {
 }
 
 .secondary-button {
-	padding: 0 1em 0.1em;
+	padding: 0em 2em 0.1em;
 	border: 1px solid var(--colour-white);
+	border-radius: 2em;
 	@apply --font-uppercase;
+	font-family: var(--font-secondary);
 	font-weight: 700;
 	font-size: var(--font-size-xs);
 	line-height: 2;

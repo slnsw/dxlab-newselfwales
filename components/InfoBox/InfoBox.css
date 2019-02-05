@@ -50,7 +50,7 @@
 	& h2 {
 		font-family: var(--font-primary);
 		font-size: var(--font-size-md);
-		/* font-weight: 500; */
+		font-weight: 700;
 		@apply --font-uppercase;
 	}
 }
@@ -76,6 +76,10 @@
 	&::-webkit-scrollbar-thumb {
 		background-color: var(--colour-grey-darker);
 	}
+
+	@media (--screen-md) {
+		margin-right: -1em;
+	}
 }
 
 .info-box__title {
@@ -95,12 +99,12 @@
 }
 
 .info-box__title-image {
-	width: calc(100% - 4em);
+	width: calc(100% - 3em);
 	max-width: 29em;
 	height: auto;
 
 	/* margin-top: var(--spacing-md); */
-	margin-bottom: var(--spacing-xxxs);
+	margin-bottom: var(--spacing-xxs);
 
 	@nest .info-box--is-full-size & {
 		width: calc(100% - 4em);
@@ -110,7 +114,7 @@
 
 .info-box__excerpt {
 	margin-top: 0;
-	margin-bottom: 0;
+	margin-bottom: var(--spacing-lg);
 	font-size: var(--spacing-sm);
 
 	@media (--screen-sm) {
@@ -141,19 +145,32 @@
 	margin-bottom: auto;
 	padding: 0;
 	font-size: var(--font-size-xlg);
-	/* color: var(--colour-highlight); */
 	background-color: var(--colour-black);
 }
 
 .info-box__hide-button {
-	margin-left: auto;
+	align-self: flex-start;
+	margin-top: 2em;
+
+	@media (--screen-sm) {
+		align-self: inherit;
+		margin-top: 0;
+		margin-left: auto;
+	}
 }
 
 .info-box__logo-holder {
-	display: flex;
+	/* display: flex;
+	flex-wrap: wrap; */
 	flex: 0 0 2em;
 	margin-top: var(--spacing-xxlg);
 	margin-bottom: var(--spacing-lg);
+
+	@media (--screen-sm) {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+	}
 }
 
 .info-box__logo {
@@ -167,12 +184,14 @@
 
 .info-box__logo--slnsw {
 	max-width: 8.5em;
+	margin-right: 0;
 }
 
 .info-box__footer {
 	display: flex;
 	flex-direction: column;
 	margin-top: auto;
+
 	@media (--screen-sm) {
 		flex-direction: row;
 		flex-flow: row wrap;
@@ -185,7 +204,7 @@ ul.footer-menu {
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	margin-top: 0;
+	margin-top: 1em;
 	margin-bottom: var(--spacing-sm);
 	padding-left: 0;
 	font-size: var(--font-size-sm);
@@ -228,9 +247,9 @@ ul.footer-menu {
 	&::after {
 		position: absolute;
 		bottom: 0.5em;
-		left: -3em;
+		left: 0;
 		content: '';
-		width: 3em;
+		width: 1em;
 		border-top: 1px solid var(--colour-white);
 
 		@media (--screen-sm) {

@@ -67,10 +67,21 @@ class InfoBox extends Component {
 
 					{!isFullSize &&
 						excerpt && (
-							<p
-								className="info-box__excerpt"
-								dangerouslySetInnerHTML={{ __html: excerpt }}
-							/>
+							<Fragment>
+								<div>
+									<p
+										className="info-box__excerpt"
+										dangerouslySetInnerHTML={{ __html: excerpt }}
+									/>
+
+									<button
+										className="button button--xs"
+										onClick={this.handleMoreButton}
+									>
+										More Info
+									</button>
+								</div>
+							</Fragment>
 						)}
 
 					{isFullSize && (
@@ -119,9 +130,9 @@ class InfoBox extends Component {
 				{!isFullSize && (
 					<button
 						className="info-box__more-button"
-						onClick={this.handleMoreButton}
+						onClick={this.handleHideButton}
 					>
-						<i className="ion-ios-arrow-up" />
+						<i className="ion-ios-arrow-down" />
 					</button>
 				)}
 			</div>
