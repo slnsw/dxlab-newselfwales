@@ -2,7 +2,8 @@ import App, { Container } from 'next/app';
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
-import withRedux from 'next-redux-wrapper';
+// Access old school JS version otherwise IE11 explodes
+import withRedux from 'next-redux-wrapper/lib';
 import { withRouter } from 'next/router';
 
 import withApolloClient from '../lib/withApollo2';
