@@ -78,4 +78,16 @@
 	height: 100%;
 	overflow: auto;
 	-webkit-overflow-scrolling: touch;
+
+	&::-webkit-scrollbar-track {
+		/* background-color: var(--colour-grey-darkest); */
+	}
+
+	&::-webkit-scrollbar {
+		width: 2px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: var(--colour-grey-darker);
+	}
 }

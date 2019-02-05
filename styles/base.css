@@ -30,6 +30,7 @@ html {
 
 body {
 	width: 100%;
+	min-height: 600px;
 	margin: 0;
 	background-color: var(--colour-black);
 	color: var(--colour-white);

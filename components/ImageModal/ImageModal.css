@@ -72,8 +72,8 @@
 	/* margin-right: var(--spacing-xlg); */
 	opacity: 0;
 	transition: 0.6s;
-	/* Ensure share-box gets shown */
-	padding-bottom: 3em;
+	padding-right: 1em;
+	padding-bottom: 1em;
 
 	@media (--screen-sm) {
 		position: relative;
@@ -117,24 +117,24 @@
 }
 
 .image-modal__content {
-	padding-bottom: 3em;
+	padding-bottom: 2em;
 	font-size: var(--font-size-md);
 	color: var(--colour-grey-lighter);
 
 	@media (--screen-sm) {
+		padding-bottom: 3em;
 		overflow: auto;
 		font-size: var(--font-size-md);
 	}
 }
 
 .image-modal__footer {
-	position: fixed;
-	bottom: var(--spacing-sm);
+	/* position: fixed; */
+	/* bottom: var(--spacing-sm); */
 	display: flex;
-	width: calc(100% - 1em);
 	align-items: baseline;
 	padding-top: var(--spacing-sm);
-	padding-right: var(--spacing-sm);
+	padding-right: var(--spacing-xs);
 	background-color: var(--colour-black);
 	/* justify-content: space-around; */
 
@@ -142,13 +142,15 @@
 		position: absolute;
 		bottom: 0;
 		left: var(--spacing-sm);
+		width: calc(100% - 1em);
+		padding-right: 0;
 	}
 }
 
 .image-modal__date {
 	margin-left: auto;
 	/* font-family: var(--font-primary); */
-	font-size: var(--font-size-sm);
+	font-size: var(--font-size-xs);
 	color: var(--colour-grey-lighter);
 	@apply --font-uppercase;
 }

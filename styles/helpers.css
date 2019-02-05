@@ -63,10 +63,11 @@ input[type='text'] {
  * -------------------------------------------------------------------------- */
 
 .button {
-	padding: var(--spacing-sm) var(--spacing-xxlg);
+	padding: var(--spacing-xs) var(--spacing-xxlg) var(--spacing-sm);
 	border-radius: 2em;
 	background-color: var(--colour-primary);
 	@apply --font-uppercase;
+	font-weight: 700;
 	line-height: 1;
 
 	&:disabled {
@@ -84,8 +85,12 @@ input[type='text'] {
 	}
 }
 
-.button--small {
+.button--sm {
 	font-size: var(--font-size-sm);
+}
+
+.button--xs {
+	font-size: var(--font-size-xs);
 }
 
 .button--dark {

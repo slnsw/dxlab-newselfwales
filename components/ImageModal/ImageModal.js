@@ -411,7 +411,7 @@ class ImageModal extends Component {
 
 									{collectionLink && (
 										<a
-											className="secondary-button"
+											className="button button--xs"
 											target="_blank"
 											href={collectionLink}
 										>
