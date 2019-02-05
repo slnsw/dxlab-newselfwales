@@ -36,6 +36,17 @@ app
 		// Adds X-UA-Compatible: IE=edge, chrome=1 header for our IE friends.
 		server.use(uaCompatible);
 
+		// Redirect all trailing slashes
+		// https://stackoverflow.com/questions/13442377/redirect-all-trailing-slashes-globally-in-express
+		server.use((req, res, nextMiddleWare) => {
+			if (req.path.substr(-1) === '/' && req.path.length > 1) {
+				const query = req.url.slice(req.path.length);
+				res.redirect(301, req.path.slice(0, -1) + query);
+			} else {
+				nextMiddleWare();
+			}
+		});
+
 		// Proxy GraphQL API
 		server.use(
 			proxy('/api/graphql', {
