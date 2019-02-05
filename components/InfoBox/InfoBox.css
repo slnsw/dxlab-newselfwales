@@ -40,11 +40,6 @@
 				border-bottom: 1px solid var(--colour-white);
 			}
 		}
-
-		@media (--screen-sm) {
-			/* left: auto; */
-			/* height: calc(100% - var(--spacing-xs) * 2); */
-		}
 	}
 
 	& h2 {

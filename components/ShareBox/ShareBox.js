@@ -13,11 +13,11 @@ class ShareBox extends Component {
 
 	render() {
 		const { title, text, pathname, imageUrl } = this.props;
-		const tweetText = encodeURIComponent(`${text} #dxlab @statelibrarynsw`);
+		const tweetText = encodeURIComponent(`${title} #dxlab @statelibrarynsw`);
 		const fbAppId = process.env.FB_APP_ID;
 
 		// TODO: Use baseUrl variable
-		const url = encodeURIComponent(`http://dxlab.sl.nsw.gov.au${pathname}`);
+		const url = encodeURIComponent(`${process.env.BASE_URL}${pathname}`);
 		const fbLink = `https://www.facebook.com/dialog/share?app_id=${fbAppId}&href=${url}&redirect_uri=${url}&name=%${encodeURIComponent(
 			title,
 		)}&description=${encodeURIComponent(text)}${

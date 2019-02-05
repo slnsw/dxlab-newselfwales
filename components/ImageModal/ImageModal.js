@@ -325,7 +325,9 @@ class ImageModal extends Component {
 											<div
 												className={[
 													'image-modal__image',
-													isImageLoaded ? 'image-modal__image--is-loaded' : '',
+													isImageLoaded || !process.browser
+														? 'image-modal__image--is-loaded'
+														: '',
 												].join(' ')}
 												style={{
 													backgroundImage: `url(${imageUrl})`,
@@ -336,7 +338,9 @@ class ImageModal extends Component {
 										<div
 											className={[
 												'image-modal__image',
-												isImageLoaded ? 'image-modal__image--is-loaded' : '',
+												isImageLoaded || !process.browser
+													? 'image-modal__image--is-loaded'
+													: '',
 											].join(' ')}
 											style={{
 												backgroundImage: `url(${imageUrl})`,

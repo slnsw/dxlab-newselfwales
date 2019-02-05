@@ -110,7 +110,7 @@ class InfoBox extends Component {
 									onClick={this.handleHideButton}
 									className="secondary-button info-box__hide-button"
 								>
-									hide interface
+									Images Only
 								</button>
 							</div>
 
