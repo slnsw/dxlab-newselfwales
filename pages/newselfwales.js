@@ -26,6 +26,7 @@ class LandingPage extends Component {
 
 		this.state = {
 			isSearch: false,
+			isSearchState: false,
 			// Need to store this in local state even though we mainly use url.query.q in props.
 			// We rely on state.q and state.filters to switch back to correct search query after opening image modal.
 			q: '',
@@ -39,7 +40,6 @@ class LandingPage extends Component {
 			hasInitiallyScrolled: false,
 			showModal: false,
 			pauseInterval: false,
-			isSearchState: false,
 			searchFilters: [
 				{
 					name: 'All',
@@ -75,12 +75,15 @@ class LandingPage extends Component {
 		window.addEventListener('keyup', this.handleKey, true);
 
 		const isSearch = this.props.router.query.param === 'search';
-		const isHome = typeof this.props.router.query.param === 'undefined';
+		const page = isSearch ? 'search' : 'home';
+		const { q } = this.props.router.query;
 
 		this.setState({
 			isSearch,
-			enableAnimation: isHome,
-			pauseInterval: !isHome,
+			isSearchState: isSearch,
+			q,
+			enableAnimation: page === 'home',
+			pauseInterval: page === 'search',
 			showModal: !cookies.get('specialcareacknowledged'),
 		});
 	}
@@ -97,9 +100,12 @@ class LandingPage extends Component {
 				isSearch = this.state.isSearchState;
 			}
 
+			// const page = isSearch ? 'search' : 'home';
+
 			this.setState({
 				// Use query.param but also check internal flag for search
 				isSearch,
+				// q: query.q,
 			});
 		}
 	}
@@ -163,7 +169,6 @@ class LandingPage extends Component {
 			Router.pushRoute(url);
 
 			this.setState({
-				q: '',
 				filters: null,
 			});
 		} else {
@@ -174,6 +179,15 @@ class LandingPage extends Component {
 				pauseInterval: false,
 			});
 		}
+	};
+
+	handleImageModalTagClick = (tag) => {
+		// No need to route, already done in ImageModal.
+		// Just update state.
+
+		this.setState({
+			q: tag,
+		});
 	};
 
 	handleKey = (event) => {
@@ -266,6 +280,12 @@ class LandingPage extends Component {
 	// Search
 	// --------------------------------------------------------------------------
 
+	handleSearchBoxChange = (value) => {
+		this.setState({
+			q: value,
+		});
+	};
+
 	handleSearchBoxFocus = () => {
 		// Check if already on search page
 		if (this.props.router.query.param !== 'search') {
@@ -299,11 +319,12 @@ class LandingPage extends Component {
 		);
 	};
 
-	handleSearchSubmit = (value) => {
+	handleSearchSubmit = () => {
 		const { filters } = this.props.router.query;
 
 		const query = {
-			q: value,
+			// Use state's q value
+			q: this.state.q,
 			...(filters
 				? {
 						filters,
@@ -311,9 +332,8 @@ class LandingPage extends Component {
 				: {}),
 		};
 
-		const url = `/newselfwales/search?${queryString.stringify(query)}`;
-
-		if (value) {
+		if (this.state.q) {
+			const url = `/newselfwales/search?${queryString.stringify(query)}`;
 			Router.pushRoute(url);
 		}
 	};
@@ -333,6 +353,15 @@ class LandingPage extends Component {
 		const url = `/newselfwales/search?${queryString.stringify(query)}`;
 
 		Router.pushRoute(url);
+	};
+
+	handleSearchSuggestionsClick = (q) => {
+		// No need to route, already done in SearchSuggestions.
+		// Just update state.
+
+		this.setState({
+			q,
+		});
 	};
 
 	// --------------------------------------------------------------------------
@@ -366,6 +395,7 @@ class LandingPage extends Component {
 			sourceImageBoundingClientRect,
 			isInfoBoxFullSize,
 			isSearch,
+			// isSearchState,
 			searchFilters,
 			isImageFeedLoading,
 			isImageFeedInitiallyLoading,
@@ -386,7 +416,9 @@ class LandingPage extends Component {
 
 		const page = pages && pages[0];
 
-		// console.log(showImageModal);
+		// console.log({ isSearch, isSearchState });
+		// console.log('state q', this.state.q);
+		// console.log('props q', query.q);
 
 		return (
 			<App
@@ -410,12 +442,14 @@ class LandingPage extends Component {
 				pathname="/newselfwales"
 			>
 				<SearchBox
-					defaultValue={router.query && router.query.q ? router.query.q : ''}
+					value={this.state.q}
+					// defaultValue={router.query && router.query.q ? router.query.q : ''}
 					className={[
 						'newselfwales-page__search-box',
 						hideUI ? 'newselfwales-page__search-box--is-hidden' : '',
 					].join(' ')}
 					isActive={isSearch}
+					onChange={this.handleSearchBoxChange}
 					onFocus={this.handleSearchBoxFocus}
 					onBackClick={this.handleSearchBoxBackClick}
 					onSubmit={this.handleSearchSubmit}
@@ -439,70 +473,15 @@ class LandingPage extends Component {
 							<SearchSuggestions
 								className="newselfwales-page__search-suggestions"
 								limit={5}
-								suggestions={[
-									{
-										name: 'Ball',
-										url: '/newselfwales/search?q=ball',
-									},
-									{
-										name: 'Max Dupain',
-										url: '/newselfwales/search?q=max',
-									},
-									{
-										name: 'Grace',
-										url: '/newselfwales/search?q=grace',
-									},
-									{
-										name: 'Tony Mott',
-										url: '/newselfwales/search?q=mott',
-									},
-									{
-										name: 'Architects',
-										url: '/newselfwales/search?q=architect',
-									},
-									{
-										name: 'Spring',
-										url: '/newselfwales/search?q=spring',
-									},
-									{
-										name: 'Cricket',
-										url: '/newselfwales/search?q=cricket',
-									},
-									{
-										name: 'David Scott Mitchell',
-										url: '/newselfwales/search?q=Mitchell',
-									},
-									{
-										name: 'Newtown',
-										url: '/newselfwales/search?q=newtown',
-									},
-									{
-										name: 'Aboriginal',
-										url: '/newselfwales/search?q=Aboriginal',
-									},
-									{
-										name: 'B. O. Holtermann',
-										url: '/newselfwales/search?q=holterman',
-									},
-									{
-										name: 'Hood',
-										url: '/newselfwales/search?q=hood',
-									},
-									{
-										name: 'Waterloo',
-										url: '/newselfwales/search?q=waterloo',
-									},
-									{
-										name: 'Tribune',
-										url: '/newselfwales/search?q=tribune',
-									},
-								]}
+								suggestions={suggestions}
+								onClick={this.handleSearchSuggestionsClick}
 							/>
 						)}
 
 						<div className="newselfwales-page__search-results">
 							<SearchResultsContainer
-								q={q}
+								// Use state's q when showing image modal because route loses search and q params.
+								q={showImageModal ? this.state.q : query.q}
 								filters={filters ? [filters] : null}
 								onImageClick={(event, image) =>
 									this.handleImageModalClick(event, image)
@@ -594,6 +573,7 @@ class LandingPage extends Component {
 					id={parseInt(router.query.id, 10)}
 					sourceImageBoundingClientRect={sourceImageBoundingClientRect}
 					onClose={this.handleImageModalClose}
+					onTagClick={this.handleImageModalTagClick}
 				/>
 
 				<Modal
@@ -639,3 +619,62 @@ export default graphql(PAGE_QUERY, {
 		};
 	},
 })(withCookies(LandingPage));
+
+const suggestions = [
+	{
+		name: 'Ball',
+		q: 'ball',
+	},
+	{
+		name: 'Max Dupain',
+		q: 'max',
+	},
+	{
+		name: 'Grace',
+		q: 'grace',
+	},
+	{
+		name: 'Tony Mott',
+		q: 'mott',
+	},
+	{
+		name: 'Architects',
+		q: 'architect',
+	},
+	{
+		name: 'Spring',
+		q: 'spring',
+	},
+	{
+		name: 'Cricket',
+		q: 'cricket',
+	},
+	{
+		name: 'David Scott Mitchell',
+		q: 'Mitchell',
+	},
+	{
+		name: 'Newtown',
+		q: 'newtown',
+	},
+	{
+		name: 'Aboriginal',
+		q: 'Aboriginal',
+	},
+	{
+		name: 'B. O. Holtermann',
+		q: 'holterman',
+	},
+	{
+		name: 'Hood',
+		q: 'hood',
+	},
+	{
+		name: 'Waterloo',
+		q: 'waterloo',
+	},
+	{
+		name: 'Tribune',
+		q: 'tribune',
+	},
+];

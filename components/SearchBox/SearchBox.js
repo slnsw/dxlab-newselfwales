@@ -5,17 +5,23 @@ import './SearchBox.css';
 
 class SearchBox extends Component {
 	static propTypes = {
-		defaultValue: PropTypes.string,
+		value: PropTypes.string,
+		// defaultValue: PropTypes.string,
 		className: PropTypes.string,
 		isActive: PropTypes.bool,
 		autoFocus: PropTypes.bool,
+		onChange: PropTypes.func,
 		onFocus: PropTypes.func,
 		onBackClick: PropTypes.func,
 		onSubmit: PropTypes.func,
 	};
 
-	state = {
+	static defaultProps = {
 		value: '',
+	};
+
+	state = {
+		// value: '',
 		isChanged: false,
 	};
 
@@ -42,26 +48,42 @@ class SearchBox extends Component {
 	handleFormSubmit = (event) => {
 		event.preventDefault();
 
+		// console.log(event);
+
 		if (typeof this.props.onSubmit === 'function') {
-			this.props.onSubmit(this.state.value);
+			this.props.onSubmit();
 		}
 	};
 
 	handleChange = (event) => {
-		if (this.state.isChanged === false) {
-			this.setState({
-				isChanged: true,
-			});
+		if (typeof this.props.onChange === 'function') {
+			this.props.onChange(event.target.value);
 		}
 
-		this.setState({
-			value: event.target.value,
-		});
+		// if (this.state.isChanged === false) {
+		// 	this.setState({
+		// 		isChanged: true,
+		// 	});
+		// }
+
+		// this.setState({
+		// 	value: event.target.value,
+		// });
 	};
 
 	render() {
-		const { className, isActive, defaultValue, autoFocus } = this.props;
-		const { value, isChanged } = this.state;
+		const {
+			value,
+			className,
+			isActive,
+			// defaultValue,
+			autoFocus,
+		} = this.props;
+
+		// const {
+		// 	value,
+		// 	// isChanged
+		// } = this.state;
 
 		return (
 			<div
@@ -82,7 +104,8 @@ class SearchBox extends Component {
 					<form onSubmit={this.handleFormSubmit} onFocus={this.handleFocus}>
 						<input
 							type="text"
-							value={isChanged === false ? defaultValue : value}
+							// value={isChanged === false ? defaultValue : value}
+							value={value}
 							className="search-box__input"
 							autoFocus={autoFocus}
 							placeholder="Search"

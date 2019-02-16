@@ -13,6 +13,7 @@ class ImageModalContainer extends Component {
 		sourceImageBoundingClientRect: PropTypes.object,
 		isActive: PropTypes.bool,
 		onClose: PropTypes.func.isRequired,
+		onTagClick: PropTypes.func,
 	};
 
 	render() {
@@ -20,8 +21,9 @@ class ImageModalContainer extends Component {
 			id,
 			imageType,
 			sourceImageBoundingClientRect,
-			onClose,
 			isActive,
+			onClose,
+			onTagClick,
 		} = this.props;
 		let query;
 
@@ -73,10 +75,11 @@ class ImageModalContainer extends Component {
 							{...imageModalProps}
 							sourceImageBoundingClientRect={sourceImageBoundingClientRect}
 							type={imageType}
-							onClose={onClose}
 							isActive={isActive}
 							isLoading={loading}
 							error={error}
+							onClose={onClose}
+							onTagClick={onTagClick}
 						/>
 					);
 				}}

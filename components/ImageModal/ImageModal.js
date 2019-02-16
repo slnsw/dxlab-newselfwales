@@ -76,6 +76,14 @@ class ImageModal extends Component {
 		});
 	};
 
+	handleTagClick = (tag) => {
+		console.log('hiii');
+
+		if (typeof this.props.onTagClick === 'function') {
+			this.props.onTagClick(tag);
+		}
+	};
+
 	splitNotBetween = (s, d, ll, rl) => {
 		// splits the string s by delimter character d, but not between
 		// the characters ll and rl. LD Dec 2018
@@ -385,6 +393,9 @@ class ImageModal extends Component {
 																		dangerouslySetInnerHTML={{
 																			__html: item.linkText,
 																		}}
+																		onClick={() =>
+																			this.handleTagClick(item.linkText)
+																		}
 																	/>
 																</Link>
 															)}

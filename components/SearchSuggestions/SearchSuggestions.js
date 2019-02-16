@@ -9,6 +9,7 @@ class SearchSuggestions extends Component {
 		className: PropTypes.string,
 		limit: PropTypes.number,
 		suggestions: PropTypes.array,
+		onClick: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -37,6 +38,12 @@ class SearchSuggestions extends Component {
 		return out;
 	};
 
+	handleClick = (q) => {
+		if (typeof this.props.onClick === 'function') {
+			this.props.onClick(q);
+		}
+	};
+
 	render() {
 		const { className, limit, suggestions } = this.props;
 		let selection = [];
@@ -51,8 +58,8 @@ class SearchSuggestions extends Component {
 					{selection.map((item) => {
 						return (
 							<li key={item.name}>
-								<Link to={item.url}>
-									<a>{item.name}</a>
+								<Link to={`/newselfwales/search?q=${item.q}`}>
+									<a onClick={() => this.handleClick(item.q)}>{item.name}</a>
 								</Link>
 							</li>
 						);
