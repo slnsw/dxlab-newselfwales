@@ -1,10 +1,8 @@
 import { Component, Fragment } from 'react';
 import { graphql } from 'react-apollo';
-// import withRedux from 'next-redux-wrapper';
 import gql from 'graphql-tag';
 import { withCookies } from 'react-cookie';
 import queryString from 'query-string';
-// import { withRouter } from 'next/router';
 
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
@@ -17,8 +15,6 @@ import SearchFilters from '../components/SearchFilters';
 import SearchSuggestions from '../components/SearchSuggestions';
 import Overlay from '../components/Overlay';
 import MessageWidget from '../components/MessageWidget';
-// import withApollo from '../lib/withApollo';
-// import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
 
 import './newselfwales.css';
@@ -635,18 +631,6 @@ const PAGE_QUERY = gql`
 		}
 	}
 `;
-
-// export default withRedux(initStore)(
-// 	withApollo(
-// 		graphql(PAGE_QUERY, {
-// 			props: ({ data }) => {
-// 				return {
-// 					...data,
-// 				};
-// 			},
-// 		})(withCookies(LandingPage)),
-// 	),
-// );
 
 export default graphql(PAGE_QUERY, {
 	props: ({ data }) => {

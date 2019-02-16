@@ -50,7 +50,7 @@ class SearchSuggestions extends Component {
 				<ul>
 					{selection.map((item) => {
 						return (
-							<li>
+							<li key={item.name}>
 								<Link to={item.url}>
 									<a>{item.name}</a>
 								</Link>
