@@ -2,6 +2,7 @@ import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 import Head from 'next/head';
+import { AllHtmlEntities } from 'html-entities';
 
 import Link from '../Link';
 import Image from '../Image';
@@ -139,6 +140,7 @@ class ImageModal extends Component {
 	parseContent = (desc1, type) => {
 		// function wraps search hyperlinks round hash tags or
 		// subject terms in the submitted string.
+		const entities = new AllHtmlEntities();
 		let desc;
 		if (desc1 && desc1.trim()) {
 			// so we definitely have a string to parse.
@@ -160,7 +162,9 @@ class ImageModal extends Component {
 					for (let i = 0; i < bits.length; i++) {
 						if (bits[i].trim()) {
 							out[i] = {
-								url: `/newselfwales/search?q=${bits[i].trim()}`,
+								url: `/newselfwales/search?q=${entities.encode(
+									bits[i].trim(),
+								)}`,
 								linkText: bits[i].trim(),
 								postText: `, `,
 							};
@@ -169,7 +173,7 @@ class ImageModal extends Component {
 					out[bits.length - 1].postText = '';
 				} else {
 					out[0] = {
-						url: `/newselfwales/search?q=${bits[0].trim()}`,
+						url: `/newselfwales/search?q=${entities.encode(bits[0].trim())}`,
 						linkText: `#${bits[0].trim()}`,
 						postText: ``,
 					};
@@ -186,7 +190,7 @@ class ImageModal extends Component {
 					for (let i = 1; i < bits.length; i++) {
 						const t = this.findEndOfHashtag(bits[i]);
 						out[i] = {
-							url: `/newselfwales/search?q=${t[0]}`,
+							url: `/newselfwales/search?q=${entities.encode(t[0])}`,
 							linkText: `#${t[0]}`,
 							postText: ` ${t[1]}`,
 						};

@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { AllHtmlEntities } from 'html-entities';
 
 import './ImageModalContainer.css';
 import ImageModal from '../ImageModal';
@@ -26,6 +27,8 @@ class ImageModalContainer extends Component {
 			onTagClick,
 		} = this.props;
 		let query;
+
+		const entities = new AllHtmlEntities();
 
 		if (imageType === 'portrait') {
 			query = PORTRAIT_QUERY;
@@ -57,8 +60,8 @@ class ImageModalContainer extends Component {
 						imageModalProps = {
 							id,
 							primoId: image.primoId,
-							title: image.title,
-							content: image.content,
+							title: entities.decode(image.title),
+							content: entities.decode(image.content),
 							imageType,
 							imageUrl: image.featuredMedia && image.featuredMedia.sourceUrl,
 							date: image.date,
