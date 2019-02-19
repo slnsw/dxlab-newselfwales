@@ -20,6 +20,8 @@ class PackeryImages extends Component {
 		transitionDuration: PropTypes.string,
 		stagger: PropTypes.number,
 		onLayoutComplete: PropTypes.func,
+		onImageClick: PropTypes.func,
+		onImageKeyPress: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -36,14 +38,17 @@ class PackeryImages extends Component {
 		}
 	};
 
-	handleImageClick = (event, images) => {
+	handleImageClick = (event, image) => {
 		if (typeof this.props.onImageClick === 'function') {
-			this.props.onImageClick(event, images);
+			this.props.onImageClick(event, image);
 		}
 	};
 
-	// handleImageKeyPress = (event) => {
-	// };
+	handleImageKeyPress = (event, image) => {
+		if (typeof this.props.onImageKeyPress === 'function') {
+			this.props.onImageKeyPress(event, image);
+		}
+	};
 
 	render() {
 		const {
@@ -147,13 +152,16 @@ class PackeryImages extends Component {
 												? 'image-feed__image-holder--highlighted'
 												: '',
 										].join(' ')}
+										// ref={(c) => this.imageHolderRefs.set(image.id, c)}
+										data-id={image.id}
+										data-type={image.type}
+										tabIndex="0"
 										onClick={(event) =>
 											!image.isSilhouette && this.handleImageClick(event, image)
 										}
-										// onKeyPress={this.handleImageKeyPress}
-										// ref={(c) => this.imageHolderRefs.set(image.id, c)}
-										data-id={image.id}
-										tabIndex="0"
+										onKeyPress={(event) =>
+											this.handleImageKeyPress(event, image)
+										}
 									>
 										{image.isSilhouette && (
 											<div className="image-feed__image-holder__content">

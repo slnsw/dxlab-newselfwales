@@ -470,9 +470,8 @@ class LandingPage extends Component {
 								// Use state's q when showing image modal because route loses search and q params.
 								q={showImageModal ? this.state.q : query.q}
 								filters={filters ? [filters] : null}
-								onImageClick={(event, image) =>
-									this.handleImageModalClick(event, image)
-								}
+								onImageClick={this.handleImageModalClick}
+								onImageKeyPress={this.handleImageModalClick}
 							/>
 						</div>
 					</Fragment>

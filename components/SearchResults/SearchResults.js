@@ -15,6 +15,7 @@ class SearchResults extends Component {
 		hasMore: PropTypes.bool,
 		onImageClick: PropTypes.func,
 		onLoadMore: PropTypes.func,
+		onImageKeyPress: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -36,7 +37,13 @@ class SearchResults extends Component {
 	};
 
 	render() {
-		const { images, className, hasMore, isLoadingMore } = this.props;
+		const {
+			images,
+			className,
+			hasMore,
+			isLoadingMore,
+			onImageKeyPress,
+		} = this.props;
 
 		return (
 			<div className="search-results">
@@ -59,6 +66,7 @@ class SearchResults extends Component {
 						transitionDuration={'0.6s'}
 						stagger={50}
 						onImageClick={this.handleImageClick}
+						onImageKeyPress={onImageKeyPress}
 					/>
 				</InfiniteScroll>
 

@@ -14,7 +14,8 @@ import { idleTimer } from '../lib/idleTimer';
 import { createHealthCheck } from '../lib/healthCheck';
 
 import './photo-booth.css';
-import '../styles/kiosk.css';
+// Re-enable if using in-gallery again. This adds unwanted styles to live website
+// import '../styles/kiosk.css';
 
 class PhotoBoothPage extends Component {
 	state = {

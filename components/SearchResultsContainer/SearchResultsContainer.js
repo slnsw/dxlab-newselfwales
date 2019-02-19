@@ -20,6 +20,7 @@ class SearchResultsContainer extends Component {
 		onInputTextFocus: PropTypes.func,
 		onInputTextBlur: PropTypes.func,
 		onImageClick: PropTypes.func,
+		onImageKeyPress: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -118,7 +119,7 @@ class SearchResultsContainer extends Component {
 	};
 
 	render() {
-		const { className, data } = this.props;
+		const { className, data, onImageKeyPress } = this.props;
 		const { inputTextValue, isFirstLoad } = this.state;
 		const { loading, error } = data;
 
@@ -168,6 +169,7 @@ class SearchResultsContainer extends Component {
 				hasMore={this.state.hasMore}
 				onImageClick={this.handleImageClick}
 				onLoadMore={(page) => this.handleLoadMore(page)}
+				onImageKeyPress={onImageKeyPress}
 			/>
 		);
 	}
