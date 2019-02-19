@@ -1,12 +1,12 @@
 import { Component } from 'react';
-import { ApolloProvider } from 'react-apollo';
-import withRedux from 'next-redux-wrapper';
+// import { ApolloProvider } from 'react-apollo';
+// import withRedux from 'next-redux-wrapper';
 
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
 import TransceiverContainer from '../components/TransceiverContainer';
-import { client } from '../lib/initApollo';
-import { initStore } from '../lib/initRedux';
+// import { client } from '../lib/initApollo';
+// import { initStore } from '../lib/initRedux';
 import { createHealthCheck } from '../lib/healthCheck';
 
 import './gallery.css';
@@ -41,7 +41,7 @@ class GalleryPage extends Component {
 
 	render() {
 		const {
-			url: {
+			router: {
 				query: {
 					enableAnimation = 'true',
 					startImages,
@@ -57,34 +57,33 @@ class GalleryPage extends Component {
 		} = this.props;
 
 		return (
-			<ApolloProvider client={client}>
-				<App url={this.props.url}>
-					<ImageFeedContainer
-						name="gallery"
-						enableAnimation={enableAnimation === 'true'}
-						intervalTime={parseStringToInt(intervalTime)}
-						startImages={parseStringToInt(startImages)}
-						maxImages={parseStringToInt(maxImages)}
-						increment={parseStringToFloat(increment)}
-						loadMoreGap={parseStringToInt(loadMoreGap)}
-						marginTop={marginTop}
-						heightAdjust={heightAdjust}
-						fps={parseStringToInt(fps)}
-						onImageClick={this.handleImageClick}
-					/>
+			<App>
+				<ImageFeedContainer
+					name="gallery"
+					enableAnimation={enableAnimation === 'true'}
+					intervalTime={parseStringToInt(intervalTime)}
+					startImages={parseStringToInt(startImages)}
+					maxImages={parseStringToInt(maxImages)}
+					increment={parseStringToFloat(increment)}
+					loadMoreGap={parseStringToInt(loadMoreGap)}
+					marginTop={marginTop}
+					heightAdjust={heightAdjust}
+					fps={parseStringToInt(fps)}
+					onImageClick={this.handleImageClick}
+				/>
 
-					<TransceiverContainer
-						appId="NEWSELFWALES"
-						channel="GALLERY"
-						onReceive={this.handleReceive}
-					/>
-				</App>
-			</ApolloProvider>
+				<TransceiverContainer
+					appId="NEWSELFWALES"
+					channel="GALLERY"
+					onReceive={this.handleReceive}
+				/>
+			</App>
 		);
 	}
 }
 
-export default withRedux(initStore)(GalleryPage);
+// export default withRedux(initStore)(GalleryPage);
+export default GalleryPage;
 
 function parseStringToInt(string) {
 	return typeof string === 'string' ? parseInt(string, 10) : string;

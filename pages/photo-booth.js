@@ -1,19 +1,20 @@
 import { Component } from 'react';
-import { ApolloProvider } from 'react-apollo';
-import withRedux from 'next-redux-wrapper';
+// import { ApolloProvider } from 'react-apollo';
+// import withRedux from 'next-redux-wrapper';
 
-import './photo-booth.css';
-import '../styles/kiosk.css';
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
 import ImageModalContainer from '../components/ImageModalContainer';
 // import SearchContainer from '../components/SearchContainer/SearchContainer';
 import PhotoBoothModal from '../components/PhotoBoothModal';
-import { client } from '../lib/initApollo';
-import { initStore } from '../lib/initRedux';
+// import { client } from '../lib/initApollo';
+// import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
 import { idleTimer } from '../lib/idleTimer';
 import { createHealthCheck } from '../lib/healthCheck';
+
+import './photo-booth.css';
+import '../styles/kiosk.css';
 
 class PhotoBoothPage extends Component {
 	state = {
@@ -22,7 +23,7 @@ class PhotoBoothPage extends Component {
 	};
 
 	static defaultProps = {
-		url: {
+		router: {
 			query: {
 				stage: null,
 			},
@@ -32,8 +33,8 @@ class PhotoBoothPage extends Component {
 	// https://hc-ping.com/af031661-4e3c-4a4c-9cf0-76f665144788
 
 	componentDidMount() {
-		const { url } = this.props;
-		const { idleTimeout = 60, stage, position } = url.query;
+		const { router } = this.props;
+		const { idleTimeout = 60, stage, position } = router.query;
 		let healthCheck;
 
 		if (!position) {
@@ -64,7 +65,7 @@ class PhotoBoothPage extends Component {
 		idleTimer.init(idleTimeout);
 
 		if (stage !== 'start') {
-			this.idleTimerStart(url.pathname, position);
+			this.idleTimerStart(router.pathname, position);
 		}
 
 		if (process.env.BASE_URL !== 'http://localhost:5020') {
@@ -78,9 +79,9 @@ class PhotoBoothPage extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { url } = this.props;
-		const { stage, position } = url.query;
-		const { stage: prevStage } = prevProps.url.query;
+		const { router } = this.props;
+		const { stage, position } = router.query;
+		const { stage: prevStage } = prevProps.router.query;
 
 		if (prevStage !== stage) {
 			// Control gallery animation depending on stage
@@ -96,7 +97,7 @@ class PhotoBoothPage extends Component {
 			}
 
 			if (stage !== 'start') {
-				this.idleTimerStart(url.pathname, position);
+				this.idleTimerStart(router.pathname, position);
 			} else {
 				idleTimer.stop();
 			}
@@ -110,13 +111,13 @@ class PhotoBoothPage extends Component {
 	};
 
 	handleImageClick = (event, image) => {
-		const { url } = this.props;
+		const { router } = this.props;
 
 		// console.log(event.target.parentElement.getBoundingClientRect(), image);
 		// console.log(image);
 
 		Router.pushRoute(
-			`${url.pathname}/${url.query.position}/${image.type}/${image.id}`,
+			`${router.pathname}/${router.query.position}/${image.type}/${image.id}`,
 		);
 
 		this.setState({
@@ -126,11 +127,11 @@ class PhotoBoothPage extends Component {
 	};
 
 	handleImageModalClose = () => {
-		const { url } = this.props;
+		const { router } = this.props;
 
 		Router.pushRoute(
-			`${url.pathname}/${url.query.position}${
-				url.query.stage === 'search' ? '?stage=search' : ''
+			`${router.pathname}/${router.query.position}${
+				router.query.stage === 'search' ? '?stage=search' : ''
 			}`,
 		);
 
@@ -140,48 +141,46 @@ class PhotoBoothPage extends Component {
 	};
 
 	render() {
-		const { url } = this.props;
+		const { router } = this.props;
 		const { sourceImageBoundingClientRect, enableAnimation } = this.state;
-		const showImageModal = url && url.query.imageType && url.query.id && true;
+		const showImageModal =
+			router && router.query.imageType && router.query.id && true;
 
 		return (
-			<ApolloProvider client={client}>
-				<App title="Photo Booth" url={url}>
-					<div className="photo-booth-page">
-						<ImageFeedContainer
-							name="photo-booth"
-							startImages={50}
-							maxImages={100}
-							enableAnimation={enableAnimation}
-							onImageClick={(event, image) =>
-								this.handleImageClick(event, image)
-							}
-						/>
+			<App title="Photo Booth">
+				<div className="photo-booth-page">
+					<ImageFeedContainer
+						name="photo-booth"
+						startImages={50}
+						maxImages={100}
+						enableAnimation={enableAnimation}
+						onImageClick={(event, image) => this.handleImageClick(event, image)}
+					/>
 
-						<PhotoBoothModal
-							stage={url.query.stage}
-							url={url}
-							useScreenKeyboard={true}
-						/>
+					<PhotoBoothModal
+						stage={router.query.stage}
+						url={router}
+						useScreenKeyboard={true}
+					/>
 
-						{/* {url.query.stage === 'search' && (
+					{/* {url.query.stage === 'search' && (
 							<div className="photo-booth-page__search">
 								<SearchContainer url={url} />
 							</div>
 						)} */}
 
-						<ImageModalContainer
-							isActive={showImageModal || false}
-							imageType={url.query.imageType}
-							id={parseInt(url.query.id, 10)}
-							sourceImageBoundingClientRect={sourceImageBoundingClientRect}
-							onClose={this.handleImageModalClose}
-						/>
-					</div>
-				</App>
-			</ApolloProvider>
+					<ImageModalContainer
+						isActive={showImageModal || false}
+						imageType={router.query.imageType}
+						id={parseInt(router.query.id, 10)}
+						sourceImageBoundingClientRect={sourceImageBoundingClientRect}
+						onClose={this.handleImageModalClose}
+					/>
+				</div>
+			</App>
 		);
 	}
 }
 
-export default withRedux(initStore)(PhotoBoothPage);
+// export default withRedux(initStore)(PhotoBoothPage);
+export default PhotoBoothPage;

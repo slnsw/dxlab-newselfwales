@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper/lib';
 import { withRouter } from 'next/router';
 
-import withApolloClient from '../lib/withApollo2';
+import withApolloClient from '../lib/withApollo';
 import { initStore } from '../lib/initRedux';
 
 class MyApp extends App {
