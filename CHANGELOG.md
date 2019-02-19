@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0] - 2019-2-20
+
+### Changed
+
+* Re-architected ImageFeedContainer to use subscriptions feed
+* Added dxlab-newselfwales-cronjob sub package
+* Online website /newselfwales updated with search feature
+
 ## [0.2.10] - 2018-12-04
 
 ### Changed

@@ -614,7 +614,7 @@ const suggestions = [
 	},
 	{
 		name: 'Max Dupain',
-		q: 'max',
+		q: 'max dupain',
 	},
 	{
 		name: 'Grace',
