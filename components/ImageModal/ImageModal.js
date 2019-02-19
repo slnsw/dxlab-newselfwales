@@ -9,7 +9,7 @@ import Image from '../Image';
 import ShareBox from '../ShareBox';
 import Modal from '../Modal';
 import LoaderText from '../LoaderText';
-import { SCREEN_SM } from '../../styles/variables';
+import { SCREEN_MD } from '../../styles/variables';
 import './ImageModal.css';
 
 const typeName = {
@@ -313,8 +313,8 @@ class ImageModal extends Component {
 								// left: screenWidth / 2,
 								top: '50%',
 								left: '50%',
-								height: screenWidth > SCREEN_SM ? '80%' : 'calc(100% - 2em)',
-								width: screenWidth > SCREEN_SM ? '80%' : 'calc(100% - 0.91em)',
+								height: screenWidth > SCREEN_MD ? '80%' : 'calc(100% - 2em)',
+								width: screenWidth > SCREEN_MD ? '80%' : 'calc(100% - 0.91em)',
 							},
 						};
 

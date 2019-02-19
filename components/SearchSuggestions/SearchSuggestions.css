@@ -9,5 +9,9 @@
 	& li {
 		font-size: var(--font-size-lg);
 		line-height: 2;
+
+		@media (--screen-sm) {
+			font-size: var(--font-size-xlg);
+		}
 	}
 }
