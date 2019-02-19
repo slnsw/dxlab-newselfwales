@@ -1,3 +1,0 @@
-{
-	"rules": [{ "pathname": "/api/**", "dest": "dxlab-staging-graphql.now.sh" }]
-}
