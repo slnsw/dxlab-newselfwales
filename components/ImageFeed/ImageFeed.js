@@ -179,9 +179,9 @@ class ImageFeed extends Component {
 			prevProps.status === 'UPCOMING_IMAGES_READY' &&
 			this.props.status === 'CURRENT_IMAGES'
 		) {
-			console.log(
-				`%c Refresh and start up again ${this.state.refreshCounter} `,
-				'background-color: #e6007e; color: #FFFFFF',
+			log(
+				`Refresh and start up again ${this.state.refreshCounter} `,
+				// 'background-color: #e6007e; color: #FFFFFF',
 			);
 
 			scroller.resetScrollCount();
@@ -278,11 +278,9 @@ class ImageFeed extends Component {
 
 		// Set up repeating interval loop to add and remove images
 		this.interval = setInterval(() => {
-			console.log(
-				`%c Interval ${this.state.intervalCounter} (${
-					this.state.refreshCounter
-				})`,
-				'color: #e6007e',
+			log(
+				`Interval ${this.state.intervalCounter} (${this.state.refreshCounter})`,
+				// 'color: #e6007e',
 			);
 
 			log(this.props.status);

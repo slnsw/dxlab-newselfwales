@@ -42,6 +42,9 @@ class PackeryImages extends Component {
 		}
 	};
 
+	// handleImageKeyPress = (event) => {
+	// };
+
 	render() {
 		const {
 			className,
@@ -147,6 +150,7 @@ class PackeryImages extends Component {
 										onClick={(event) =>
 											!image.isSilhouette && this.handleImageClick(event, image)
 										}
+										// onKeyPress={this.handleImageKeyPress}
 										// ref={(c) => this.imageHolderRefs.set(image.id, c)}
 										data-id={image.id}
 										tabIndex="0"

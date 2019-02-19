@@ -191,22 +191,9 @@ class LandingPage extends Component {
 	};
 
 	handleKey = (event) => {
-		// For accessibility and super-users
 		if (event.code === 'Escape') {
-			//  Effectively close ImageModal
-			if (
-				this.props.router.query &&
-				this.props.router.query.param &&
-				this.props.router.query.id
-			) {
-				Router.pushRoute(`/newselfwales`);
+			this.handleImageModalClose();
 
-				this.setState({
-					enableAnimation: true,
-				});
-			}
-
-			// Close modal and start animation
 			if (this.state.showModal) {
 				this.setState({
 					showModal: false,
@@ -427,7 +414,7 @@ class LandingPage extends Component {
 					// If image is being show, let ImageModal control contents of meta tags
 					showImageModal
 						? null
-						: 'Share your portrait and become part of our opening exhibitions'
+						: 'The results of our exhibition #NewSelfWales featuring over 12,000 portraits from the State Library of NSW’s collection, together with selfies from Instagram and our in-gallery photo booth.'
 				}
 				metaImageUrl={
 					showImageModal
