@@ -1,14 +1,9 @@
 import { Component } from 'react';
-// import { ApolloProvider } from 'react-apollo';
-// import withRedux from 'next-redux-wrapper';
 
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
 import ImageModalContainer from '../components/ImageModalContainer';
-// import SearchContainer from '../components/SearchContainer/SearchContainer';
 import PhotoBoothModal from '../components/PhotoBoothModal';
-// import { client } from '../lib/initApollo';
-// import { initStore } from '../lib/initRedux';
 import { Router } from '../routes';
 import { idleTimer } from '../lib/idleTimer';
 import { createHealthCheck } from '../lib/healthCheck';

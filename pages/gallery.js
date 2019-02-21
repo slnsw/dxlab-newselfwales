@@ -1,12 +1,8 @@
 import { Component } from 'react';
-// import { ApolloProvider } from 'react-apollo';
-// import withRedux from 'next-redux-wrapper';
 
 import App from '../components/App';
 import ImageFeedContainer from '../components/ImageFeedContainer';
 import TransceiverContainer from '../components/TransceiverContainer';
-// import { client } from '../lib/initApollo';
-// import { initStore } from '../lib/initRedux';
 import { createHealthCheck } from '../lib/healthCheck';
 
 import './gallery.css';
