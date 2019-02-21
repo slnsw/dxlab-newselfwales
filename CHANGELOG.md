@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.1] - 2019-2-20
+
+### Added
+
+* Keyboard access to SearchResults ImageModal
+
 ## [1.0.0] - 2019-2-20
 
 ### Changed
