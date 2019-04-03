@@ -431,7 +431,7 @@ class ImageFeed extends Component {
 					log('Start windowing check');
 
 					const imageHolderRefs = Array.from(this.imageHolderRefs);
-					const threshold = 0;
+					const threshold = 400;
 					const leftOfScreenImageThreshold = 5;
 
 					// Work out images left of threshold by looping through imageHolderRefs

@@ -428,6 +428,7 @@ class LandingPage extends Component {
 				}
 				pathname="/newselfwales"
 			>
+				<div className="line" />
 				<SearchBox
 					value={this.state.q}
 					// defaultValue={router.query && router.query.q ? router.query.q : ''}
