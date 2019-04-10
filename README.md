@@ -135,13 +135,13 @@ The following describes the rough logic flow of how images are handled in the Im
 4. ImageFeed: On animate out end, send `IMAGE_FEED_CLEAR_CURRENT_IMAGES` and then send `IMAGE_FEED_GET_UPCOMING_IMAGES` with `startImages` amount.
 5. Go to `C3.`.
 
-#### D. Spare Images Loop
+#### E. Spare Images Loop
 
 1. ImageFeed: On loop interval, if `emptyGap` is larger than 50% of the viewport, we aren't getting images quickly enough, so we need to recycle spare images. Send `IMAGE_FEED_GET_SPARE_IMAGES` and specify how many. (IN PROGRESS)
 2. Reducer transfers X amount of random `spareImages` into `currentImages`.
 3. Go to `C1.`.
 
-#### E. Network Error Loop
+#### F. Network Error Loop
 
 1. ImageFeed: On loop interval, if there is a network error, dispatch `IMAGE_FEED_COPY_SPARE_IMAGES_TO_CURRENT` or `IMAGE_FEED_COPY_SPARE_IMAGES_TO_UPCOMING`.
 
@@ -171,3 +171,5 @@ Service that scrapes Instagram for images tagged with #NewSelfWales.
 * Projectors should turn on before PC to ensure mosaic mode is active on startup
 * Unplug mouse to ensure pointer is not visible on screen
 * Startup loads Chrome in full screen kiosk mode
+* The photo booth kiosks are expecting a Logitech c920 HD webcab to be attached via USB. The innards of these cameras were enclosed in a 3D-printed custom selfie cam case, along with a big pink arcade button to trigger them.
+* The photo booth code listens for a back-tick keypress from a keyboard to trigger the capturing of a still image from the webcam. This is because the arcade button was connected to a small circuit board ( http://www.u-hid.com/home/uhid_nano.php ) which emulates a keyboard. It was also connected via USB and had been pre-programmed to send a back-tick keypress when the arcade button shorted two particular pins.
