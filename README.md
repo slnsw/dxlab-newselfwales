@@ -1,13 +1,41 @@
 # DX Lab #NewSelfWales
 
-DX Lab Gallery and Photobooth experience for State Library of NSW's Selfie campaign.
+DX Lab gallery, photobooth and website experience for State Library of NSW's community, self-portrait exhibition.
+
+Read the exhibition blog post - https://dxlab.sl.nsw.gov.au/blog/the-face-of-nsw
+
+See how we built the whole thing - https://dxlab.sl.nsw.gov.au/blog/making-newselfwales
+
+Visit the website - https://dxlab.sl.nsw.gov.au/newselfwales
 
 This repo contains other projects relating to #NewSelfWales
 
 * `scraper` - `dxlab-newselfwales-scraper`
 * `cronjob` - `dxlab-newselfwales-cronjob`
 
-## ENV Variables
+> Please note that this public repo is for reference only. There are other parts of the stack that are still private. The code is workable, but by no means perfect! Feel free to learn what you can from this codebase.
+
+## Tech
+
+* [Node JS](https://nodejs.org/en/) - JavaScript runtime
+* [React JS](https://reactjs.org/) - User Interface Library
+* [Redux](https://redux.js.org/) - State Management
+* [Next JS](https://nextjs.org/) - React framework with server side rendering
+* [GraphQL](https://graphql.org/) - Next generation API
+* [Packery](https://packery.metafizzy.co/) - JS/CSS masonry library
+* [Zeit Now](https://zeit.co/now) - Serverless cloud hosting platform
+
+## Getting Started
+
+```bash
+# Ensure Node JS is installed
+$ npm install
+
+# Make sure .env file is set up (see below)
+$ npm run dev
+```
+
+### ENV Variables
 
 Save a .env with the following:
 
@@ -19,13 +47,15 @@ GRAPHQL_URL=http://localhost:5000/graphql
 GRAPHQL_HOST=http://localhost:5000
 GRAPHQL_SUBSCRIPTIONS_URL=ws://localhost:5000/subscriptions
 
+# Wordpress Credentials
 WP_API_ENDPOINT=https://local.dxlab.sl.nsw.gov.au/selfie/wp-json
 WP_USERNAME=XXXXXXXXXX
 WP_PASSWORD=XXXXXXXXXX
 
 FB_APP_ID=XXXXXXXXXX
-GOOGLE_ANALYTICS_ID=XXXXXXXXXX
+GTM_ID=XXXXXXXXXX
 
+# Healthcheck Config
 HC_DEV_URL=https://hc-ping.com/XXXXXXXXXXXXXXXX
 HC_DEV_INTERVAL=300000
 
@@ -38,31 +68,37 @@ HC_RIGHT_INTERVAL=300000
 
 Save a `.env.staging` and `.env.production` file for staging and production deploys respectively.
 
-## Website
+All `.env*` files are ignored by Git as they contain sensitive data.
 
-Promo website is here: `/newselfwales`.
+## Web App
 
-## Cronjob
+The main web app runs three sub apps:
 
-This runs a server that hits GraphQL, receives the NewSelfWales feed, and sends it back as a mutation every 20 seconds. The mutation updates all clients that are subscribed to the subscription query. In our case, the ImageFeedContainer component will receive new images every 20 seconds. This means that they don't have to poll the server.
+* Website
+* Selfie Photobooth
+* In-gallery Image Feed
 
-```
-# Run the server. Make sure GraphQL is running and .env is set up.
-$ cd cronjob
-$ npm start
-```
+These three sub apps all share common React components.
 
-TODO: Add info about deployments and scaling
+To deploy, run:
+`npm run deploy-[stage]`.
+Stage can be `dev`, `staging` or `production`.
 
-## Scraper
+### Website
 
-## Photobooth
+Promo website route is here: `/newselfwales`. The app is proxied to a Zeit Now URL from https://dxlab.sl.nsw.gov.au/newselfwales.
 
-## Gallery Experience
+## Selfie Photobooth
 
-This can be accessed from this URL: `/gallery`
+There are two photobooths, each with their own route: `/photo-booth/left` and `/photo-booth/right`.
 
-### ImageFeed Loop
+## In-Gallery Image Feed
+
+This can be accessed from this URL: `/gallery`.
+
+The main component for this sub app is `ImageFeedContainer`. This component subscribes to a GraphQL subscription feed that sends new images every 20 seconds. It uses Redux to handle the subscription and data.
+
+### Image Feed Loop
 
 The ImageFeed loop ticks every 10 seconds. It kicks off after `IMAGE_FEED_FETCH_INITIAL_IMAGES`.
 
@@ -71,6 +107,8 @@ The ImageFeed Redux store consists of three image containers:
 * `upcomingImages`
 * `currentImages`
 * `spareImages`
+
+The following describes the rough logic flow of how images are handled in the Image Feed.
 
 #### A. Initial Fetch
 
@@ -107,14 +145,29 @@ The ImageFeed Redux store consists of three image containers:
 
 1. ImageFeed: On loop interval, if there is a network error, dispatch `IMAGE_FEED_COPY_SPARE_IMAGES_TO_CURRENT` or `IMAGE_FEED_COPY_SPARE_IMAGES_TO_UPCOMING`.
 
+## Cronjob
+
+Located at `cronjob/`.
+
+This runs a server that hits GraphQL, receives the NewSelfWales feed, and sends it back as a mutation every 20 seconds. The mutation updates all clients that are subscribed to the subscription query. In our case, the `ImageFeedContainer` component will receive new images every 20 seconds. This means that they don't have to poll the server.
+
+```bash
+# Run the server. Make sure GraphQL is running and .env is set up.
+$ cd cronjob
+$ npm start
+
+# When deploying with Now, ensure minimum scaling rule is set to 1 eg.
+$ now scale [instance] 1 1
+```
+
+## Scraper
+
+Located at `scraper/`.
+
+Service that scrapes Instagram for images tagged with #NewSelfWales.
+
 ### Hardware Notes
 
 * Projectors should turn on before PC to ensure mosaic mode is active on startup
 * Unplug mouse to ensure pointer is not visible on screen
 * Startup loads Chrome in full screen kiosk mode
-
-# TODO
-
-* [] Add noindex if accessing from domain other than dxlab.sl.nsw.gov.au
-* [] Fix use of absolute `dxlab.sl.nsw.gov.au` URL in fonts.css. To load our app styles, we need to use `dxlab-selfie.now.sh/static/styles.css`. If using relative URL when loading font and app is run from `dxlab.sl.nsw.gov.au/newselfwales`, cross origin errors will occur. Loading `styles.css` outside of `dxlab.sl.nsw.gov.au` is necessary because `nextcss` only outputs to `/static/styles.css`. App is proxied from `dxlab.sl.nsw.gov.au`, so this path is already taken. Need to work out how to get `nextcss` to output `styles.css` to custom dir!
-* [] Reconsider use of BASE_URL=dxlab.now.sh, considering that this site gets proxied to dxlab.sl.nsw.gov.au
