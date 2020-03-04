@@ -61,7 +61,12 @@ export const subscribeToImages = () => (dispatch) => {
 
 const SUBSCRIPTION_QUERY = gql`
 	subscription {
-		onSendControl(appId: "NEWSELFWALES", channel: "FEED") {
+		# onSendControl(appId: "NEWSELFWALES", channel: "FEED") {
+		# 	id
+		# 	action
+		# 	value
+		# }
+		onSendNewSelfWalesControl {
 			id
 			action
 			value

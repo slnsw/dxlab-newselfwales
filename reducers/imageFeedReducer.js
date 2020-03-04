@@ -126,11 +126,15 @@ export default (state = initialState, action) => {
 
 		case 'IMAGE_FEED_GET_SUBSCRIBED_IMAGES': {
 			log(action.type);
-			// console.log(JSON.parse(action.payload.data.onSendControl.value));
+
+			const subscribedImages = JSON.parse(action.payload.data.value);
+			console.log(subscribedImages);
 
 			const newImages = mergeImages(
 				state.upcomingImages,
-				JSON.parse(action.payload.data.onSendControl.value),
+				subscribedImages,
+				// JSON.parse(action.payload.data.onSendControl.value),
+				// JSON.parse(action.payload.data.value),
 			);
 
 			return {
