@@ -1,9 +1,11 @@
 # Changelog
 
-## [1.0.2] - 2020-3-04
+## [1.0.2] - 2020-3-XX
 
 - Update Apollo packages, prepare for switch to Serverless GraphQL
 - Update apollo subscription connection
+- Update cronjob GraphQL api
+- Add healthcheck to cronjob
 
 ## [1.0.1] - 2019-2-20
 

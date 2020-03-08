@@ -1,21 +1,26 @@
 import gql from 'graphql-tag';
+import axios from 'axios';
 
 import client from './lib/client';
 // NOTE: Copied from main project. Keep this in sync.
 import { getDate } from './lib/date';
 
 export async function hit() {
-  console.log('hit', process.env.GRAPHQL_URL);
+  console.log('start hit', process.env.GRAPHQL_URL);
 
   const {
     data: { feed },
   } = await getFeed();
 
-  console.log(feed);
+  // console.log(feed);
 
-  const result = await sendFeed(feed);
+  // const result = await sendFeed(feed);
+  await sendFeed(feed);
 
-  console.log(result);
+  // Send healthcheck
+  await axios.get('https://hc-ping.com/954ff77c-8ce7-4a10-b475-976d9a68dd10');
+
+  // console.log(result);
 }
 
 export const getFeed = async () => {
@@ -31,7 +36,7 @@ export const getFeed = async () => {
       },
     });
 
-    console.log(result);
+    // console.log(result);
 
     return result;
   } catch (e) {
