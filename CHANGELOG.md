@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.2] - 2020-3-09
+## [1.0.4] - 2020-3-09
 
 - Update Apollo packages, prepare for switch to Serverless GraphQL
 - Update apollo subscription connection
