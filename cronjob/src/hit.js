@@ -24,7 +24,7 @@ export async function hit() {
 }
 
 export const getFeed = async () => {
-  console.log('getFeed');
+  console.log('get feed');
 
   try {
     const result = await client.query({
@@ -47,6 +47,8 @@ export const getFeed = async () => {
 };
 
 export const sendFeed = async (value) => {
+  console.log('send feed');
+
   try {
     const result = await client.mutate({
       mutation: FEED_MUTATION,
