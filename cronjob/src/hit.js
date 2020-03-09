@@ -6,7 +6,7 @@ import client from './lib/client';
 import { getDate } from './lib/date';
 
 export async function hit() {
-  console.log('start hit', process.env.GRAPHQL_URL);
+  console.log('start hit', process.env.NEWSELFWALES_GRAPHQL_URL);
 
   const {
     data: { feed },

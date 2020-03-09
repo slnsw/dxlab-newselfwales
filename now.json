@@ -1,6 +1,7 @@
 {
 	"version": 2,
 	"scope": "dxlab",
+	"routes": [{ "src": "/newselfwales/assets/_next/(.*)", "dest": "/_next/$1" }],
 	"env": {
 		"NEWSELFWALES_BASE_URL": "@newselfwales_prod_base_url",
 		"NEWSELFWALES_GRAPHQL_URL": "@newselfwales_prod_graphql_url",

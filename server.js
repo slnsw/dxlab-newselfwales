@@ -4,7 +4,6 @@ const express = require('express');
 const next = require('next');
 const uaCompatible = require('ua-compatible');
 const helmet = require('helmet');
-// const proxy = require('http-proxy-middleware');
 
 const dev = process.env.NODE_ENV !== 'production' && !process.env.NOW;
 const app = next({ dev });
@@ -20,12 +19,19 @@ console.log(`NEWSELFWALES_GRAPHQL_URL=${process.env.NEWSELFWALES_GRAPHQL_URL}`);
 console.log(`TEST=${process.env.TEST}`);
 console.log(`NEWSELFWALES_BASE_URL=${process.env.NEWSELFWALES_BASE_URL}`);
 console.log(`NEWSELFWALES_FB_APP_ID=${process.env.NEWSELFWALES_FB_APP_ID}`);
-console.log(
-	`NEWSELFWALES_GOOGLE_ANALYTICS_ID=${process.env.NEWSELFWALES_GOOGLE_ANALYTICS_ID}`,
-);
+console.log(`NEWSELFWALES_GTM_ID=${process.env.NEWSELFWALES_GTM_ID}`);
 console.log('----------------------------------');
 
 const port = process.env.PORT || 3000;
+
+/**
+ * WARNING: Only use this for local development
+ *
+ * This server.js file enables assetPrefix in next.config.js to work in local
+ * development. Server.js isn't used when deployed by Now, so
+ * now.json and now.staging.json has a 'routes' rule that proxies
+ * '/newselfwales/assets/_next/' to '/_next/'
+ */
 
 app
 	.prepare()
