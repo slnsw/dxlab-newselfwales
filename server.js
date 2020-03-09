@@ -7,9 +7,10 @@ const helmet = require('helmet');
 
 const dev = process.env.NODE_ENV !== 'production' && !process.env.NOW;
 const app = next({ dev });
-const routes = require('./routes');
+const handler = app.getRequestHandler();
+// const routes = require('./routes');
 
-const handler = routes.getRequestHandler(app);
+// const handler = routes.getRequestHandler(app);
 
 console.log('----------------------------------');
 console.log('Environment Variables:');
