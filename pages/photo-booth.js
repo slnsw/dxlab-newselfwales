@@ -64,7 +64,7 @@ class PhotoBoothPage extends Component {
 			this.idleTimerStart(router.pathname, position);
 		}
 
-		if (process.env.BASE_URL !== 'http://localhost:5020') {
+		if (process.env.NEWSELFWALES_BASE_URL !== 'http://localhost:5020') {
 			// Disable right click
 			console.log('contextmenu disabled');
 
@@ -127,7 +127,7 @@ class PhotoBoothPage extends Component {
 
 		Router.pushRoute(
 			`${router.pathname}/${router.query.position}${
-				router.query.stage === 'search' ? '?stage=search' : ''
+			router.query.stage === 'search' ? '?stage=search' : ''
 			}`,
 		);
 

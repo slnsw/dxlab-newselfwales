@@ -32,9 +32,9 @@ class PhotoBoothModalForm extends Component {
 	componentDidMount() {
 		// Set up Wordpress API
 		this.wp = new WPAPI({
-			endpoint: process.env.WP_API_ENDPOINT,
-			username: process.env.WP_USERNAME,
-			password: process.env.WP_PASSWORD,
+			endpoint: process.env.NEWSELFWALES_WP_API_ENDPOINT,
+			username: process.env.NEWSELFWALES_WP_USERNAME,
+			password: process.env.NEWSELFWALES_WP_PASSWORD,
 		});
 		this.wp.gallerySelfies = this.wp.registerRoute(
 			'wp/v2',
@@ -389,18 +389,18 @@ class PhotoBoothModalForm extends Component {
 							/>
 						</span>
 					) : (
-						(formErrors.name ||
-							// formErrors.email ||
-							formErrors.interests ||
-							formErrors['terms-conditions']) && (
-							<span className="photo-booth-modal-form__form-message">
-								{formErrors.name ||
-									// formErrors.email ||
-									formErrors.interests ||
-									formErrors['terms-conditions']}
-							</span>
-						)
-					)}
+							(formErrors.name ||
+								// formErrors.email ||
+								formErrors.interests ||
+								formErrors['terms-conditions']) && (
+								<span className="photo-booth-modal-form__form-message">
+									{formErrors.name ||
+										// formErrors.email ||
+										formErrors.interests ||
+										formErrors['terms-conditions']}
+								</span>
+							)
+						)}
 				</div>
 
 				<Modal isActive={hasSubmitError} onClose={this.handleErrorModal}>

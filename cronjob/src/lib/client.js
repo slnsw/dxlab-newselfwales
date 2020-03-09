@@ -17,7 +17,7 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 
 export default new ApolloClient({
   link: new HttpLink({
-    uri: process.env.GRAPHQL_URL,
+    uri: process.env.NEWSELFWALES_GRAPHQL_URL,
     fetch,
   }),
   cache: new InMemoryCache({ fragmentMatcher }),

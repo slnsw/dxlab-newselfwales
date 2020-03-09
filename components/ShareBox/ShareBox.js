@@ -14,7 +14,7 @@ class ShareBox extends Component {
 	render() {
 		const { title, text, pathname, imageUrl } = this.props;
 		const tweetText = encodeURIComponent(`${title} #dxlab @statelibrarynsw`);
-		const fbAppId = process.env.FB_APP_ID;
+		const fbAppId = process.env.NEWSELFWALES_FB_APP_ID;
 
 		// TODO: Use baseUrl variable
 		const url = encodeURIComponent(`${process.env.BASE_URL}${pathname}`);

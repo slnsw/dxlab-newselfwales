@@ -65,24 +65,23 @@ class InfoBox extends Component {
 					/>
 					{/* <h1 className="info-box__title">#NewSelfWales</h1> */}
 
-					{!isFullSize &&
-						excerpt && (
-							<Fragment>
-								<div>
-									<p
-										className="info-box__excerpt"
-										dangerouslySetInnerHTML={{ __html: excerpt }}
-									/>
+					{!isFullSize && excerpt && (
+						<Fragment>
+							<div>
+								<p
+									className="info-box__excerpt"
+									dangerouslySetInnerHTML={{ __html: excerpt }}
+								/>
 
-									<button
-										className="button button--xs"
-										onClick={this.handleMoreButton}
-									>
-										More Info
-									</button>
-								</div>
-							</Fragment>
-						)}
+								<button
+									className="button button--xs"
+									onClick={this.handleMoreButton}
+								>
+									More Info
+								</button>
+							</div>
+						</Fragment>
+					)}
 
 					{isFullSize && (
 						<Fragment>

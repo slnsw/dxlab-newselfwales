@@ -160,7 +160,7 @@ class LandingPage extends Component {
 				...(filters
 					? {
 							filters,
-						}
+					  }
 					: {}),
 			};
 
@@ -315,7 +315,7 @@ class LandingPage extends Component {
 			...(filters
 				? {
 						filters,
-					}
+				  }
 				: {}),
 		};
 
@@ -535,23 +535,22 @@ class LandingPage extends Component {
 					)}
 				</Fragment>
 
-				{page &&
-					!isSearch && (
-						<InfoBox
-							className={[
-								'newselfwales-page__info-box',
-								hideUI ? 'newselfwales-page__info-box--is-hidden' : '',
-							].join(' ')}
-							title={page.title}
-							excerpt={page.excerpt}
-							isFullSize={isInfoBoxFullSize}
-							onMoreButtonClick={this.handleMoreButtonClick}
-							onCloseButtonClick={this.handleInfoBoxCloseButtonClick}
-							onHideButtonClick={this.handleInfoBoxHideButtonClick}
-						>
-							{page.content}
-						</InfoBox>
-					)}
+				{page && !isSearch && (
+					<InfoBox
+						className={[
+							'newselfwales-page__info-box',
+							hideUI ? 'newselfwales-page__info-box--is-hidden' : '',
+						].join(' ')}
+						title={page.title}
+						excerpt={page.excerpt}
+						isFullSize={isInfoBoxFullSize}
+						onMoreButtonClick={this.handleMoreButtonClick}
+						onCloseButtonClick={this.handleInfoBoxCloseButtonClick}
+						onHideButtonClick={this.handleInfoBoxHideButtonClick}
+					>
+						{page.content}
+					</InfoBox>
+				)}
 
 				<ImageModalContainer
 					isActive={showImageModal}

@@ -226,7 +226,8 @@ class ImageModal extends Component {
 		const timeout = 500;
 
 		const pathname = `/newselfwales/${imageType}/${id}`;
-		const baseUrl = process.env.BASE_URL || 'https://dxlab.sl.nsw.gov.au';
+		const baseUrl =
+			process.env.NEWSELFWALES_BASE_URL || 'https://dxlab.sl.nsw.gov.au';
 		const metaUrl = `${baseUrl}${pathname}`;
 
 		let dateString;
@@ -246,7 +247,7 @@ class ImageModal extends Component {
 		const collectionLink = flNumber
 			? `http://digital.sl.nsw.gov.au/delivery/DeliveryManagerServlet?embedded=true&toolbar=false&dps_pid=${flNumber.toUpperCase()}`
 			: primoId &&
-				`https://search.sl.nsw.gov.au/primo-explore/fulldisplay?vid=SLNSW&search_scope=EEA&adaptor=Local%20Search%20Engine&docid=${primoId.toUpperCase()}`;
+			  `https://search.sl.nsw.gov.au/primo-explore/fulldisplay?vid=SLNSW&search_scope=EEA&adaptor=Local%20Search%20Engine&docid=${primoId.toUpperCase()}`;
 
 		const metaDescription = content.replace(/<p>/g, '').replace(/<\/p>/g, '');
 

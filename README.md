@@ -37,36 +37,33 @@ $ npm run dev
 
 ### ENV Variables
 
-Save a .env with the following:
+For local development, save a .env with the following:
 
 ```
 PORT=5020
-BASE_URL=http://localhost:5020
+NEWSELFWALES_BASE_URL=http://localhost:5020
 
-GRAPHQL_URL=http://localhost:5000/graphql
-GRAPHQL_HOST=http://localhost:5000
-GRAPHQL_SUBSCRIPTIONS_URL=ws://localhost:5000/subscriptions
+NEWSELFWALES_GRAPHQL_URL=http://localhost:5000/graphql
+NEWSELFWALES_GRAPHQL_SUBSCRIPTIONS_URL=ws://localhost:5000/subscriptions
 
 # Wordpress Credentials
-WP_API_ENDPOINT=https://local.dxlab.sl.nsw.gov.au/selfie/wp-json
-WP_USERNAME=XXXXXXXXXX
-WP_PASSWORD=XXXXXXXXXX
+NEWSELFWALES_WP_API_ENDPOINT=https://local.dxlab.sl.nsw.gov.au/selfie/wp-json
+NEWSELFWALES_WP_USERNAME=XXXXXXXXXX
+NEWSELFWALES_WP_PASSWORD=XXXXXXXXXX
 
-FB_APP_ID=XXXXXXXXXX
-GTM_ID=XXXXXXXXXX
+NEWSELFWALES_FB_APP_ID=XXXXXXXXXX
+NEWSELFWALES_GTM_ID=XXXXXXXXXX
 
 # Healthcheck Config
-HC_DEV_URL=https://hc-ping.com/XXXXXXXXXXXXXXXX
-HC_DEV_INTERVAL=300000
+NEWSELFWALES_HC_DEV_URL=https://hc-ping.com/XXXXXXXXXXXXXXXX
+NEWSELFWALES_HC_DEV_INTERVAL=300000
 
-HC_LEFT_URL=https://hc-ping.com/XXXXXXXXXXXXXXXX
-HC_LEFT_INTERVAL=300000
+NEWSELFWALES_HC_LEFT_URL=https://hc-ping.com/XXXXXXXXXXXXXXXX
+NEWSELFWALES_HC_LEFT_INTERVAL=300000
 
-HC_RIGHT_URL=https://hc-ping.com/XXXXXXXXXXXXXXXX
-HC_RIGHT_INTERVAL=300000
+NEWSELFWALES_HC_RIGHT_URL=https://hc-ping.com/XXXXXXXXXXXXXXXX
+NEWSELFWALES_HC_RIGHT_INTERVAL=300000
 ```
-
-Save a `.env.staging` and `.env.production` file for staging and production deploys respectively.
 
 All `.env*` files are ignored by Git as they contain sensitive data.
 

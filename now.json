@@ -1,0 +1,26 @@
+{
+	"version": 2,
+	"scope": "dxlab",
+	"env": {
+		"NEWSELFWALES_BASE_URL": "@newselfwales_prod_base_url",
+		"NEWSELFWALES_GRAPHQL_URL": "@newselfwales_prod_graphql_url",
+		"NEWSELFWALES_GRAPHQL_SUBSCRIPTIONS_URL": "@newselfwales_prod_graphql_subscriptions_url",
+		"NEWSELFWALES_GTM_ID": "@newselfwales_prod_gtm_id",
+		"NEWSELFWALES_FB_APP_ID": "@newselfwales_prod_fb_app_id",
+		"NEWSELFWALES_WP_API_ENDPOINT": "@newselfwales_prod_wp_api_endpoint",
+		"NEWSELFWALES_WP_USERNAME": "@newselfwales_prod_wp_username",
+		"NEWSELFWALES_WP_PASSWORD": "@newselfwales_prod_wp_password"
+	},
+	"build": {
+		"env": {
+			"NEWSELFWALES_BASE_URL": "@newselfwales_prod_base_url",
+			"NEWSELFWALES_GRAPHQL_URL": "@newselfwales_prod_graphql_url",
+			"NEWSELFWALES_GRAPHQL_SUBSCRIPTIONS_URL": "@newselfwales_prod_graphql_subscriptions_url",
+			"NEWSELFWALES_GTM_ID": "@newselfwales_prod_gtm_id",
+			"NEWSELFWALES_FB_APP_ID": "@newselfwales_prod_fb_app_id",
+			"NEWSELFWALES_WP_API_ENDPOINT": "@newselfwales_prod_wp_api_endpoint",
+			"NEWSELFWALES_WP_USERNAME": "@newselfwales_prod_wp_username",
+			"NEWSELFWALES_WP_PASSWORD": "@newselfwales_prod_wp_password"
+		}
+	}
+}

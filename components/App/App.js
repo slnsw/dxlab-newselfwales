@@ -95,7 +95,10 @@ class App extends Component {
 						property="og:site_name"
 						content="DX Lab - State Library of NSW"
 					/>
-					<meta property="fb:app_id" content={process.env.FB_APP_ID} />
+					<meta
+						property="fb:app_id"
+						content={process.env.NEWSELFWALES_FB_APP_ID}
+					/>
 					<meta name="twitter:site" content="@statelibrarynsw" />
 					<link
 						rel="shortcut icon"

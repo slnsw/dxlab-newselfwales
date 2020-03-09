@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5] - 2020-3-09
+
+- Migrate to Now 2.0
+- Add `now.json` and `now.staging.json`
+- Update env vars to have prefix of `NEWSELFWALES_`
+- Update `prettier` to stop Code IDE nagging
+
 ## [1.0.4] - 2020-3-09
 
 - Update Apollo packages, prepare for switch to Serverless GraphQL

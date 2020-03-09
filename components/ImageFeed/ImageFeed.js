@@ -144,7 +144,8 @@ class ImageFeed extends Component {
 
 		if (
 			prevState.laidOutItems === undefined &&
-			(this.state.laidOutItems && this.state.laidOutItems.length > 0)
+			this.state.laidOutItems &&
+			this.state.laidOutItems.length > 0
 		) {
 			this.initScroller();
 		}
@@ -553,7 +554,7 @@ class ImageFeed extends Component {
 			this.state.hiddenImageIds.length > 0
 				? this.props.images.filter(
 						(image) => this.state.hiddenImageIds.indexOf(image.id) === -1,
-					)
+				  )
 				: this.props.images;
 
 		// Filter out removedImages, making sure to not run indexOf if
@@ -562,7 +563,7 @@ class ImageFeed extends Component {
 			this.state.removedImageIds.length > 0
 				? images.filter(
 						(image) => this.state.removedImageIds.indexOf(image.id) === -1,
-					)
+				  )
 				: images;
 
 		// Get random image
@@ -662,7 +663,8 @@ class ImageFeed extends Component {
 
 		if (
 			this.state.laidOutItems === undefined &&
-			(laidOutItems && laidOutItems.length > 0)
+			laidOutItems &&
+			laidOutItems.length > 0
 		) {
 			this.setState({
 				laidOutItems,
@@ -696,15 +698,14 @@ class ImageFeed extends Component {
 					className || '',
 				].join(' ')}
 			>
-				{isLoading &&
-					isFirstLoad && (
-						<div className="image-feed__loading">
-							<div className="image-feed__loading-content">
-								{/* <NewSelfWalesLogo /> */}
-								<p>Loading...</p>
-							</div>
+				{isLoading && isFirstLoad && (
+					<div className="image-feed__loading">
+						<div className="image-feed__loading-content">
+							{/* <NewSelfWalesLogo /> */}
+							<p>Loading...</p>
 						</div>
-					)}
+					</div>
+				)}
 
 				<div className="image-feed__scroller">
 					<Packery

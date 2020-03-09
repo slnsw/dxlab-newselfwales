@@ -4,7 +4,7 @@ const express = require('express');
 const next = require('next');
 const uaCompatible = require('ua-compatible');
 const helmet = require('helmet');
-const proxy = require('http-proxy-middleware');
+// const proxy = require('http-proxy-middleware');
 
 const dev = process.env.NODE_ENV !== 'production' && !process.env.NOW;
 const app = next({ dev });
@@ -16,11 +16,13 @@ console.log('----------------------------------');
 console.log('Environment Variables:');
 console.log('----------------------------------');
 console.log(`PORT=${process.env.PORT}`);
-console.log(`GRAPHQL_URL=${process.env.GRAPHQL_URL}`);
+console.log(`NEWSELFWALES_GRAPHQL_URL=${process.env.NEWSELFWALES_GRAPHQL_URL}`);
 console.log(`TEST=${process.env.TEST}`);
-console.log(`BASE_URL=${process.env.BASE_URL}`);
-console.log(`FB_APP_ID=${process.env.FB_APP_ID}`);
-console.log(`GOOGLE_ANALYTICS_ID=${process.env.GOOGLE_ANALYTICS_ID}`);
+console.log(`NEWSELFWALES_BASE_URL=${process.env.NEWSELFWALES_BASE_URL}`);
+console.log(`NEWSELFWALES_FB_APP_ID=${process.env.NEWSELFWALES_FB_APP_ID}`);
+console.log(
+	`NEWSELFWALES_GOOGLE_ANALYTICS_ID=${process.env.NEWSELFWALES_GOOGLE_ANALYTICS_ID}`,
+);
 console.log('----------------------------------');
 
 const port = process.env.PORT || 3000;
@@ -48,15 +50,15 @@ app
 		});
 
 		// Proxy GraphQL API
-		server.use(
-			proxy('/api/graphql', {
-				target: process.env.GRAPHQL_HOST,
-				changeOrigin: true,
-				pathRewrite: {
-					'^/api/graphql': '/graphql',
-				},
-			}),
-		);
+		// server.use(
+		// 	proxy('/api/graphql', {
+		// 		target: process.env.GRAPHQL_HOST,
+		// 		changeOrigin: true,
+		// 		pathRewrite: {
+		// 			'^/api/graphql': '/graphql',
+		// 		},
+		// 	}),
+		// );
 
 		server.use('/newselfwales/assets', app.getRequestHandler());
 
