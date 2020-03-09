@@ -275,7 +275,8 @@ class PhotoBoothModalForm extends Component {
 						Name{' '}
 						<span className="photo-booth-modal-form__label-required">
 							(required)
-						</span>:
+						</span>
+						:
 					</label>
 					<input
 						type="text"
@@ -353,7 +354,8 @@ class PhotoBoothModalForm extends Component {
 							I agree to the following terms and conditions{' '}
 							<span className="photo-booth-modal-form__label-required">
 								(Required)
-							</span>:
+							</span>
+							:
 						</label>
 					</div>
 
@@ -389,18 +391,18 @@ class PhotoBoothModalForm extends Component {
 							/>
 						</span>
 					) : (
-							(formErrors.name ||
-								// formErrors.email ||
-								formErrors.interests ||
-								formErrors['terms-conditions']) && (
-								<span className="photo-booth-modal-form__form-message">
-									{formErrors.name ||
-										// formErrors.email ||
-										formErrors.interests ||
-										formErrors['terms-conditions']}
-								</span>
-							)
-						)}
+						(formErrors.name ||
+							// formErrors.email ||
+							formErrors.interests ||
+							formErrors['terms-conditions']) && (
+							<span className="photo-booth-modal-form__form-message">
+								{formErrors.name ||
+									// formErrors.email ||
+									formErrors.interests ||
+									formErrors['terms-conditions']}
+							</span>
+						)
+					)}
 				</div>
 
 				<Modal isActive={hasSubmitError} onClose={this.handleErrorModal}>

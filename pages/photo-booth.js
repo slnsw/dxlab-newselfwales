@@ -112,8 +112,11 @@ class PhotoBoothPage extends Component {
 		// console.log(event.target.parentElement.getBoundingClientRect(), image);
 		// console.log(image);
 
+		// Router.pushRoute(
+		// 	`${router.pathname}/${router.query.position}/${image.type}/${image.id}`,
+		// );
 		Router.pushRoute(
-			`${router.pathname}/${router.query.position}/${image.type}/${image.id}`,
+			`/photo-booth/${router.query.position}/${image.type}/${image.id}`,
 		);
 
 		this.setState({
@@ -127,7 +130,7 @@ class PhotoBoothPage extends Component {
 
 		Router.pushRoute(
 			`${router.pathname}/${router.query.position}${
-			router.query.stage === 'search' ? '?stage=search' : ''
+				router.query.stage === 'search' ? '?stage=search' : ''
 			}`,
 		);
 

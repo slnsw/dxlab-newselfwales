@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.7] - 2020-3-09
+
+- Now v2 no longer uses server.js files, so need to refactor SSR page routes to Next JS dynamic routes eg. `[id].js`
+- Update `pages/photo-booth` `handleImageClick`
+
 ## [1.0.6] - 2020-3-09
 
 - Update to Next 9.2

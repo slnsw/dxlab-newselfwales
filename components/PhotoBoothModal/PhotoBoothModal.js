@@ -220,15 +220,14 @@ class Home extends Component {
 					</button>
 				)}
 
-				{stage !== 'start' &&
-					stage !== 'hidden' && (
-						<button
-							className="photo-booth-modal__close-button"
-							onClick={this.goHome}
-						>
-							<i className="ion-md-close" />
-						</button>
-					)}
+				{stage !== 'start' && stage !== 'hidden' && (
+					<button
+						className="photo-booth-modal__close-button"
+						onClick={this.goHome}
+					>
+						<i className="ion-md-close" />
+					</button>
+				)}
 
 				<div className="photo-booth-modal__photo-box">
 					{/* {stage === 'start' && ( */}
