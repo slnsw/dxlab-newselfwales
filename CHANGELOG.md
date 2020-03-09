@@ -6,6 +6,7 @@
 - Update React
 - Update now.json and now.staging.json with routes to assets
 - Update package.json deploy scripts
+- Add `now.json` file to cronjob
 
 ## [1.0.5] - 2020-3-09
 
