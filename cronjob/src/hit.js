@@ -18,7 +18,7 @@ export async function hit() {
   await sendFeed(feed);
 
   // Send healthcheck
-  await axios.get('https://hc-ping.com/954ff77c-8ce7-4a10-b475-976d9a68dd10');
+  await axios.get(process.env.HEALTHCHECK_URL);
 
   // console.log(result);
 }

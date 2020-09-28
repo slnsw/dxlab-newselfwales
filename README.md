@@ -23,7 +23,10 @@ This repo contains other projects relating to #NewSelfWales
 - [Next JS](https://nextjs.org/) - React framework with server side rendering
 - [GraphQL](https://graphql.org/) - Next generation API
 - [Packery](https://packery.metafizzy.co/) - JS/CSS masonry library
-- [Zeit Now](https://zeit.co/now) - Serverless cloud hosting platform
+  <<<<<<< HEAD
+- # [Zeit Now](https://zeit.co/now) - Serverless cloud hosting platform
+- [Vercel](https://vercel.com) - Serverless cloud hosting platform
+  > > > > > > > develop
 
 ## Getting Started
 
@@ -149,14 +152,20 @@ Located at `cronjob/`.
 This runs a server that hits GraphQL, receives the NewSelfWales feed, and sends it back as a mutation every 20 seconds. The mutation updates all clients that are subscribed to the subscription query. In our case, the `ImageFeedContainer` component will receive new images every 20 seconds. This means that they don't have to poll the server.
 
 ```bash
+# Local
 # Run the server. Make sure GraphQL is running and .env is set up.
 $ cd cronjob
 $ npm run build
 $ npm start
 
-# When deploying with Now, ensure minimum scaling rule is set to 1 eg.
-# Also ensure only one region is deployed to eg. sfo1
-$ now scale [instance] 1 1
+# Production
+# Copy cronjob folder to server
+# Ensure Node JS is installed
+# Create .env file in cronjob folder
+# If pm2 is not installed:
+$ npm i -g pm2
+# Start cronjob
+$ npm run start:pm2
 ```
 
 ## Scraper

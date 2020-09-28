@@ -9,6 +9,7 @@
   "main": "build/server.js",
   "scripts": {
     "start": "node build/server.js",
+    "start:pm2": "pm2 start build/server.js --name newselfwales-cronjob",
     "dev": "webpack --watch & node-dev --no-notify --no-deps -r dotenv/config build/server.js",
     "server": "babel-node ./src/server.js",
     "deploy:staging": "now --dotenv=.env.staging",
