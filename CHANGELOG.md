@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.8] - 2020-9-28
+
+- Update cronjob and Readme
+
 ## [1.0.7] - 2020-3-09
 
 - Now v2 no longer uses server.js files, so need to refactor SSR page routes to Next JS dynamic routes eg. `[id].js`
