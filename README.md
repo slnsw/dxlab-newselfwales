@@ -10,20 +10,20 @@ Visit the website - https://dxlab.sl.nsw.gov.au/newselfwales
 
 This repo contains other projects relating to #NewSelfWales
 
-* `scraper` - `dxlab-newselfwales-scraper`
-* `cronjob` - `dxlab-newselfwales-cronjob`
+- `scraper` - `dxlab-newselfwales-scraper`
+- `cronjob` - `dxlab-newselfwales-cronjob`
 
 > Please note that this public repo is for reference only. There are other parts of the stack that are still private. The code is workable, but by no means perfect! Feel free to learn what you can from this codebase.
 
 ## Tech
 
-* [Node JS](https://nodejs.org/en/) - JavaScript runtime
-* [React JS](https://reactjs.org/) - User Interface Library
-* [Redux](https://redux.js.org/) - State Management
-* [Next JS](https://nextjs.org/) - React framework with server side rendering
-* [GraphQL](https://graphql.org/) - Next generation API
-* [Packery](https://packery.metafizzy.co/) - JS/CSS masonry library
-* [Zeit Now](https://zeit.co/now) - Serverless cloud hosting platform
+- [Node JS](https://nodejs.org/en/) - JavaScript runtime
+- [React JS](https://reactjs.org/) - User Interface Library
+- [Redux](https://redux.js.org/) - State Management
+- [Next JS](https://nextjs.org/) - React framework with server side rendering
+- [GraphQL](https://graphql.org/) - Next generation API
+- [Packery](https://packery.metafizzy.co/) - JS/CSS masonry library
+- [Vercel](https://vercel.com) - Serverless cloud hosting platform
 
 ## Getting Started
 
@@ -71,9 +71,9 @@ All `.env*` files are ignored by Git as they contain sensitive data.
 
 The main web app runs three sub apps:
 
-* Website
-* Selfie Photobooth
-* In-gallery Image Feed
+- Website
+- Selfie Photobooth
+- In-gallery Image Feed
 
 These three sub apps all share common React components.
 
@@ -101,9 +101,9 @@ The ImageFeed loop ticks every 10 seconds. It kicks off after `IMAGE_FEED_FETCH_
 
 The ImageFeed Redux store consists of three image containers:
 
-* `upcomingImages`
-* `currentImages`
-* `spareImages`
+- `upcomingImages`
+- `currentImages`
+- `spareImages`
 
 The following describes the rough logic flow of how images are handled in the Image Feed.
 
@@ -149,12 +149,19 @@ Located at `cronjob/`.
 This runs a server that hits GraphQL, receives the NewSelfWales feed, and sends it back as a mutation every 20 seconds. The mutation updates all clients that are subscribed to the subscription query. In our case, the `ImageFeedContainer` component will receive new images every 20 seconds. This means that they don't have to poll the server.
 
 ```bash
+# Local
 # Run the server. Make sure GraphQL is running and .env is set up.
 $ cd cronjob
 $ npm start
 
-# When deploying with Now, ensure minimum scaling rule is set to 1 eg.
-$ now scale [instance] 1 1
+# Production
+# Copy cronjob folder to server
+# Ensure Node JS is installed
+# Create .env file in cronjob folder
+# If pm2 is not installed:
+$ npm i -g pm2
+# Start cronjob
+$ npm run start:pm2
 ```
 
 ## Scraper
@@ -165,8 +172,8 @@ Service that scrapes Instagram for images tagged with #NewSelfWales.
 
 ### Hardware Notes
 
-* Projectors should turn on before PC to ensure mosaic mode is active on startup
-* Unplug mouse to ensure pointer is not visible on screen
-* Startup loads Chrome in full screen kiosk mode
-* The photo booth kiosks are expecting a Logitech c920 HD webcab to be attached via USB. The innards of these cameras were enclosed in a 3D-printed custom selfie cam case, along with a big pink arcade button to trigger them.
-* The photo booth code listens for a back-tick keypress from a keyboard to trigger the capturing of a still image from the webcam. This is because the arcade button was connected to a small circuit board ( http://www.u-hid.com/home/uhid_nano.php ) which emulates a keyboard. It was also connected via USB and had been pre-programmed to send a back-tick keypress when the arcade button shorted two particular pins.
+- Projectors should turn on before PC to ensure mosaic mode is active on startup
+- Unplug mouse to ensure pointer is not visible on screen
+- Startup loads Chrome in full screen kiosk mode
+- The photo booth kiosks are expecting a Logitech c920 HD webcab to be attached via USB. The innards of these cameras were enclosed in a 3D-printed custom selfie cam case, along with a big pink arcade button to trigger them.
+- The photo booth code listens for a back-tick keypress from a keyboard to trigger the capturing of a still image from the webcam. This is because the arcade button was connected to a small circuit board ( http://www.u-hid.com/home/uhid_nano.php ) which emulates a keyboard. It was also connected via USB and had been pre-programmed to send a back-tick keypress when the arcade button shorted two particular pins.
