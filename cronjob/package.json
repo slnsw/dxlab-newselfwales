@@ -28,7 +28,7 @@
     "apollo-client": "^2.2.8",
     "apollo-link": "^1.2.1",
     "apollo-link-http": "^1.5.3",
-    "axios": "^0.16.2",
+    "axios": "^0.21.1",
     "babel-cli": "^6.26.0",
     "bluebird": "^3.5.0",
     "body-parser": "^1.15.2",
