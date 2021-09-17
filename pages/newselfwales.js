@@ -1,6 +1,6 @@
 import { Component, Fragment } from 'react';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+// import { graphql } from 'react-apollo';
+// import gql from 'graphql-tag';
 import { withCookies } from 'react-cookie';
 import queryString from 'query-string';
 
@@ -10,7 +10,7 @@ import ImageModalContainer from '../components/ImageModalContainer';
 import SearchResultsContainer from '../components/SearchResultsContainer';
 import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
-import SearchBox from '../components/SearchBox';
+// import SearchBox from '../components/SearchBox';
 import SearchFilters from '../components/SearchFilters';
 import SearchSuggestions from '../components/SearchSuggestions';
 import Overlay from '../components/Overlay';
@@ -374,7 +374,7 @@ class LandingPage extends Component {
 	};
 
 	render() {
-		const { error, pages, router } = this.props;
+		const { error, router } = this.props; // pages,
 		const { query } = router;
 		const {
 			showModal,
@@ -401,7 +401,18 @@ class LandingPage extends Component {
 			return null;
 		}
 
-		const page = pages && pages[0];
+		// const page = pages && pages[0];
+		const page = {
+			title: '#NewSelfWales',
+			excerpt:
+				'The results of our exhibition <strong>#NewSelfWales</strong> featuring over 12,000 portraits from the State Library of NSW&#8217;s collection, together with selfies from <a href="https://www.instagram.com/explore/tags/newselfwales/" target="_blank" rel="noopener">Instagram</a> and our in-gallery photo booth.',
+			content:
+				'<h2>What does the face of NSW look like?</h2><p>This online exhibition features thousands of portraits from the State Library of NSW&#8217;s collection, together with selfies from <a href="https://www.instagram.com/explore/tags/newselfwales/" target="_blank" rel="noopener">Instagram</a> and our in-gallery photo booth.</p><p><img class="alignnone size-medium wp-image-2884" src="https://wp.dxlab.sl.nsw.gov.au/app/uploads/2018/09/BLB_180907_026-300x200.jpg" alt="NewSelfWales gallery view" width="300" height="200" /></p><p>In 2018 we asked people across the state to share their portraits on Instagram or by using the in-gallery photo booth in the DX Lab&#8217;s #NewSelfWales community-generated, immersive exhibition. These are the results alongside thousands collected by the Library over the past 200 years.</p><p>There are over 7000 portraits taken in our selfie booths in the gallery, 1000 from Instagram and over 5000 from the Library&#8217;s collection available here.</p><p>You can find yourself here or simply enjoy browsing the diverse range of portraits. Use the search function or take a journey through the collection tags to experience a diverse range of portraits.</p><p>You can read more about this exhibition <a href="https://dxlab.sl.nsw.gov.au/blog/the-face-of-nsw" target="_blank" rel="noopener">in this blog post</a>.</p>',
+		};
+
+		// console.log('title', page && page.title);
+		// console.log('excerpt', page && page.excerpt);
+		// console.log('content', page && page.content);
 
 		// console.log({ isSearch, isSearchState });
 		// console.log('state q', this.state.q);
@@ -428,7 +439,7 @@ class LandingPage extends Component {
 				}
 				pathname="/newselfwales"
 			>
-				<SearchBox
+				{/* <SearchBox
 					value={this.state.q}
 					// defaultValue={router.query && router.query.q ? router.query.q : ''}
 					className={[
@@ -440,7 +451,7 @@ class LandingPage extends Component {
 					onFocus={this.handleSearchBoxFocus}
 					onBackClick={this.handleSearchBoxBackClick}
 					onSubmit={this.handleSearchSubmit}
-				/>
+				/> */}
 
 				{isSearch && (
 					<Fragment>
@@ -586,24 +597,27 @@ class LandingPage extends Component {
 	}
 }
 
-const PAGE_QUERY = gql`
-	query getFeed {
-		pages(slug: "newselfwales") {
-			id
-			title
-			excerpt
-			content
-		}
-	}
-`;
+// const PAGE_QUERY = gql`
+// 	query getFeed {
+// 		pages(slug: "newselfwales") {
+// 			id
+// 			title
+// 			excerpt
+// 			content
+// 		}
+// 	}
+// `;
 
-export default graphql(PAGE_QUERY, {
-	props: ({ data }) => {
-		return {
-			...data,
-		};
-	},
-})(withCookies(LandingPage));
+// export default graphql(PAGE_QUERY, {
+// 	props: ({ data }) => {
+// 		console.log('data', data);
+// 		return {
+// 			...data,
+// 		};
+// 	},
+// })(withCookies(LandingPage));
+
+export default withCookies(LandingPage);
 
 const suggestions = [
 	{
