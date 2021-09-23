@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import ImageFeed from '../ImageFeed';
-import { fetchImages, subscribeToImages } from '../../actions/imageFeedActions';
+import {
+	fetchImages2,
+	subscribeToImages,
+} from '../../actions/imageFeedActions';
 import logBase from '../../lib/log';
 import { getDate } from '../../lib/date';
 import './ImageFeedContainer.css';
@@ -59,7 +62,7 @@ class ImageFeedContainer extends Component {
 		isFirstFetch = false,
 	}) => {
 		this.props.dispatch(
-			fetchImages({
+			fetchImages2({
 				limit,
 				dateStart,
 				portraitPercentage,

@@ -1,9 +1,25 @@
 import gql from 'graphql-tag';
+import fetch from 'isomorphic-unfetch';
 import { client } from '../lib/initApollo';
 
 // ----------------------------------------------------------------------------
 // IMAGE FEED ACTIONS
 // ----------------------------------------------------------------------------
+
+export const fetchImages2 = ({
+	limit,
+	dateStart,
+	portraitPercentage,
+}) => async (dispatch) => {
+	dispatch({
+		type: 'IMAGE_FEED_FETCH_IMAGES_REQUEST2',
+	});
+	fetch('/static/newselfwales/json/0.json')
+		.then((r) => r.json())
+		.then((data) => {
+			console.log('Local data: ', data);
+		});
+};
 
 export const fetchImages = ({ limit, dateStart, portraitPercentage }) => async (
 	dispatch,
