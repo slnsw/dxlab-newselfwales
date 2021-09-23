@@ -126,6 +126,7 @@ export default (state = initialState, action) => {
 
 		case 'IMAGE_FEED_GET_SUBSCRIBED_IMAGES': {
 			log(action.type);
+			console.log('action payload: ', action.payload.data.value);
 
 			const subscribedImages = JSON.parse(action.payload.data.value);
 			console.log(subscribedImages);

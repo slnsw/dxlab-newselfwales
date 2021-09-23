@@ -61,6 +61,15 @@ export const fetchImages = ({ limit, dateStart, portraitPercentage }) => async (
 };
 
 export const subscribeToImages = () => (dispatch) => {
+	fetch('/static/newselfwales/json/0.json')
+		.then((r) => r.json())
+		.then((data) => {
+			console.log('Local data: ', data);
+			// dispatch({
+			// 	type: 'IMAGE_FEED_GET_SUBSCRIBED_IMAGES',
+			// 	payload: data,
+			// });
+		});
 	client
 		.subscribe({
 			query: SUBSCRIPTION_QUERY,
