@@ -504,7 +504,7 @@ class LandingPage extends Component {
 						intervalTime={5000}
 						pauseInterval={this.state.pauseInterval}
 						enableAnimation={enableAnimation}
-						shouldFetchImagesOnMount={false}
+						shouldFetchImagesOnMount={true} // false
 						onImagesUpdate={this.handleImagesUpdate}
 						onImageClick={(event, image) =>
 							this.handleImageModalClick(event, image)

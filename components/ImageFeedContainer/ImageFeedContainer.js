@@ -69,6 +69,14 @@ class ImageFeedContainer extends Component {
 	};
 
 	handleLoadMore = ({ limit }) => {
+		this.props.dispatch(
+			fetchImages({
+				limit,
+				// dateStart,
+				// portraitPercentage,
+				// isFirstFetch,
+			}),
+		);
 		this.props.dispatch({
 			type: 'IMAGE_FEED_MOVE_UPCOMING_TO_CURRENT_IMAGES',
 			limit,

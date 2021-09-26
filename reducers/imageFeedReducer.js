@@ -39,14 +39,14 @@ export default (state = initialState, action) => {
 
 		case 'IMAGE_FEED_FETCH_IMAGES_SUCCESS': {
 			log(action.type);
-
+			console.log('Payload', payload);
 			// Add new images to spare in case there is a fetch failure
 			const spareImages = dedupeByField(
-				[...state.spareImages, ...processImagesType(payload.data.feed)],
+				[...state.spareImages, ...processImagesType(payload)], // .data.feed
 				'id',
 			);
 
-			const currentImages = mergeImages(state.currentImages, payload.data.feed);
+			const currentImages = mergeImages(state.currentImages, payload); // .data.feed
 
 			return {
 				...state,
@@ -155,6 +155,8 @@ export default (state = initialState, action) => {
 };
 
 function mergeImages(oldImages, newImages) {
+	console.log(oldImages);
+	console.log(newImages);
 	return (
 		dedupeByField([...oldImages, ...processImagesType(newImages)], 'id')
 			// Assign an index and imageSize
