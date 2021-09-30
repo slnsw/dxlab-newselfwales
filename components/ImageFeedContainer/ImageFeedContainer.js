@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import ImageFeed from '../ImageFeed';
-import { fetchImages, subscribeToImages } from '../../actions/imageFeedActions';
+import { fetchImages } from '../../actions/imageFeedActions'; // subscribeToImages
 import logBase from '../../lib/log';
 import { getDate } from '../../lib/date';
 import './ImageFeedContainer.css';
@@ -43,7 +43,7 @@ class ImageFeedContainer extends Component {
 		}
 
 		// Subscribe to image feed
-		this.props.dispatch(subscribeToImages());
+		// this.props.dispatch(subscribeToImages());
 
 		// Load some spare images if available
 		this.props.dispatch({

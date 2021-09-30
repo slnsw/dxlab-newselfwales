@@ -400,7 +400,7 @@ class LandingPage extends Component {
 			console.log(error);
 			return null;
 		}
-
+		console.log('show modal', showImageModal);
 		// const page = pages && pages[0];
 		const page = {
 			title: '#NewSelfWales',
@@ -501,7 +501,7 @@ class LandingPage extends Component {
 					<ImageFeedContainer
 						startImages={20}
 						maxImages={150}
-						intervalTime={5000}
+						intervalTime={10000}
 						pauseInterval={this.state.pauseInterval}
 						enableAnimation={enableAnimation}
 						shouldFetchImagesOnMount={true} // false
