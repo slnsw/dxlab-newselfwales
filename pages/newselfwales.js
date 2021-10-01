@@ -10,7 +10,7 @@ import ImageModalContainer from '../components/ImageModalContainer';
 import SearchResultsContainer from '../components/SearchResultsContainer';
 import InfoBox from '../components/InfoBox';
 import Modal from '../components/Modal';
-// import SearchBox from '../components/SearchBox';
+import SearchBox from '../components/SearchBox';
 import SearchFilters from '../components/SearchFilters';
 import SearchSuggestions from '../components/SearchSuggestions';
 import Overlay from '../components/Overlay';
@@ -439,7 +439,7 @@ class LandingPage extends Component {
 				}
 				pathname="/newselfwales"
 			>
-				{/* <SearchBox
+				<SearchBox
 					value={this.state.q}
 					// defaultValue={router.query && router.query.q ? router.query.q : ''}
 					className={[
@@ -451,7 +451,7 @@ class LandingPage extends Component {
 					onFocus={this.handleSearchBoxFocus}
 					onBackClick={this.handleSearchBoxBackClick}
 					onSubmit={this.handleSearchSubmit}
-				/> */}
+				/>
 
 				{isSearch && (
 					<Fragment>

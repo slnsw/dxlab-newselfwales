@@ -33,6 +33,7 @@
 		"draggabilly": "^2.1.1",
 		"express": "^4.15.4",
 		"extract-text-webpack-plugin": "^4.0.0-beta.0",
+		"fuse.js": "^6.4.6",
 		"graphql": "^0.13.2",
 		"graphql-tag": "^2.9.2",
 		"helmet": "^3.12.1",

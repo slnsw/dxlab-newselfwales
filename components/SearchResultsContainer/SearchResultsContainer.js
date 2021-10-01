@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import Fuse from 'fuse.js';
 
 import SearchResults from '../SearchResults';
 import { processImagesType } from '../../reducers/imageFeedReducer';
@@ -33,10 +34,23 @@ class SearchResultsContainer extends Component {
 		offset: 20,
 		hasMore: true,
 		isFirstLoad: true,
+		searchData: [],
+		searchResults: [],
 	};
 
 	componentDidMount() {
 		this.setState({ inputTextValue: this.props.q });
+		fetch('/static/newselfwales/json/search-data.json')
+			.then((r) => r.json())
+			.then((d) => {
+				const newData = Object.keys(d.data).map((k) => d.data[k]);
+				this.setState({ searchData: newData });
+				//   setLoading(false);
+				console.log('search data loaded', typeof newData);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	}
 
 	componentDidUpdate(prevProps) {
@@ -45,6 +59,94 @@ class SearchResultsContainer extends Component {
 				inputTextValue: this.props.q,
 				isFirstLoad: true,
 			});
+		}
+		if (
+			this.state.inputTextValue &&
+			this.state.inputTextValue.length >= MININUM_LETTERS
+		) {
+			const searchOptions = {
+				includeScore: true,
+				threshold: 0,
+				ignoreLocation: true,
+				keys: [
+					'content',
+					'title',
+					'galleryName',
+					'instagramUsername',
+					'location',
+					'locationSlug',
+					'userDescription',
+				],
+			};
+			const fuse = new Fuse(this.state.searchData, searchOptions);
+			const result = fuse.search(this.state.inputTextValue);
+			const sd = result
+				? result.map((item) => {
+						return item.item;
+				  })
+				: [];
+
+			// console.log('sd', sd);
+			const ig = sd.filter((item) => {
+				return item['__typename'] === 'NewSelfWalesInstagramSelfie';
+			});
+			const gal = sd.filter((item) => {
+				return item['__typename'] === 'NewSelfWalesGallerySelfie';
+			});
+			const port = sd.filter((item) => {
+				return item['__typename'] === 'NewSelfWalesPortrait';
+			});
+
+			const filter = this.props.filters && this.props.filters[0];
+
+			let skipInstagramSelfies = false;
+			let skipPortraits = false;
+			let skipGallerySelfies = false;
+
+			if (filter === 'portrait') {
+				skipInstagramSelfies = true;
+				skipGallerySelfies = true;
+			} else if (filter === 'instagram-selfie') {
+				skipPortraits = true;
+				skipGallerySelfies = true;
+			} else if (filter === 'gallery-selfie') {
+				skipInstagramSelfies = true;
+				skipPortraits = true;
+			}
+
+			const res = {
+				newSelfWales: {
+					gallerySelfies: skipGallerySelfies ? [] : gal,
+					instagramSelfies: skipInstagramSelfies ? [] : ig,
+					portraits: skipPortraits ? [] : port,
+					__typename: 'NewSelfWales',
+				},
+				// variables: {
+				// 	limit: 20,
+				// 	offset: 0,
+				// 	search: 'people',
+				// 	skipAll: false,
+				// 	skipGallerySelfies: false,
+				// 	skipInstagramSelfies: false,
+				// 	skipPortraits: false,
+				// },
+				imageCount: sd.length,
+			};
+
+			// console.log('## SERACH result', result);
+			// console.log('this.state.searchResults', this.state.searchResults);
+			// console.log('## data result', sd);
+			// console.log(typeof this.state.searchResults);
+			// console.log(typeof sd);
+			// console.log('boolean', this.state.searchResults === sd);
+			if (
+				sd.length > 0 &&
+				(this.state.searchResults.imageCount !== sd.length ||
+					this.props.filters !== prevProps.filters)
+			) {
+				// console.log('setting state');
+				this.setState({ searchResults: res });
+			}
 		}
 	}
 
@@ -120,7 +222,7 @@ class SearchResultsContainer extends Component {
 
 	render() {
 		const { className, data, onImageKeyPress } = this.props;
-		const { inputTextValue, isFirstLoad } = this.state;
+		const { inputTextValue, isFirstLoad, searchResults } = this.state;
 		const { loading, error } = data;
 
 		if (!inputTextValue) {
@@ -144,8 +246,10 @@ class SearchResultsContainer extends Component {
 			);
 		}
 
-		const images = dedupeByField(buildImages(data), 'id');
-
+		const images2 = dedupeByField(buildImages(data), 'id');
+		const images = dedupeByField(buildImages(searchResults), 'id');
+		console.log('new search', images);
+		console.log('old search', images2);
 		if (inputTextValue && (!images || images.length === 0)) {
 			return (
 				<div className="search-results__notification">
