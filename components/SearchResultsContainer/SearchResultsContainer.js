@@ -116,9 +116,9 @@ class SearchResultsContainer extends Component {
 
 			const res = {
 				newSelfWales: {
-					gallerySelfies: skipGallerySelfies ? [] : gal,
-					instagramSelfies: skipInstagramSelfies ? [] : ig,
-					portraits: skipPortraits ? [] : port,
+					gallerySelfies: skipGallerySelfies ? [] : gal.slice(20),
+					instagramSelfies: skipInstagramSelfies ? [] : ig.slice(20),
+					portraits: skipPortraits ? [] : port.slice(20),
 					__typename: 'NewSelfWales',
 				},
 				// variables: {
