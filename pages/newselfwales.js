@@ -400,7 +400,7 @@ class LandingPage extends Component {
 			console.log(error);
 			return null;
 		}
-		console.log('show modal', showImageModal);
+		// console.log('show modal', showImageModal);
 		// const page = pages && pages[0];
 		const page = {
 			title: '#NewSelfWales',

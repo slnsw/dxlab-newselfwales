@@ -149,8 +149,6 @@ class SearchResultsContainer extends Component {
 	}
 
 	handleLoadMore = () => {
-		console.log('HANDLE LOAD MORE...............', this.state.offset);
-
 		let newIg = [];
 		let newGal = [];
 		let newPort = [];

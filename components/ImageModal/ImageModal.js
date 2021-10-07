@@ -78,8 +78,6 @@ class ImageModal extends Component {
 	};
 
 	handleTagClick = (tag) => {
-		console.log('hiii');
-
 		if (typeof this.props.onTagClick === 'function') {
 			this.props.onTagClick(tag);
 		}

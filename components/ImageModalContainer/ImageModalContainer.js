@@ -32,9 +32,8 @@ class ImageModalContainer extends Component {
 		onClose: PropTypes.func.isRequired,
 		onTagClick: PropTypes.func,
 	};
-	state = { newSelfWales: {} };
+	state = { newSelfWales: {}, loading: true };
 	componentDidMount() {
-		console.log('COMPONENT DID MOUNT');
 		if (this.props && this.props.id) {
 			// const imageData = getImageData(this.props.id);
 			// this.setState({ newSelfWales: imageData });
@@ -43,28 +42,27 @@ class ImageModalContainer extends Component {
 				.then((r) => r.json())
 				.then((data) => {
 					const imageData = { image: data.data };
-					this.setState({ newSelfWales: imageData });
+					this.setState({ newSelfWales: imageData, loading: false });
 				})
 				.catch((e) => {
 					console.log(e);
-					this.setState({ newSelfWales: null });
+					this.setState({ newSelfWales: null, loading: false });
 				});
 		}
 	}
 
 	componentDidUpdate(prevProps) {
-		console.log('COMPONENT DID UPDATE');
 		if (this.props && this.props.id) {
-			if (prevProps.id != this.props.id) {
+			if (prevProps.id !== this.props.id) {
 				fetch(`/static/newselfwales/json/${this.props.id}.json`)
 					.then((r) => r.json())
 					.then((data) => {
 						const imageData = { image: data.data };
-						this.setState({ newSelfWales: imageData });
+						this.setState({ newSelfWales: imageData, loading: false });
 					})
 					.catch((e) => {
 						console.log(e);
-						this.setState({ newSelfWales: null });
+						this.setState({ newSelfWales: null, loading: false });
 					});
 			}
 		}
@@ -116,9 +114,11 @@ class ImageModalContainer extends Component {
 		// {({ data, loading, error }) => {
 		// 	const { newSelfWales } = data;
 		let imageModalProps = {};
+		let isLoading = true;
 
 		if (this.state.newSelfWales && this.state.newSelfWales.image) {
 			const { image } = this.state.newSelfWales;
+			isLoading = this.state.loading;
 
 			imageModalProps = {
 				id,
@@ -142,7 +142,7 @@ class ImageModalContainer extends Component {
 				sourceImageBoundingClientRect={sourceImageBoundingClientRect}
 				type={imageType}
 				isActive={isActive}
-				isLoading={false}
+				isLoading={isLoading}
 				// error={''}
 				onClose={onClose}
 				onTagClick={onTagClick}
