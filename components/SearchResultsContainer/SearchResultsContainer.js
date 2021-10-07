@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+// import { graphql } from 'react-apollo';
+// import gql from 'graphql-tag';
 import Fuse from 'fuse.js';
 
 import SearchResults from '../SearchResults';
@@ -36,6 +36,7 @@ class SearchResultsContainer extends Component {
 		isFirstLoad: true,
 		searchData: [],
 		searchResults: [],
+		loading: true,
 	};
 
 	componentDidMount() {
@@ -45,8 +46,8 @@ class SearchResultsContainer extends Component {
 			.then((d) => {
 				const newData = Object.keys(d.data).map((k) => d.data[k]);
 				this.setState({ searchData: newData });
+				this.setState({ loading: false });
 				//   setLoading(false);
-				console.log('search data loaded', typeof newData);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -67,6 +68,7 @@ class SearchResultsContainer extends Component {
 			const searchOptions = {
 				includeScore: true,
 				threshold: 0,
+				isCaseSensitive: false,
 				ignoreLocation: true,
 				keys: [
 					'content',
@@ -85,8 +87,7 @@ class SearchResultsContainer extends Component {
 						return item.item;
 				  })
 				: [];
-
-			// console.log('sd', sd);
+			// this.setState({ allSearchResults: sd });
 			const ig = sd.filter((item) => {
 				return item['__typename'] === 'NewSelfWalesInstagramSelfie';
 			});
@@ -116,29 +117,26 @@ class SearchResultsContainer extends Component {
 
 			const res = {
 				newSelfWales: {
-					gallerySelfies: skipGallerySelfies ? [] : gal.slice(0, 60),
-					instagramSelfies: skipInstagramSelfies ? [] : ig.slice(0, 60),
-					portraits: skipPortraits ? [] : port.slice(0, 60),
+					gallerySelfies: skipGallerySelfies ? [] : gal.slice(0, 20),
+					instagramSelfies: skipInstagramSelfies ? [] : ig.slice(0, 20),
+					portraits: skipPortraits ? [] : port.slice(0, 20),
 					__typename: 'NewSelfWales',
 				},
-				// variables: {
-				// 	limit: 20,
-				// 	offset: 0,
-				// 	search: 'people',
-				// 	skipAll: false,
-				// 	skipGallerySelfies: false,
-				// 	skipInstagramSelfies: false,
-				// 	skipPortraits: false,
-				// },
+				variables: {
+					limit: 20,
+					offset: this.state.offset,
+					// search: 'people',
+					// 	skipAll: false,
+					// 	skipGallerySelfies: false,
+					// 	skipInstagramSelfies: false,
+					// 	skipPortraits: false,
+				},
+				allIg: ig,
+				allGal: gal,
+				allPort: port,
 				imageCount: sd.length,
 			};
 
-			// console.log('## SERACH result', result);
-			// console.log('this.state.searchResults', this.state.searchResults);
-			// console.log('## data result', sd);
-			// console.log(typeof this.state.searchResults);
-			// console.log(typeof sd);
-			// console.log('boolean', this.state.searchResults === sd);
 			if (
 				sd.length > 0 &&
 				(this.state.searchResults.imageCount !== sd.length ||
@@ -151,67 +149,163 @@ class SearchResultsContainer extends Component {
 	}
 
 	handleLoadMore = () => {
-		this.props.data.fetchMore({
+		console.log('HANDLE LOAD MORE...............', this.state.offset);
+
+		let newIg = [];
+		let newGal = [];
+		let newPort = [];
+		if (
+			this.state.searchResults.allPort.length >
+			this.state.searchResults.newSelfWales.portraits.length
+		) {
+			// we have more Portraits
+			const morePort = this.state.searchResults.allPort.slice(
+				this.state.offset,
+				this.state.offset + 20,
+			);
+			newPort = [
+				...this.state.searchResults.newSelfWales.portraits,
+				...morePort,
+			];
+			// console.log(this.state.searchResults.newSelfWales.portraits, morePort);
+		}
+
+		if (
+			this.state.searchResults.allGal.length >
+			this.state.searchResults.newSelfWales.gallerySelfies.length
+		) {
+			// we have more gallerySelfies
+			const moreGal = this.state.searchResults.allGal.slice(
+				this.state.offset,
+				this.state.offset + 20,
+			);
+			newGal = [
+				...this.state.searchResults.newSelfWales.gallerySelfies,
+				...moreGal,
+			];
+		}
+
+		if (
+			this.state.searchResults.allIg.length >
+			this.state.searchResults.newSelfWales.instagramSelfies.length
+		) {
+			// we have more instagramSelfies
+			const moreIg = this.state.searchResults.allIg.slice(
+				this.state.offset,
+				this.state.offset + 20,
+			);
+			newIg = [
+				...this.state.searchResults.newSelfWales.instagramSelfies,
+				...moreIg,
+			];
+		}
+
+		const filter = this.props.filters && this.props.filters[0];
+
+		let skipInstagramSelfies = false;
+		let skipPortraits = false;
+		let skipGallerySelfies = false;
+
+		if (filter === 'portrait') {
+			skipInstagramSelfies = true;
+			skipGallerySelfies = true;
+		} else if (filter === 'instagram-selfie') {
+			skipPortraits = true;
+			skipGallerySelfies = true;
+		} else if (filter === 'gallery-selfie') {
+			skipInstagramSelfies = true;
+			skipPortraits = true;
+		}
+
+		const res = {
+			newSelfWales: {
+				gallerySelfies: skipGallerySelfies ? [] : newGal,
+				instagramSelfies: skipInstagramSelfies ? [] : newIg,
+				portraits: skipPortraits ? [] : newPort,
+				__typename: 'NewSelfWales',
+			},
 			variables: {
-				offset: this.state.offset,
+				limit: 20,
+				offset: this.state.offset + 20,
+				// search: 'people',
+				// 	skipAll: false,
+				// 	skipGallerySelfies: false,
+				// 	skipInstagramSelfies: false,
+				// 	skipPortraits: false,
 			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!fetchMoreResult) return prev;
+			allIg: this.state.searchResults.allIg,
+			allGal: this.state.searchResults.allGal,
+			allPort: this.state.searchResults.allPort,
+			imageCount: this.state.searchResults.imageCount,
+		};
 
-				// console.log(fetchMoreResult);
-
-				// NOTE: Need to do complex data merging because some field may be skipped
-				// and therefore not show up in results.
-				const newSelfWales = {
-					...fetchMoreResult.newSelfWales,
-					portraits: fetchMoreResult.newSelfWales.portraits || [],
-					instagramSelfies: fetchMoreResult.newSelfWales.instagramSelfies || [],
-					gallerySelfies: fetchMoreResult.newSelfWales.gallerySelfies || [],
-				};
-
-				const prevNewSelfWales = {
-					...prev.newSelfWales,
-					portraits: prev.newSelfWales.portraits || [],
-					instagramSelfies: prev.newSelfWales.instagramSelfies || [],
-					gallerySelfies: prev.newSelfWales.gallerySelfies || [],
-				};
-
-				if (
-					newSelfWales.portraits.length === 0 &&
-					newSelfWales.instagramSelfies.length === 0 &&
-					newSelfWales.gallerySelfies.length === 0
-				) {
-					// Stop onLoadMore from running again
-					this.setState({
-						hasMore: false,
-					});
-				} else {
-					// Increment offset
-					this.setState({
-						offset: this.state.offset + 20,
-					});
-				}
-
-				return {
-					...prev,
-					newSelfWales: {
-						...newSelfWales,
-						portraits: [
-							...prevNewSelfWales.portraits,
-							...newSelfWales.portraits,
-						],
-						instagramSelfies: [
-							...prevNewSelfWales.instagramSelfies,
-							...newSelfWales.instagramSelfies,
-						],
-						gallerySelfies: [
-							...prevNewSelfWales.gallerySelfies,
-							...newSelfWales.gallerySelfies,
-						],
-					},
-				};
-			},
-		});
+		if (newIg.length + newPort.length + newGal.length > 0) {
+			// console.log('setting state');
+			this.setState({ searchResults: res });
+			this.setState({
+				offset: this.state.offset + 20,
+			});
+		} else {
+			this.setState({
+				hasMore: false,
+			});
+		}
+		// this.props.data.fetchMore({
+		// 	variables: {
+		// 		offset: this.state.offset,
+		// 	},
+		// 	updateQuery: (prev, { fetchMoreResult }) => {
+		// 		if (!fetchMoreResult) return prev;
+		// 		// console.log(fetchMoreResult);
+		// 		// NOTE: Need to do complex data merging because some field may be skipped
+		// 		// and therefore not show up in results.
+		// 		const newSelfWales = {
+		// 			...fetchMoreResult.newSelfWales,
+		// 			portraits: fetchMoreResult.newSelfWales.portraits || [],
+		// 			instagramSelfies: fetchMoreResult.newSelfWales.instagramSelfies || [],
+		// 			gallerySelfies: fetchMoreResult.newSelfWales.gallerySelfies || [],
+		// 		};
+		// 		const prevNewSelfWales = {
+		// 			...prev.newSelfWales,
+		// 			portraits: prev.newSelfWales.portraits || [],
+		// 			instagramSelfies: prev.newSelfWales.instagramSelfies || [],
+		// 			gallerySelfies: prev.newSelfWales.gallerySelfies || [],
+		// 		};
+		// 		if (
+		// 			newSelfWales.portraits.length === 0 &&
+		// 			newSelfWales.instagramSelfies.length === 0 &&
+		// 			newSelfWales.gallerySelfies.length === 0
+		// 		) {
+		// 			// Stop onLoadMore from running again
+		// 			this.setState({
+		// 				hasMore: false,
+		// 			});
+		// 		} else {
+		// 			// Increment offset
+		// 			this.setState({
+		// 				offset: this.state.offset + 20,
+		// 			});
+		// 		}
+		// 		return {
+		// 			...prev,
+		// 			newSelfWales: {
+		// 				...newSelfWales,
+		// 				portraits: [
+		// 					...prevNewSelfWales.portraits,
+		// 					...newSelfWales.portraits,
+		// 				],
+		// 				instagramSelfies: [
+		// 					...prevNewSelfWales.instagramSelfies,
+		// 					...newSelfWales.instagramSelfies,
+		// 				],
+		// 				gallerySelfies: [
+		// 					...prevNewSelfWales.gallerySelfies,
+		// 					...newSelfWales.gallerySelfies,
+		// 				],
+		// 			},
+		// 		};
+		// 	},
+		// });
 	};
 
 	handleImageClick = (event, image) => {
@@ -221,9 +315,9 @@ class SearchResultsContainer extends Component {
 	};
 
 	render() {
-		const { className, data, onImageKeyPress } = this.props;
-		const { inputTextValue, isFirstLoad, searchResults } = this.state;
-		const { loading, error } = data;
+		const { className, onImageKeyPress } = this.props; // data,
+		const { inputTextValue, isFirstLoad, searchResults, loading } = this.state;
+		// const { loading, error } = data;
 
 		if (!inputTextValue) {
 			return null;
@@ -233,10 +327,10 @@ class SearchResultsContainer extends Component {
 			return <LoaderText className="search-results__notification" />;
 		}
 
-		if (error) {
-			console.log(data.error);
-			return null;
-		}
+		// if (error) {
+		// 	console.log(data.error);
+		// 	return null;
+		// }
 
 		if (inputTextValue.length < MININUM_LETTERS) {
 			return (
@@ -246,10 +340,10 @@ class SearchResultsContainer extends Component {
 			);
 		}
 
-		const images2 = dedupeByField(buildImages(data), 'id');
+		// const images2 = dedupeByField(buildImages(data), 'id');
 		const images = dedupeByField(buildImages(searchResults), 'id');
-		console.log('new search', images);
-		console.log('old search', images2);
+		// console.log('new search', images);
+		// console.log('old search', images2);
 		if (inputTextValue && (!images || images.length === 0)) {
 			return (
 				<div className="search-results__notification">
@@ -318,147 +412,149 @@ function buildImages(data) {
 	}
 }
 
-const SEARCH_QUERY = gql`
-	query search(
-		$search: String
-		$limit: Int
-		$offset: Int
-		$skipAll: Boolean!
-		$skipInstagramSelfies: Boolean!
-		$skipPortraits: Boolean!
-		$skipGallerySelfies: Boolean!
-	) {
-		newSelfWales @skip(if: $skipAll) {
-			instagramSelfies(search: $search, limit: $limit, offset: $offset)
-				@skip(if: $skipInstagramSelfies) {
-				id
-				title
-				content
-				shortcode
-				instagramUsername
-				timestamp
-				location
-				locationSlug
-				userDescription
-				featuredMedia {
-					sourceUrl
-					sizes {
-						medium {
-							sourceUrl
-							width
-							height
-						}
-						full {
-							sourceUrl
-							width
-							height
-						}
-					}
-				}
-				__typename
-			}
-			portraits(search: $search, limit: $limit, offset: $offset)
-				@skip(if: $skipPortraits) {
-				id
-				title
-				content
-				portraitName
-				archiveNotes
-				primoId
-				featuredMedia {
-					sourceUrl
-					sizes {
-						medium {
-							sourceUrl
-							width
-							height
-						}
-						full {
-							sourceUrl
-							width
-							height
-						}
-					}
-				}
-				__typename
-			}
-			gallerySelfies(search: $search, limit: $limit, offset: $offset)
-				@skip(if: $skipGallerySelfies) {
-				id
-				title
-				content
-				galleryName
-				featuredMedia {
-					sourceUrl
-					sizes {
-						medium {
-							sourceUrl
-							width
-							height
-						}
-						full {
-							sourceUrl
-							width
-							height
-						}
-					}
-				}
-				__typename
-			}
-			__typename
-		}
-	}
-`;
+// const SEARCH_QUERY = gql`
+// 	query search(
+// 		$search: String
+// 		$limit: Int
+// 		$offset: Int
+// 		$skipAll: Boolean!
+// 		$skipInstagramSelfies: Boolean!
+// 		$skipPortraits: Boolean!
+// 		$skipGallerySelfies: Boolean!
+// 	) {
+// 		newSelfWales @skip(if: $skipAll) {
+// 			instagramSelfies(search: $search, limit: $limit, offset: $offset)
+// 				@skip(if: $skipInstagramSelfies) {
+// 				id
+// 				title
+// 				content
+// 				shortcode
+// 				instagramUsername
+// 				timestamp
+// 				location
+// 				locationSlug
+// 				userDescription
+// 				featuredMedia {
+// 					sourceUrl
+// 					sizes {
+// 						medium {
+// 							sourceUrl
+// 							width
+// 							height
+// 						}
+// 						full {
+// 							sourceUrl
+// 							width
+// 							height
+// 						}
+// 					}
+// 				}
+// 				__typename
+// 			}
+// 			portraits(search: $search, limit: $limit, offset: $offset)
+// 				@skip(if: $skipPortraits) {
+// 				id
+// 				title
+// 				content
+// 				portraitName
+// 				archiveNotes
+// 				primoId
+// 				featuredMedia {
+// 					sourceUrl
+// 					sizes {
+// 						medium {
+// 							sourceUrl
+// 							width
+// 							height
+// 						}
+// 						full {
+// 							sourceUrl
+// 							width
+// 							height
+// 						}
+// 					}
+// 				}
+// 				__typename
+// 			}
+// 			gallerySelfies(search: $search, limit: $limit, offset: $offset)
+// 				@skip(if: $skipGallerySelfies) {
+// 				id
+// 				title
+// 				content
+// 				galleryName
+// 				featuredMedia {
+// 					sourceUrl
+// 					sizes {
+// 						medium {
+// 							sourceUrl
+// 							width
+// 							height
+// 						}
+// 						full {
+// 							sourceUrl
+// 							width
+// 							height
+// 						}
+// 					}
+// 				}
+// 				__typename
+// 			}
+// 			__typename
+// 		}
+// 	}
+// `;
 
-export default graphql(SEARCH_QUERY, {
-	options: ({ q = '', filters }) => {
-		// console.log(filters);
+export default SearchResultsContainer;
 
-		const filter = filters && filters[0];
+// export default graphql(SEARCH_QUERY, {
+// 	options: ({ q = '', filters }) => {
+// 		// console.log(filters);
 
-		let skipInstagramSelfies = false;
-		let skipPortraits = false;
-		let skipGallerySelfies = false;
+// 		const filter = filters && filters[0];
 
-		if (filter === 'portrait') {
-			skipInstagramSelfies = true;
-			skipGallerySelfies = true;
-		} else if (filter === 'instagram-selfie') {
-			skipPortraits = true;
-			skipGallerySelfies = true;
-		} else if (filter === 'gallery-selfie') {
-			skipInstagramSelfies = true;
-			skipPortraits = true;
-		}
+// 		let skipInstagramSelfies = false;
+// 		let skipPortraits = false;
+// 		let skipGallerySelfies = false;
 
-		return {
-			variables: {
-				search: q,
-				limit: 20,
-				offset: 0,
-				skipAll: q.length < MININUM_LETTERS,
-				skipInstagramSelfies,
-				skipPortraits,
-				skipGallerySelfies,
-			},
-			notifyOnNetworkStatusChange: true,
-		};
-	},
-	props: ({ data }) => {
-		// console.log(data);
+// 		if (filter === 'portrait') {
+// 			skipInstagramSelfies = true;
+// 			skipGallerySelfies = true;
+// 		} else if (filter === 'instagram-selfie') {
+// 			skipPortraits = true;
+// 			skipGallerySelfies = true;
+// 		} else if (filter === 'gallery-selfie') {
+// 			skipInstagramSelfies = true;
+// 			skipPortraits = true;
+// 		}
 
-		const newSelfWales = data.newSelfWales || {};
+// 		return {
+// 			variables: {
+// 				search: q,
+// 				limit: 20,
+// 				offset: 0,
+// 				skipAll: q.length < MININUM_LETTERS,
+// 				skipInstagramSelfies,
+// 				skipPortraits,
+// 				skipGallerySelfies,
+// 			},
+// 			notifyOnNetworkStatusChange: true,
+// 		};
+// 	},
+// 	props: ({ data }) => {
+// 		// console.log(data);
 
-		return {
-			data: {
-				...data,
-				newSelfWales: {
-					...newSelfWales,
-					portraits: newSelfWales.portraits || [],
-					instagramSelfies: newSelfWales.instagramSelfies || [],
-					gallerySelfies: newSelfWales.gallerySelfies || [],
-				},
-			},
-		};
-	},
-})(SearchResultsContainer);
+// 		const newSelfWales = data.newSelfWales || {};
+
+// 		return {
+// 			data: {
+// 				...data,
+// 				newSelfWales: {
+// 					...newSelfWales,
+// 					portraits: newSelfWales.portraits || [],
+// 					instagramSelfies: newSelfWales.instagramSelfies || [],
+// 					gallerySelfies: newSelfWales.gallerySelfies || [],
+// 				},
+// 			},
+// 		};
+// 	},
+// })(SearchResultsContainer);

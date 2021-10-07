@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import PackeryImages from '../PackeryImages';
 import InfiniteScroll from '../InfiniteScroll';
-import LoaderText from '../LoaderText';
+// import LoaderText from '../LoaderText';
 import './SearchResults.css';
 
 class SearchResults extends Component {
@@ -29,8 +29,6 @@ class SearchResults extends Component {
 	};
 
 	handleLoadMore = () => {
-		// console.log('load more');
-
 		if (typeof this.props.onLoadMore === 'function') {
 			this.props.onLoadMore();
 		}
@@ -49,7 +47,7 @@ class SearchResults extends Component {
 			<div className="search-results">
 				<InfiniteScroll
 					pageStart={0}
-					loadMore={this.handleLoadMore}
+					// loadMore={this.handleLoadMore}
 					hasMore={hasMore}
 					isHorizontal={true}
 					// loader={<div className="search-results__loader">Loading ...</div>}
@@ -70,8 +68,14 @@ class SearchResults extends Component {
 					/>
 				</InfiniteScroll>
 
-				{isLoadingMore && (
-					<LoaderText className="search-results__loading-more" />
+				{(hasMore || isLoadingMore) && (
+					// <LoaderText className="search-results__loading-more" />
+					<button
+						className="button button--xs search-results__load-more-button"
+						onClick={this.handleLoadMore}
+					>
+						Load More
+					</button>
 				)}
 			</div>
 		);

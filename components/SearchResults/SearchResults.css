@@ -20,3 +20,13 @@
 	padding: var(--spacing-sm);
 	background-color: var(--colour-black);
 }
+
+.search-results__load-more-button {
+	position: absolute;
+	top: -6em;
+	right: 3em;
+	z-index: 2;
+	height: auto !important;
+	padding: var(--spacing-sm);
+	/* background-color: var(--colour-black); */
+}
