@@ -1,3 +1,5 @@
+Oct 2021 Update - The DX Lab has closed and as such graphQL and Wordpress servers are being retired. This site has been updated to work without those servers. Images have been moved to an S3 bucket. All other data has been exported to JSON files which get loaded to drive the site. Due to time constraints only the main website was updated - things like the photobooth and gallery versions are unchanged and this will not function.
+
 # DX Lab #NewSelfWales
 
 DX Lab gallery, photobooth and website experience for State Library of NSW's community, self-portrait exhibition.

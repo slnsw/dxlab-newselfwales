@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.0] - 2021-10-07
+
+- Convert site to static version
+
 ## [1.0.8] - 2020-9-28
 
 - Update cronjob and Readme
