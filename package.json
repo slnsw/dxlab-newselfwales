@@ -14,7 +14,7 @@
 		"test:lint": "eslint . --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --cache"
 	},
 	"engines": {
-		"node": "~12.22.1"
+		"node": "18.x"
 	},
 	"repository": {
 		"type": "git",
