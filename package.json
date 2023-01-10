@@ -26,7 +26,7 @@
 		"apollo-client": "^2.6.8",
 		"apollo-link-http": "^1.5.4",
 		"apollo-link-ws": "^1.0.19",
-		"axios": "^0.18.0",
+		"axios": "^0.21.2",
 		"create-react-class": "^15.6.3",
 		"create-react-ref": "^0.1.0",
 		"dotenv": "^4.0.0",
