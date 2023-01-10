@@ -41,7 +41,7 @@
     "body-parser": "^1.15.2",
     "chalk": "^2.3.2",
     "chalk-animation": "^1.6.0",
-    "cheerio": "^1.0.0-rc.2",
+    "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "eslint-config-prettier": "^2.9.0",
