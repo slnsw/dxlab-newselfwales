@@ -33,7 +33,7 @@
     "apollo-client": "^2.2.8",
     "apollo-link": "^1.2.1",
     "apollo-link-http": "^1.5.3",
-    "aws-sdk": "^2.7.1",
+    "aws-sdk": "^2.814.0",
     "aws-serverless-express": "3.0.2",
     "axios": "^0.16.2",
     "babel-cli": "^6.26.0",
